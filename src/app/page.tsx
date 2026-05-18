@@ -3,14 +3,16 @@
 import Link from "next/link";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Card, CardContent } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { getLevelProgress, userStats, grammarEntries } from "@/lib/mock-data";
-import { Flame, Trophy, Play, CheckCircle, Clock, BrainCircuit } from "lucide-react";
+import { Flame, Trophy, Play, CheckCircle, Clock, BrainCircuit, BookOpen, RotateCcw, TrendingUp, Search, Star, ArrowRight } from "lucide-react";
 
 export default function DashboardPage() {
   const levelProgress = getLevelProgress();
   const inProgress = grammarEntries.filter((e) => e.studyStatus === "学习中").slice(0, 1);
+
+  const newVocabProgress = (userStats.todayNewCards / 20) * 100;
+  const reviewProgress = (userStats.todayReviewCards / 30) * 100;
 
   return (
     <MainLayout>
@@ -39,25 +41,91 @@ export default function DashboardPage() {
             {/* Daily Goals */}
             <Card>
               <CardContent className="p-5">
-                <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center justify-between mb-5">
                   <h2 className="text-lg font-bold">每日目标</h2>
                   <span className="text-sm text-muted-foreground">{userStats.todayCompleted} / {userStats.todayTotal} 张卡片</span>
                 </div>
-                <div className="space-y-4">
+                <div className="space-y-5">
                   <div>
-                    <div className="flex items-center justify-between text-sm mb-1.5">
-                      <span>新词汇</span>
+                    <div className="flex items-center justify-between text-sm mb-2">
+                      <span className="font-medium">新词汇</span>
                       <span className="text-muted-foreground">{userStats.todayNewCards}/20</span>
                     </div>
-                    <Progress value={(userStats.todayNewCards / 20) * 100} className="h-2" />
+                    <div className="h-3 bg-slate-100 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-[#2563eb] rounded-full transition-all duration-500"
+                        style={{ width: `${newVocabProgress}%` }}
+                      />
+                    </div>
                   </div>
                   <div>
-                    <div className="flex items-center justify-between text-sm mb-1.5">
-                      <span>语法复习</span>
+                    <div className="flex items-center justify-between text-sm mb-2">
+                      <span className="font-medium">语法复习</span>
                       <span className="text-muted-foreground">{userStats.todayReviewCards}/30</span>
                     </div>
-                    <div className="h-2 bg-muted rounded-full overflow-hidden">
-                      <div className="h-full bg-emerald-500 rounded-full" style={{ width: `${(userStats.todayReviewCards / 30) * 100}%` }} />
+                    <div className="h-3 bg-slate-100 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-emerald-500 rounded-full transition-all duration-500"
+                        style={{ width: `${reviewProgress}%` }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* How It Works - 学习流程 */}
+            <Card>
+              <CardContent className="p-5">
+                <h2 className="text-lg font-bold mb-5">学习流程</h2>
+                <div className="space-y-4">
+                  <div className="flex gap-4">
+                    <div className="flex flex-col items-center">
+                      <div className="w-8 h-8 rounded-full bg-[#2563eb] text-white flex items-center justify-center text-sm font-bold shrink-0">1</div>
+                      <div className="w-0.5 h-full bg-slate-200 mt-1" />
+                    </div>
+                    <div className="pb-4">
+                      <h3 className="font-semibold text-sm">浏览语法库</h3>
+                      <p className="text-xs text-muted-foreground mt-0.5">查看 N1~N5 全部语法，按等级和场景分类筛选</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-4">
+                    <div className="flex flex-col items-center">
+                      <div className="w-8 h-8 rounded-full bg-[#2563eb] text-white flex items-center justify-center text-sm font-bold shrink-0">2</div>
+                      <div className="w-0.5 h-full bg-slate-200 mt-1" />
+                    </div>
+                    <div className="pb-4">
+                      <h3 className="font-semibold text-sm">收藏重点语法</h3>
+                      <p className="text-xs text-muted-foreground mt-0.5">遇到难点或重点语法，点击收藏以便后续重点复习</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-4">
+                    <div className="flex flex-col items-center">
+                      <div className="w-8 h-8 rounded-full bg-[#2563eb] text-white flex items-center justify-center text-sm font-bold shrink-0">3</div>
+                      <div className="w-0.5 h-full bg-slate-200 mt-1" />
+                    </div>
+                    <div className="pb-4">
+                      <h3 className="font-semibold text-sm">Anki 卡片学习</h3>
+                      <p className="text-xs text-muted-foreground mt-0.5">选择等级开始学习，正面显示语法，背面显示意思、接续和例句</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-4">
+                    <div className="flex flex-col items-center">
+                      <div className="w-8 h-8 rounded-full bg-[#2563eb] text-white flex items-center justify-center text-sm font-bold shrink-0">4</div>
+                      <div className="w-0.5 h-full bg-slate-200 mt-1" />
+                    </div>
+                    <div className="pb-4">
+                      <h3 className="font-semibold text-sm">自我评分</h3>
+                      <p className="text-xs text-muted-foreground mt-0.5">根据掌握程度评分：忘记了 / 有点模糊 / 记住了 / 很简单</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-4">
+                    <div className="flex flex-col items-center">
+                      <div className="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center text-sm font-bold shrink-0">5</div>
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-sm">每日复习 + 追踪进度</h3>
+                      <p className="text-xs text-muted-foreground mt-0.5">系统根据遗忘曲线安排复习，在进度页查看学习统计</p>
                     </div>
                   </div>
                 </div>
@@ -144,30 +212,51 @@ export default function DashboardPage() {
               </CardContent>
             </Card>
 
-            {/* Leaderboard */}
+            {/* Quick Actions */}
             <Card>
               <CardContent className="p-5">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-semibold">排行榜</h3>
-                  <button className="text-xs text-[#2563eb] hover:underline">查看全部</button>
-                </div>
-                <div className="space-y-3">
-                  {[
-                    { rank: 1, name: "Sarah K.", xp: "12,450", avatar: "SK", color: "bg-amber-100 text-amber-700" },
-                    { rank: 2, name: "You", xp: "11,240", avatar: "YO", color: "bg-blue-100 text-blue-700", highlight: true },
-                    { rank: 3, name: "John Doe", xp: "9,800", avatar: "JD", color: "bg-slate-100 text-slate-700" },
-                  ].map((user) => (
-                    <div key={user.rank} className={`flex items-center gap-3 p-2 rounded-lg ${user.highlight ? "bg-blue-50" : ""}`}>
-                      <span className="text-sm font-medium w-4">{user.rank}</span>
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold ${user.color}`}>
-                        {user.avatar}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium truncate">{user.name}</p>
-                        <p className="text-xs text-muted-foreground">{user.xp} 经验</p>
-                      </div>
+                <h3 className="font-semibold mb-4">快速入口</h3>
+                <div className="space-y-2">
+                  <Link href="/grammar" className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors group">
+                    <div className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center">
+                      <Search className="h-4 w-4 text-blue-600" />
                     </div>
-                  ))}
+                    <div className="flex-1">
+                      <p className="text-sm font-medium group-hover:text-[#2563eb]">浏览语法库</p>
+                      <p className="text-xs text-muted-foreground">{grammarEntries.length} 条语法</p>
+                    </div>
+                    <ArrowRight className="h-4 w-4 text-muted-foreground" />
+                  </Link>
+                  <Link href="/study" className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors group">
+                    <div className="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center">
+                      <Play className="h-4 w-4 text-emerald-600" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm font-medium group-hover:text-[#2563eb]">开始学习</p>
+                      <p className="text-xs text-muted-foreground">Anki 风格卡片</p>
+                    </div>
+                    <ArrowRight className="h-4 w-4 text-muted-foreground" />
+                  </Link>
+                  <Link href="/review" className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors group">
+                    <div className="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center">
+                      <RotateCcw className="h-4 w-4 text-amber-600" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm font-medium group-hover:text-[#2563eb]">今日复习</p>
+                      <p className="text-xs text-muted-foreground">{userStats.todayReviewCards} 条待复习</p>
+                    </div>
+                    <ArrowRight className="h-4 w-4 text-muted-foreground" />
+                  </Link>
+                  <Link href="/favorites" className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors group">
+                    <div className="w-8 h-8 rounded-lg bg-rose-100 flex items-center justify-center">
+                      <Star className="h-4 w-4 text-rose-600" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm font-medium group-hover:text-[#2563eb]">收藏夹</p>
+                      <p className="text-xs text-muted-foreground">{userStats.totalFavorites} 条收藏</p>
+                    </div>
+                    <ArrowRight className="h-4 w-4 text-muted-foreground" />
+                  </Link>
                 </div>
               </CardContent>
             </Card>
