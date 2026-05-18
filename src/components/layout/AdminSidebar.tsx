@@ -15,9 +15,15 @@ export function AdminSidebar() {
 
   return (
     <aside className="hidden w-56 shrink-0 border-r border-border bg-white lg:block">
-      <div className="flex h-16 items-center border-b border-border px-4">
+      <div className="flex h-16 items-center border-b border-border px-4 justify-between">
         <Link href="/admin" className="font-semibold text-sm tracking-tight">
           管理后台
+        </Link>
+        <Link
+          href="/"
+          className="text-xs text-primary hover:underline"
+        >
+          返回主页
         </Link>
       </div>
       <nav className="flex flex-col gap-1 p-3">

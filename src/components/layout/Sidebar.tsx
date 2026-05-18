@@ -20,8 +20,8 @@ export function Sidebar() {
   return (
     <aside className="hidden lg:flex flex-col w-56 h-screen sticky top-0 bg-[#f8fafc] border-r border-slate-200 shrink-0">
       <div className="p-5">
-        <h2 className="text-lg font-bold text-slate-900">Zenith JLPT</h2>
-        <p className="text-xs text-slate-500 mt-0.5">Mastery tracking active</p>
+        <h2 className="text-lg font-bold text-slate-900">JLPT语法词卡</h2>
+        <p className="text-xs text-slate-500 mt-0.5">日语语法高效记忆</p>
       </div>
 
       <nav className="flex-1 px-3 space-y-1">
