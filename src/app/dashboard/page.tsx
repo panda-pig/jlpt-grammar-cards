@@ -19,8 +19,8 @@ export default function DashboardPage() {
 
   return (
     <MainLayout>
-      <div className="mx-auto max-w-4xl px-6 py-6">
-        <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
+      <div className="mx-auto max-w-4xl px-4 sm:px-6 py-4 sm:py-6">
+        <h1 className="text-2xl font-bold mb-6">学习统计</h1>
 
         <h2 className="font-semibold text-sm text-muted-foreground mb-3">今日任务</h2>
         <div className="grid gap-3 sm:grid-cols-4 mb-8">

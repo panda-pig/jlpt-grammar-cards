@@ -36,7 +36,7 @@ export default function ReviewPage() {
 
   return (
     <MainLayout>
-      <div className="mx-auto max-w-4xl px-6 py-6">
+      <div className="mx-auto max-w-4xl px-4 sm:px-6 py-4 sm:py-6">
         <h1 className="text-2xl font-bold mb-6">今日复习</h1>
 
         <div className="grid gap-3 sm:grid-cols-4 mb-8">

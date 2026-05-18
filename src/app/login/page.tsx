@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge";
 export default function LoginPage() {
   return (
     <MainLayout>
-      <div className="flex items-center justify-center py-20 px-6">
+      <div className="flex items-center justify-center py-12 sm:py-20 px-4 sm:px-6">
         <div className="grid gap-8 md:grid-cols-2 w-full max-w-3xl">
           <Card className="border-0 shadow-sm">
             <CardContent className="p-6 space-y-4">
