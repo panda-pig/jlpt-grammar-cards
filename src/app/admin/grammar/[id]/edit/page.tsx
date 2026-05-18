@@ -46,7 +46,7 @@ export default function AdminEditGrammarPage() {
       <h1 className="text-2xl font-bold mb-6">编辑语法 — {grammar.title}</h1>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <Card><CardContent className="p-5 space-y-3">
+        <Card className="border-0 shadow-sm"><CardContent className="p-5 space-y-3">
           <h3 className="font-semibold text-sm">基本信息</h3>
           <div className="grid gap-3 sm:grid-cols-2">
             <Input placeholder="语法标题" defaultValue={grammar.title} required />
@@ -69,27 +69,27 @@ export default function AdminEditGrammarPage() {
           <Input placeholder="标签" defaultValue={grammar.tags.join(", ")} />
         </CardContent></Card>
 
-        <Card><CardContent className="p-5 space-y-3">
+        <Card className="border-0 shadow-sm"><CardContent className="p-5 space-y-3">
           <h3 className="font-semibold text-sm">意思</h3>
           <Input placeholder="中文意思" defaultValue={grammar.meaningCn} required />
           <Input placeholder="英文意思" defaultValue={grammar.meaningEn} />
         </CardContent></Card>
 
-        <Card><CardContent className="p-5 space-y-3">
+        <Card className="border-0 shadow-sm"><CardContent className="p-5 space-y-3">
           <h3 className="font-semibold text-sm">语法详解</h3>
           <Input placeholder="接续" defaultValue={grammar.structure} />
           <Input placeholder="详细解释" defaultValue={grammar.explanation} />
           <Input placeholder="使用场景" defaultValue={grammar.usageNote} />
         </CardContent></Card>
 
-        <Card><CardContent className="p-5 space-y-3">
+        <Card className="border-0 shadow-sm"><CardContent className="p-5 space-y-3">
           <h3 className="font-semibold text-sm">例句</h3>
           <Input placeholder="日语例句" defaultValue={grammar.exampleJp} />
           <Input placeholder="中文翻译" defaultValue={grammar.exampleCn} />
           <Input placeholder="注音假名" defaultValue={grammar.furigana} />
         </CardContent></Card>
 
-        <Card><CardContent className="p-5 space-y-3">
+        <Card className="border-0 shadow-sm"><CardContent className="p-5 space-y-3">
           <h3 className="font-semibold text-sm">易错点与记忆</h3>
           <Input placeholder="常见错误" defaultValue={grammar.commonMistake} />
           <Input placeholder="记忆提示" defaultValue={grammar.memoryTip} />

@@ -21,13 +21,13 @@ export default function AdminHomePage() {
       <h1 className="text-2xl font-bold mb-6">管理后台</h1>
 
       <div className="grid gap-4 sm:grid-cols-2 mb-8">
-        <Card>
+        <Card className="border-0 shadow-sm">
           <CardContent className="p-5">
-            <p className="text-3xl font-bold">{grammarEntries.length}</p>
+            <p className="text-3xl font-bold text-primary">{grammarEntries.length}</p>
             <p className="text-sm text-muted-foreground">语法总数</p>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="border-0 shadow-sm">
           <CardContent className="p-5">
             <div className="flex flex-wrap gap-2">
               {Object.entries(levelCounts).map(([level, count]) => (
@@ -47,7 +47,7 @@ export default function AdminHomePage() {
       <h2 className="font-semibold mb-3">最近语法条目</h2>
       <div className="space-y-2">
         {grammarEntries.slice(0, 5).map((g) => (
-          <Card key={g.id}>
+          <Card key={g.id} className="border-0 shadow-sm">
             <CardContent className="p-3 flex items-center gap-3">
               <Badge variant="outline">{g.jlptLevel}</Badge>
               <span className="font-medium flex-1">{g.title}</span>

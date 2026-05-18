@@ -29,7 +29,7 @@ export function StudyFlashcard({
       >
         {/* Front */}
         <Card
-          className="absolute inset-0 flex flex-col items-center justify-center p-8"
+          className="absolute inset-0 flex flex-col items-center justify-center p-8 border-0 shadow-md"
           style={{ backfaceVisibility: "hidden" }}
         >
           <CardContent className="flex flex-col items-center gap-4 text-center pt-6">
@@ -43,7 +43,7 @@ export function StudyFlashcard({
 
         {/* Back */}
         <Card
-          className="absolute inset-0 p-6 overflow-auto"
+          className="absolute inset-0 p-6 overflow-auto border-0 shadow-md"
           style={{
             backfaceVisibility: "hidden",
             transform: "rotateY(180deg)",
@@ -68,15 +68,15 @@ export function StudyFlashcard({
               <p className="text-sm text-muted-foreground">{grammar.exampleCn}</p>
             </div>
             {grammar.commonMistake && (
-              <div className="rounded-md bg-amber-50 border border-amber-200 p-3 text-sm">
+              <div className="rounded-xl bg-amber-50 border border-amber-200 p-3 text-sm">
                 <p className="font-medium text-amber-800 mb-0.5">⚠️ 易错点</p>
                 <p className="text-amber-700">{grammar.commonMistake}</p>
               </div>
             )}
             {grammar.memoryTip && (
-              <div className="rounded-md bg-sky-50 border border-sky-200 p-3 text-sm">
-                <p className="font-medium text-sky-800 mb-0.5">💡 记忆提示</p>
-                <p className="text-sky-700">{grammar.memoryTip}</p>
+              <div className="rounded-xl bg-blue-50 border border-blue-200 p-3 text-sm">
+                <p className="font-medium text-blue-800 mb-0.5">💡 记忆提示</p>
+                <p className="text-blue-700">{grammar.memoryTip}</p>
               </div>
             )}
           </CardContent>

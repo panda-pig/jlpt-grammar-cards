@@ -17,7 +17,7 @@ const ratings: { value: ReviewRating; label: string; className: string }[] = [
   {
     value: 3,
     label: "记住了",
-    className: "bg-sky-50 text-sky-700 border-sky-200 hover:bg-sky-100",
+    className: "bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100",
   },
   {
     value: 4,

@@ -11,8 +11,8 @@ import type { GrammarEntry } from "@/lib/types";
 
 const statusStyles: Record<string, string> = {
   "未学习": "bg-muted text-muted-foreground",
-  "学习中": "bg-sky-100 text-sky-700",
-  "已掌握": "bg-emerald-100 text-emerald-700",
+  "学习中": "bg-blue-50 text-blue-700",
+  "已掌握": "bg-emerald-50 text-emerald-700",
 };
 
 export function GrammarCard({
@@ -24,7 +24,7 @@ export function GrammarCard({
 }) {
   return (
     <Link href={`/grammar/${grammar.slug}`}>
-      <Card className="group h-full transition-all hover:shadow-md hover:-translate-y-0.5">
+      <Card className="group h-full transition-all hover:shadow-md hover:-translate-y-0.5 border-0 shadow-sm">
         <CardContent className="p-4">
           <div className="flex items-start justify-between gap-2">
             <div className="flex-1 min-w-0">

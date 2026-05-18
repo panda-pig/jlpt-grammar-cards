@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Header } from "@/components/layout/Header";
+import { MainLayout } from "@/components/layout/MainLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -10,11 +10,10 @@ import { Badge } from "@/components/ui/badge";
 
 export default function LoginPage() {
   return (
-    <>
-      <Header />
-      <main className="flex-1 flex items-center justify-center p-4">
+    <MainLayout>
+      <div className="flex items-center justify-center py-20 px-6">
         <div className="grid gap-8 md:grid-cols-2 w-full max-w-3xl">
-          <Card>
+          <Card className="border-0 shadow-sm">
             <CardContent className="p-6 space-y-4">
               <h1 className="text-xl font-bold">登录</h1>
               <div className="space-y-3">
@@ -35,7 +34,7 @@ export default function LoginPage() {
             </CardContent>
           </Card>
 
-          <Card className="hidden md:block">
+          <Card className="hidden md:block border-0 shadow-sm">
             <CardContent className="p-6 flex flex-col items-center justify-center min-h-[300px]">
               <LevelBadge level="N3" />
               <h3 className="text-xl font-bold mt-3">～わけではない</h3>
@@ -44,7 +43,7 @@ export default function LoginPage() {
             </CardContent>
           </Card>
         </div>
-      </main>
-    </>
+      </div>
+    </MainLayout>
   );
 }

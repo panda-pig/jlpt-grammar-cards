@@ -2,8 +2,7 @@
 
 import { useState, useCallback } from "react";
 import Link from "next/link";
-import { Header } from "@/components/layout/Header";
-import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
+import { MainLayout } from "@/components/layout/MainLayout";
 import { StudyFlashcard } from "@/components/study/StudyFlashcard";
 import { ReviewButtons } from "@/components/study/ReviewButtons";
 import { ProgressBar } from "@/components/study/ProgressBar";
@@ -51,10 +50,9 @@ export default function StudyPage() {
 
   if (state === "idle") {
     return (
-      <>
-        <Header />
-        <main className="flex-1 flex items-center justify-center pb-20">
-          <Card className="w-full max-w-sm mx-4">
+      <MainLayout>
+        <div className="flex items-center justify-center py-20">
+          <Card className="w-full max-w-sm mx-4 border-0 shadow-sm">
             <CardContent className="p-6 text-center space-y-4">
               <Sparkles className="h-10 w-10 mx-auto text-primary" />
               <h2 className="text-xl font-bold">开始学习</h2>
@@ -75,18 +73,16 @@ export default function StudyPage() {
               </Button>
             </CardContent>
           </Card>
-        </main>
-        <MobileBottomNav />
-      </>
+        </div>
+      </MainLayout>
     );
   }
 
   if (state === "completed") {
     return (
-      <>
-        <Header />
-        <main className="flex-1 flex items-center justify-center pb-20">
-          <Card className="w-full max-w-sm mx-4">
+      <MainLayout>
+        <div className="flex items-center justify-center py-20">
+          <Card className="w-full max-w-sm mx-4 border-0 shadow-sm">
             <CardContent className="p-6 text-center space-y-4">
               <Sparkles className="h-10 w-10 mx-auto text-emerald-500" />
               <h2 className="text-xl font-bold">复习完成！</h2>
@@ -102,19 +98,17 @@ export default function StudyPage() {
               </div>
             </CardContent>
           </Card>
-        </main>
-        <MobileBottomNav />
-      </>
+        </div>
+      </MainLayout>
     );
   }
 
   const currentCard = cards[currentIndex];
 
   return (
-    <>
-      <Header />
-      <main className="flex-1 flex flex-col pb-20">
-        <div className="mx-auto w-full max-w-2xl px-4 py-4">
+    <MainLayout>
+      <div className="flex flex-col">
+        <div className="mx-auto w-full max-w-2xl px-6 py-4">
           <div className="flex items-center justify-between mb-4 text-sm">
             <span className="text-muted-foreground">
               进度：{currentIndex + 1} / {cards.length}
@@ -125,15 +119,14 @@ export default function StudyPage() {
           <ProgressBar label="今日进度" value={progress} />
         </div>
 
-        <div className="flex-1 flex items-center justify-center px-4">
+        <div className="flex-1 flex items-center justify-center px-6">
           <StudyFlashcard grammar={currentCard} flipped={flipped} onFlip={() => setFlipped(!flipped)} />
         </div>
 
-        <div className="mx-auto w-full max-w-2xl px-4 py-4">
+        <div className="mx-auto w-full max-w-2xl px-6 py-4">
           <ReviewButtons onRate={handleRate} disabled={!flipped} />
         </div>
-      </main>
-      <MobileBottomNav />
-    </>
+      </div>
+    </MainLayout>
   );
 }
