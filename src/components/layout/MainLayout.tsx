@@ -1,19 +1,18 @@
 "use client";
 
-import { Sidebar } from "@/components/layout/Sidebar";
-import { Header } from "@/components/layout/Header";
-import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
+import { Sidebar } from "./Sidebar";
+import { Header } from "./Header";
+import type { ReactNode } from "react";
 
-export function MainLayout({ children }: { children: React.ReactNode }) {
+export function MainLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen bg-[#f1f5f9]">
       <Sidebar />
-      <div className="flex flex-1 flex-col min-w-0">
+      <div className="flex-1 flex flex-col min-w-0">
         <Header />
-        <main className="flex-1 pb-20 lg:pb-6">
+        <main className="flex-1 p-6 overflow-y-auto">
           {children}
         </main>
-        <MobileBottomNav />
       </div>
     </div>
   );
