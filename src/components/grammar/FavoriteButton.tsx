@@ -18,10 +18,10 @@ export function FavoriteButton({
         onToggle();
       }}
       className={cn(
-        "inline-flex items-center justify-center rounded-md p-1.5 transition-colors",
+        "inline-flex items-center justify-center rounded-full p-1.5 transition-colors",
         isFavorite
-          ? "text-rose-500 hover:text-rose-600"
-          : "text-muted-foreground hover:text-rose-400"
+          ? "text-[#c47a6a] hover:text-[#a06050]"
+          : "text-[#797776] hover:text-[#c47a6a]"
       )}
     >
       <Heart

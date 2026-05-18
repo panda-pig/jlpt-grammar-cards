@@ -18,40 +18,40 @@ const levelCounts = {
 export default function AdminHomePage() {
   return (
     <div className="max-w-4xl">
-      <h1 className="text-2xl font-bold mb-6">管理后台</h1>
+      <h1 className="text-2xl font-serif font-bold mb-6">管理后台</h1>
 
       <div className="grid gap-4 sm:grid-cols-2 mb-8">
-        <Card className="border-0 shadow-sm">
+        <Card className="bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px] ring-0 shadow-none">
           <CardContent className="p-5">
-            <p className="text-3xl font-bold text-primary">{grammarEntries.length}</p>
-            <p className="text-sm text-muted-foreground">语法总数</p>
+            <p className="text-3xl font-bold font-mono text-[#242424]">{grammarEntries.length}</p>
+            <p className="font-mono text-sm text-[#797776]">语法总数</p>
           </CardContent>
         </Card>
-        <Card className="border-0 shadow-sm">
+        <Card className="bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px] ring-0 shadow-none">
           <CardContent className="p-5">
             <div className="flex flex-wrap gap-2">
               {Object.entries(levelCounts).map(([level, count]) => (
-                <Badge key={level} variant="secondary">{level}: {count}</Badge>
+                <Badge key={level} variant="secondary" className="rounded-full font-mono text-xs">{level}: {count}</Badge>
               ))}
             </div>
-            <p className="text-sm text-muted-foreground mt-2">按等级分布</p>
+            <p className="font-mono text-sm text-[#797776] mt-2">按等级分布</p>
           </CardContent>
         </Card>
       </div>
 
       <div className="flex gap-3 mb-6">
-        <Link href="/admin/grammar/new" className={buttonVariants({})}><Plus className="mr-1 h-4 w-4" />新增语法</Link>
-        <Link href="/admin/grammar" className={buttonVariants({ variant: "outline" })}><BookOpen className="mr-1 h-4 w-4" />管理语法</Link>
+        <Link href="/admin/grammar/new" className={buttonVariants({ className: "rounded-full font-mono" })}><Plus className="mr-1 h-4 w-4" />新增语法</Link>
+        <Link href="/admin/grammar" className={buttonVariants({ variant: "outline", className: "rounded-full font-mono" })}><BookOpen className="mr-1 h-4 w-4" />管理语法</Link>
       </div>
 
-      <h2 className="font-semibold mb-3">最近语法条目</h2>
+      <h2 className="font-serif font-semibold mb-3">最近语法条目</h2>
       <div className="space-y-2">
         {grammarEntries.slice(0, 5).map((g) => (
-          <Card key={g.id} className="border-0 shadow-sm">
+          <Card key={g.id} className="bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px] ring-0 shadow-none transition-all hover:shadow-[rgba(0,0,0,0.1)_0px_0px_10px_0px]">
             <CardContent className="p-3 flex items-center gap-3">
-              <Badge variant="outline">{g.jlptLevel}</Badge>
+              <Badge variant="outline" className="rounded-full font-mono text-xs">{g.jlptLevel}</Badge>
               <span className="font-medium flex-1">{g.title}</span>
-              <Badge variant="secondary">{g.grammarType}</Badge>
+              <Badge variant="secondary" className="rounded-full font-mono text-xs">{g.grammarType}</Badge>
             </CardContent>
           </Card>
         ))}

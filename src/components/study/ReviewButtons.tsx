@@ -1,28 +1,39 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import type { ReviewRating } from "@/lib/types";
 
-const ratings: { value: ReviewRating; label: string; className: string }[] = [
+const ratings: { value: ReviewRating; label: string; bg: string; text: string; border: string; hoverBg: string }[] = [
   {
     value: 1,
     label: "忘记了",
-    className: "bg-rose-50 text-rose-700 border-rose-200 hover:bg-rose-100",
+    bg: "bg-[#fff0ec]",
+    text: "text-[#c47a6a]",
+    border: "border-[#f4b4a8]",
+    hoverBg: "hover:bg-[#ffe8e2]",
   },
   {
     value: 2,
     label: "有点模糊",
-    className: "bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100",
+    bg: "bg-[#fff6df]",
+    text: "text-[#a08040]",
+    border: "border-[#e8c178]",
+    hoverBg: "hover:bg-[#fff2d0]",
   },
   {
     value: 3,
     label: "记住了",
-    className: "bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100",
+    bg: "bg-[#eef3ff]",
+    text: "text-[#5a6fa0]",
+    border: "border-[#a0b5eb]",
+    hoverBg: "hover:bg-[#e4ecff]",
   },
   {
     value: 4,
     label: "很简单",
-    className: "bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100",
+    bg: "bg-[#edf9f2]",
+    text: "text-[#4a8a6a]",
+    border: "border-[#a7dcc3]",
+    hoverBg: "hover:bg-[#e0f5ea]",
   },
 ];
 
@@ -36,15 +47,14 @@ export function ReviewButtons({
   return (
     <div className="flex gap-2 w-full max-w-lg mx-auto">
       {ratings.map((r) => (
-        <Button
+        <button
           key={r.value}
-          variant="outline"
           disabled={disabled}
-          className={`flex-1 font-medium ${r.className}`}
+          className={`flex-1 font-mono text-sm font-medium rounded-full border px-4 py-3 min-h-[48px] transition-all active:scale-[0.98] ${r.bg} ${r.text} ${r.border} ${r.hoverBg} disabled:opacity-50 disabled:pointer-events-none`}
           onClick={() => onRate(r.value)}
         >
           {r.label}
-        </Button>
+        </button>
       ))}
     </div>
   );

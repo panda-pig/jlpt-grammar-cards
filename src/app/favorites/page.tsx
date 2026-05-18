@@ -22,16 +22,16 @@ export default function FavoritesPage() {
 
   return (
     <MainLayout>
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 py-4 sm:py-6">
+      <div className="mx-auto max-w-6xl py-4 sm:py-6">
         <div className="flex items-center gap-2 mb-4">
-          <Heart className="h-5 w-5 text-rose-500" />
-          <h1 className="text-2xl font-bold">收藏夹</h1>
-          <Badge variant="secondary">{filtered.length}</Badge>
+          <Heart className="h-5 w-5 text-[#c47a6a]" />
+          <h1 className="text-2xl font-serif font-bold">收藏夹</h1>
+          <Badge variant="secondary" className="rounded-full font-mono text-xs">{filtered.length}</Badge>
         </div>
 
         <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
           {favoriteCollections.map((c) => (
-            <Badge key={c.id} variant="outline" className="shrink-0 cursor-pointer">
+            <Badge key={c.id} variant="outline" className="shrink-0 cursor-pointer rounded-full font-mono text-xs">
               {c.name}
             </Badge>
           ))}

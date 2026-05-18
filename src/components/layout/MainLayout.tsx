@@ -1,19 +1,25 @@
 "use client";
 
-import { Sidebar } from "./Sidebar";
+import { NotificationBar } from "./NotificationBar";
 import { Header } from "./Header";
+import { MobileBottomNav } from "./MobileBottomNav";
 import type { ReactNode } from "react";
 
-export function MainLayout({ children }: { children: ReactNode }) {
+export function MainLayout({ 
+  children, 
+  hideNotification = false 
+}: { 
+  children: ReactNode;
+  hideNotification?: boolean;
+}) {
   return (
-    <div className="flex min-h-screen bg-[#f1f5f9]">
-      <Sidebar />
-      <div className="flex-1 flex flex-col min-w-0">
-        <Header />
-        <main className="flex-1 p-4 sm:p-6 overflow-y-auto">
-          {children}
-        </main>
-      </div>
+    <div className="flex flex-col min-h-screen bg-background">
+      {!hideNotification && <NotificationBar />}
+      <Header />
+      <main className="flex-1">
+        {children}
+      </main>
+      <MobileBottomNav />
     </div>
   );
 }

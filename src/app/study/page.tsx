@@ -52,13 +52,13 @@ export default function StudyPage() {
     return (
       <MainLayout>
         <div className="flex items-center justify-center py-20">
-          <Card className="w-full max-w-sm mx-4 border-0 shadow-sm">
+          <Card className="w-full max-w-sm bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px] ring-0 shadow-none">
             <CardContent className="p-6 text-center space-y-4">
-              <Sparkles className="h-10 w-10 mx-auto text-primary" />
-              <h2 className="text-xl font-bold">开始学习</h2>
-              <p className="text-sm text-muted-foreground">选择等级，开始 Anki 风格的卡片学习</p>
+              <Sparkles className="h-10 w-10 mx-auto text-[#242424]" />
+              <h2 className="text-xl font-serif font-bold">开始学习</h2>
+              <p className="text-sm text-[#797776]">选择等级，开始 Anki 风格的卡片学习</p>
               <div className="text-left">
-                <label className="text-xs font-medium text-muted-foreground mb-1 block">选择等级</label>
+                <label className="font-mono text-xs font-medium text-[#797776] mb-1 block">选择等级</label>
                 <Select value={level} onValueChange={(v) => setLevel(v as JLPTLevel)}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
@@ -68,7 +68,7 @@ export default function StudyPage() {
                   </SelectContent>
                 </Select>
               </div>
-              <Button className="w-full" size="lg" onClick={startSession}>
+              <Button className="w-full rounded-full font-mono" size="lg" onClick={startSession}>
                 开始学习
               </Button>
             </CardContent>
@@ -82,19 +82,19 @@ export default function StudyPage() {
     return (
       <MainLayout>
         <div className="flex items-center justify-center py-20">
-          <Card className="w-full max-w-sm mx-4 border-0 shadow-sm">
+          <Card className="w-full max-w-sm bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px] ring-0 shadow-none">
             <CardContent className="p-6 text-center space-y-4">
-              <Sparkles className="h-10 w-10 mx-auto text-emerald-500" />
-              <h2 className="text-xl font-bold">复习完成！</h2>
-              <p className="text-sm text-muted-foreground">
-                你今天复习了 <span className="font-bold">{completedCount}</span> 个语法
+              <Sparkles className="h-10 w-10 mx-auto text-[#4a8a6a]" />
+              <h2 className="text-xl font-serif font-bold">复习完成！</h2>
+              <p className="text-sm text-[#797776]">
+                你今天复习了 <span className="font-bold text-[#242424]">{completedCount}</span> 个语法
               </p>
               <ProgressBar label="完成率" value={100} />
               <div className="flex gap-2">
-                <Button variant="outline" className="flex-1" onClick={startSession}>
+                <Button variant="outline" className="flex-1 rounded-full font-mono" onClick={startSession}>
                   <RefreshCw className="mr-1 h-4 w-4" />重新开始
                 </Button>
-                <Link href="/grammar" className={buttonVariants({ className: "flex-1" })}>查看语法库</Link>
+                <Link href="/grammar" className={buttonVariants({ className: "flex-1 rounded-full font-mono" })}>查看语法库</Link>
               </div>
             </CardContent>
           </Card>
@@ -109,12 +109,12 @@ export default function StudyPage() {
     <MainLayout>
       <div className="flex flex-col">
         <div className="mx-auto w-full max-w-2xl px-6 py-4">
-          <div className="flex items-center justify-between mb-4 text-sm">
-            <span className="text-muted-foreground">
+          <div className="flex items-center justify-between mb-4 text-sm font-mono text-[#797776]">
+            <span>
               进度：{currentIndex + 1} / {cards.length}
             </span>
-            <span className="text-muted-foreground">等级：{level}</span>
-            <span className="text-muted-foreground">剩余：{cards.length - currentIndex - 1}</span>
+            <span>等级：{level}</span>
+            <span>剩余：{cards.length - currentIndex - 1}</span>
           </div>
           <ProgressBar label="今日进度" value={progress} />
         </div>

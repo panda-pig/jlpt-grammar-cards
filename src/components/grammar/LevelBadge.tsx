@@ -4,11 +4,11 @@ import { Badge } from "@/components/ui/badge";
 import type { JLPTLevel } from "@/lib/types";
 
 const levelStyles: Record<JLPTLevel, string> = {
-  N5: "bg-emerald-50 text-emerald-700 border-emerald-200",
-  N4: "bg-blue-50 text-blue-700 border-blue-200",
-  N3: "bg-amber-50 text-amber-700 border-amber-200",
-  N2: "bg-rose-50 text-rose-700 border-rose-200",
-  N1: "bg-purple-50 text-purple-700 border-purple-200",
+  N5: "border-[#a7dcc3] text-[#4a8a6a] bg-transparent rounded-full font-mono text-xs",
+  N4: "border-[#a0b5eb] text-[#5a6fa0] bg-transparent rounded-full font-mono text-xs",
+  N3: "bg-[#cfdaf5] text-[#242424] border-none rounded-full font-mono text-xs",
+  N2: "border-[#d0c4e8] text-[#7a6a9a] bg-transparent rounded-full font-mono text-xs",
+  N1: "bg-[#242424] text-[#f6f3f1] border-none rounded-full font-mono text-xs",
 };
 
 export function LevelBadge({ level }: { level: JLPTLevel }) {

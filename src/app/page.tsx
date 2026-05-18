@@ -5,308 +5,222 @@ import { MainLayout } from "@/components/layout/MainLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { getLevelProgress, userStats, grammarEntries } from "@/lib/mock-data";
-import { Flame, Trophy, Play, CheckCircle, Clock, BrainCircuit, BookOpen, RotateCcw, TrendingUp, Search, Star, ArrowRight } from "lucide-react";
+import { BookOpen, RotateCcw, Brain, AlertTriangle, Bookmark, BarChart3, ArrowRight, Play } from "lucide-react";
 
-export default function DashboardPage() {
+const features = [
+  {
+    icon: <BookOpen className="h-5 w-5" />,
+    title: "JLPT N1～N5 文法体系",
+    description: "覆盖全部等级语法，按教材路线和语法场景系统整理",
+  },
+  {
+    icon: <RotateCcw className="h-5 w-5" />,
+    title: "Anki 风格复习",
+    description: "卡片正面展示语法，背面展示意思、接续和例句",
+  },
+  {
+    icon: <Brain className="h-5 w-5" />,
+    title: "相近语法对比",
+    description: "将容易混淆的语法放在一起对比，避免记忆混淆",
+  },
+  {
+    icon: <AlertTriangle className="h-5 w-5" />,
+    title: "易错点提醒",
+    description: "标注每个语法的常见错误和使用陷阱",
+  },
+  {
+    icon: <Bookmark className="h-5 w-5" />,
+    title: "收藏与个人语法库",
+    description: "收藏重点语法，建立属于自己的复习清单",
+  },
+  {
+    icon: <BarChart3 className="h-5 w-5" />,
+    title: "学习进度追踪",
+    description: "Dashboard 实时展示学习数据和复习计划",
+  },
+];
+
+const flowSteps = [
+  { step: "选择等级", desc: "从 N5 到 N1，按自己的水平选择" },
+  { step: "学习语法", desc: "浏览语法库，理解意思和接续" },
+  { step: "卡片复习", desc: "Anki 风格卡片，正面回忆背面验证" },
+  { step: "标记掌握度", desc: "根据记忆程度评分，系统智能调度" },
+  { step: "自动安排复习", desc: "根据遗忘曲线，自动提醒下次复习" },
+];
+
+export default function HomePage() {
   const levelProgress = getLevelProgress();
-  const inProgress = grammarEntries.filter((e) => e.studyStatus === "学习中").slice(0, 1);
-
-  const newVocabProgress = (userStats.todayNewCards / 20) * 100;
-  const reviewProgress = (userStats.todayReviewCards / 30) * 100;
+  const totalLearned = userStats.totalLearned;
+  const totalGrammar = grammarEntries.length;
 
   return (
     <MainLayout>
-      <div className="max-w-7xl mx-auto">
-        <div className="grid lg:grid-cols-3 gap-6">
-          {/* Left Column */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Welcome Hero */}
-            <Card className="bg-gradient-to-r from-[#2563eb] to-[#3b82f6] text-white border-0 overflow-hidden">
-              <CardContent className="p-4 sm:p-6">
-                <h1 className="text-xl sm:text-2xl font-bold">欢迎回来，学习者！</h1>
-                <p className="text-blue-100 mt-1 text-sm sm:text-base">今天状态火热！距离 N2 精通目标还差 85%。</p>
-                <div className="flex gap-4 sm:gap-8 mt-4">
-                  <div>
-                    <p className="text-xs text-blue-200 uppercase tracking-wider">今日经验</p>
-                    <p className="text-xl font-bold">1,240 经验</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-blue-200 uppercase tracking-wider">等级</p>
-                    <p className="text-xl font-bold">白银 II</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+      <div className="bg-background">
+        {/* Hero Section */}
+        <section className="mx-auto max-w-[1432px] px-6 pt-16 pb-20 md:pt-24 md:pb-28">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="text-center lg:text-left">
+              <h1 className="font-serif text-[clamp(40px,6vw,72px)] leading-[1.1] tracking-[-0.02em] text-[#000000]">
+                用卡片方式，<br />真正记住 JLPT 语法
+              </h1>
+              <p className="mt-6 text-base md:text-lg text-[#4e4d4d] leading-relaxed max-w-lg mx-auto lg:mx-0">
+                一个为 N1～N5 学习者设计的日语语法记忆工具。通过卡片、收藏、复习计划和相近语法对比，把零散文法整理成可以长期复习的知识系统。
+              </p>
+              <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
+                <Link
+                  href="/study"
+                  className="inline-flex items-center justify-center gap-2 bg-[#242424] text-[#f6f3f1] rounded-full px-6 py-3.5 font-mono text-sm hover:bg-black transition-colors"
+                >
+                  <Play className="h-4 w-4" />
+                  开始学习
+                </Link>
+                <Link
+                  href="/grammar"
+                  className="inline-flex items-center justify-center gap-2 bg-transparent text-[#242424] border border-[#242424] rounded-full px-6 py-3.5 font-mono text-sm hover:bg-[rgba(36,36,36,0.06)] transition-colors"
+                >
+                  查看语法库
+                </Link>
+              </div>
+            </div>
 
-            {/* Daily Goals */}
-            <Card>
-              <CardContent className="p-5">
-                <div className="flex items-center justify-between mb-5">
-                  <h2 className="text-lg font-bold">每日目标</h2>
-                  <span className="text-sm text-muted-foreground">{userStats.todayCompleted} / {userStats.todayTotal} 张卡片</span>
+            {/* Hero Card Preview */}
+            <div className="flex justify-center lg:justify-end">
+              <div className="w-full max-w-sm bg-[#cfdaf5] rounded-[40px] p-8 md:p-10 min-h-[360px] flex flex-col justify-between">
+                <div>
+                  <Badge variant="outline" className="rounded-full border-[#242424]/20 text-[#242424] font-mono text-xs mb-4">
+                    N3
+                  </Badge>
+                  <h2 className="font-serif text-[clamp(28px,4vw,48px)] leading-[1.1] text-[#000000]">
+                    ～わけではない
+                  </h2>
+                  <p className="mt-3 text-[#4e4d4d] text-sm">
+                    并不是……；并非……
+                  </p>
                 </div>
-                <div className="space-y-5">
-                  <div>
-                    <div className="flex items-center justify-between text-sm mb-2">
-                      <span className="font-medium">新词汇</span>
-                      <span className="text-muted-foreground">{userStats.todayNewCards}/20</span>
-                    </div>
-                    <div className="h-3 bg-slate-100 rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-[#2563eb] rounded-full transition-all duration-500"
-                        style={{ width: `${newVocabProgress}%` }}
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex items-center justify-between text-sm mb-2">
-                      <span className="font-medium">语法复习</span>
-                      <span className="text-muted-foreground">{userStats.todayReviewCards}/30</span>
-                    </div>
-                    <div className="h-3 bg-slate-100 rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-emerald-500 rounded-full transition-all duration-500"
-                        style={{ width: `${reviewProgress}%` }}
-                      />
-                    </div>
-                  </div>
+                <div className="space-y-2 text-sm text-[#4e4d4d]">
+                  <p>接续：普通形 + わけではない</p>
+                  <p>状态：学习中</p>
                 </div>
-              </CardContent>
-            </Card>
-
-            {/* How It Works - 学习流程 */}
-            <Card>
-              <CardContent className="p-5">
-                <h2 className="text-lg font-bold mb-5">学习流程</h2>
-                <div className="space-y-4">
-                  <div className="flex gap-4">
-                    <div className="flex flex-col items-center">
-                      <div className="w-8 h-8 rounded-full bg-[#2563eb] text-white flex items-center justify-center text-sm font-bold shrink-0">1</div>
-                      <div className="w-0.5 h-full bg-slate-200 mt-1" />
-                    </div>
-                    <div className="pb-4">
-                      <h3 className="font-semibold text-sm">浏览语法库</h3>
-                      <p className="text-xs text-muted-foreground mt-0.5">查看 N1~N5 全部语法，按等级和场景分类筛选</p>
-                    </div>
-                  </div>
-                  <div className="flex gap-4">
-                    <div className="flex flex-col items-center">
-                      <div className="w-8 h-8 rounded-full bg-[#2563eb] text-white flex items-center justify-center text-sm font-bold shrink-0">2</div>
-                      <div className="w-0.5 h-full bg-slate-200 mt-1" />
-                    </div>
-                    <div className="pb-4">
-                      <h3 className="font-semibold text-sm">收藏重点语法</h3>
-                      <p className="text-xs text-muted-foreground mt-0.5">遇到难点或重点语法，点击收藏以便后续重点复习</p>
-                    </div>
-                  </div>
-                  <div className="flex gap-4">
-                    <div className="flex flex-col items-center">
-                      <div className="w-8 h-8 rounded-full bg-[#2563eb] text-white flex items-center justify-center text-sm font-bold shrink-0">3</div>
-                      <div className="w-0.5 h-full bg-slate-200 mt-1" />
-                    </div>
-                    <div className="pb-4">
-                      <h3 className="font-semibold text-sm">Anki 卡片学习</h3>
-                      <p className="text-xs text-muted-foreground mt-0.5">选择等级开始学习，正面显示语法，背面显示意思、接续和例句</p>
-                    </div>
-                  </div>
-                  <div className="flex gap-4">
-                    <div className="flex flex-col items-center">
-                      <div className="w-8 h-8 rounded-full bg-[#2563eb] text-white flex items-center justify-center text-sm font-bold shrink-0">4</div>
-                      <div className="w-0.5 h-full bg-slate-200 mt-1" />
-                    </div>
-                    <div className="pb-4">
-                      <h3 className="font-semibold text-sm">自我评分</h3>
-                      <p className="text-xs text-muted-foreground mt-0.5">根据掌握程度评分：忘记了 / 有点模糊 / 记住了 / 很简单</p>
-                    </div>
-                  </div>
-                  <div className="flex gap-4">
-                    <div className="flex flex-col items-center">
-                      <div className="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center text-sm font-bold shrink-0">5</div>
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-sm">每日复习 + 追踪进度</h3>
-                      <p className="text-xs text-muted-foreground mt-0.5">系统根据遗忘曲线安排复习，在进度页查看学习统计</p>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Continue Learning */}
-            <Card>
-              <CardContent className="p-4 sm:p-5">
-                <h2 className="text-lg font-bold mb-4">继续学习</h2>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <div className="w-32 h-32 bg-gradient-to-br from-slate-700 to-slate-900 rounded-xl shrink-0 flex items-center justify-center">
-                    <span className="text-white text-4xl font-bold">文</span>
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Badge className="bg-emerald-100 text-emerald-700 hover:bg-emerald-100">N2 语法</Badge>
-                      <span className="text-xs text-muted-foreground">850 张卡片</span>
-                    </div>
-                    <h3 className="text-xl font-bold mb-1">掌握高级助词</h3>
-                    <p className="text-sm text-muted-foreground mb-4">深入学习各级别助词的细微差别。重点掌握 は vs が 的语境用法。</p>
-                    <div className="flex gap-3">
-                      <Link href="/study" className="inline-flex items-center gap-2 px-4 py-2 bg-[#2563eb] text-white rounded-lg text-sm font-medium hover:bg-[#1d4ed8] transition-colors">
-                        <Play className="h-4 w-4" /> 开始学习
-                      </Link>
-                      <Link href="/grammar" className="inline-flex items-center px-4 py-2 text-sm font-medium text-[#2563eb] hover:underline">
-                        卡组详情
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Quick Stats */}
-            <div>
-              <h2 className="text-lg font-bold mb-4">快速统计</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                <Card>
-                  <CardContent className="p-4">
-                    <div className="flex items-center gap-2 mb-2">
-                      <CheckCircle className="h-4 w-4 text-slate-400" />
-                      <span className="text-xs text-muted-foreground">已掌握</span>
-                    </div>
-                    <p className="text-2xl font-bold text-[#2563eb]">1,432</p>
-                    <p className="text-xs text-emerald-600 mt-1">本周 +24</p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardContent className="p-4">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Clock className="h-4 w-4 text-slate-400" />
-                      <span className="text-xs text-muted-foreground">今日时长</span>
-                    </div>
-                    <p className="text-2xl font-bold text-[#2563eb]">45m</p>
-                    <p className="text-xs text-muted-foreground mt-1">目标：60分钟</p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardContent className="p-4">
-                    <div className="flex items-center gap-2 mb-2">
-                      <BrainCircuit className="h-4 w-4 text-slate-400" />
-                      <span className="text-xs text-muted-foreground">记忆保持率</span>
-                    </div>
-                    <p className="text-2xl font-bold text-[#2563eb]">92%</p>
-                    <p className="text-xs text-emerald-600 mt-1">专家级</p>
-                  </CardContent>
-                </Card>
               </div>
             </div>
           </div>
+        </section>
 
-          {/* Right Column */}
-          <div className="space-y-6">
-            {/* Day Streak */}
-            <Card>
-              <CardContent className="p-5 text-center">
-                <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Flame className="h-6 w-6 text-orange-500" />
+        {/* Feature Cards */}
+        <section className="mx-auto max-w-[1432px] px-6 pb-20 md:pb-28">
+          <h2 className="font-serif text-2xl md:text-3xl text-center mb-12 tracking-[-0.02em]">
+            核心功能
+          </h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {features.map((f, i) => (
+              <div
+                key={i}
+                className="bg-[#cfdaf5] rounded-[40px] p-8 hover:translate-y-[-2px] transition-transform"
+              >
+                <div className="w-10 h-10 rounded-full bg-[#242424] text-[#f6f3f1] flex items-center justify-center mb-4">
+                  {f.icon}
                 </div>
-                <p className="text-3xl font-bold">{userStats.streakDays}</p>
-                <p className="text-sm text-muted-foreground">连续天数</p>
-                <Badge className="mt-3 bg-orange-100 text-orange-700 hover:bg-orange-100">继续保持！</Badge>
+                <h3 className="font-mono text-base font-medium mb-2">{f.title}</h3>
+                <p className="text-sm text-[#4e4d4d] leading-relaxed">{f.description}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Learning Flow */}
+        <section className="mx-auto max-w-[1432px] px-6 pb-20 md:pb-28">
+          <h2 className="font-serif text-2xl md:text-3xl text-center mb-12 tracking-[-0.02em]">
+            学习流程
+          </h2>
+          <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-0">
+            {flowSteps.map((step, i) => (
+              <div key={i} className="flex items-center gap-4">
+                <div className="bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px] px-6 py-5 text-center min-w-[140px]">
+                  <p className="font-mono text-sm font-medium">{step.step}</p>
+                  <p className="text-xs text-[#797776] mt-1">{step.desc}</p>
+                </div>
+                {i < flowSteps.length - 1 && (
+                  <ArrowRight className="hidden md:block h-4 w-4 text-[#797776] shrink-0 mx-2" />
+                )}
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Dashboard Preview */}
+        <section className="mx-auto max-w-[1432px] px-6 pb-20 md:pb-28">
+          <h2 className="font-serif text-2xl md:text-3xl text-center mb-12 tracking-[-0.02em]">
+            学习数据一览
+          </h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+            <Card className="border border-[rgba(36,36,36,0.16)] rounded-[40px] bg-[#f6f3f1]">
+              <CardContent className="p-8 text-center">
+                <p className="font-mono text-4xl font-medium text-[#000000]">{userStats.todayReviewCards}</p>
+                <p className="text-sm text-[#4e4d4d] mt-2">今日待复习</p>
               </CardContent>
             </Card>
-
-            {/* Quick Actions */}
-            <Card>
-              <CardContent className="p-5">
-                <h3 className="font-semibold mb-4">快速入口</h3>
-                <div className="space-y-2">
-                  <Link href="/grammar" className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors group">
-                    <div className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center">
-                      <Search className="h-4 w-4 text-blue-600" />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm font-medium group-hover:text-[#2563eb]">浏览语法库</p>
-                      <p className="text-xs text-muted-foreground">{grammarEntries.length} 条语法</p>
-                    </div>
-                    <ArrowRight className="h-4 w-4 text-muted-foreground" />
-                  </Link>
-                  <Link href="/study" className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors group">
-                    <div className="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center">
-                      <Play className="h-4 w-4 text-emerald-600" />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm font-medium group-hover:text-[#2563eb]">开始学习</p>
-                      <p className="text-xs text-muted-foreground">Anki 风格卡片</p>
-                    </div>
-                    <ArrowRight className="h-4 w-4 text-muted-foreground" />
-                  </Link>
-                  <Link href="/review" className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors group">
-                    <div className="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center">
-                      <RotateCcw className="h-4 w-4 text-amber-600" />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm font-medium group-hover:text-[#2563eb]">今日复习</p>
-                      <p className="text-xs text-muted-foreground">{userStats.todayReviewCards} 条待复习</p>
-                    </div>
-                    <ArrowRight className="h-4 w-4 text-muted-foreground" />
-                  </Link>
-                  <Link href="/favorites" className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors group">
-                    <div className="w-8 h-8 rounded-lg bg-rose-100 flex items-center justify-center">
-                      <Star className="h-4 w-4 text-rose-600" />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm font-medium group-hover:text-[#2563eb]">收藏夹</p>
-                      <p className="text-xs text-muted-foreground">{userStats.totalFavorites} 条收藏</p>
-                    </div>
-                    <ArrowRight className="h-4 w-4 text-muted-foreground" />
-                  </Link>
-                </div>
+            <Card className="border border-[rgba(36,36,36,0.16)] rounded-[40px] bg-[#f6f3f1]">
+              <CardContent className="p-8 text-center">
+                <p className="font-mono text-4xl font-medium text-[#000000]">{totalLearned}</p>
+                <p className="text-sm text-[#4e4d4d] mt-2">已学习语法</p>
               </CardContent>
             </Card>
-
-            {/* Global Progress */}
-            <Card>
-              <CardContent className="p-5">
-                <h3 className="font-semibold mb-4">全局进度</h3>
-                <div className="relative w-32 h-32 mx-auto mb-4">
-                  <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
-                    <circle cx="50" cy="50" r="40" fill="none" stroke="#e2e8f0" strokeWidth="8" />
-                    <circle cx="50" cy="50" r="40" fill="none" stroke="#2563eb" strokeWidth="8" strokeDasharray={`${2 * Math.PI * 40 * 0.75} ${2 * Math.PI * 40}`} strokeLinecap="round" />
-                  </svg>
-                  <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <p className="text-2xl font-bold">75%</p>
-                    <p className="text-xs text-muted-foreground">N2 备考</p>
-                  </div>
-                </div>
-                <p className="text-xs text-center text-muted-foreground mb-4">
-                  你领先了同批学习者的 82%。考试准备度：高。
-                </p>
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="text-center p-2 bg-slate-50 rounded-lg">
-                    <p className="text-xs text-muted-foreground">词汇</p>
-                    <p className="text-sm font-bold">88%</p>
-                  </div>
-                  <div className="text-center p-2 bg-slate-50 rounded-lg">
-                    <p className="text-xs text-muted-foreground">汉字</p>
-                    <p className="text-sm font-bold">62%</p>
-                  </div>
-                </div>
+            <Card className="border border-[rgba(36,36,36,0.16)] rounded-[40px] bg-[#f6f3f1]">
+              <CardContent className="p-8 text-center">
+                <p className="font-mono text-4xl font-medium text-[#000000]">{userStats.streakDays}</p>
+                <p className="text-sm text-[#4e4d4d] mt-2">连续学习天数</p>
               </CardContent>
             </Card>
-
-            {/* Next Milestone */}
-            <Card className="bg-gradient-to-br from-emerald-400 to-emerald-500 text-white border-0">
-              <CardContent className="p-5">
-                <div className="flex items-start gap-3">
-                  <Trophy className="h-5 w-5 mt-0.5" />
-                  <div>
-                    <h3 className="font-semibold">下一个里程碑</h3>
-                    <p className="text-sm text-white/90 mt-1">
-                      再学习 5 次即可解锁「助词大师」徽章。
-                    </p>
-                  </div>
-                </div>
+            <Card className="border border-[rgba(36,36,36,0.16)] rounded-[40px] bg-[#f6f3f1]">
+              <CardContent className="p-8 text-center">
+                <p className="font-mono text-4xl font-medium text-[#000000]">{totalGrammar}</p>
+                <p className="text-sm text-[#4e4d4d] mt-2">语法总数</p>
               </CardContent>
             </Card>
           </div>
-        </div>
+
+          {/* Level Progress */}
+          <div className="bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px] p-8 md:p-10">
+            <h3 className="font-mono text-base font-medium mb-6">N1～N5 学习进度</h3>
+            <div className="space-y-5">
+              {levelProgress.map((lp) => {
+                const pct = Math.round((lp.learned / lp.total) * 100);
+                return (
+                  <div key={lp.level}>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="font-mono text-sm">{lp.level}</span>
+                      <span className="font-mono text-sm text-[#797776]">{lp.learned} / {lp.total} ({pct}%)</span>
+                    </div>
+                    <div className="h-2 bg-[rgba(36,36,36,0.08)] rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-[#242424] rounded-full transition-all duration-500"
+                        style={{ width: `${pct}%` }}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section className="mx-auto max-w-[1432px] px-6 pb-20 md:pb-28">
+          <div className="bg-[#242424] rounded-[40px] p-10 md:p-16 text-center">
+            <h2 className="font-serif text-2xl md:text-4xl text-[#f6f3f1] tracking-[-0.02em]">
+              从今天开始，用卡片方式真正记住日语语法。
+            </h2>
+            <div className="mt-8">
+              <Link
+                href="/study"
+                className="inline-flex items-center justify-center gap-2 bg-[#f6f3f1] text-[#242424] rounded-full px-8 py-4 font-mono text-sm hover:bg-white transition-colors"
+              >
+                <Play className="h-4 w-4" />
+                立即开始学习
+              </Link>
+            </div>
+          </div>
+        </section>
       </div>
     </MainLayout>
   );

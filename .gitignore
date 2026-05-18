@@ -42,3 +42,7 @@ next-env.d.ts
 
 # sisyphus
 .sisyphus/
+
+# Design docs (do not commit)
+/Anki 风格日语语法学习网站设计与开发需求prd.md
+/Grammar——DESIGN.md

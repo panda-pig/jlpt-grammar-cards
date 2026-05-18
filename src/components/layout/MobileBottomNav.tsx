@@ -56,20 +56,20 @@ export function MobileBottomNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-border">
-      <div className="flex items-center justify-around h-14">
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-background border-t border-[rgba(36,36,36,0.16)] h-[72px]">
+      <div className="grid grid-cols-5 h-full">
         {mobileLinks.map((link) => {
-          const isActive = pathname === link.href;
+          const active = pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
           return (
             <Link
               key={link.href}
               href={link.href}
               className={cn(
-                "flex flex-col items-center gap-0.5 px-3 py-1.5 text-[10px] font-medium transition-colors",
-                isActive ? "text-[#2563eb]" : "text-muted-foreground"
+                "flex flex-col items-center justify-center gap-1 font-mono text-xs transition-colors",
+                active ? "text-black font-medium" : "text-[#797776]"
               )}
             >
-              <link.icon active={isActive} />
+              <link.icon active={active} />
               <span>{link.label}</span>
             </Link>
           );
