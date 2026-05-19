@@ -1,31 +1,103 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { useAuth } from "@/hooks/useAuth";
+import { AlertCircle } from "lucide-react";
 
 export default function LoginPage() {
+  const router = useRouter();
+  const { signIn, signUp, signInWithGoogle } = useAuth();
+  const [mode, setMode] = useState<"login" | "register">("login");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+    try {
+      if (mode === "login") {
+        await signIn(email, password);
+      } else {
+        await signUp(email, password);
+      }
+      router.push("/dashboard");
+    } catch (err: any) {
+      setError(err.message || "操作失败，请重试");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogle = async () => {
+    setError("");
+    try {
+      await signInWithGoogle();
+    } catch (err: any) {
+      setError(err.message || "Google 登录失败");
+    }
+  };
+
   return (
     <MainLayout hideNotification>
       <div className="flex items-center justify-center py-12 sm:py-20 px-4">
         <Card className="w-full max-w-sm bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px] ring-0 shadow-none">
           <CardContent className="p-6 space-y-4">
-            <h1 className="text-xl font-serif font-bold">登录</h1>
-            <div className="space-y-3">
-              <Input type="email" placeholder="邮箱地址" className="rounded-full" />
-              <Input type="password" placeholder="密码" className="rounded-full" />
-              <Button className="w-full rounded-full font-mono">登录</Button>
-            </div>
+            <h1 className="text-xl font-bold">{mode === "login" ? "登录" : "注册"}</h1>
+
+            {error && (
+              <div className="flex items-center gap-2 text-sm text-[#c47a6a]">
+                <AlertCircle className="h-4 w-4" />
+                {error}
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-3">
+              <Input
+                type="email"
+                placeholder="邮箱地址"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="rounded-full"
+              />
+              <Input
+                type="password"
+                placeholder="密码"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="rounded-full"
+              />
+              <Button type="submit" disabled={loading} className="w-full rounded-full font-mono">
+                {loading ? "处理中..." : mode === "login" ? "登录" : "注册"}
+              </Button>
+            </form>
+
             <div className="relative">
               <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-[rgba(36,36,36,0.16)]" /></div>
               <div className="relative flex justify-center font-mono text-xs uppercase">
                 <span className="bg-[#f6f3f1] px-2 text-[#797776]">或</span>
               </div>
             </div>
-            <Button variant="outline" className="w-full rounded-full font-mono">使用 Google 登录</Button>
+
+            <Button variant="outline" className="w-full rounded-full font-mono" onClick={handleGoogle}>
+              使用 Google 登录
+            </Button>
+
             <p className="font-mono text-xs text-center text-[#797776]">
-              还没有账号？<span className="text-[#797776]/50">注册</span>
+              {mode === "login" ? (
+                <>还没有账号？<button type="button" className="underline" onClick={() => setMode("register")}>注册</button></>
+              ) : (
+                <>已有账号？<button type="button" className="underline" onClick={() => setMode("login")}>登录</button></>
+              )}
             </p>
           </CardContent>
         </Card>

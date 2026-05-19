@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { AuthProvider } from "@/hooks/useAuth";
 import { GrammarProvider } from "@/context/GrammarContext";
 import "./globals.css";
 
@@ -17,9 +18,11 @@ export default function RootLayout({
   return (
     <html lang="zh-CN" className="h-full antialiased">
       <body className="min-h-full flex flex-col bg-background">
-        <GrammarProvider>
-          <TooltipProvider>{children}</TooltipProvider>
-        </GrammarProvider>
+        <AuthProvider>
+          <GrammarProvider>
+            <TooltipProvider>{children}</TooltipProvider>
+          </GrammarProvider>
+        </AuthProvider>
       </body>
     </html>
   );
