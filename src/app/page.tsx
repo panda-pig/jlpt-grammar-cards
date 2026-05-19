@@ -208,15 +208,15 @@ export default function HomePage() {
         </section>
 
         {/* CTA Section */}
-        <section className="mx-auto max-w-[1432px] px-6 pb-20 md:pb-28">
-          <div className="bg-[#242424] rounded-[40px] p-8 md:p-12 text-center">
-            <h2 className="font-serif text-xl md:text-3xl text-[#f6f3f1] tracking-[-0.02em]">
+        <section className="mx-auto max-w-[1432px] px-6 pb-12 md:pb-20">
+          <div className="bg-[#242424] rounded-3xl p-6 md:p-10 text-center max-w-3xl mx-auto">
+            <h2 className="font-serif text-lg md:text-2xl text-[#f6f3f1] tracking-[-0.02em]">
               从今天开始，用卡片方式真正记住日语语法。
             </h2>
-            <div className="mt-6">
+            <div className="mt-5">
               <Link
                 href="/study"
-                className="inline-flex items-center justify-center gap-2 bg-[#f6f3f1] text-[#242424] rounded-full px-7 py-3.5 font-mono text-sm hover:bg-white transition-colors"
+                className="inline-flex items-center justify-center gap-2 bg-[#f6f3f1] text-[#242424] rounded-full px-6 py-3 font-mono text-sm hover:bg-white transition-colors"
               >
                 <Play className="h-4 w-4" />
                 立即开始学习
