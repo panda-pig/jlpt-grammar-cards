@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { SearchBar } from "@/components/grammar/SearchBar";
 import { GrammarFilterContent, defaultFilters, type GrammarFilters } from "@/components/grammar/GrammarFilter";
@@ -8,13 +8,57 @@ import { GrammarCard } from "@/components/grammar/GrammarCard";
 import { EmptyState } from "@/components/grammar/EmptyState";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
-import { useGrammar } from "@/context/GrammarContext";
+import { grammarService } from "@/services/grammarService";
+import { useAuth } from "@/hooks/useAuth";
 import { SlidersHorizontal } from "lucide-react";
+import type { GrammarEntry } from "@/lib/types";
+
+function toGrammarEntry(row: any): GrammarEntry {
+  return {
+    id: row.id,
+    title: row.title,
+    slug: row.slug,
+    jlptLevel: row.jlpt_level,
+    sourceRoute: row.source_route,
+    grammarType: row.grammar_type,
+    tags: row.tags || [],
+    meaningCn: row.meaning_cn,
+    meaningEn: row.meaning_en,
+    structure: row.structure,
+    explanation: row.explanation,
+    usageNote: row.usage_note,
+    exampleJp: row.example_jp,
+    exampleCn: row.example_cn,
+    furigana: row.furigana,
+    similarGrammar: row.similar_grammar || [],
+    commonMistake: row.common_mistake,
+    memoryTip: row.memory_tip,
+    quizQuestion: row.quiz_question,
+    quizChoices: row.quiz_choices || [],
+    quizAnswer: row.quiz_answer,
+    quizExplanation: row.quiz_explanation,
+    isFavorite: false,
+    studyStatus: "未学习",
+    nextReviewAt: null,
+    lastReviewedAt: null,
+    reviewCount: 0,
+    masteryLevel: 0,
+  };
+}
 
 export default function GrammarLibraryPage() {
-  const { entries, toggleFavorite } = useGrammar();
+  const { user } = useAuth();
+  const [entries, setEntries] = useState<GrammarEntry[]>([]);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState<GrammarFilters>(defaultFilters);
+
+  useEffect(() => {
+    grammarService.getAll().then((data) => {
+      setEntries(data.map(toGrammarEntry));
+      setLoading(false);
+    }).catch(() => setLoading(false));
+  }, []);
 
   const filtered = useMemo(() => {
     let result = entries;
@@ -35,17 +79,19 @@ export default function GrammarLibraryPage() {
     return result;
   }, [search, filters, entries]);
 
-  const handleToggleFavorite = (id: string) => {
-    toggleFavorite(id);
-  };
-
   const learnedCount = filtered.filter((e) => e.studyStatus === "学习中" || e.studyStatus === "已掌握").length;
   const masteredCount = filtered.filter((e) => e.studyStatus === "已掌握").length;
   const favCount = filtered.filter((e) => e.isFavorite).length;
 
-  const FilterPanel = () => (
-    <GrammarFilterContent filters={filters} onChange={setFilters} />
-  );
+  if (loading) {
+    return (
+      <MainLayout>
+        <div className="mx-auto max-w-6xl py-4 sm:py-6 flex items-center justify-center min-h-[300px]">
+          <p className="text-[#797776] font-mono text-sm">加载中...</p>
+        </div>
+      </MainLayout>
+    );
+  }
 
   return (
     <MainLayout>
@@ -54,21 +100,21 @@ export default function GrammarLibraryPage() {
           <div className="flex items-center gap-3">
             <h1 className="text-2xl font-serif font-bold">语法库</h1>
             <Sheet>
-              <SheetTrigger className="md:hidden inline-flex items-center justify-center gap-1.5 rounded-full border border-[rgba(36,36,36,0.16)] bg-transparent px-3 py-1.5 text-sm font-mono hover:bg-[#cfdaf5] transition-colors">
+              <SheetTrigger className="md:hidden inline-flex items-center justify-center gap-1.5 border border-[rgba(36,36,36,0.16)] bg-transparent px-3 py-1.5 text-sm font-mono hover:bg-[#cfdaf5] transition-colors">
                 <SlidersHorizontal className="h-4 w-4" />筛选
               </SheetTrigger>
               <SheetContent side="left" className="w-72">
-                <h3 className="font-serif font-semibold mb-4">筛选条件</h3>
-                <FilterPanel />
+                <h3 className="font-semibold mb-4">筛选条件</h3>
+                <GrammarFilterContent filters={filters} onChange={setFilters} />
               </SheetContent>
             </Sheet>
           </div>
           <SearchBar value={search} onChange={setSearch} />
           <div className="flex flex-wrap items-center gap-2 text-sm">
-            <Badge variant="secondary" className="rounded-full font-mono text-xs">结果 {filtered.length} 条</Badge>
-            <Badge variant="secondary" className="rounded-full font-mono text-xs">已学习 {learnedCount}</Badge>
-            <Badge variant="secondary" className="rounded-full font-mono text-xs">已掌握 {masteredCount}</Badge>
-            <Badge variant="secondary" className="rounded-full font-mono text-xs">已收藏 {favCount}</Badge>
+            <Badge variant="secondary" className="font-mono text-xs">结果 {filtered.length} 条</Badge>
+            <Badge variant="secondary" className="font-mono text-xs">已学习 {learnedCount}</Badge>
+            <Badge variant="secondary" className="font-mono text-xs">已掌握 {masteredCount}</Badge>
+            <Badge variant="secondary" className="font-mono text-xs">已收藏 {favCount}</Badge>
           </div>
         </div>
 
@@ -76,7 +122,7 @@ export default function GrammarLibraryPage() {
           <aside className="hidden md:block w-56 shrink-0">
             <div className="sticky top-20">
               <h3 className="font-mono text-xs font-medium text-[#797776] mb-3">筛选条件</h3>
-              <FilterPanel />
+              <GrammarFilterContent filters={filters} onChange={setFilters} />
             </div>
           </aside>
 
@@ -89,7 +135,7 @@ export default function GrammarLibraryPage() {
             ) : (
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {filtered.map((g) => (
-                  <GrammarCard key={g.id} grammar={g} onFavoriteToggle={handleToggleFavorite} />
+                  <GrammarCard key={g.id} grammar={g} onFavoriteToggle={() => {}} />
                 ))}
               </div>
             )}

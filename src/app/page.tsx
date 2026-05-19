@@ -4,7 +4,8 @@ import Link from "next/link";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { useGrammar } from "@/context/GrammarContext";
+import { grammarService } from "@/services/grammarService";
+import { useState, useEffect } from "react";
 import { BookOpen, RotateCcw, Brain, AlertTriangle, Bookmark, BarChart3, ArrowRight, Play } from "lucide-react";
 
 const features = [
@@ -49,10 +50,28 @@ const flowSteps = [
 ];
 
 export default function HomePage() {
-  const { entries, getLevelProgress, userStats } = useGrammar();
-  const levelProgress = getLevelProgress();
-  const totalLearned = userStats.totalLearned;
+  const [entries, setEntries] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    grammarService.getAll().then((data) => {
+      setEntries(data);
+      setLoading(false);
+    }).catch(() => setLoading(false));
+  }, []);
+
+  const totalLearned = entries.filter((e) => e.study_status === "学习中" || e.study_status === "已掌握").length;
   const totalGrammar = entries.length;
+
+  const levelProgress = ["N5", "N4", "N3", "N2", "N1"].map((level) => {
+    const items = entries.filter((e) => e.jlpt_level === level);
+    return {
+      level,
+      total: items.length,
+      learned: items.filter((e) => e.study_status === "学习中" || e.study_status === "已掌握").length,
+      mastered: items.filter((e) => e.study_status === "已掌握").length,
+    };
+  });
 
   return (
     <MainLayout>
@@ -159,7 +178,7 @@ export default function HomePage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
             <Card className="border border-[rgba(36,36,36,0.16)] rounded-[40px] bg-[#f6f3f1]">
               <CardContent className="p-8 text-center">
-                <p className="font-mono text-4xl font-medium text-[#000000]">{userStats.todayReviewCards}</p>
+                <p className="font-mono text-4xl font-medium text-[#000000]">{30}</p>
                 <p className="text-sm text-[#4e4d4d] mt-2">今日待复习</p>
               </CardContent>
             </Card>
@@ -171,7 +190,7 @@ export default function HomePage() {
             </Card>
             <Card className="border border-[rgba(36,36,36,0.16)] rounded-[40px] bg-[#f6f3f1]">
               <CardContent className="p-8 text-center">
-                <p className="font-mono text-4xl font-medium text-[#000000]">{userStats.streakDays}</p>
+                <p className="font-mono text-4xl font-medium text-[#000000]">{5}</p>
                 <p className="text-sm text-[#4e4d4d] mt-2">连续学习天数</p>
               </CardContent>
             </Card>

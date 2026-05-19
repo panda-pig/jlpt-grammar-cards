@@ -1,26 +1,44 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { useGrammar } from "@/context/GrammarContext";
+import { grammarService } from "@/services/grammarService";
 import { Plus, BookOpen } from "lucide-react";
 
 export default function AdminHomePage() {
-  const { entries } = useGrammar();
+  const [entries, setEntries] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    grammarService.getAll().then((data) => {
+      setEntries(data);
+      setLoading(false);
+    }).catch(() => setLoading(false));
+  }, []);
 
   const levelCounts = {
-    N5: entries.filter((e) => e.jlptLevel === "N5").length,
-    N4: entries.filter((e) => e.jlptLevel === "N4").length,
-    N3: entries.filter((e) => e.jlptLevel === "N3").length,
-    N2: entries.filter((e) => e.jlptLevel === "N2").length,
-    N1: entries.filter((e) => e.jlptLevel === "N1").length,
+    N5: entries.filter((e) => e.jlpt_level === "N5").length,
+    N4: entries.filter((e) => e.jlpt_level === "N4").length,
+    N3: entries.filter((e) => e.jlpt_level === "N3").length,
+    N2: entries.filter((e) => e.jlpt_level === "N2").length,
+    N1: entries.filter((e) => e.jlpt_level === "N1").length,
   };
+
+  if (loading) {
+    return (
+      <div className="max-w-4xl">
+        <h1 className="text-2xl font-bold mb-6">管理后台</h1>
+        <p className="text-[#797776] font-mono text-sm">加载中...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-4xl">
-      <h1 className="text-2xl font-serif font-bold mb-6">管理后台</h1>
+      <h1 className="text-2xl font-bold mb-6">管理后台</h1>
 
       <div className="grid gap-4 sm:grid-cols-2 mb-8">
         <Card className="bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px] ring-0 shadow-none">
@@ -46,14 +64,14 @@ export default function AdminHomePage() {
         <Link href="/admin/grammar" className={buttonVariants({ variant: "outline", className: "rounded-full font-mono" })}><BookOpen className="mr-1 h-4 w-4" />管理语法</Link>
       </div>
 
-      <h2 className="font-serif font-semibold mb-3">最近语法条目</h2>
+      <h2 className="font-semibold mb-3">最近语法条目</h2>
       <div className="space-y-2">
         {entries.slice(0, 5).map((g) => (
           <Card key={g.id} className="bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px] ring-0 shadow-none transition-all hover:shadow-[rgba(0,0,0,0.1)_0px_0px_10px_0px]">
             <CardContent className="p-3 flex items-center gap-3">
-              <Badge variant="outline" className="rounded-full font-mono text-xs">{g.jlptLevel}</Badge>
+              <Badge variant="outline" className="rounded-full font-mono text-xs">{g.jlpt_level}</Badge>
               <span className="font-medium flex-1">{g.title}</span>
-              <Badge variant="secondary" className="rounded-full font-mono text-xs">{g.grammarType}</Badge>
+              <Badge variant="secondary" className="rounded-full font-mono text-xs">{g.grammar_type}</Badge>
             </CardContent>
           </Card>
         ))}

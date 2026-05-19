@@ -1,39 +1,54 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { useGrammar } from "@/context/GrammarContext";
+import { grammarService } from "@/services/grammarService";
 import { Plus, Pencil, Trash2, Search, ChevronLeft, ChevronRight } from "lucide-react";
 
 const PAGE_SIZE = 10;
 
 export default function AdminGrammarListPage() {
-  const { entries, deleteGrammar } = useGrammar();
+  const [entries, setEntries] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(0);
-  const [deletingId, setDeletingId] = useState<string | null>(null);
+
+  useEffect(() => {
+    grammarService.getAll().then((data) => {
+      setEntries(data);
+      setLoading(false);
+    }).catch(() => setLoading(false));
+  }, []);
 
   const filtered = entries.filter(
-    (g) => g.title.includes(search) || g.meaningCn.includes(search)
+    (g) => g.title.includes(search) || g.meaning_cn.includes(search)
   );
   const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
   const paged = filtered.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
 
-  const handleDelete = (id: string) => {
-    if (confirm("确定要删除这条语法吗？此操作不可撤销。")) {
-      deleteGrammar(id);
-      setDeletingId(null);
-    }
+  const handleDelete = async (id: string) => {
+    if (!confirm("确定要删除这条语法吗？此操作不可撤销。")) return;
+    await grammarService.delete(id);
+    setEntries((prev) => prev.filter((e) => e.id !== id));
   };
+
+  if (loading) {
+    return (
+      <div className="max-w-5xl">
+        <h1 className="text-2xl font-bold mb-6">管理语法</h1>
+        <p className="text-[#797776] font-mono text-sm">加载中...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-5xl">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-serif font-bold">管理语法</h1>
+        <h1 className="text-2xl font-bold">管理语法</h1>
         <Link href="/admin/grammar/new" className={buttonVariants({ size: "sm", className: "rounded-full font-mono" })}><Plus className="mr-1 h-4 w-4" />新增</Link>
       </div>
 
@@ -49,15 +64,14 @@ export default function AdminGrammarListPage() {
 
       <div className="hidden md:block">
         <div className="grid grid-cols-6 gap-2 font-mono text-xs font-medium text-[#797776] px-4 py-2 border-b border-[rgba(36,36,36,0.16)]">
-          <span>语法</span><span>等级</span><span>路线</span><span>分类</span><span>状态</span><span>操作</span>
+          <span>语法</span><span>等级</span><span>路线</span><span>分类</span><span>操作</span>
         </div>
         {paged.map((g) => (
           <div key={g.id} className="grid grid-cols-6 gap-2 px-4 py-3 border-b border-[rgba(36,36,36,0.16)] items-center text-sm">
             <span className="font-medium truncate">{g.title}</span>
-            <span><Badge variant="outline" className="rounded-full font-mono text-xs">{g.jlptLevel}</Badge></span>
-            <span className="font-mono text-xs text-[#797776]">{g.sourceRoute}</span>
-            <span className="font-mono text-xs text-[#797776]">{g.grammarType}</span>
-            <span><Badge variant="secondary" className="rounded-full font-mono text-xs">{g.studyStatus}</Badge></span>
+            <span><Badge variant="outline" className="rounded-full font-mono text-xs">{g.jlpt_level}</Badge></span>
+            <span className="font-mono text-xs text-[#797776]">{g.source_route}</span>
+            <span className="font-mono text-xs text-[#797776]">{g.grammar_type}</span>
             <span className="flex gap-1">
               <Link href={`/admin/grammar/${g.id}/edit`} className={buttonVariants({ variant: "ghost", size: "icon", className: "h-7 w-7 rounded-full" })}><Pencil className="h-3 w-3" /></Link>
               <Button size="icon" variant="ghost" className="h-7 w-7 rounded-full text-[#c47a6a]" onClick={() => handleDelete(g.id)}>
@@ -74,11 +88,10 @@ export default function AdminGrammarListPage() {
             <CardContent className="p-3">
               <div className="flex items-center justify-between">
                 <span className="font-medium">{g.title}</span>
-                <Badge variant="outline" className="rounded-full font-mono text-xs">{g.jlptLevel}</Badge>
+                <Badge variant="outline" className="rounded-full font-mono text-xs">{g.jlpt_level}</Badge>
               </div>
-              <p className="font-mono text-xs text-[#797776] mt-1">{g.meaningCn}</p>
+              <p className="font-mono text-xs text-[#797776] mt-1">{g.meaning_cn}</p>
               <div className="flex items-center gap-2 mt-2">
-                <Badge variant="secondary" className="rounded-full font-mono text-xs">{g.studyStatus}</Badge>
                 <div className="flex-1" />
                 <Link href={`/admin/grammar/${g.id}/edit`} className={buttonVariants({ variant: "ghost", size: "sm", className: "rounded-full font-mono" })}>编辑</Link>
                 <Button size="sm" variant="ghost" className="rounded-full font-mono text-[#c47a6a]" onClick={() => handleDelete(g.id)}>删除</Button>
