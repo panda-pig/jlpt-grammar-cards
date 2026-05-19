@@ -6,20 +6,29 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { grammarEntries } from "@/lib/mock-data";
+import { useGrammar } from "@/context/GrammarContext";
 import { Plus, Pencil, Trash2, Search, ChevronLeft, ChevronRight } from "lucide-react";
 
 const PAGE_SIZE = 10;
 
 export default function AdminGrammarListPage() {
+  const { entries, deleteGrammar } = useGrammar();
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(0);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
-  const filtered = grammarEntries.filter(
+  const filtered = entries.filter(
     (g) => g.title.includes(search) || g.meaningCn.includes(search)
   );
   const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
   const paged = filtered.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
+
+  const handleDelete = (id: string) => {
+    if (confirm("确定要删除这条语法吗？此操作不可撤销。")) {
+      deleteGrammar(id);
+      setDeletingId(null);
+    }
+  };
 
   return (
     <div className="max-w-5xl">
@@ -51,7 +60,7 @@ export default function AdminGrammarListPage() {
             <span><Badge variant="secondary" className="rounded-full font-mono text-xs">{g.studyStatus}</Badge></span>
             <span className="flex gap-1">
               <Link href={`/admin/grammar/${g.id}/edit`} className={buttonVariants({ variant: "ghost", size: "icon", className: "h-7 w-7 rounded-full" })}><Pencil className="h-3 w-3" /></Link>
-              <Button size="icon" variant="ghost" className="h-7 w-7 rounded-full text-[#c47a6a]">
+              <Button size="icon" variant="ghost" className="h-7 w-7 rounded-full text-[#c47a6a]" onClick={() => handleDelete(g.id)}>
                 <Trash2 className="h-3 w-3" />
               </Button>
             </span>
@@ -72,6 +81,7 @@ export default function AdminGrammarListPage() {
                 <Badge variant="secondary" className="rounded-full font-mono text-xs">{g.studyStatus}</Badge>
                 <div className="flex-1" />
                 <Link href={`/admin/grammar/${g.id}/edit`} className={buttonVariants({ variant: "ghost", size: "sm", className: "rounded-full font-mono" })}>编辑</Link>
+                <Button size="sm" variant="ghost" className="rounded-full font-mono text-[#c47a6a]" onClick={() => handleDelete(g.id)}>删除</Button>
               </div>
             </CardContent>
           </Card>

@@ -12,14 +12,22 @@ import { ProgressBar } from "@/components/study/ProgressBar";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { grammarEntries } from "@/lib/mock-data";
+import { useGrammar } from "@/context/GrammarContext";
 import { ArrowLeft, BookOpen } from "lucide-react";
 
 export default function GrammarDetailPage() {
+  const { entries, toggleFavorite } = useGrammar();
   const params = useParams();
   const slug = params.slug as string;
-  const grammar = grammarEntries.find((g) => g.slug === slug);
+  const grammar = entries.find((g) => g.slug === slug);
   const [isFav, setIsFav] = useState(grammar?.isFavorite ?? false);
+
+  const handleToggleFavorite = () => {
+    if (grammar) {
+      toggleFavorite(grammar.id);
+      setIsFav(!isFav);
+    }
+  };
 
   if (!grammar) {
     return (
@@ -52,7 +60,7 @@ export default function GrammarDetailPage() {
                     <GrammarTypeBadge category={grammar.grammarType} />
                   </div>
                   <div className="flex items-center gap-1">
-                    <FavoriteButton isFavorite={isFav} onToggle={() => setIsFav(!isFav)} />
+                    <FavoriteButton isFavorite={isFav} onToggle={handleToggleFavorite} />
                     <Button size="sm" variant="outline">
                       <BookOpen className="mr-1 h-3 w-3" />加入复习
                     </Button>

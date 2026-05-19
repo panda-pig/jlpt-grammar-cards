@@ -7,10 +7,11 @@ import { ProgressBar } from "@/components/study/ProgressBar";
 import { StatCard } from "@/components/shared/StatCard";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { userStats, getLevelProgress, grammarEntries } from "@/lib/mock-data";
+import { useGrammar } from "@/context/GrammarContext";
 import { BookOpen, Flame, RotateCcw, TrendingUp } from "lucide-react";
 
 export default function DashboardPage() {
+  const { entries, getLevelProgress, userStats } = useGrammar();
   const levelProgress = getLevelProgress();
 
   return (
@@ -59,7 +60,7 @@ export default function DashboardPage() {
 
         <h2 className="font-mono text-xs font-medium text-[#797776] mb-3">最近学习</h2>
         <div className="space-y-2 mb-8">
-          {grammarEntries.filter((e) => e.lastReviewedAt).slice(0, 5).map((g) => (
+          {entries.filter((e) => e.lastReviewedAt).slice(0, 5).map((g) => (
             <Card key={g.id} className="bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px] ring-0 shadow-none transition-all hover:shadow-[rgba(0,0,0,0.1)_0px_0px_10px_0px]">
               <CardContent className="p-3 flex items-center justify-between">
                 <div className="flex items-center gap-2 min-w-0">

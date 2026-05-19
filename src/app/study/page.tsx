@@ -9,13 +9,14 @@ import { ProgressBar } from "@/components/study/ProgressBar";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card";
-import { grammarEntries } from "@/lib/mock-data";
+import { useGrammar } from "@/context/GrammarContext";
 import type { GrammarEntry, JLPTLevel, ReviewRating } from "@/lib/types";
 import { Sparkles, RefreshCw } from "lucide-react";
 
 type StudyState = "idle" | "studying" | "completed";
 
 export default function StudyPage() {
+  const { entries } = useGrammar();
   const [state, setState] = useState<StudyState>("idle");
   const [level, setLevel] = useState<JLPTLevel>("N3");
   const [cards, setCards] = useState<GrammarEntry[]>([]);
@@ -24,14 +25,14 @@ export default function StudyPage() {
   const [completedCount, setCompletedCount] = useState(0);
 
   const startSession = useCallback(() => {
-    const levelCards = grammarEntries.filter((e) => e.jlptLevel === level);
+    const levelCards = entries.filter((e) => e.jlptLevel === level);
     if (levelCards.length === 0) return;
     setCards(levelCards);
     setCurrentIndex(0);
     setFlipped(false);
     setCompletedCount(0);
     setState("studying");
-  }, [level]);
+  }, [level, entries]);
 
   const handleRate = useCallback(
     (rating: ReviewRating) => {

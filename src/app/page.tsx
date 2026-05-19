@@ -4,7 +4,7 @@ import Link from "next/link";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { getLevelProgress, userStats, grammarEntries } from "@/lib/mock-data";
+import { useGrammar } from "@/context/GrammarContext";
 import { BookOpen, RotateCcw, Brain, AlertTriangle, Bookmark, BarChart3, ArrowRight, Play } from "lucide-react";
 
 const features = [
@@ -49,9 +49,10 @@ const flowSteps = [
 ];
 
 export default function HomePage() {
+  const { entries, getLevelProgress, userStats } = useGrammar();
   const levelProgress = getLevelProgress();
   const totalLearned = userStats.totalLearned;
-  const totalGrammar = grammarEntries.length;
+  const totalGrammar = entries.length;
 
   return (
     <MainLayout>

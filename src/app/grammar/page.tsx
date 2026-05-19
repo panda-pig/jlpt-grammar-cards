@@ -8,18 +8,16 @@ import { GrammarCard } from "@/components/grammar/GrammarCard";
 import { EmptyState } from "@/components/grammar/EmptyState";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
-import { grammarEntries } from "@/lib/mock-data";
+import { useGrammar } from "@/context/GrammarContext";
 import { SlidersHorizontal } from "lucide-react";
 
 export default function GrammarLibraryPage() {
+  const { entries, toggleFavorite } = useGrammar();
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState<GrammarFilters>(defaultFilters);
-  const [favorites, setFavorites] = useState<Set<string>>(
-    new Set(grammarEntries.filter((e) => e.isFavorite).map((e) => e.id))
-  );
 
   const filtered = useMemo(() => {
-    let result = grammarEntries;
+    let result = entries;
     if (search.trim()) {
       const q = search.toLowerCase();
       result = result.filter(
@@ -33,21 +31,17 @@ export default function GrammarLibraryPage() {
     if (filters.route !== "all") result = result.filter((e) => e.sourceRoute === filters.route);
     if (filters.category !== "all") result = result.filter((e) => e.grammarType === filters.category);
     if (filters.status !== "all") result = result.filter((e) => e.studyStatus === filters.status);
-    if (filters.favorite) result = result.filter((e) => favorites.has(e.id));
+    if (filters.favorite) result = result.filter((e) => e.isFavorite);
     return result;
-  }, [search, filters, favorites]);
+  }, [search, filters, entries]);
 
-  const toggleFavorite = (id: string) => {
-    setFavorites((prev) => {
-      const next = new Set(prev);
-      next.has(id) ? next.delete(id) : next.add(id);
-      return next;
-    });
+  const handleToggleFavorite = (id: string) => {
+    toggleFavorite(id);
   };
 
   const learnedCount = filtered.filter((e) => e.studyStatus === "学习中" || e.studyStatus === "已掌握").length;
   const masteredCount = filtered.filter((e) => e.studyStatus === "已掌握").length;
-  const favCount = filtered.filter((e) => favorites.has(e.id)).length;
+  const favCount = filtered.filter((e) => e.isFavorite).length;
 
   const FilterPanel = () => (
     <GrammarFilterContent filters={filters} onChange={setFilters} />
@@ -95,7 +89,7 @@ export default function GrammarLibraryPage() {
             ) : (
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {filtered.map((g) => (
-                  <GrammarCard key={g.id} grammar={{ ...g, isFavorite: favorites.has(g.id) }} onFavoriteToggle={toggleFavorite} />
+                  <GrammarCard key={g.id} grammar={g} onFavoriteToggle={handleToggleFavorite} />
                 ))}
               </div>
             )}

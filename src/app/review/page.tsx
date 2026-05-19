@@ -9,10 +9,12 @@ import { ProgressBar } from "@/components/study/ProgressBar";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { userStats, reviewRecords } from "@/lib/mock-data";
+import { useGrammar } from "@/context/GrammarContext";
 import { Sparkles } from "lucide-react";
 
 export default function ReviewPage() {
+  const { userStats, getReviewRecords, toggleFavorite } = useGrammar();
+  const reviewRecords = getReviewRecords();
   const [favs, setFavs] = useState<Set<string>>(new Set(reviewRecords.filter((r) => r.isFavorite).map((r) => r.grammarId)));
   const completed = userStats.todayCompleted >= userStats.todayTotal;
 
