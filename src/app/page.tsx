@@ -63,10 +63,10 @@ export default function HomePage() {
               <h1 className="font-serif text-[clamp(40px,6vw,72px)] leading-[1.1] tracking-[-0.02em] text-[#000000]">
                 用卡片方式，<br />真正记住 JLPT 语法
               </h1>
-              <p className="mt-6 text-base md:text-lg text-[#4e4d4d] leading-relaxed max-w-lg mx-auto lg:mx-0">
+              <p className="mt-4 text-base md:text-lg text-[#4e4d4d] leading-relaxed max-w-lg mx-auto lg:mx-0">
                 一个为 N1～N5 学习者设计的日语语法记忆工具。通过卡片、收藏、复习计划和相近语法对比，把零散文法整理成可以长期复习的知识系统。
               </p>
-              <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
+              <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
                 <Link
                   href="/study"
                   className="inline-flex items-center justify-center gap-2 bg-[#242424] text-[#f6f3f1] rounded-full px-6 py-3.5 font-mono text-sm hover:bg-black transition-colors"
@@ -135,12 +135,15 @@ export default function HomePage() {
           <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-0">
             {flowSteps.map((step, i) => (
               <div key={i} className="flex items-center gap-4">
-                <div className="bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px] px-6 py-5 text-center min-w-[140px]">
-                  <p className="font-mono text-sm font-medium">{step.step}</p>
-                  <p className="text-xs text-[#797776] mt-1">{step.desc}</p>
+                <div className="bg-[#cfdaf5] rounded-[40px] px-6 py-6 text-center min-w-[150px]">
+                  <div className="w-7 h-7 rounded-full bg-[#242424] text-[#f6f3f1] flex items-center justify-center mx-auto mb-2 font-mono text-xs font-medium">
+                    {i + 1}
+                  </div>
+                  <p className="font-mono text-sm font-medium text-[#000000]">{step.step}</p>
+                  <p className="text-xs text-[#4e4d4d] mt-1 leading-relaxed">{step.desc}</p>
                 </div>
                 {i < flowSteps.length - 1 && (
-                  <ArrowRight className="hidden md:block h-4 w-4 text-[#797776] shrink-0 mx-2" />
+                  <ArrowRight className="hidden md:block h-5 w-5 text-[#242424]/40 shrink-0 mx-2" />
                 )}
               </div>
             ))}
@@ -206,14 +209,14 @@ export default function HomePage() {
 
         {/* CTA Section */}
         <section className="mx-auto max-w-[1432px] px-6 pb-20 md:pb-28">
-          <div className="bg-[#242424] rounded-[40px] p-10 md:p-16 text-center">
-            <h2 className="font-serif text-2xl md:text-4xl text-[#f6f3f1] tracking-[-0.02em]">
+          <div className="bg-[#242424] rounded-[40px] p-8 md:p-12 text-center">
+            <h2 className="font-serif text-xl md:text-3xl text-[#f6f3f1] tracking-[-0.02em]">
               从今天开始，用卡片方式真正记住日语语法。
             </h2>
-            <div className="mt-8">
+            <div className="mt-6">
               <Link
                 href="/study"
-                className="inline-flex items-center justify-center gap-2 bg-[#f6f3f1] text-[#242424] rounded-full px-8 py-4 font-mono text-sm hover:bg-white transition-colors"
+                className="inline-flex items-center justify-center gap-2 bg-[#f6f3f1] text-[#242424] rounded-full px-7 py-3.5 font-mono text-sm hover:bg-white transition-colors"
               >
                 <Play className="h-4 w-4" />
                 立即开始学习
