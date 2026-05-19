@@ -14,6 +14,10 @@ const categories: GrammarCategory[] = [
 ];
 const statuses: StudyStatus[] = ["未学习", "学习中", "已掌握"];
 
+const levelLabels: Record<string, string> = { all: "全部等级", N5: "N5", N4: "N4", N3: "N3", N2: "N2", N1: "N1" };
+const routeLabels: Record<string, string> = { all: "全部路线", 蓝宝书: "蓝宝书", TRY: "TRY", 一册合格: "一册合格", 综合: "综合" };
+const statusLabels: Record<string, string> = { all: "全部状态", 未学习: "未学习", 学习中: "学习中", 已掌握: "已掌握" };
+
 export interface GrammarFilters {
   level: JLPTLevel | "all";
   route: SourceRoute | "all";
@@ -45,10 +49,10 @@ export function GrammarFilterContent({
           value={filters.level}
           onValueChange={(v) => onChange({ ...filters, level: v as JLPTLevel | "all" })}
         >
-          <SelectTrigger>
-            <SelectValue placeholder="全部等级" />
+          <SelectTrigger className="w-full rounded-full border-[rgba(36,36,36,0.16)] bg-transparent data-placeholder:text-[#797776]">
+            <SelectValue>{levelLabels[filters.level] || "全部等级"}</SelectValue>
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="max-h-60">
             <SelectItem value="all">全部等级</SelectItem>
             {levels.map((l) => (
               <SelectItem key={l} value={l}>{l}</SelectItem>
@@ -62,10 +66,10 @@ export function GrammarFilterContent({
           value={filters.route}
           onValueChange={(v) => onChange({ ...filters, route: v as SourceRoute | "all" })}
         >
-          <SelectTrigger>
-            <SelectValue placeholder="全部路线" />
+          <SelectTrigger className="w-full rounded-full border-[rgba(36,36,36,0.16)] bg-transparent data-placeholder:text-[#797776]">
+            <SelectValue>{routeLabels[filters.route] || "全部路线"}</SelectValue>
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="max-h-60">
             <SelectItem value="all">全部路线</SelectItem>
             {routes.map((r) => (
               <SelectItem key={r} value={r}>{r}</SelectItem>
@@ -79,10 +83,10 @@ export function GrammarFilterContent({
           value={filters.category}
           onValueChange={(v) => onChange({ ...filters, category: v as GrammarCategory | "all" })}
         >
-          <SelectTrigger>
-            <SelectValue placeholder="全部场景" />
+          <SelectTrigger className="w-full rounded-full border-[rgba(36,36,36,0.16)] bg-transparent data-placeholder:text-[#797776]">
+            <SelectValue>{filters.category === "all" ? "全部场景" : CATEGORY_LABELS[filters.category] || filters.category}</SelectValue>
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="max-h-60">
             <SelectItem value="all">全部场景</SelectItem>
             {categories.map((c) => (
               <SelectItem key={c} value={c}>{CATEGORY_LABELS[c]}</SelectItem>
@@ -96,10 +100,10 @@ export function GrammarFilterContent({
           value={filters.status}
           onValueChange={(v) => onChange({ ...filters, status: v as StudyStatus | "all" })}
         >
-          <SelectTrigger>
-            <SelectValue placeholder="全部状态" />
+          <SelectTrigger className="w-full rounded-full border-[rgba(36,36,36,0.16)] bg-transparent data-placeholder:text-[#797776]">
+            <SelectValue>{statusLabels[filters.status] || "全部状态"}</SelectValue>
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="max-h-60">
             <SelectItem value="all">全部状态</SelectItem>
             {statuses.map((s) => (
               <SelectItem key={s} value={s}>{s}</SelectItem>
@@ -111,7 +115,7 @@ export function GrammarFilterContent({
         <Button
           variant={filters.favorite ? "default" : "outline"}
           size="sm"
-          className="w-full"
+          className="w-full rounded-full"
           onClick={() => onChange({ ...filters, favorite: !filters.favorite })}
         >
           {filters.favorite ? "★ 仅收藏" : "☆ 仅收藏"}
