@@ -10,10 +10,13 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
 import { grammarService } from "@/services/grammarService";
 import { toGrammarEntry } from "@/lib/mappers";
+import { useDictionary, useLocale } from "@/components/layout/LocaleProvider";
 import { SlidersHorizontal } from "lucide-react";
-import type { GrammarEntry, GrammarWithProgress } from "@/lib/types";
+import type { GrammarEntry } from "@/lib/types";
 
 export default function GrammarLibraryPage() {
+  const dict = useDictionary();
+  const locale = useLocale();
   const [entries, setEntries] = useState<GrammarEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -54,7 +57,7 @@ export default function GrammarLibraryPage() {
     return (
       <MainLayout>
         <div className="mx-auto max-w-6xl py-4 sm:py-6 flex items-center justify-center min-h-[300px]">
-          <p className="text-[#797776] font-mono text-sm">加载中...</p>
+          <p className="text-[#797776] font-mono text-sm">{dict.common.loading}</p>
         </div>
       </MainLayout>
     );
@@ -65,30 +68,30 @@ export default function GrammarLibraryPage() {
       <div className="mx-auto max-w-6xl py-4 sm:py-6">
         <div className="mb-6 space-y-4">
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-serif font-bold">语法库</h1>
+            <h1 className="text-2xl font-serif font-bold">{dict.grammar.title}</h1>
             <Sheet>
               <SheetTrigger className="md:hidden inline-flex items-center justify-center gap-1.5 border border-[rgba(36,36,36,0.16)] bg-transparent px-3 py-1.5 text-sm font-mono hover:bg-[#cfdaf5] transition-colors">
-                <SlidersHorizontal className="h-4 w-4" />筛选
+                <SlidersHorizontal className="h-4 w-4" />{dict.grammar.filter}
               </SheetTrigger>
               <SheetContent side="left" className="w-72">
-                <h3 className="font-semibold mb-4">筛选条件</h3>
+                <h3 className="font-semibold mb-4">{dict.grammar.filterTitle}</h3>
                 <GrammarFilterContent filters={filters} onChange={setFilters} />
               </SheetContent>
             </Sheet>
           </div>
-          <SearchBar value={search} onChange={setSearch} />
+          <SearchBar value={search} onChange={setSearch} placeholder={locale === "zh" ? "搜索语法、意思、关键词..." : "Search grammar, meaning, keywords..."} />
           <div className="flex flex-wrap items-center gap-2 text-sm">
-            <Badge variant="secondary" className="font-mono text-xs">结果 {filtered.length} 条</Badge>
-            <Badge variant="secondary" className="font-mono text-xs">已学习 {learnedCount}</Badge>
-            <Badge variant="secondary" className="font-mono text-xs">已掌握 {masteredCount}</Badge>
-            <Badge variant="secondary" className="font-mono text-xs">已收藏 {favCount}</Badge>
+            <Badge variant="secondary" className="font-mono text-xs">{dict.grammar.results} {filtered.length}</Badge>
+            <Badge variant="secondary" className="font-mono text-xs">{dict.grammar.learned} {learnedCount}</Badge>
+            <Badge variant="secondary" className="font-mono text-xs">{dict.grammar.mastered} {masteredCount}</Badge>
+            <Badge variant="secondary" className="font-mono text-xs">{dict.grammar.favorited} {favCount}</Badge>
           </div>
         </div>
 
         <div className="flex gap-6">
           <aside className="hidden md:block w-56 shrink-0">
             <div className="sticky top-20">
-              <h3 className="font-mono text-xs font-medium text-[#797776] mb-3">筛选条件</h3>
+              <h3 className="font-mono text-xs font-medium text-[#797776] mb-3">{dict.grammar.filterTitle}</h3>
               <GrammarFilterContent filters={filters} onChange={setFilters} />
             </div>
           </aside>
@@ -96,8 +99,8 @@ export default function GrammarLibraryPage() {
           <div className="flex-1 min-w-0">
             {filtered.length === 0 ? (
               <EmptyState
-                title="没有找到相关语法"
-                description="请尝试更换关键词或筛选条件"
+                title={dict.grammar.noResults}
+                description={dict.grammar.noResultsHint}
               />
             ) : (
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

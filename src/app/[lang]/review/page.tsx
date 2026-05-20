@@ -13,6 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { progressService, type ProgressRow } from "@/services/progressService";
 import { toGrammarEntry } from "@/lib/mappers";
 import { useAuth } from "@/hooks/useAuth";
+import { useDictionary, useLocale } from "@/components/layout/LocaleProvider";
 import type { ReviewRating } from "@/lib/types";
 import { Sparkles } from "lucide-react";
 
@@ -20,6 +21,8 @@ type ReviewState = "loading" | "empty" | "ready" | "reviewing" | "completed";
 
 export default function ReviewPage() {
   const { user } = useAuth();
+  const dict = useDictionary();
+  const locale = useLocale();
   const [state, setState] = useState<ReviewState>("loading");
   const [dueCards, setDueCards] = useState<(ProgressRow & { grammar: any })[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -82,10 +85,10 @@ export default function ReviewPage() {
         <div className="flex items-center justify-center py-20">
           <Card className="w-full max-w-sm bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px]">
             <CardContent className="p-6 text-center space-y-4">
-              <h2 className="text-xl font-bold">请先登录</h2>
-              <p className="text-sm text-[#797776]">登录后即可使用复习功能</p>
-              <Link href="/login" className={buttonVariants({ className: "w-full rounded-full font-mono" })}>
-                登录
+              <h2 className="text-xl font-bold">{dict.common.login}</h2>
+              <p className="text-sm text-[#797776]">{dict.common.login}</p>
+              <Link href={`/${locale}/login`} className={buttonVariants({ className: "w-full rounded-full font-mono" })}>
+                {dict.common.login}
               </Link>
             </CardContent>
           </Card>
@@ -98,7 +101,7 @@ export default function ReviewPage() {
     return (
       <MainLayout>
         <div className="flex items-center justify-center py-20">
-          <p className="text-[#797776] font-mono text-sm">加载中...</p>
+          <p className="text-[#797776] font-mono text-sm">{dict.common.loading}</p>
         </div>
       </MainLayout>
     );
@@ -111,10 +114,10 @@ export default function ReviewPage() {
           <Card className="w-full max-w-sm bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px]">
             <CardContent className="p-6 text-center space-y-4">
               <Sparkles className="h-10 w-10 mx-auto text-[#4a8a6a]" />
-              <h2 className="text-xl font-bold">今天没有需要复习的卡片</h2>
-              <p className="text-sm text-[#797776]">去学习页面添加新卡片吧</p>
-              <Link href="/study" className={buttonVariants({ className: "w-full rounded-full font-mono" })}>
-                去学习
+              <h2 className="text-xl font-bold">{dict.review.noDueCards}</h2>
+              <p className="text-sm text-[#797776]">{dict.review.noDueCardsHint}</p>
+              <Link href={`/${locale}/study`} className={buttonVariants({ className: "w-full rounded-full font-mono" })}>
+                {dict.review.goStudy}
               </Link>
             </CardContent>
           </Card>
@@ -131,30 +134,30 @@ export default function ReviewPage() {
     return (
       <MainLayout>
         <div className="mx-auto max-w-4xl py-4 sm:py-6">
-          <h1 className="text-2xl font-bold mb-6">今日复习</h1>
+          <h1 className="text-2xl font-bold mb-6">{dict.review.title}</h1>
 
           <div className="grid gap-3 sm:grid-cols-4 mb-8">
             <Card className="bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px]"><CardContent className="p-4 text-center">
               <p className="text-2xl font-bold font-mono text-[#242424]">{total}</p>
-              <p className="font-mono text-xs text-[#797776]">待复习</p>
+              <p className="font-mono text-xs text-[#797776]">{dict.review.dueCards}</p>
             </CardContent></Card>
             <Card className="bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px]"><CardContent className="p-4 text-center">
               <p className="text-2xl font-bold font-mono text-[#242424]">{dailyStats.todayNew}</p>
-              <p className="font-mono text-xs text-[#797776]">新学习</p>
+              <p className="font-mono text-xs text-[#797776]">{dict.review.newCards}</p>
             </CardContent></Card>
             <Card className="bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px]"><CardContent className="p-4 text-center">
               <p className="text-2xl font-bold font-mono text-[#242424]">{done}</p>
-              <p className="font-mono text-xs text-[#797776]">已完成</p>
+              <p className="font-mono text-xs text-[#797776]">{dict.review.completed}</p>
             </CardContent></Card>
             <Card className="bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px]"><CardContent className="p-4 text-center">
               <p className="text-2xl font-bold font-mono text-[#242424]">{pct}%</p>
-              <p className="font-mono text-xs text-[#797776]">完成率</p>
+              <p className="font-mono text-xs text-[#797776]">{dict.review.completionRate}</p>
             </CardContent></Card>
           </div>
 
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-semibold">今日复习列表</h2>
-            <Button className="rounded-full font-mono" onClick={startReview}>开始复习</Button>
+            <h2 className="font-semibold">{dict.review.reviewList}</h2>
+            <Button className="rounded-full font-mono" onClick={startReview}>{dict.review.startReview}</Button>
           </div>
 
           <div className="space-y-2">
@@ -180,20 +183,20 @@ export default function ReviewPage() {
           <Card className="w-full max-w-sm bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px]">
             <CardContent className="p-6 text-center space-y-4">
               <Sparkles className="h-10 w-10 mx-auto text-[#4a8a6a]" />
-              <h2 className="text-xl font-bold">今日复习完成！</h2>
+              <h2 className="text-xl font-bold">{dict.review.completedTitle}</h2>
               <p className="text-sm text-[#797776]">
-                你今天复习了 <span className="font-bold text-[#242424]">{completedCount}</span> 个语法
+                {dict.review.completedMsg.replace("{count}", String(completedCount))}
               </p>
               <p className="text-sm text-[#797776]">
-                已连续学习 <span className="font-bold text-[#242424]">{dailyStats.streakDays}</span> 天
+                {dict.review.streakMsg.replace("{days}", String(dailyStats.streakDays))}
               </p>
-              <ProgressBar label="今日完成率" value={100} />
+              <ProgressBar label={dict.review.completionRate} value={100} />
               <div className="flex gap-2">
                 <Button variant="outline" className="flex-1 rounded-full font-mono" onClick={handleRestart}>
-                  返回列表
+                  {dict.review.continueReview}
                 </Button>
-                <Link href="/study" className={buttonVariants({ className: "flex-1 rounded-full font-mono" })}>
-                  继续学习
+                <Link href={`/${locale}/study`} className={buttonVariants({ className: "flex-1 rounded-full font-mono" })}>
+                  {dict.review.goStudy}
                 </Link>
               </div>
             </CardContent>
@@ -212,10 +215,10 @@ export default function ReviewPage() {
       <div className="flex flex-col">
         <div className="mx-auto w-full max-w-2xl px-6 py-4">
           <div className="flex items-center justify-between mb-4 text-sm font-mono text-[#797776]">
-            <span>进度：{currentIndex + 1} / {dueCards.length}</span>
-            <span>剩余：{dueCards.length - currentIndex - 1}</span>
+            <span>{dict.study.progress}：{currentIndex + 1} / {dueCards.length}</span>
+            <span>{dict.study.remaining}：{dueCards.length - currentIndex - 1}</span>
           </div>
-          <ProgressBar label="今日进度" value={progress} />
+          <ProgressBar label={dict.study.progress} value={progress} />
         </div>
 
         <div className="flex-1 flex items-center justify-center px-6 py-4">

@@ -7,10 +7,13 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/hooks/useAuth";
+import { useDictionary, useLocale } from "@/components/layout/LocaleProvider";
 import { AlertCircle } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
+  const dict = useDictionary();
+  const locale = useLocale();
   const { signIn, signUp, signInWithGoogle } = useAuth();
   const [mode, setMode] = useState<"login" | "register">("login");
   const [email, setEmail] = useState("");
@@ -28,9 +31,9 @@ export default function LoginPage() {
       } else {
         await signUp(email, password);
       }
-      router.push("/dashboard");
+      router.push(`/${locale}/dashboard`);
     } catch (err: any) {
-      setError(err.message || "操作失败，请重试");
+      setError(err.message || "Login failed");
     } finally {
       setLoading(false);
     }
@@ -41,7 +44,7 @@ export default function LoginPage() {
     try {
       await signInWithGoogle();
     } catch (err: any) {
-      setError(err.message || "Google 登录失败");
+      setError(err.message || "Google login failed");
     }
   };
 
@@ -50,7 +53,9 @@ export default function LoginPage() {
       <div className="flex items-center justify-center py-12 sm:py-20 px-4">
         <Card className="w-full max-w-sm bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px] ring-0 shadow-none">
           <CardContent className="p-6 space-y-4">
-            <h1 className="text-xl font-bold">{mode === "login" ? "登录" : "注册"}</h1>
+            <h1 className="text-xl font-bold">
+              {mode === "login" ? dict.login.loginBtn : dict.login.registerBtn}
+            </h1>
 
             {error && (
               <div className="flex items-center gap-2 text-sm text-[#c47a6a]">
@@ -62,7 +67,7 @@ export default function LoginPage() {
             <form onSubmit={handleSubmit} className="space-y-3">
               <Input
                 type="email"
-                placeholder="邮箱地址"
+                placeholder={dict.login.email}
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -70,33 +75,37 @@ export default function LoginPage() {
               />
               <Input
                 type="password"
-                placeholder="密码"
+                placeholder={dict.login.password}
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="rounded-full"
               />
               <Button type="submit" disabled={loading} className="w-full rounded-full font-mono">
-                {loading ? "处理中..." : mode === "login" ? "登录" : "注册"}
+                {loading
+                  ? dict.login.processing
+                  : mode === "login"
+                    ? dict.login.loginBtn
+                    : dict.login.registerBtn}
               </Button>
             </form>
 
             <div className="relative">
               <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-[rgba(36,36,36,0.16)]" /></div>
               <div className="relative flex justify-center font-mono text-xs uppercase">
-                <span className="bg-[#f6f3f1] px-2 text-[#797776]">或</span>
+                <span className="bg-[#f6f3f1] px-2 text-[#797776]">{dict.login.or}</span>
               </div>
             </div>
 
             <Button variant="outline" className="w-full rounded-full font-mono" onClick={handleGoogle}>
-              使用 Google 登录
+              {dict.login.googleLogin}
             </Button>
 
             <p className="font-mono text-xs text-center text-[#797776]">
               {mode === "login" ? (
-                <>还没有账号？<button type="button" className="underline" onClick={() => setMode("register")}>注册</button></>
+                <>{dict.login.noAccount}<button type="button" className="underline" onClick={() => setMode("register")}>{dict.login.loginPrompt}</button></>
               ) : (
-                <>已有账号？<button type="button" className="underline" onClick={() => setMode("login")}>登录</button></>
+                <>{dict.login.hasAccount}<button type="button" className="underline" onClick={() => setMode("login")}>{dict.login.registerPrompt}</button></>
               )}
             </p>
           </CardContent>

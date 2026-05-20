@@ -80,6 +80,7 @@
     "startTitle": "开始学习",
     "startDesc": "选择等级，开始 Anki 风格的卡片学习",
     "selectLevel": "选择等级",
+    "selectAll": "全选",
     "startButton": "开始学习",
     "completedTitle": "复习完成！",
     "completedDesc": "你今天复习了 {count} 个语法",

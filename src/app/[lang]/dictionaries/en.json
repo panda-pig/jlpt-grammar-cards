@@ -80,6 +80,7 @@
     "startTitle": "Start Studying",
     "startDesc": "Choose a level to begin Anki-style flashcard learning",
     "selectLevel": "Select Level",
+    "selectAll": "Select All",
     "startButton": "Start Learning",
     "completedTitle": "Review Complete!",
     "completedDesc": "You reviewed {count} grammar points today",

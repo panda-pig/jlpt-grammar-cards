@@ -7,18 +7,20 @@ import { EmptyState } from "@/components/grammar/EmptyState";
 import { Badge } from "@/components/ui/badge";
 import { grammarService } from "@/services/grammarService";
 import { toGrammarEntry } from "@/lib/mappers";
+import { useDictionary } from "@/components/layout/LocaleProvider";
 import type { GrammarEntry } from "@/lib/types";
 import { Heart } from "lucide-react";
 
-const favoriteCollections = [
-  { id: "1", name: "默认收藏" },
-  { id: "2", name: "易错语法" },
-  { id: "3", name: "考前复习" },
-  { id: "4", name: "N2 重点" },
-  { id: "5", name: "敬语专项" },
-];
-
 export default function FavoritesPage() {
+  const dict = useDictionary();
+
+  const favoriteCollections = [
+    { id: "1", name: dict.favorites.collections.all },
+    { id: "2", name: dict.favorites.collections.mistakes },
+    { id: "3", name: dict.favorites.collections.preExam },
+    { id: "4", name: dict.favorites.collections.n2Focus },
+    { id: "5", name: dict.favorites.collections.keigo },
+  ];
   const [entries, setEntries] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -35,7 +37,7 @@ export default function FavoritesPage() {
     return (
       <MainLayout>
         <div className="mx-auto max-w-6xl py-4 sm:py-6 flex items-center justify-center min-h-[300px]">
-          <p className="text-[#797776] font-mono text-sm">加载中...</p>
+          <p className="text-[#797776] font-mono text-sm">{dict.common.loading}</p>
         </div>
       </MainLayout>
     );
@@ -46,7 +48,7 @@ export default function FavoritesPage() {
       <div className="mx-auto max-w-6xl py-4 sm:py-6">
         <div className="flex items-center gap-2 mb-4">
           <Heart className="h-5 w-5 text-[#c47a6a]" />
-          <h1 className="text-2xl font-bold">收藏夹</h1>
+          <h1 className="text-2xl font-bold">{dict.favorites.title}</h1>
           <Badge variant="secondary" className="rounded-full font-mono text-xs">{favorites.length}</Badge>
         </div>
 
@@ -60,8 +62,8 @@ export default function FavoritesPage() {
 
         {favorites.length === 0 ? (
           <EmptyState
-            title="还没有收藏任何语法"
-            description="去语法库浏览并收藏你想重点学习的语法吧"
+            title={dict.favorites.noFavorites}
+            description={dict.favorites.noFavoritesHint}
           />
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

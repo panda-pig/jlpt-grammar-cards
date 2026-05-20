@@ -14,12 +14,15 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { grammarService } from "@/services/grammarService";
 import { toGrammarEntry } from "@/lib/mappers";
+import { useDictionary, useLocale } from "@/components/layout/LocaleProvider";
 import type { GrammarEntry } from "@/lib/types";
 import { ArrowLeft, BookOpen } from "lucide-react";
 
 export default function GrammarDetailPage() {
   const params = useParams();
   const slug = params.slug as string;
+  const dict = useDictionary();
+  const locale = useLocale();
   const [grammar, setGrammar] = useState<GrammarEntry | null>(null);
   const [loading, setLoading] = useState(true);
   const [isFav, setIsFav] = useState(false);
@@ -35,7 +38,7 @@ export default function GrammarDetailPage() {
     return (
       <MainLayout>
         <div className="flex items-center justify-center py-20">
-          <p className="text-[#797776] font-mono text-sm">加载中...</p>
+          <p className="text-[#797776] font-mono text-sm">{dict.common.loading}</p>
         </div>
       </MainLayout>
     );
@@ -46,8 +49,8 @@ export default function GrammarDetailPage() {
       <MainLayout>
         <div className="flex items-center justify-center py-20">
           <div className="text-center">
-            <h2 className="text-xl font-bold">语法未找到</h2>
-            <Link href="/grammar" className={buttonVariants({ variant: "outline", className: "mt-4" })}>返回语法库</Link>
+            <h2 className="text-xl font-bold">{dict.grammar.notFound}</h2>
+            <Link href={`/${locale}/grammar`} className={buttonVariants({ variant: "outline", className: "mt-4" })}>{dict.grammar.backToLibrary}</Link>
           </div>
         </div>
       </MainLayout>
@@ -58,8 +61,8 @@ export default function GrammarDetailPage() {
     <MainLayout>
       <div className="mx-auto max-w-4xl py-4 sm:py-6">
         <div className="mb-6">
-          <Link href="/grammar" className={buttonVariants({ variant: "ghost", size: "sm", className: "mb-2" })}>
-            <ArrowLeft className="mr-1 h-4 w-4" />返回语法库
+          <Link href={`/${locale}/grammar`} className={buttonVariants({ variant: "ghost", size: "sm", className: "mb-2" })}>
+            <ArrowLeft className="mr-1 h-4 w-4" />{dict.grammar.backToLibrary}
           </Link>
           <div className="flex items-center gap-2 flex-wrap">
             <h1 className="text-3xl font-bold">{grammar.title}</h1>
@@ -74,8 +77,8 @@ export default function GrammarDetailPage() {
           <div className="md:col-span-2 space-y-4">
             <Card className="bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px] ring-0 shadow-none">
               <CardContent className="p-5">
-                <h3 className="font-semibold mb-2">意思</h3>
-                <p className="text-lg">{grammar.meaningCn}</p>
+                <h3 className="font-semibold mb-2">{dict.grammar.meaning}</h3>
+                <p className="text-lg">{locale === "zh" ? grammar.meaningCn : (grammar.meaningEn || grammar.meaningCn)}</p>
                 {grammar.meaningEn && <p className="text-sm text-[#797776] mt-1">{grammar.meaningEn}</p>}
               </CardContent>
             </Card>
@@ -83,7 +86,7 @@ export default function GrammarDetailPage() {
             {grammar.structure && (
               <Card className="bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px] ring-0 shadow-none">
                 <CardContent className="p-5">
-                  <h3 className="font-semibold mb-2">接续</h3>
+                  <h3 className="font-semibold mb-2">{dict.grammar.structure}</h3>
                   <p>{grammar.structure}</p>
                 </CardContent>
               </Card>
@@ -92,7 +95,7 @@ export default function GrammarDetailPage() {
             {grammar.explanation && (
               <Card className="bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px] ring-0 shadow-none">
                 <CardContent className="p-5">
-                  <h3 className="font-semibold mb-2">详细解释</h3>
+                  <h3 className="font-semibold mb-2">{dict.grammar.explanation}</h3>
                   <p className="text-sm leading-relaxed text-[#4e4d4d]">{grammar.explanation}</p>
                 </CardContent>
               </Card>
@@ -101,7 +104,7 @@ export default function GrammarDetailPage() {
             {(grammar.exampleJp || grammar.exampleCn) && (
               <Card className="bg-[#cfdaf5] rounded-[40px] ring-0 shadow-none">
                 <CardContent className="p-5">
-                  <h3 className="font-semibold mb-2">例句</h3>
+                  <h3 className="font-semibold mb-2">{dict.grammar.example}</h3>
                   {grammar.exampleJp && <p className="text-lg font-medium mb-1">{grammar.exampleJp}</p>}
                   {grammar.furigana && <p className="text-sm text-[#797776] mb-1">{grammar.furigana}</p>}
                   {grammar.exampleCn && <p className="text-sm text-[#4e4d4d]">{grammar.exampleCn}</p>}
@@ -112,7 +115,7 @@ export default function GrammarDetailPage() {
             {grammar.commonMistake && (
               <Card className="bg-[#f4b4a8]/20 rounded-[40px] ring-0 shadow-none">
                 <CardContent className="p-5">
-                  <h3 className="font-semibold mb-2">易错点</h3>
+                  <h3 className="font-semibold mb-2">{dict.grammar.commonMistake}</h3>
                   <p className="text-sm text-[#4e4d4d]">{grammar.commonMistake}</p>
                 </CardContent>
               </Card>
@@ -121,7 +124,7 @@ export default function GrammarDetailPage() {
             {grammar.memoryTip && (
               <Card className="bg-[#cfdaf5]/40 rounded-[40px] ring-0 shadow-none">
                 <CardContent className="p-5">
-                  <h3 className="font-semibold mb-2">记忆提示</h3>
+                  <h3 className="font-semibold mb-2">{dict.grammar.memoryTip}</h3>
                   <p className="text-sm text-[#4e4d4d]">{grammar.memoryTip}</p>
                 </CardContent>
               </Card>
@@ -131,11 +134,11 @@ export default function GrammarDetailPage() {
           <div className="space-y-4">
             <Card className="bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px] ring-0 shadow-none">
               <CardContent className="p-5 space-y-3">
-                <h3 className="font-semibold">学习状态</h3>
-                <Badge variant="secondary" className="rounded-full font-mono text-xs">未学习</Badge>
-                <ProgressBar label="掌握度" value={0} />
-                <Link href={`/study?level=${grammar.jlptLevel}`} className={buttonVariants({ className: "w-full rounded-full font-mono", size: "sm" })}>
-                  <BookOpen className="mr-1 h-4 w-4" />加入学习
+                <h3 className="font-semibold">{dict.grammar.studyStatus}</h3>
+                <Badge variant="secondary" className="rounded-full font-mono text-xs">{dict.filter.unlearned}</Badge>
+                <ProgressBar label={dict.grammar.masteryLevel} value={0} />
+                <Link href={`/${locale}/study?level=${grammar.jlptLevel}`} className={buttonVariants({ className: "w-full rounded-full font-mono", size: "sm" })}>
+                  <BookOpen className="mr-1 h-4 w-4" />{dict.grammar.addToStudy}
                 </Link>
               </CardContent>
             </Card>
@@ -143,7 +146,7 @@ export default function GrammarDetailPage() {
             {grammar.similarGrammar?.length > 0 && (
               <Card className="bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px] ring-0 shadow-none">
                 <CardContent className="p-5">
-                  <h3 className="font-semibold mb-3">相近语法</h3>
+                  <h3 className="font-semibold mb-3">{dict.grammar.similarGrammar}</h3>
                   <div className="space-y-2">
                     {(grammar.similarGrammar as any).map((sg: any, i: number) => (
                       <div key={i} className="text-sm">
