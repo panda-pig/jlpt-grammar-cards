@@ -3,14 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-
-const mobileLinks = [
-  { href: "/", label: "首页", icon: HomeIcon },
-  { href: "/grammar", label: "语法库", icon: BookIcon },
-  { href: "/study", label: "学习", icon: StudyIcon },
-  { href: "/favorites", label: "收藏", icon: HeartIcon },
-  { href: "/dashboard", label: "我的", icon: UserIcon },
-];
+import { useDictionary, useLocale } from "./LocaleProvider";
 
 function HomeIcon({ active }: { active: boolean }) {
   return (
@@ -54,12 +47,22 @@ function UserIcon({ active }: { active: boolean }) {
 
 export function MobileBottomNav() {
   const pathname = usePathname();
+  const dict = useDictionary();
+  const locale = useLocale();
+
+  const mobileLinks = [
+    { href: `/${locale}`, label: dict.mobileNav.home, icon: HomeIcon },
+    { href: `/${locale}/grammar`, label: dict.mobileNav.grammar, icon: BookIcon },
+    { href: `/${locale}/study`, label: dict.mobileNav.study, icon: StudyIcon },
+    { href: `/${locale}/favorites`, label: dict.mobileNav.favorites, icon: HeartIcon },
+    { href: `/${locale}/dashboard`, label: dict.mobileNav.profile, icon: UserIcon },
+  ];
 
   return (
     <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-background border-t border-[rgba(36,36,36,0.16)] h-[72px]">
       <div className="grid grid-cols-5 h-full">
         {mobileLinks.map((link) => {
-          const active = pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
+          const active = pathname === link.href || (link.href !== `/${locale}` && pathname.startsWith(link.href));
           return (
             <Link
               key={link.href}

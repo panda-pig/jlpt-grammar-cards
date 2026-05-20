@@ -1,140 +1,118 @@
 "use client";
 
-import { createContext, useContext, useState, useCallback, useMemo, type ReactNode } from "react";
-import grammarData from "@/data/grammar.json";
-import type {
-  GrammarEntry,
-  JLPTLevel,
-  SourceRoute,
-  GrammarCategory,
-  StudyStatus,
-  LevelProgress,
-  ReviewRecord,
-} from "@/lib/types";
+import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from "react";
+import { grammarService } from "@/services/grammarService";
+import type { GrammarEntry } from "@/lib/types";
 
 interface GrammarContextValue {
   entries: GrammarEntry[];
-  addGrammar: (entry: Omit<GrammarEntry, "id">) => void;
-  updateGrammar: (id: string, entry: Partial<GrammarEntry>) => void;
-  deleteGrammar: (id: string) => void;
-  toggleFavorite: (id: string) => void;
-  getLevelProgress: () => LevelProgress[];
-  getReviewRecords: () => ReviewRecord[];
-  getEntriesByLevel: (level: string) => GrammarEntry[];
-  userStats: {
-    todayNewCards: number;
-    todayReviewCards: number;
-    todayCompleted: number;
-    todayTotal: number;
-    totalLearned: number;
-    totalMastered: number;
-    totalFavorites: number;
-    streakDays: number;
-  };
-  favoriteCollections: { id: string; name: string; count: number }[];
+  loading: boolean;
+  addGrammar: (entry: Omit<GrammarEntry, "id">) => Promise<void>;
+  updateGrammar: (id: string, entry: Partial<GrammarEntry>) => Promise<void>;
+  deleteGrammar: (id: string) => Promise<void>;
 }
 
 const GrammarContext = createContext<GrammarContextValue | null>(null);
 
-function generateId(): string {
-  return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+function toGrammarEntry(row: any): GrammarEntry {
+  return {
+    id: row.id,
+    title: row.title,
+    slug: row.slug,
+    jlptLevel: row.jlpt_level,
+    sourceRoute: row.source_route,
+    grammarType: row.grammar_type,
+    tags: row.tags || [],
+    meaningCn: row.meaning_cn,
+    meaningEn: row.meaning_en || "",
+    structure: row.structure || "",
+    explanation: row.explanation || "",
+    usageNote: row.usage_note || "",
+    exampleJp: row.example_jp || "",
+    exampleCn: row.example_cn || "",
+    furigana: row.furigana,
+    similarGrammar: row.similar_grammar || [],
+    commonMistake: row.common_mistake || "",
+    memoryTip: row.memory_tip || "",
+    quizQuestion: row.quiz_question || "",
+    quizChoices: row.quiz_choices || [],
+    quizAnswer: row.quiz_answer || "",
+    quizExplanation: row.quiz_explanation || "",
+  };
 }
 
 export function GrammarProvider({ children }: { children: ReactNode }) {
-  const [entries, setEntries] = useState<GrammarEntry[]>(grammarData as GrammarEntry[]);
+  const [entries, setEntries] = useState<GrammarEntry[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const addGrammar = useCallback((entry: Omit<GrammarEntry, "id">) => {
-    const newEntry: GrammarEntry = { ...entry, id: generateId() };
-    setEntries((prev) => [newEntry, ...prev]);
+  useEffect(() => {
+    grammarService.getAll().then((data) => {
+      setEntries(data.map(toGrammarEntry));
+      setLoading(false);
+    }).catch(() => setLoading(false));
   }, []);
 
-  const updateGrammar = useCallback((id: string, updates: Partial<GrammarEntry>) => {
+  const addGrammar = useCallback(async (entry: Omit<GrammarEntry, "id">) => {
+    const row = await grammarService.create({
+      title: entry.title,
+      slug: entry.slug,
+      jlpt_level: entry.jlptLevel,
+      source_route: entry.sourceRoute,
+      grammar_type: entry.grammarType,
+      tags: entry.tags,
+      meaning_cn: entry.meaningCn,
+      meaning_en: entry.meaningEn,
+      structure: entry.structure,
+      explanation: entry.explanation,
+      usage_note: entry.usageNote,
+      example_jp: entry.exampleJp,
+      example_cn: entry.exampleCn,
+      furigana: entry.furigana,
+      similar_grammar: entry.similarGrammar,
+      common_mistake: entry.commonMistake,
+      memory_tip: entry.memoryTip,
+      quiz_question: entry.quizQuestion,
+      quiz_choices: entry.quizChoices,
+      quiz_answer: entry.quizAnswer,
+      quiz_explanation: entry.quizExplanation,
+    });
+    const created = toGrammarEntry(row);
+    setEntries((prev) => [created, ...prev]);
+  }, []);
+
+  const updateGrammar = useCallback(async (id: string, updates: Partial<GrammarEntry>) => {
+    const updateData: Record<string, unknown> = {};
+    if (updates.title !== undefined) updateData.title = updates.title;
+    if (updates.slug !== undefined) updateData.slug = updates.slug;
+    if (updates.jlptLevel !== undefined) updateData.jlpt_level = updates.jlptLevel;
+    if (updates.sourceRoute !== undefined) updateData.source_route = updates.sourceRoute;
+    if (updates.grammarType !== undefined) updateData.grammar_type = updates.grammarType;
+    if (updates.tags !== undefined) updateData.tags = updates.tags;
+    if (updates.meaningCn !== undefined) updateData.meaning_cn = updates.meaningCn;
+    if (updates.meaningEn !== undefined) updateData.meaning_en = updates.meaningEn;
+    if (updates.structure !== undefined) updateData.structure = updates.structure;
+    if (updates.explanation !== undefined) updateData.explanation = updates.explanation;
+    if (updates.usageNote !== undefined) updateData.usage_note = updates.usageNote;
+    if (updates.exampleJp !== undefined) updateData.example_jp = updates.exampleJp;
+    if (updates.exampleCn !== undefined) updateData.example_cn = updates.exampleCn;
+    if (updates.commonMistake !== undefined) updateData.common_mistake = updates.commonMistake;
+    if (updates.memoryTip !== undefined) updateData.memory_tip = updates.memoryTip;
+    await grammarService.update(id, updateData);
     setEntries((prev) =>
       prev.map((e) => (e.id === id ? { ...e, ...updates } : e))
     );
   }, []);
 
-  const deleteGrammar = useCallback((id: string) => {
+  const deleteGrammar = useCallback(async (id: string) => {
+    await grammarService.delete(id);
     setEntries((prev) => prev.filter((e) => e.id !== id));
   }, []);
 
-  const toggleFavorite = useCallback((id: string) => {
-    setEntries((prev) =>
-      prev.map((e) => (e.id === id ? { ...e, isFavorite: !e.isFavorite } : e))
-    );
-  }, []);
-
-  const getEntriesByLevel = useCallback(
-    (level: string) => entries.filter((e) => e.jlptLevel === level),
-    [entries]
+  return (
+    <GrammarContext.Provider value={{ entries, loading, addGrammar, updateGrammar, deleteGrammar }}>
+      {children}
+    </GrammarContext.Provider>
   );
-
-  const getLevelProgress = useCallback((): LevelProgress[] => {
-    const levels: JLPTLevel[] = ["N5", "N4", "N3", "N2", "N1"];
-    return levels.map((level) => {
-      const items = entries.filter((e) => e.jlptLevel === level);
-      return {
-        level,
-        total: items.length,
-        learned: items.filter((e) => e.studyStatus === "学习中" || e.studyStatus === "已掌握").length,
-        mastered: items.filter((e) => e.studyStatus === "已掌握").length,
-      };
-    });
-  }, [entries]);
-
-  const getReviewRecords = useCallback((): ReviewRecord[] => {
-    return entries
-      .filter((e) => e.studyStatus === "学习中")
-      .map((e) => ({
-        grammarId: e.id,
-        title: e.title,
-        level: e.jlptLevel,
-        lastRating: e.reviewCount > 0 ? "记住了" : "未复习",
-        nextReviewDate: e.nextReviewAt
-          ? new Date(e.nextReviewAt).toLocaleDateString("zh-CN")
-          : "未安排",
-        isFavorite: e.isFavorite,
-      }));
-  }, [entries]);
-
-  const userStats = useMemo(() => {
-    const learned = entries.filter((e) => e.studyStatus === "学习中" || e.studyStatus === "已掌握").length;
-    const mastered = entries.filter((e) => e.studyStatus === "已掌握").length;
-    const favorites = entries.filter((e) => e.isFavorite).length;
-    return {
-      todayNewCards: 10,
-      todayReviewCards: 30,
-      todayCompleted: 8,
-      todayTotal: 40,
-      totalLearned: learned,
-      totalMastered: mastered,
-      totalFavorites: favorites,
-      streakDays: 5,
-    };
-  }, [entries]);
-
-  const favoriteCollections = [
-    { id: "1", name: "默认收藏", count: entries.filter((e) => e.isFavorite).length },
-    { id: "2", name: "易错语法", count: 0 },
-    { id: "3", name: "考前复习", count: 0 },
-    { id: "4", name: "N2 重点", count: 0 },
-    { id: "5", name: "敬语专项", count: 0 },
-  ];
-
-  const value: GrammarContextValue = {
-    entries,
-    addGrammar,
-    updateGrammar,
-    deleteGrammar,
-    toggleFavorite,
-    getLevelProgress,
-    getReviewRecords,
-    getEntriesByLevel,
-    userStats,
-    favoriteCollections,
-  };
-
-  return <GrammarContext.Provider value={value}>{children}</GrammarContext.Provider>;
 }
 
 export function useGrammar() {

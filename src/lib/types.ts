@@ -61,12 +61,27 @@ export interface GrammarEntry {
   quizChoices: QuizChoice[];
   quizAnswer: string;
   quizExplanation: string;
-  isFavorite: boolean;
+}
+
+export interface UserGrammarProgress {
+  grammarId: string;
   studyStatus: StudyStatus;
-  nextReviewAt: string | null;
-  lastReviewedAt: string | null;
+  isFavorite: boolean;
   reviewCount: number;
   masteryLevel: number;
+  nextReviewAt: string | null;
+  lastReviewedAt: string | null;
+  lastRating: string | null;
+}
+
+export interface GrammarWithProgress extends GrammarEntry {
+  studyStatus: StudyStatus;
+  isFavorite: boolean;
+  reviewCount: number;
+  masteryLevel: number;
+  nextReviewAt: string | null;
+  lastReviewedAt: string | null;
+  lastRating: string | null;
 }
 
 export interface UserStats {

@@ -6,7 +6,7 @@ import { SourceRouteBadge } from "./SourceRouteBadge";
 import { GrammarTypeBadge } from "./GrammarTypeBadge";
 import { FavoriteButton } from "./FavoriteButton";
 import { Badge } from "@/components/ui/badge";
-import type { GrammarEntry } from "@/lib/types";
+import type { GrammarEntry, StudyStatus } from "@/lib/types";
 
 const statusStyles: Record<string, string> = {
   "未学习": "border-[#4e4d4d] text-[#4e4d4d] bg-transparent",
@@ -16,11 +16,17 @@ const statusStyles: Record<string, string> = {
 
 export function GrammarCard({
   grammar,
+  isFavorite = false,
+  studyStatus = "未学习" as StudyStatus,
   onFavoriteToggle,
 }: {
   grammar: GrammarEntry;
-  onFavoriteToggle: (id: string) => void;
+  isFavorite?: boolean;
+  studyStatus?: StudyStatus;
+  onFavoriteToggle?: (id: string) => void;
 }) {
+  const localePrefix = ""; // will be filled by parent
+
   return (
     <Link href={`/grammar/${grammar.slug}`}>
       <div className="group h-full bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px] p-6 md:p-8 transition-all hover:translate-y-[-2px] hover:shadow-[rgba(0,0,0,0.1)_0px_0px_10px_0px]">
@@ -40,8 +46,8 @@ export function GrammarCard({
             </p>
           </div>
           <FavoriteButton
-            isFavorite={grammar.isFavorite}
-            onToggle={() => onFavoriteToggle(grammar.id)}
+            isFavorite={isFavorite}
+            onToggle={() => onFavoriteToggle?.(grammar.id)}
           />
         </div>
         <div className="flex items-center gap-1.5 mt-4 flex-wrap">
@@ -53,9 +59,9 @@ export function GrammarCard({
           <div className="flex-1" />
           <Badge
             variant="outline"
-            className={`rounded-full text-[10px] px-2 py-0.5 font-mono ${statusStyles[grammar.studyStatus] || ""}`}
+            className={`rounded-full text-[10px] px-2 py-0.5 font-mono ${statusStyles[studyStatus] || ""}`}
           >
-            {grammar.studyStatus}
+            {studyStatus}
           </Badge>
         </div>
       </div>

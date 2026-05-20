@@ -6,40 +6,9 @@ import { GrammarCard } from "@/components/grammar/GrammarCard";
 import { EmptyState } from "@/components/grammar/EmptyState";
 import { Badge } from "@/components/ui/badge";
 import { grammarService } from "@/services/grammarService";
+import { toGrammarEntry } from "@/lib/mappers";
+import type { GrammarEntry } from "@/lib/types";
 import { Heart } from "lucide-react";
-
-function toGrammarEntry(row: any) {
-  return {
-    id: row.id,
-    title: row.title,
-    slug: row.slug,
-    jlptLevel: row.jlpt_level,
-    sourceRoute: row.source_route,
-    grammarType: row.grammar_type,
-    tags: row.tags || [],
-    meaningCn: row.meaning_cn,
-    meaningEn: row.meaning_en,
-    structure: row.structure,
-    explanation: row.explanation,
-    usageNote: row.usage_note,
-    exampleJp: row.example_jp,
-    exampleCn: row.example_cn,
-    furigana: row.furigana,
-    similarGrammar: row.similar_grammar || [],
-    commonMistake: row.common_mistake,
-    memoryTip: row.memory_tip,
-    quizQuestion: row.quiz_question,
-    quizChoices: row.quiz_choices || [],
-    quizAnswer: row.quiz_answer,
-    quizExplanation: row.quiz_explanation,
-    isFavorite: false,
-    studyStatus: "未学习",
-    nextReviewAt: null,
-    lastReviewedAt: null,
-    reviewCount: 0,
-    masteryLevel: 0,
-  };
-}
 
 const favoriteCollections = [
   { id: "1", name: "默认收藏" },
@@ -60,7 +29,7 @@ export default function FavoritesPage() {
     }).catch(() => setLoading(false));
   }, []);
 
-  const favorites = entries.filter((e) => e.isFavorite);
+  const favorites = entries.filter(() => false); // TODO: from progressService
 
   if (loading) {
     return (

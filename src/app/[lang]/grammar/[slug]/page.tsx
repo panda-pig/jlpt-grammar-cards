@@ -13,52 +13,20 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { grammarService } from "@/services/grammarService";
+import { toGrammarEntry } from "@/lib/mappers";
+import type { GrammarEntry } from "@/lib/types";
 import { ArrowLeft, BookOpen } from "lucide-react";
-
-function toGrammarEntry(row: any) {
-  return {
-    id: row.id,
-    title: row.title,
-    slug: row.slug,
-    jlptLevel: row.jlpt_level,
-    sourceRoute: row.source_route,
-    grammarType: row.grammar_type,
-    tags: row.tags || [],
-    meaningCn: row.meaning_cn,
-    meaningEn: row.meaning_en,
-    structure: row.structure,
-    explanation: row.explanation,
-    usageNote: row.usage_note,
-    exampleJp: row.example_jp,
-    exampleCn: row.example_cn,
-    furigana: row.furigana,
-    similarGrammar: row.similar_grammar || [],
-    commonMistake: row.common_mistake,
-    memoryTip: row.memory_tip,
-    quizQuestion: row.quiz_question,
-    quizChoices: row.quiz_choices || [],
-    quizAnswer: row.quiz_answer,
-    quizExplanation: row.quiz_explanation,
-    isFavorite: false,
-    studyStatus: "未学习",
-    nextReviewAt: null,
-    lastReviewedAt: null,
-    reviewCount: 0,
-    masteryLevel: 0,
-  };
-}
 
 export default function GrammarDetailPage() {
   const params = useParams();
   const slug = params.slug as string;
-  const [grammar, setGrammar] = useState<any>(null);
+  const [grammar, setGrammar] = useState<GrammarEntry | null>(null);
   const [loading, setLoading] = useState(true);
   const [isFav, setIsFav] = useState(false);
 
   useEffect(() => {
     grammarService.getBySlug(slug).then((data) => {
       setGrammar(toGrammarEntry(data));
-      setIsFav(false);
       setLoading(false);
     }).catch(() => setLoading(false));
   }, [slug]);
@@ -164,14 +132,10 @@ export default function GrammarDetailPage() {
             <Card className="bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px] ring-0 shadow-none">
               <CardContent className="p-5 space-y-3">
                 <h3 className="font-semibold">学习状态</h3>
-                <Badge variant="secondary" className="rounded-full font-mono text-xs">{grammar.studyStatus}</Badge>
-                <div className="space-y-2 text-sm">
-                  <div className="flex justify-between"><span className="text-[#797776]">复习次数</span><span>{grammar.reviewCount}</span></div>
-                  <div className="flex justify-between"><span className="text-[#797776]">掌握度</span><span>{grammar.masteryLevel}%</span></div>
-                </div>
-                <ProgressBar label="掌握度" value={grammar.masteryLevel} />
+                <Badge variant="secondary" className="rounded-full font-mono text-xs">未学习</Badge>
+                <ProgressBar label="掌握度" value={0} />
                 <Link href={`/study?level=${grammar.jlptLevel}`} className={buttonVariants({ className: "w-full rounded-full font-mono", size: "sm" })}>
-                  <BookOpen className="mr-1 h-4 w-4" />开始学习
+                  <BookOpen className="mr-1 h-4 w-4" />加入学习
                 </Link>
               </CardContent>
             </Card>
@@ -181,7 +145,7 @@ export default function GrammarDetailPage() {
                 <CardContent className="p-5">
                   <h3 className="font-semibold mb-3">相近语法</h3>
                   <div className="space-y-2">
-                    {grammar.similarGrammar.map((sg: any, i: number) => (
+                    {(grammar.similarGrammar as any).map((sg: any, i: number) => (
                       <div key={i} className="text-sm">
                         <Link href={`/grammar/${sg.slug}`} className="font-medium hover:underline">{sg.title}</Link>
                         <p className="text-xs text-[#797776]">{sg.difference}</p>

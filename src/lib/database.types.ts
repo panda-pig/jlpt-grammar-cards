@@ -121,6 +121,9 @@ export interface Database {
           is_favorite: boolean;
           review_count: number;
           mastery_level: number;
+          interval: number;
+          repetition: number;
+          ease_factor: number;
           next_review_at: string | null;
           last_reviewed_at: string | null;
           last_rating: string | null;
@@ -135,6 +138,9 @@ export interface Database {
           is_favorite?: boolean;
           review_count?: number;
           mastery_level?: number;
+          interval?: number;
+          repetition?: number;
+          ease_factor?: number;
           next_review_at?: string | null;
           last_reviewed_at?: string | null;
           last_rating?: string | null;
@@ -149,6 +155,9 @@ export interface Database {
           is_favorite?: boolean;
           review_count?: number;
           mastery_level?: number;
+          interval?: number;
+          repetition?: number;
+          ease_factor?: number;
           next_review_at?: string | null;
           last_reviewed_at?: string | null;
           last_rating?: string | null;

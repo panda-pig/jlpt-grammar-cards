@@ -1,6 +1,7 @@
 "use client";
 
 import { LevelBadge } from "@/components/grammar/LevelBadge";
+import { useLocale } from "@/components/layout/LocaleProvider";
 import type { GrammarEntry } from "@/lib/types";
 
 export function StudyFlashcard({
@@ -12,6 +13,7 @@ export function StudyFlashcard({
   flipped: boolean;
   onFlip: () => void;
 }) {
+  const locale = useLocale();
   return (
     <div
       className="w-full max-w-lg mx-auto cursor-pointer"
@@ -40,7 +42,7 @@ export function StudyFlashcard({
               {grammar.jlptLevel} · {grammar.grammarType}
             </p>
             <p className="text-sm text-[#797776] mt-4">
-              请回忆：意思 / 接续 / 例句 / 易错点
+{locale === "zh" ? "请回忆：意思 / 接续 / 例句 / 易错点" : "Recall: meaning / structure / example / common mistake"}
             </p>
           </div>
         </div>
@@ -59,21 +61,23 @@ export function StudyFlashcard({
               <h3 className="font-serif text-xl font-medium">{grammar.title}</h3>
             </div>
             <div>
-              <p className="font-mono text-xs text-[#797776] mb-1">意思</p>
-              <p className="text-lg font-medium text-[#242424]">{grammar.meaningCn}</p>
+              <p className="font-mono text-xs text-[#797776] mb-1">{locale === "zh" ? "意思" : "Meaning"}</p>
+              <p className="text-lg font-medium text-[#242424]">
+                {locale === "zh" ? grammar.meaningCn : (grammar.meaningEn || grammar.meaningCn)}
+              </p>
             </div>
             <div>
-              <p className="font-mono text-xs text-[#797776] mb-1">接续</p>
+              <p className="font-mono text-xs text-[#797776] mb-1">{locale === "zh" ? "接续" : "Structure"}</p>
               <p className="text-sm text-[#242424] whitespace-pre-line">{grammar.structure}</p>
             </div>
             <div>
-              <p className="font-mono text-xs text-[#797776] mb-1">例句</p>
+              <p className="font-mono text-xs text-[#797776] mb-1">{locale === "zh" ? "例句" : "Example"}</p>
               <p className="text-base text-[#242424] leading-relaxed">{grammar.exampleJp}</p>
               <p className="text-sm text-[#4e4d4d] mt-1">{grammar.exampleCn}</p>
             </div>
             {grammar.commonMistake && (
               <div className="rounded-[24px] bg-[#fff6df] border border-[rgba(232,193,120,0.6)] p-4 text-sm">
-                <p className="font-mono text-xs text-[#a08040] mb-1">易错点</p>
+                <p className="font-mono text-xs text-[#a08040] mb-1">{locale === "zh" ? "易错点" : "Common Mistake"}</p>
                 <p className="text-[#242424]">{grammar.commonMistake}</p>
               </div>
             )}

@@ -9,45 +9,11 @@ import { EmptyState } from "@/components/grammar/EmptyState";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
 import { grammarService } from "@/services/grammarService";
-import { useAuth } from "@/hooks/useAuth";
+import { toGrammarEntry } from "@/lib/mappers";
 import { SlidersHorizontal } from "lucide-react";
-import type { GrammarEntry } from "@/lib/types";
-
-function toGrammarEntry(row: any): GrammarEntry {
-  return {
-    id: row.id,
-    title: row.title,
-    slug: row.slug,
-    jlptLevel: row.jlpt_level,
-    sourceRoute: row.source_route,
-    grammarType: row.grammar_type,
-    tags: row.tags || [],
-    meaningCn: row.meaning_cn,
-    meaningEn: row.meaning_en,
-    structure: row.structure,
-    explanation: row.explanation,
-    usageNote: row.usage_note,
-    exampleJp: row.example_jp,
-    exampleCn: row.example_cn,
-    furigana: row.furigana,
-    similarGrammar: row.similar_grammar || [],
-    commonMistake: row.common_mistake,
-    memoryTip: row.memory_tip,
-    quizQuestion: row.quiz_question,
-    quizChoices: row.quiz_choices || [],
-    quizAnswer: row.quiz_answer,
-    quizExplanation: row.quiz_explanation,
-    isFavorite: false,
-    studyStatus: "未学习",
-    nextReviewAt: null,
-    lastReviewedAt: null,
-    reviewCount: 0,
-    masteryLevel: 0,
-  };
-}
+import type { GrammarEntry, GrammarWithProgress } from "@/lib/types";
 
 export default function GrammarLibraryPage() {
-  const { user } = useAuth();
   const [entries, setEntries] = useState<GrammarEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -74,14 +40,15 @@ export default function GrammarLibraryPage() {
     if (filters.level !== "all") result = result.filter((e) => e.jlptLevel === filters.level);
     if (filters.route !== "all") result = result.filter((e) => e.sourceRoute === filters.route);
     if (filters.category !== "all") result = result.filter((e) => e.grammarType === filters.category);
-    if (filters.status !== "all") result = result.filter((e) => e.studyStatus === filters.status);
-    if (filters.favorite) result = result.filter((e) => e.isFavorite);
+    // TODO: status/favorite filters need user progress data from progressService
+    // if (filters.status !== "all") result = result.filter(...)
+    // if (filters.favorite) result = result.filter(...)
     return result;
   }, [search, filters, entries]);
 
-  const learnedCount = filtered.filter((e) => e.studyStatus === "学习中" || e.studyStatus === "已掌握").length;
-  const masteredCount = filtered.filter((e) => e.studyStatus === "已掌握").length;
-  const favCount = filtered.filter((e) => e.isFavorite).length;
+  const learnedCount = 0; // TODO: from progressService
+  const masteredCount = 0; // TODO: from progressService
+  const favCount = 0; // TODO: from progressService
 
   if (loading) {
     return (

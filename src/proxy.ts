@@ -2,11 +2,20 @@ import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import type { Database } from "@/lib/database.types";
 
-export async function middleware(request: NextRequest) {
+const locales = ["zh", "en"];
+const defaultLocale = "zh";
+
+function getLocale(request: NextRequest): string {
+  const acceptLang = request.headers.get("accept-language") || "";
+  for (const locale of locales) {
+    if (acceptLang.includes(locale)) return locale;
+  }
+  return defaultLocale;
+}
+
+export async function proxy(request: NextRequest) {
   let response = NextResponse.next({
-    request: {
-      headers: request.headers,
-    },
+    request: { headers: request.headers },
   });
 
   const supabase = createServerClient<Database>(
@@ -37,7 +46,26 @@ export async function middleware(request: NextRequest) {
 
   await supabase.auth.getSession();
 
-  return response;
+  const { pathname } = request.nextUrl;
+
+  if (
+    pathname.startsWith("/_next") ||
+    pathname.startsWith("/api") ||
+    pathname.startsWith("/auth") ||
+    pathname.includes(".")
+  ) {
+    return response;
+  }
+
+  const pathnameHasLocale = locales.some(
+    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
+  );
+
+  if (pathnameHasLocale) return response;
+
+  const locale = getLocale(request);
+  request.nextUrl.pathname = `/${locale}${pathname}`;
+  return NextResponse.redirect(request.nextUrl);
 }
 
 export const config = {
