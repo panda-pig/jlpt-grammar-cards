@@ -145,7 +145,7 @@ export default function StudyPage() {
             {cards.map((g) => (
               <div key={g.id} className="relative" onClick={() => toggleSelect(g.id)}>
                 <div className={`cursor-pointer transition-all ${selectedIds.has(g.id) ? "ring-2 ring-[#242424] rounded-[40px]" : ""}`}>
-                  <GrammarCard grammar={g} onFavoriteToggle={() => {}} />
+                  <GrammarCard grammar={g} locale={locale} onFavoriteToggle={() => {}} />
                 </div>
                 {selectedIds.has(g.id) && (
                   <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-[#242424] text-white flex items-center justify-center text-xs font-bold">

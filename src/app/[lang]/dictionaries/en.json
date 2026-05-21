@@ -152,8 +152,8 @@
     "googleLogin": "Continue with Google",
     "noAccount": "No account?",
     "hasAccount": "Have an account?",
-    "loginPrompt": "Sign up",
-    "registerPrompt": "Log in"
+    "switchToRegister": "Sign up",
+    "switchToLogin": "Log in"
   },
   "reviewButtons": {
     "forgot": "Forgot",

@@ -152,8 +152,8 @@
     "googleLogin": "使用 Google 登录",
     "noAccount": "还没有账号？",
     "hasAccount": "已有账号？",
-    "loginPrompt": "登录",
-    "registerPrompt": "注册"
+    "switchToRegister": "注册",
+    "switchToLogin": "登录"
   },
   "reviewButtons": {
     "forgot": "忘记了",

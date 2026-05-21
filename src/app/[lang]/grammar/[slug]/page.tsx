@@ -25,13 +25,36 @@ export default function GrammarDetailPage() {
   const locale = useLocale();
   const [grammar, setGrammar] = useState<GrammarEntry | null>(null);
   const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(false);
   const [isFav, setIsFav] = useState(false);
 
   useEffect(() => {
-    grammarService.getBySlug(slug).then((data) => {
-      setGrammar(toGrammarEntry(data));
-      setLoading(false);
-    }).catch(() => setLoading(false));
+    setLoading(true);
+    setFetchError(false);
+    setGrammar(null);
+
+    const fetchGrammar = async () => {
+      try {
+        const data = await grammarService.getBySlug(slug);
+        setGrammar(toGrammarEntry(data));
+      } catch {
+        try {
+          const all = await grammarService.getAll();
+          const found = all.find((g: any) => g.slug === slug);
+          if (found) {
+            setGrammar(toGrammarEntry(found));
+          } else {
+            setFetchError(true);
+          }
+        } catch {
+          setFetchError(true);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchGrammar();
   }, [slug]);
 
   if (loading) {
@@ -48,9 +71,14 @@ export default function GrammarDetailPage() {
     return (
       <MainLayout>
         <div className="flex items-center justify-center py-20">
-          <div className="text-center">
+          <div className="text-center space-y-3">
             <h2 className="text-xl font-bold">{dict.grammar.notFound}</h2>
-            <Link href={`/${locale}/grammar`} className={buttonVariants({ variant: "outline", className: "mt-4" })}>{dict.grammar.backToLibrary}</Link>
+            {fetchError ? (
+              <p className="text-sm text-[#797776]">数据加载失败，请检查网络后重试</p>
+            ) : (
+              <p className="text-sm text-[#797776]">语法 "{slug}" 不存在</p>
+            )}
+            <Link href={`/${locale}/grammar`} className={buttonVariants({ variant: "outline", className: "mt-4 inline-flex" })}>{dict.grammar.backToLibrary}</Link>
           </div>
         </div>
       </MainLayout>

@@ -103,9 +103,9 @@ export default function LoginPage() {
 
             <p className="font-mono text-xs text-center text-[#797776]">
               {mode === "login" ? (
-                <>{dict.login.noAccount}<button type="button" className="underline" onClick={() => setMode("register")}>{dict.login.loginPrompt}</button></>
+                <>{dict.login.noAccount}<button type="button" className="underline" onClick={() => setMode("register")}>{dict.login.switchToRegister}</button></>
               ) : (
-                <>{dict.login.hasAccount}<button type="button" className="underline" onClick={() => setMode("login")}>{dict.login.registerPrompt}</button></>
+                <>{dict.login.hasAccount}<button type="button" className="underline" onClick={() => setMode("login")}>{dict.login.switchToLogin}</button></>
               )}
             </p>
           </CardContent>

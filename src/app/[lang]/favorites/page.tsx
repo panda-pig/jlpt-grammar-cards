@@ -7,12 +7,13 @@ import { EmptyState } from "@/components/grammar/EmptyState";
 import { Badge } from "@/components/ui/badge";
 import { grammarService } from "@/services/grammarService";
 import { toGrammarEntry } from "@/lib/mappers";
-import { useDictionary } from "@/components/layout/LocaleProvider";
+import { useDictionary, useLocale } from "@/components/layout/LocaleProvider";
 import type { GrammarEntry } from "@/lib/types";
 import { Heart } from "lucide-react";
 
 export default function FavoritesPage() {
   const dict = useDictionary();
+  const locale = useLocale();
 
   const favoriteCollections = [
     { id: "1", name: dict.favorites.collections.all },
@@ -68,7 +69,7 @@ export default function FavoritesPage() {
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {favorites.map((g) => (
-              <GrammarCard key={g.id} grammar={g} onFavoriteToggle={() => {}} />
+              <GrammarCard key={g.id} grammar={g} locale={locale} onFavoriteToggle={() => {}} />
             ))}
           </div>
         )}

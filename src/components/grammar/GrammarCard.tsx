@@ -16,19 +16,19 @@ const statusStyles: Record<string, string> = {
 
 export function GrammarCard({
   grammar,
+  locale = "zh",
   isFavorite = false,
   studyStatus = "未学习" as StudyStatus,
   onFavoriteToggle,
 }: {
   grammar: GrammarEntry;
+  locale?: string;
   isFavorite?: boolean;
   studyStatus?: StudyStatus;
   onFavoriteToggle?: (id: string) => void;
 }) {
-  const localePrefix = ""; // will be filled by parent
-
   return (
-    <Link href={`/grammar/${grammar.slug}`}>
+    <Link href={`/${locale}/grammar/${grammar.slug}`}>
       <div className="group h-full bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px] p-6 md:p-8 transition-all hover:translate-y-[-2px] hover:shadow-[rgba(0,0,0,0.1)_0px_0px_10px_0px]">
         <div className="flex items-start justify-between gap-2">
           <div className="flex-1 min-w-0">

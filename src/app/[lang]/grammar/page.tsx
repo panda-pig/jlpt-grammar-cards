@@ -105,7 +105,7 @@ export default function GrammarLibraryPage() {
             ) : (
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {filtered.map((g) => (
-                  <GrammarCard key={g.id} grammar={g} onFavoriteToggle={() => {}} />
+                  <GrammarCard key={g.id} grammar={g} locale={locale} onFavoriteToggle={() => {}} />
                 ))}
               </div>
             )}
