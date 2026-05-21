@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase";
+import { supabaseBrowser as supabase } from "@/lib/supabase-browser";
 import type { Database } from "@/lib/database.types";
 
 type GrammarRow = Database["public"]["Tables"]["grammar"]["Row"];

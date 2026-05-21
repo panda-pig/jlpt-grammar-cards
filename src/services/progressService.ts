@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase";
+import { supabaseBrowser as supabase } from "@/lib/supabase-browser";
 import { calculateSM2, ratingToQuality, getInitialSM2 } from "@/lib/sm2";
 import type { ReviewRating } from "@/lib/types";
 
