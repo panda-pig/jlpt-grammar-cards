@@ -2,8 +2,6 @@ import { supabaseBrowser as supabase } from "@/lib/supabase-browser";
 import type { Database } from "@/lib/database.types";
 
 type GrammarRow = Database["public"]["Tables"]["grammar"]["Row"];
-type GrammarInsert = Database["public"]["Tables"]["grammar"]["Insert"];
-type GrammarUpdate = Database["public"]["Tables"]["grammar"]["Update"];
 
 export const grammarService = {
   async getAll() {
