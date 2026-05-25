@@ -46,6 +46,8 @@ next-env.d.ts
 # local AI/tooling state
 .codegraph/
 .cursor/
+/AGENTS.md
+/CLAUDE.md
 
 # Design docs (do not commit)
 /Anki 风格日语语法学习网站设计与开发需求prd.md
