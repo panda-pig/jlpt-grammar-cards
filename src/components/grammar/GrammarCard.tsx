@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import { LevelBadge } from "./LevelBadge";
-import { SourceRouteBadge } from "./SourceRouteBadge";
 import { GrammarTypeBadge } from "./GrammarTypeBadge";
 import { FavoriteButton } from "./FavoriteButton";
 import { Badge } from "@/components/ui/badge";
+import { localizedGrammar, localizedStructure, localizedTagLabel, studyStatusLabel, type AppLocale } from "@/lib/grammar-content";
+import { grammarVariantLabel } from "@/lib/grammar-relations";
 import type { GrammarEntry, StudyStatus } from "@/lib/types";
 
 const statusStyles: Record<string, string> = {
@@ -19,14 +20,24 @@ export function GrammarCard({
   locale = "zh",
   isFavorite = false,
   studyStatus = "未学习" as StudyStatus,
+  relatedUseCount = 0,
   onFavoriteToggle,
 }: {
   grammar: GrammarEntry;
-  locale?: string;
+  locale?: AppLocale;
   isFavorite?: boolean;
   studyStatus?: StudyStatus;
+  relatedUseCount?: number;
   onFavoriteToggle?: (id: string) => void;
 }) {
+  const content = localizedGrammar(grammar, locale);
+  const structure = localizedStructure(grammar.structure, locale);
+  const variantLabel = grammarVariantLabel(grammar, locale);
+  const tags = grammar.tags
+    .map((tag) => ({ raw: tag, label: localizedTagLabel(tag, locale) }))
+    .filter((tag) => tag.label)
+    .slice(0, 2);
+
   return (
     <Link href={`/${locale}/grammar/${grammar.slug}`}>
       <div className="group h-full bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px] p-6 md:p-8 transition-all hover:translate-y-[-2px] hover:shadow-[rgba(0,0,0,0.1)_0px_0px_10px_0px]">
@@ -34,15 +45,17 @@ export function GrammarCard({
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-1.5 flex-wrap mb-3">
               <LevelBadge level={grammar.jlptLevel} />
-              <SourceRouteBadge route={grammar.sourceRoute} />
               <GrammarTypeBadge category={grammar.grammarType} />
             </div>
-            <h3 className="font-serif text-lg font-medium truncate text-[#000000]">{grammar.title}</h3>
+            <h3 className="font-serif text-xl font-bold truncate text-[#000000]">{grammar.title}</h3>
+            <p className="mt-1 text-[11px] font-mono leading-relaxed text-[#797776] line-clamp-2">
+              {variantLabel}
+            </p>
             <p className="text-sm text-[#4e4d4d] mt-1.5 line-clamp-2">
-              {grammar.meaningCn}
+              {content.meaning}
             </p>
             <p className="text-xs text-[#797776] mt-2 truncate">
-              {grammar.structure.split("\n")[0]}
+              {structure.split("\n")[0]}
             </p>
           </div>
           <FavoriteButton
@@ -51,17 +64,22 @@ export function GrammarCard({
           />
         </div>
         <div className="flex items-center gap-1.5 mt-4 flex-wrap">
-          {grammar.tags.slice(0, 2).map((tag) => (
-            <Badge key={tag} variant="outline" className="rounded-full text-[10px] px-2 py-0.5 border-[rgba(36,36,36,0.16)] text-[#797776]">
-              {tag}
+          {tags.map((tag) => (
+            <Badge key={tag.raw} variant="outline" className="rounded-full text-[10px] px-2 py-0.5 border-[rgba(36,36,36,0.16)] text-[#797776]">
+              {tag.label}
             </Badge>
           ))}
+          {relatedUseCount > 0 && (
+            <Badge variant="outline" className="rounded-full text-[10px] px-2 py-0.5 border-[rgba(79,111,180,0.28)] bg-[#eef3ff] text-[#4f6fb4]">
+              {locale === "zh" ? `另有 ${relatedUseCount} 个相关用法` : `${relatedUseCount} related use${relatedUseCount > 1 ? "s" : ""}`}
+            </Badge>
+          )}
           <div className="flex-1" />
           <Badge
             variant="outline"
             className={`rounded-full text-[10px] px-2 py-0.5 font-mono ${statusStyles[studyStatus] || ""}`}
           >
-            {studyStatus}
+            {studyStatusLabel(studyStatus, locale)}
           </Badge>
         </div>
       </div>

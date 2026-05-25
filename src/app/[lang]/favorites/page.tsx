@@ -5,15 +5,17 @@ import { MainLayout } from "@/components/layout/MainLayout";
 import { GrammarCard } from "@/components/grammar/GrammarCard";
 import { EmptyState } from "@/components/grammar/EmptyState";
 import { Badge } from "@/components/ui/badge";
-import { grammarService } from "@/services/grammarService";
 import { toGrammarEntry } from "@/lib/mappers";
+import { learningService, type ProgressWithGrammar } from "@/services/learningService";
+import { useAuth } from "@/hooks/useAuth";
 import { useDictionary, useLocale } from "@/components/layout/LocaleProvider";
-import type { GrammarEntry } from "@/lib/types";
-import { Heart } from "lucide-react";
+import type { StudyStatus } from "@/lib/types";
+import { Heart, WifiOff } from "lucide-react";
 
 export default function FavoritesPage() {
   const dict = useDictionary();
   const locale = useLocale();
+  const { user } = useAuth();
 
   const favoriteCollections = [
     { id: "1", name: dict.favorites.collections.all },
@@ -22,17 +24,20 @@ export default function FavoritesPage() {
     { id: "4", name: dict.favorites.collections.n2Focus },
     { id: "5", name: dict.favorites.collections.keigo },
   ];
-  const [entries, setEntries] = useState<any[]>([]);
+  const [favorites, setFavorites] = useState<ProgressWithGrammar[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    grammarService.getAll().then((data) => {
-      setEntries(data.map(toGrammarEntry));
+    learningService.getFavorites(user?.id).then((data) => {
+      setFavorites(data);
       setLoading(false);
     }).catch(() => setLoading(false));
-  }, []);
+  }, [user?.id]);
 
-  const favorites = entries.filter(() => false); // TODO: from progressService
+  const handleFavoriteToggle = async (id: string) => {
+    await learningService.toggleFavorite(id, user?.id);
+    setFavorites((prev) => prev.filter((row) => row.grammar_id !== id));
+  };
 
   if (loading) {
     return (
@@ -47,6 +52,12 @@ export default function FavoritesPage() {
   return (
     <MainLayout>
       <div className="mx-auto max-w-6xl py-4 sm:py-6">
+        {!user && (
+          <div className="mb-4 flex items-start gap-3 rounded-[28px] border border-[rgba(36,36,36,0.16)] bg-[#fff6df] px-4 py-3 text-sm text-[#4e4d4d]">
+            <WifiOff className="mt-0.5 h-4 w-4 shrink-0 text-[#a08040]" />
+            <p>{dict.common.localModeDesc}</p>
+          </div>
+        )}
         <div className="flex items-center gap-2 mb-4">
           <Heart className="h-5 w-5 text-[#c47a6a]" />
           <h1 className="text-2xl font-bold">{dict.favorites.title}</h1>
@@ -69,7 +80,14 @@ export default function FavoritesPage() {
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {favorites.map((g) => (
-              <GrammarCard key={g.id} grammar={g} locale={locale} onFavoriteToggle={() => {}} />
+              <GrammarCard
+                key={g.grammar_id}
+                grammar={toGrammarEntry(g.grammar)}
+                locale={locale}
+                isFavorite
+                studyStatus={(g.study_status ?? "未学习") as StudyStatus}
+                onFavoriteToggle={handleFavoriteToggle}
+              />
             ))}
           </div>
         )}

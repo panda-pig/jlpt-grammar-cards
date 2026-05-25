@@ -1,10 +1,18 @@
 {
   "common": {
     "siteName": "JLPT Grammar Deck",
+    "siteTagline": "Japanese Grammar Flashcards",
     "startLearning": "Start Learning",
     "viewLibrary": "Browse Library",
     "login": "Login",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "localMode": "Local trial mode",
+    "localModeDesc": "Progress is saved in this browser. Log in to keep it permanently and sync across devices.",
+    "syncHint": "Log in to sync your study records across devices.",
+    "emptyField": "—",
+    "notReviewed": "Never reviewed",
+    "notScheduled": "Not scheduled",
+    "comingSoon": "Coming Soon"
   },
   "nav": {
     "home": "Home",
@@ -12,6 +20,7 @@
     "study": "Study",
     "review": "Review",
     "favorites": "Favorites",
+    "myGrammar": "My Library",
     "dashboard": "Dashboard"
   },
   "mobileNav": {
@@ -27,7 +36,7 @@
     "heroSubtitle": "A grammar memory tool designed for N1–N5 learners. Organize scattered grammar points into a long-term review system through flashcards, favorites, review schedules, and side-by-side comparisons.",
     "featuresTitle": "Core Features",
     "features": [
-      { "title": "JLPT N1–N5 Grammar System", "desc": "All levels covered, organized by textbook route and grammar category" },
+      { "title": "JLPT N1–N5 Grammar System", "desc": "All levels covered, organized by JLPT level and grammar category" },
       { "title": "Anki-Style Review", "desc": "Front shows grammar pattern, back reveals meaning, structure, and examples" },
       { "title": "Grammar Comparisons", "desc": "Side-by-side comparison of easily confused grammar patterns" },
       { "title": "Common Mistake Alerts", "desc": "Each grammar point highlights typical errors and pitfalls" },
@@ -43,6 +52,9 @@
       { "step": "Auto-Schedule", "desc": "Forgetting curve algorithm reminds you when to review" }
     ],
     "statsTitle": "Your Stats at a Glance",
+    "previewMeaning": "It doesn't mean that...; not necessarily...",
+    "previewStructure": "Structure: plain form + わけではない",
+    "previewStatus": "Status: Learning",
     "todayReview": "Due Today",
     "learnedGrammar": "Learned",
     "streakDays": "Day Streak",
@@ -53,6 +65,7 @@
   },
   "grammar": {
     "title": "Grammar Library",
+    "searchPlaceholder": "Search grammar, meaning, keywords...",
     "filter": "Filter",
     "filterTitle": "Filters",
     "results": "results",
@@ -62,6 +75,8 @@
     "noResults": "No grammar found",
     "noResultsHint": "Try changing your search keywords or filters",
     "notFound": "Grammar Not Found",
+    "loadFailed": "Could not load data. Check your connection and try again.",
+    "missingItem": "This grammar item does not exist",
     "backToLibrary": "Back to Library",
     "meaning": "Meaning",
     "structure": "Structure",
@@ -71,15 +86,24 @@
     "commonMistake": "Common Mistake",
     "memoryTip": "Memory Tip",
     "similarGrammar": "Similar Grammar",
+    "sameTitleUses": "Other uses with the same form",
+    "sameTitleUsesHint": "These entries share the same written form, but the level, structure, or grammar scene differs. Learn them separately.",
     "studyStatus": "Study Status",
     "reviewCount": "Times Reviewed",
+    "lastReviewed": "Last Reviewed",
+    "nextReview": "Next Review",
     "masteryLevel": "Mastery",
-    "addToStudy": "Start Learning"
+    "addToStudy": "Start Learning",
+    "favorite": "Save",
+    "unfavorite": "Remove",
+    "emptyContent": "—",
+    "quiz": "Mini Quiz"
   },
   "study": {
     "startTitle": "Start Studying",
-    "startDesc": "Choose a level to begin Anki-style flashcard learning",
+    "startDesc": "Choose a level and study new Anki-style cards. Ratings schedule future reviews with SM-2.",
     "selectLevel": "Select Level",
+    "allLevels": "All Levels",
     "selectAll": "Select All",
     "startButton": "Start Learning",
     "completedTitle": "Review Complete!",
@@ -90,7 +114,17 @@
     "progress": "Progress",
     "level": "Level",
     "remaining": "Remaining",
-    "frontPrompt": "Recall: meaning / structure / example / common mistake"
+    "frontPrompt": "Recall: meaning / structure / example / common mistake",
+    "showAnswer": "Show Answer",
+    "newCards": "New Cards",
+    "newCard": "New Card",
+    "learningMode": "Study Mode",
+    "emptyTitle": "No new cards here",
+    "emptyDesc": "You have already started every card in this filter. Head to today's review for due cards.",
+    "reviewNow": "Review Due Cards",
+    "queueCount": "New cards available",
+    "currentCard": "Current Card",
+    "scheduleHint": "After rating, the next due date, interval, and mastery level are updated automatically."
   },
   "review": {
     "title": "Today's Review",
@@ -107,7 +141,11 @@
     "streakMsg": "{days}-day streak.",
     "noDueCards": "No cards due today",
     "noDueCardsHint": "Head to the study page to add new cards",
-    "goStudy": "Go Study"
+    "goStudy": "Go Study",
+    "oldReviewOnly": "Only learned cards that are due for review appear here.",
+    "lastRating": "Last Rating",
+    "nextReview": "Next Review",
+    "reviewedCards": "Reviewed Cards"
   },
   "favorites": {
     "title": "Favorites",
@@ -119,6 +157,50 @@
       "preExam": "Pre-Exam",
       "n2Focus": "N2 Focus",
       "keigo": "Keigo"
+    }
+  },
+  "myGrammar": {
+    "title": "My Grammar Library",
+    "subtitle": "Keep your own additions, edits, and hidden items on top of the curated JLPT deck.",
+    "loginTitle": "Log in to manage your personal library",
+    "loginDesc": "You can still study locally without logging in. Personal additions, edits, and hidden items are saved to your account after login.",
+    "loginAction": "Log in",
+    "browseDefault": "Browse Default Library",
+    "dbNotReadyTitle": "Personal grammar database is not enabled yet",
+    "dbNotReadyDesc": "The remote Supabase project has not applied the user grammar library migration yet. The interface is ready and will unlock after migration.",
+    "dbReadyTitle": "Personal grammar library is enabled",
+    "dbReadyDesc": "You can add private grammar items and hide default deck entries from your own library.",
+    "localModeTitle": "Local personal library mode",
+    "localModeDesc": "Until the remote database is enabled, additions and hidden items are saved in this browser. They can be synced to your account after migration.",
+    "defaultDeck": "Default Deck",
+    "privateItems": "Private Items",
+    "hiddenItems": "Hidden",
+    "overrides": "Personal Edits",
+    "addPrivate": "Add Private Grammar",
+    "addPrivateDesc": "Use this for grammar points from classes, textbooks, or teacher notes.",
+    "manageDefault": "Manage Default Deck",
+    "manageDefaultDesc": "Search the default deck and hide entries from your personal library. The shared default deck is not changed.",
+    "searchPlaceholder": "Search default grammar...",
+    "hideFromMine": "Hide from My Library",
+    "schemaCheck": "Database Check",
+    "save": "Save Grammar",
+    "saving": "Saving...",
+    "disabledHint": "Changes are saved in this browser for now and can be synced after Supabase migration.",
+    "saved": "Saved to your personal grammar library.",
+    "hidden": "Hidden from your personal grammar library.",
+    "form": {
+      "title": "Grammar",
+      "slug": "Slug",
+      "jlptLevel": "Level",
+      "grammarType": "Type",
+      "structure": "Structure",
+      "meaningZh": "Chinese Meaning",
+      "meaningEn": "English Meaning",
+      "explanationZh": "Chinese Explanation",
+      "explanationEn": "English Explanation",
+      "exampleJp": "Japanese Example",
+      "exampleZh": "Chinese Translation",
+      "exampleEn": "English Translation"
     }
   },
   "dashboard": {
@@ -134,6 +216,8 @@
     "masteredGrammar": "Mastered",
     "favoritesCount": "Saved",
     "levelProgress": "JLPT Level Progress",
+    "recentReviews": "Recent Reviews",
+    "noRecentReviews": "No review records yet",
     "shortcuts": "Quick Links",
     "continueStudy": "Continue",
     "todayReviewBtn": "Review",
@@ -156,13 +240,16 @@
     "switchToLogin": "Log in"
   },
   "reviewButtons": {
-    "forgot": "Forgot",
-    "vague": "Fuzzy",
-    "remembered": "Got it",
-    "easy": "Easy"
+    "forgot": "Again / Forgot",
+    "vague": "Hard / Fuzzy",
+    "remembered": "Good / Got it",
+    "easy": "Easy / Simple"
   },
   "admin": {
     "title": "Admin",
+    "unavailableTitle": "Admin is not open yet",
+    "unavailableDesc": "The admin code structure is kept for later. Grammar content editing will open after the admin role design is in place.",
+    "backHome": "Back Home",
     "grammarList": "Manage Grammar",
     "addGrammar": "Add Grammar",
     "editGrammar": "Edit Grammar",
@@ -183,7 +270,6 @@
       "title": "Grammar Title",
       "slug": "Slug",
       "jlptLevel": "JLPT Level",
-      "sourceRoute": "Textbook Route",
       "grammarType": "Grammar Type",
       "tags": "Tags",
       "meaningCn": "Chinese Meaning",
@@ -206,8 +292,6 @@
   "filter": {
     "jlptLevel": "JLPT Level",
     "allLevels": "All Levels",
-    "sourceRoute": "Textbook Route",
-    "allRoutes": "All Routes",
     "grammarType": "Grammar Type",
     "allTypes": "All Types",
     "studyStatus": "Study Status",

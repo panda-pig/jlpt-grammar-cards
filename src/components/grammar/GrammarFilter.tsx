@@ -2,22 +2,21 @@
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { useDictionary } from "@/components/layout/LocaleProvider";
-import { CATEGORY_LABELS } from "@/lib/types";
-import type { JLPTLevel, SourceRoute, GrammarCategory, StudyStatus } from "@/lib/types";
+import { useDictionary, useLocale } from "@/components/layout/LocaleProvider";
+import { grammarCategoryLabel, studyStatusLabel } from "@/lib/grammar-content";
+import type { JLPTLevel, GrammarCategory, StudyStatus } from "@/lib/types";
 
 const levels: JLPTLevel[] = ["N5", "N4", "N3", "N2", "N1"];
-const routes: SourceRoute[] = ["蓝宝书", "TRY", "一册合格", "综合"];
 const categories: GrammarCategory[] = [
   "原因・理由", "条件", "逆接・譲歩", "推量・様態", "否定",
-  "敬語", "比較", "目的", "限定", "並列", "例示", "伝聞",
-  "意志・勧誘", "義務・当然", "その他",
+  "敬語", "比較", "目的", "限定", "範囲", "並列", "例示", "伝聞",
+  "提示", "意志・勧誘", "願望", "義務・当然", "存在", "結果", "関係", "時点",
+  "程度", "変化", "評価", "感情", "確認", "強調", "規則", "その他",
 ];
 const statuses: StudyStatus[] = ["未学习", "学习中", "已掌握"];
 
 export interface GrammarFilters {
   level: JLPTLevel | "all";
-  route: SourceRoute | "all";
   category: GrammarCategory | "all";
   status: StudyStatus | "all";
   favorite: boolean;
@@ -25,7 +24,6 @@ export interface GrammarFilters {
 
 export const defaultFilters: GrammarFilters = {
   level: "all",
-  route: "all",
   category: "all",
   status: "all",
   favorite: false,
@@ -39,9 +37,9 @@ export function GrammarFilterContent({
   onChange: (f: GrammarFilters) => void;
 }) {
   const dict = useDictionary();
+  const locale = useLocale();
   const levelLabels: Record<string, string> = { all: dict.filter.allLevels, N5: "N5", N4: "N4", N3: "N3", N2: "N2", N1: "N1" };
-  const routeLabels: Record<string, string> = { all: dict.filter.allRoutes, 蓝宝书: "蓝宝书", TRY: "TRY", 一册合格: "一册合格", 综合: "综合" };
-  const statusLabels: Record<string, string> = { all: dict.filter.allStatuses, 未学习: dict.filter.unlearned, 学习中: dict.filter.learning, 已掌握: dict.filter.mastered };
+  const statusLabels: Record<string, string> = { all: dict.filter.allStatuses, 未学习: studyStatusLabel("未学习", locale), 学习中: studyStatusLabel("学习中", locale), 已掌握: studyStatusLabel("已掌握", locale) };
 
   return (
     <div className="flex flex-col gap-4">
@@ -63,35 +61,18 @@ export function GrammarFilterContent({
         </Select>
       </div>
       <div>
-        <label className="text-xs font-medium mb-1.5 block">{dict.filter.sourceRoute}</label>
-        <Select
-          value={filters.route}
-          onValueChange={(v) => onChange({ ...filters, route: v as SourceRoute | "all" })}
-        >
-          <SelectTrigger className="w-full border-[rgba(36,36,36,0.16)] bg-transparent data-placeholder:text-[#797776]">
-            <SelectValue>{routeLabels[filters.route] || dict.filter.allRoutes}</SelectValue>
-          </SelectTrigger>
-          <SelectContent className="max-h-60">
-            <SelectItem value="all">{dict.filter.allRoutes}</SelectItem>
-            {routes.map((r) => (
-              <SelectItem key={r} value={r}>{r}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-      <div>
         <label className="text-xs font-medium mb-1.5 block">{dict.filter.grammarType}</label>
         <Select
           value={filters.category}
           onValueChange={(v) => onChange({ ...filters, category: v as GrammarCategory | "all" })}
         >
           <SelectTrigger className="w-full border-[rgba(36,36,36,0.16)] bg-transparent data-placeholder:text-[#797776]">
-            <SelectValue>{filters.category === "all" ? dict.filter.allTypes : CATEGORY_LABELS[filters.category] || filters.category}</SelectValue>
+            <SelectValue>{filters.category === "all" ? dict.filter.allTypes : grammarCategoryLabel(filters.category, locale)}</SelectValue>
           </SelectTrigger>
           <SelectContent className="max-h-60">
             <SelectItem value="all">{dict.filter.allTypes}</SelectItem>
             {categories.map((c) => (
-              <SelectItem key={c} value={c}>{CATEGORY_LABELS[c]}</SelectItem>
+              <SelectItem key={c} value={c}>{grammarCategoryLabel(c, locale)}</SelectItem>
             ))}
           </SelectContent>
         </Select>

@@ -16,11 +16,25 @@ export type GrammarCategory =
   | "比較"
   | "目的"
   | "限定"
+  | "範囲"
   | "並列"
   | "例示"
   | "伝聞"
+  | "提示"
   | "意志・勧誘"
+  | "願望"
   | "義務・当然"
+  | "存在"
+  | "結果"
+  | "関係"
+  | "時点"
+  | "程度"
+  | "変化"
+  | "評価"
+  | "感情"
+  | "確認"
+  | "強調"
+  | "規則"
   | "その他";
 
 export type StudyStatus = "未学习" | "学习中" | "已掌握";
@@ -40,6 +54,12 @@ export interface QuizChoice {
 
 export interface GrammarEntry {
   id: string;
+  dbId?: string;
+  ownerId?: string | null;
+  isSystem?: boolean;
+  isUserCreated?: boolean;
+  isHidden?: boolean;
+  baseGrammarKey?: string | null;
   title: string;
   slug: string;
   jlptLevel: JLPTLevel;
@@ -47,16 +67,27 @@ export interface GrammarEntry {
   grammarType: GrammarCategory;
   tags: string[];
   meaningCn: string;
+  meaningZh: string;
   meaningEn: string;
   structure: string;
   explanation: string;
+  explanationZh: string;
+  explanationEn: string;
   usageNote: string;
+  usageNoteZh: string;
+  usageNoteEn: string;
   exampleJp: string;
   exampleCn: string;
+  exampleZh: string;
+  exampleEn: string;
   furigana?: string;
   similarGrammar: SimilarGrammar[];
   commonMistake: string;
+  commonMistakeZh: string;
+  commonMistakeEn: string;
   memoryTip: string;
+  memoryTipZh: string;
+  memoryTipEn: string;
   quizQuestion: string;
   quizChoices: QuizChoice[];
   quizAnswer: string;
@@ -118,6 +149,17 @@ export interface ReviewRecord {
   isFavorite: boolean;
 }
 
+export interface ReviewHistoryRecord {
+  id?: string;
+  grammarId: string;
+  rating: string;
+  reviewedAt: string;
+  interval: number;
+  repetition: number;
+  easeFactor: number;
+  nextReviewAt: string;
+}
+
 export interface FavoriteCollection {
   id: string;
   name: string;
@@ -141,10 +183,24 @@ export const CATEGORY_LABELS: Record<GrammarCategory, string> = {
   "比較": "比較",
   "目的": "目的",
   "限定": "限定",
+  "範囲": "範囲",
   "並列": "並列",
   "例示": "例示",
   "伝聞": "伝聞",
+  "提示": "提示",
   "意志・勧誘": "意志・勧誘",
+  "願望": "願望",
   "義務・当然": "義務・当然",
+  "存在": "存在",
+  "結果": "結果",
+  "関係": "関係",
+  "時点": "時点",
+  "程度": "程度",
+  "変化": "変化",
+  "評価": "評価",
+  "感情": "感情",
+  "確認": "確認",
+  "強調": "強調",
+  "規則": "規則",
   "その他": "その他",
 };

@@ -9,25 +9,34 @@ import { EmptyState } from "@/components/grammar/EmptyState";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
 import { grammarService } from "@/services/grammarService";
+import { learningService, type UnifiedProgressRow } from "@/services/learningService";
 import { toGrammarEntry } from "@/lib/mappers";
+import { buildGrammarRelationMap } from "@/lib/grammar-relations";
+import { useAuth } from "@/hooks/useAuth";
 import { useDictionary, useLocale } from "@/components/layout/LocaleProvider";
-import { SlidersHorizontal } from "lucide-react";
-import type { GrammarEntry } from "@/lib/types";
+import { SlidersHorizontal, WifiOff } from "lucide-react";
+import type { GrammarEntry, StudyStatus } from "@/lib/types";
 
 export default function GrammarLibraryPage() {
   const dict = useDictionary();
   const locale = useLocale();
+  const { user } = useAuth();
   const [entries, setEntries] = useState<GrammarEntry[]>([]);
+  const [progressMap, setProgressMap] = useState<Map<string, UnifiedProgressRow>>(new Map());
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState<GrammarFilters>(defaultFilters);
 
   useEffect(() => {
-    grammarService.getAll().then((data) => {
+    Promise.all([
+      grammarService.getAll(user?.id),
+      learningService.getProgressMap(user?.id),
+    ]).then(([data, progress]) => {
       setEntries(data.map(toGrammarEntry));
+      setProgressMap(progress);
       setLoading(false);
     }).catch(() => setLoading(false));
-  }, []);
+  }, [user?.id]);
 
   const filtered = useMemo(() => {
     let result = entries;
@@ -41,17 +50,27 @@ export default function GrammarLibraryPage() {
       );
     }
     if (filters.level !== "all") result = result.filter((e) => e.jlptLevel === filters.level);
-    if (filters.route !== "all") result = result.filter((e) => e.sourceRoute === filters.route);
     if (filters.category !== "all") result = result.filter((e) => e.grammarType === filters.category);
-    // TODO: status/favorite filters need user progress data from progressService
-    // if (filters.status !== "all") result = result.filter(...)
-    // if (filters.favorite) result = result.filter(...)
+    if (filters.status !== "all") {
+      result = result.filter((e) => (progressMap.get(e.id)?.study_status ?? "未学习") === filters.status);
+    }
+    if (filters.favorite) {
+      result = result.filter((e) => !!progressMap.get(e.id)?.is_favorite);
+    }
     return result;
-  }, [search, filters, entries]);
+  }, [search, filters, entries, progressMap]);
 
-  const learnedCount = 0; // TODO: from progressService
-  const masteredCount = 0; // TODO: from progressService
-  const favCount = 0; // TODO: from progressService
+  const relationMap = useMemo(() => buildGrammarRelationMap(entries), [entries]);
+
+  const progressRows = Array.from(progressMap.values());
+  const learnedCount = progressRows.filter((row) => row.study_status === "学习中" || row.study_status === "已掌握").length;
+  const masteredCount = progressRows.filter((row) => row.study_status === "已掌握").length;
+  const favCount = progressRows.filter((row) => row.is_favorite).length;
+
+  const handleFavoriteToggle = async (id: string) => {
+    const next = await learningService.toggleFavorite(id, user?.id);
+    setProgressMap((prev) => new Map(prev).set(id, next));
+  };
 
   if (loading) {
     return (
@@ -66,6 +85,15 @@ export default function GrammarLibraryPage() {
   return (
     <MainLayout>
       <div className="mx-auto max-w-6xl py-4 sm:py-6">
+        {!user && (
+          <div className="mb-4 flex items-start gap-3 rounded-[28px] border border-[rgba(36,36,36,0.16)] bg-[#fff6df] px-4 py-3 text-sm text-[#4e4d4d]">
+            <WifiOff className="mt-0.5 h-4 w-4 shrink-0 text-[#a08040]" />
+            <div>
+              <p className="font-mono text-xs font-medium text-[#242424]">{dict.common.localMode}</p>
+              <p className="mt-1 leading-relaxed">{dict.common.localModeDesc}</p>
+            </div>
+          </div>
+        )}
         <div className="mb-6 space-y-4">
           <div className="flex items-center gap-3">
             <h1 className="text-2xl font-serif font-bold">{dict.grammar.title}</h1>
@@ -79,7 +107,7 @@ export default function GrammarLibraryPage() {
               </SheetContent>
             </Sheet>
           </div>
-          <SearchBar value={search} onChange={setSearch} placeholder={locale === "zh" ? "搜索语法、意思、关键词..." : "Search grammar, meaning, keywords..."} />
+          <SearchBar value={search} onChange={setSearch} placeholder={dict.grammar.searchPlaceholder} />
           <div className="flex flex-wrap items-center gap-2 text-sm">
             <Badge variant="secondary" className="font-mono text-xs">{dict.grammar.results} {filtered.length}</Badge>
             <Badge variant="secondary" className="font-mono text-xs">{dict.grammar.learned} {learnedCount}</Badge>
@@ -105,7 +133,20 @@ export default function GrammarLibraryPage() {
             ) : (
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {filtered.map((g) => (
-                  <GrammarCard key={g.id} grammar={g} locale={locale} onFavoriteToggle={() => {}} />
+                  (() => {
+                    const relation = relationMap.get(g.id);
+                    return (
+                      <GrammarCard
+                        key={g.id}
+                        grammar={g}
+                        locale={locale}
+                        isFavorite={!!progressMap.get(g.id)?.is_favorite}
+                        studyStatus={(progressMap.get(g.id)?.study_status ?? "未学习") as StudyStatus}
+                        relatedUseCount={Math.max((relation?.sameTitleCount ?? 1) - 1, 0)}
+                        onFavoriteToggle={handleFavoriteToggle}
+                      />
+                    );
+                  })()
                 ))}
               </div>
             )}

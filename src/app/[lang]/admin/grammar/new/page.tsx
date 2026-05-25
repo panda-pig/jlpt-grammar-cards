@@ -12,14 +12,13 @@ import { grammarService } from "@/services/grammarService";
 import { ArrowLeft } from "lucide-react";
 
 const levels = ["N5", "N4", "N3", "N2", "N1"] as const;
-const routes = ["蓝宝书", "TRY", "一册合格", "综合"] as const;
 const categories = ["原因・理由", "条件", "逆接・譲歩", "推量・様態", "否定", "敬語", "比較", "目的", "限定", "並列", "例示", "伝聞", "意志・勧誘", "義務・当然", "その他"] as const;
 
 const emptyForm = {
   title: "",
   slug: "",
   jlpt_level: "N5" as const,
-  source_route: "蓝宝书" as const,
+  source_route: "综合" as const,
   grammar_type: "その他" as const,
   tags: [] as string[],
   meaning_cn: "",
@@ -71,14 +70,10 @@ export default function AdminNewGrammarPage() {
               <Input placeholder="语法标题 *" required value={form.title} onChange={(e) => updateField("title", e.target.value)} className="rounded-full" />
               <Input placeholder="slug *" required value={form.slug} onChange={(e) => updateField("slug", e.target.value)} className="rounded-full" />
             </div>
-            <div className="grid gap-3 sm:grid-cols-3">
+            <div className="grid gap-3 sm:grid-cols-2">
               <Select value={form.jlpt_level} onValueChange={(v) => updateField("jlpt_level", v)}>
                 <SelectTrigger className="rounded-full"><SelectValue /></SelectTrigger>
                 <SelectContent>{levels.map((l) => <SelectItem key={l} value={l}>{l}</SelectItem>)}</SelectContent>
-              </Select>
-              <Select value={form.source_route} onValueChange={(v) => updateField("source_route", v)}>
-                <SelectTrigger className="rounded-full"><SelectValue /></SelectTrigger>
-                <SelectContent>{routes.map((r) => <SelectItem key={r} value={r}>{r}</SelectItem>)}</SelectContent>
               </Select>
               <Select value={form.grammar_type} onValueChange={(v) => updateField("grammar_type", v)}>
                 <SelectTrigger className="rounded-full"><SelectValue /></SelectTrigger>

@@ -60,12 +60,12 @@ export default function HomePage() {
                     ～わけではない
                   </h2>
                   <p className="mt-3 text-[#4e4d4d] text-sm">
-                    {locale === "zh" ? "并不是……；并非……" : "It doesn't mean that...; not necessarily..."}
+                    {dict.home.previewMeaning}
                   </p>
                 </div>
                 <div className="space-y-2 text-sm text-[#4e4d4d]">
-                  <p>{locale === "zh" ? "接续：普通形 + わけではない" : "Structure: plain form + わけではない"}</p>
-                  <p>{locale === "zh" ? "状态：学习中" : "Status: Learning"}</p>
+                  <p>{dict.home.previewStructure}</p>
+                  <p>{dict.home.previewStatus}</p>
                 </div>
               </div>
             </div>

@@ -1,159 +1,191 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { MainLayout } from "@/components/layout/MainLayout";
-import { GrammarCard } from "@/components/grammar/GrammarCard";
+import { StudyFlashcard } from "@/components/study/StudyFlashcard";
+import { ReviewButtons } from "@/components/study/ReviewButtons";
+import { ProgressBar } from "@/components/study/ProgressBar";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card";
-import { grammarService } from "@/services/grammarService";
-import { progressService } from "@/services/progressService";
-import { toGrammarEntry } from "@/lib/mappers";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { learningService } from "@/services/learningService";
 import { useAuth } from "@/hooks/useAuth";
 import { useDictionary, useLocale } from "@/components/layout/LocaleProvider";
-import type { GrammarEntry, JLPTLevel } from "@/lib/types";
-import { Sparkles, BookOpen } from "lucide-react";
+import type { GrammarEntry, JLPTLevel, ReviewRating } from "@/lib/types";
+import { BookOpen, Sparkles, WifiOff } from "lucide-react";
+
+type StudyLevel = JLPTLevel | "all";
 
 export default function StudyPage() {
   const { user } = useAuth();
   const dict = useDictionary();
   const locale = useLocale();
-  const [level, setLevel] = useState<JLPTLevel>("N3");
+  const [level, setLevel] = useState<StudyLevel>("N3");
   const [cards, setCards] = useState<GrammarEntry[]>([]);
-  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
-  const [loading, setLoading] = useState(false);
-  const [adding, setAdding] = useState(false);
-  const [added, setAdded] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [flipped, setFlipped] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [completedCount, setCompletedCount] = useState(0);
+
+  const currentCard = cards[currentIndex] ?? null;
+  const progressValue = cards.length > 0 ? ((completedCount) / cards.length) * 100 : 0;
+  const remaining = Math.max(cards.length - currentIndex - 1, 0);
 
   const loadCards = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await grammarService.getByLevel(level);
-      setCards(data.map(toGrammarEntry));
-      setSelectedIds(new Set());
-      setAdded(false);
+      const nextCards = await learningService.getNewStudyCards(level, user?.id);
+      setCards(nextCards);
+      setCurrentIndex(0);
+      setCompletedCount(0);
+      setFlipped(false);
     } finally {
       setLoading(false);
     }
-  }, [level]);
+  }, [level, user?.id]);
 
   useEffect(() => {
     loadCards();
   }, [loadCards]);
 
-  const toggleSelect = (id: string) => {
-    setSelectedIds((prev) => {
-      const next = new Set(prev);
-      next.has(id) ? next.delete(id) : next.add(id);
-      return next;
-    });
-  };
+  const levelOptions = useMemo(() => ["all", "N5", "N4", "N3", "N2", "N1"] as StudyLevel[], []);
 
-  const selectAll = () => {
-    setSelectedIds(new Set(cards.map((c) => c.id)));
-  };
+  useEffect(() => {
+    const levelParam = new URLSearchParams(window.location.search).get("level") as StudyLevel | null;
+    if (levelParam && levelOptions.includes(levelParam)) setLevel(levelParam);
+  }, [levelOptions]);
 
-  const addToLearningQueue = async () => {
-    if (!user || selectedIds.size === 0) return;
-    setAdding(true);
-    try {
-      await progressService.startLearningBatch(user.id, Array.from(selectedIds));
-      setAdded(true);
-    } finally {
-      setAdding(false);
+  const handleRate = async (rating: ReviewRating) => {
+    if (!currentCard) return;
+    await learningService.startLearning(currentCard.id, user?.id);
+    await learningService.recordReview(currentCard.id, rating, user?.id);
+    setFlipped(false);
+    setCompletedCount((count) => count + 1);
+    if (currentIndex + 1 >= cards.length) {
+      setCurrentIndex(cards.length);
+    } else {
+      setCurrentIndex((index) => index + 1);
     }
   };
 
-  if (!user) {
-    return (
-      <MainLayout>
-        <div className="flex items-center justify-center py-20">
-          <Card className="w-full max-w-sm bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px]">
-            <CardContent className="p-6 text-center space-y-4">
-              <h2 className="text-xl font-bold">{dict.common.login}</h2>
-              <p className="text-sm text-[#797776]">{dict.common.login}</p>
-              <Link href={`/${locale}/login`} className={buttonVariants({ className: "w-full rounded-full font-mono" })}>
-                {dict.common.login}
-              </Link>
-            </CardContent>
-          </Card>
-        </div>
-      </MainLayout>
-    );
-  }
-
-  if (added) {
-    return (
-      <MainLayout>
-        <div className="flex items-center justify-center py-20">
-          <Card className="w-full max-w-sm bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px]">
-            <CardContent className="p-6 text-center space-y-4">
-              <Sparkles className="h-10 w-10 mx-auto text-[#4a8a6a]" />
-              <h2 className="text-xl font-bold">{dict.study.completedTitle}</h2>
-              <p className="text-sm text-[#797776]">
-                {dict.study.completedDesc.replace("{count}", String(selectedIds.size))}
-              </p>
-              <div className="flex gap-2">
-                <Button variant="outline" className="flex-1 rounded-full font-mono" onClick={() => { setAdded(false); setSelectedIds(new Set()); }}>
-                  {dict.study.restart}
-                </Button>
-                <Link href={`/${locale}/review`} className={buttonVariants({ className: "flex-1 rounded-full font-mono" })}>
-                  {dict.review.goStudy}
-                </Link>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </MainLayout>
-    );
-  }
+  const finished = cards.length > 0 && currentIndex >= cards.length;
 
   return (
     <MainLayout>
-      <div className="mx-auto max-w-6xl py-4 sm:py-6">
-        <div className="mb-6 flex items-center justify-between flex-wrap gap-4">
-          <div>
-            <h1 className="text-2xl font-bold">{dict.study.startTitle}</h1>
-            <p className="text-sm text-[#797776] mt-1">{dict.study.startDesc}</p>
+      <div className="mx-auto flex min-h-[calc(100vh-144px)] w-full max-w-5xl flex-col px-4 py-4 sm:px-6 sm:py-6">
+        {!user && (
+          <div className="mb-4 flex items-start gap-3 rounded-[28px] border border-[rgba(36,36,36,0.16)] bg-[#fff6df] px-4 py-3 text-sm text-[#4e4d4d]">
+            <WifiOff className="mt-0.5 h-4 w-4 shrink-0 text-[#a08040]" />
+            <div>
+              <p className="font-mono text-xs font-medium text-[#242424]">{dict.common.localMode}</p>
+              <p className="mt-1 leading-relaxed">{dict.common.localModeDesc}</p>
+            </div>
           </div>
-          <div className="flex items-center gap-3">
-            <Select value={level} onValueChange={(v) => setLevel(v as JLPTLevel)}>
-              <SelectTrigger className="w-24 border-[rgba(36,36,36,0.16)]">
+        )}
+
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <p className="font-mono text-xs uppercase text-[#797776]">{dict.study.learningMode}</p>
+            <h1 className="font-serif text-2xl tracking-[-0.02em] text-[#000000]">{dict.study.startTitle}</h1>
+            <p className="mt-1 max-w-xl text-sm leading-relaxed text-[#797776]">{dict.study.startDesc}</p>
+          </div>
+          <div className="flex items-center gap-2">
+            <Select value={level} onValueChange={(value) => setLevel(value as StudyLevel)}>
+              <SelectTrigger className="w-32 rounded-full border-[rgba(36,36,36,0.16)] bg-transparent">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {(["N5", "N4", "N3", "N2", "N1"] as JLPTLevel[]).map((l) => (
-                  <SelectItem key={l} value={l}>{l}</SelectItem>
+                {levelOptions.map((item) => (
+                  <SelectItem key={item} value={item}>
+                    {item === "all" ? dict.study.allLevels : item}
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>
-            <Button variant="outline" size="sm" className="rounded-full font-mono" onClick={selectAll}>
-              {dict.study.selectAll}
-            </Button>
-            <Button size="sm" className="rounded-full font-mono" onClick={addToLearningQueue} disabled={selectedIds.size === 0 || adding}>
-              <BookOpen className="mr-1 h-4 w-4" />
-              {adding ? dict.common.loading : `${dict.study.startButton} (${selectedIds.size})`}
+            <Button variant="outline" className="rounded-full font-mono" onClick={loadCards}>
+              {dict.study.restart}
             </Button>
           </div>
         </div>
 
+        <div className="mb-4 grid gap-3 sm:grid-cols-3">
+          <Card className="rounded-[32px] border border-[rgba(36,36,36,0.16)] bg-[#f6f3f1] shadow-none">
+            <CardContent className="p-4">
+              <p className="font-mono text-xs text-[#797776]">{dict.study.queueCount}</p>
+              <p className="mt-1 font-mono text-2xl font-medium text-[#242424]">{cards.length}</p>
+            </CardContent>
+          </Card>
+          <Card className="rounded-[32px] border border-[rgba(36,36,36,0.16)] bg-[#f6f3f1] shadow-none">
+            <CardContent className="p-4">
+              <p className="font-mono text-xs text-[#797776]">{dict.study.currentCard}</p>
+              <p className="mt-1 font-mono text-2xl font-medium text-[#242424]">
+                {cards.length === 0 ? "0 / 0" : `${Math.min(currentIndex + 1, cards.length)} / ${cards.length}`}
+              </p>
+            </CardContent>
+          </Card>
+          <Card className="rounded-[32px] border border-[rgba(36,36,36,0.16)] bg-[#f6f3f1] shadow-none">
+            <CardContent className="p-4">
+              <p className="font-mono text-xs text-[#797776]">{dict.study.remaining}</p>
+              <p className="mt-1 font-mono text-2xl font-medium text-[#242424]">{finished ? 0 : remaining}</p>
+            </CardContent>
+          </Card>
+        </div>
+
+        <ProgressBar label={dict.study.progress} value={finished ? 100 : progressValue} />
+
         {loading ? (
-          <p className="text-[#797776] font-mono text-sm">加载中...</p>
-        ) : (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {cards.map((g) => (
-              <div key={g.id} className="relative" onClick={() => toggleSelect(g.id)}>
-                <div className={`cursor-pointer transition-all ${selectedIds.has(g.id) ? "ring-2 ring-[#242424] rounded-[40px]" : ""}`}>
-                  <GrammarCard grammar={g} locale={locale} onFavoriteToggle={() => {}} />
+          <div className="flex flex-1 items-center justify-center py-16">
+            <p className="font-mono text-sm text-[#797776]">{dict.common.loading}</p>
+          </div>
+        ) : cards.length === 0 ? (
+          <div className="flex flex-1 items-center justify-center py-16">
+            <Card className="w-full max-w-sm rounded-[40px] border border-[rgba(36,36,36,0.16)] bg-[#f6f3f1] shadow-none">
+              <CardContent className="space-y-4 p-6 text-center">
+                <BookOpen className="mx-auto h-10 w-10 text-[#5a6fa0]" />
+                <h2 className="text-xl font-bold">{dict.study.emptyTitle}</h2>
+                <p className="text-sm leading-relaxed text-[#797776]">{dict.study.emptyDesc}</p>
+                <Link href={`/${locale}/review`} className={buttonVariants({ className: "w-full rounded-full font-mono" })}>
+                  {dict.study.reviewNow}
+                </Link>
+              </CardContent>
+            </Card>
+          </div>
+        ) : finished ? (
+          <div className="flex flex-1 items-center justify-center py-16">
+            <Card className="w-full max-w-sm rounded-[40px] border border-[rgba(36,36,36,0.16)] bg-[#f6f3f1] shadow-none">
+              <CardContent className="space-y-4 p-6 text-center">
+                <Sparkles className="mx-auto h-10 w-10 text-[#4a8a6a]" />
+                <h2 className="text-xl font-bold">{dict.study.completedTitle}</h2>
+                <p className="text-sm text-[#797776]">
+                  {dict.study.completedDesc.replace("{count}", String(completedCount))}
+                </p>
+                <p className="text-xs leading-relaxed text-[#797776]">{dict.study.scheduleHint}</p>
+                <div className="flex gap-2">
+                  <Button variant="outline" className="flex-1 rounded-full font-mono" onClick={loadCards}>
+                    {dict.study.restart}
+                  </Button>
+                  <Link href={`/${locale}/review`} className={buttonVariants({ className: "flex-1 rounded-full font-mono" })}>
+                    {dict.review.startReview}
+                  </Link>
                 </div>
-                {selectedIds.has(g.id) && (
-                  <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-[#242424] text-white flex items-center justify-center text-xs font-bold">
-                    ✓
-                  </div>
-                )}
-              </div>
-            ))}
+              </CardContent>
+            </Card>
+          </div>
+        ) : (
+          <div className="flex flex-1 flex-col justify-center gap-5 py-5 pb-24 md:pb-8">
+            {currentCard && (
+              <StudyFlashcard grammar={currentCard} flipped={flipped} onFlip={() => setFlipped((value) => !value)} />
+            )}
+            <div className="mx-auto w-full max-w-lg">
+              {flipped ? (
+                <ReviewButtons onRate={handleRate} />
+              ) : (
+                <Button className="w-full rounded-full font-mono" onClick={() => setFlipped(true)}>
+                  {dict.study.showAnswer}
+                </Button>
+              )}
+            </div>
           </div>
         )}
       </div>

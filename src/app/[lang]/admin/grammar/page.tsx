@@ -7,11 +7,14 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { grammarService } from "@/services/grammarService";
+import { useDictionary, useLocale } from "@/components/layout/LocaleProvider";
 import { Plus, Pencil, Trash2, Search, ChevronLeft, ChevronRight } from "lucide-react";
 
 const PAGE_SIZE = 10;
 
 export default function AdminGrammarListPage() {
+  const locale = useLocale();
+  const dict = useDictionary();
   const [entries, setEntries] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -31,7 +34,7 @@ export default function AdminGrammarListPage() {
   const paged = filtered.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
 
   const handleDelete = async (id: string) => {
-    if (!confirm("确定要删除这条语法吗？此操作不可撤销。")) return;
+    if (!confirm(dict.admin.deleteConfirm)) return;
     await grammarService.delete(id);
     setEntries((prev) => prev.filter((e) => e.id !== id));
   };
@@ -39,8 +42,8 @@ export default function AdminGrammarListPage() {
   if (loading) {
     return (
       <div className="max-w-5xl">
-        <h1 className="text-2xl font-bold mb-6">管理语法</h1>
-        <p className="text-[#797776] font-mono text-sm">加载中...</p>
+        <h1 className="text-2xl font-bold mb-6">{dict.admin.grammarList}</h1>
+        <p className="text-[#797776] font-mono text-sm">{dict.common.loading}</p>
       </div>
     );
   }
@@ -48,32 +51,31 @@ export default function AdminGrammarListPage() {
   return (
     <div className="max-w-5xl">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">管理语法</h1>
-        <Link href="/admin/grammar/new" className={buttonVariants({ size: "sm", className: "rounded-full font-mono" })}><Plus className="mr-1 h-4 w-4" />新增</Link>
+        <h1 className="text-2xl font-bold">{dict.admin.grammarList}</h1>
+        <Link href={`/${locale}/admin/grammar/new`} className={buttonVariants({ size: "sm", className: "rounded-full font-mono" })}><Plus className="mr-1 h-4 w-4" />{dict.admin.addGrammar}</Link>
       </div>
 
       <div className="relative mb-4">
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#797776]" />
         <Input
           className="pl-9 rounded-full"
-          placeholder="搜索语法..."
+          placeholder={dict.admin.search}
           value={search}
           onChange={(e) => { setSearch(e.target.value); setPage(0); }}
         />
       </div>
 
       <div className="hidden md:block">
-        <div className="grid grid-cols-6 gap-2 font-mono text-xs font-medium text-[#797776] px-4 py-2 border-b border-[rgba(36,36,36,0.16)]">
-          <span>语法</span><span>等级</span><span>路线</span><span>分类</span><span>操作</span>
+        <div className="grid grid-cols-4 gap-2 font-mono text-xs font-medium text-[#797776] px-4 py-2 border-b border-[rgba(36,36,36,0.16)]">
+          <span>语法</span><span>等级</span><span>分类</span><span>操作</span>
         </div>
         {paged.map((g) => (
-          <div key={g.id} className="grid grid-cols-6 gap-2 px-4 py-3 border-b border-[rgba(36,36,36,0.16)] items-center text-sm">
+          <div key={g.id} className="grid grid-cols-4 gap-2 px-4 py-3 border-b border-[rgba(36,36,36,0.16)] items-center text-sm">
             <span className="font-medium truncate">{g.title}</span>
             <span><Badge variant="outline" className="rounded-full font-mono text-xs">{g.jlpt_level}</Badge></span>
-            <span className="font-mono text-xs text-[#797776]">{g.source_route}</span>
             <span className="font-mono text-xs text-[#797776]">{g.grammar_type}</span>
             <span className="flex gap-1">
-              <Link href={`/admin/grammar/${g.id}/edit`} className={buttonVariants({ variant: "ghost", size: "icon", className: "h-7 w-7 rounded-full" })}><Pencil className="h-3 w-3" /></Link>
+              <Link href={`/${locale}/admin/grammar/${g.id}/edit`} className={buttonVariants({ variant: "ghost", size: "icon", className: "h-7 w-7 rounded-full" })}><Pencil className="h-3 w-3" /></Link>
               <Button size="icon" variant="ghost" className="h-7 w-7 rounded-full text-[#c47a6a]" onClick={() => handleDelete(g.id)}>
                 <Trash2 className="h-3 w-3" />
               </Button>
@@ -93,8 +95,8 @@ export default function AdminGrammarListPage() {
               <p className="font-mono text-xs text-[#797776] mt-1">{g.meaning_cn}</p>
               <div className="flex items-center gap-2 mt-2">
                 <div className="flex-1" />
-                <Link href={`/admin/grammar/${g.id}/edit`} className={buttonVariants({ variant: "ghost", size: "sm", className: "rounded-full font-mono" })}>编辑</Link>
-                <Button size="sm" variant="ghost" className="rounded-full font-mono text-[#c47a6a]" onClick={() => handleDelete(g.id)}>删除</Button>
+                <Link href={`/${locale}/admin/grammar/${g.id}/edit`} className={buttonVariants({ variant: "ghost", size: "sm", className: "rounded-full font-mono" })}>{dict.admin.editGrammar}</Link>
+                <Button size="sm" variant="ghost" className="rounded-full font-mono text-[#c47a6a]" onClick={() => handleDelete(g.id)}>{dict.admin.deleteGrammar}</Button>
               </div>
             </CardContent>
           </Card>

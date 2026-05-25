@@ -6,6 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "grammar:audit": "node scripts/audit-grammar-data.js",
+    "grammar:audit:strict": "node scripts/audit-grammar-strict.js",
+    "grammar:check-db": "node scripts/check-supabase-schema.js",
+    "grammar:sync-db": "node scripts/sync-grammar-to-supabase.js",
     "lint": "eslint"
   },
   "dependencies": {

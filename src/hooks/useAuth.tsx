@@ -2,6 +2,7 @@
 
 import { useState, useEffect, createContext, useContext } from "react";
 import { supabaseBrowser } from "@/lib/supabase-browser";
+import { learningService } from "@/services/learningService";
 import type { User } from "@supabase/supabase-js";
 
 interface AuthContextValue {
@@ -24,12 +25,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       (_event, session) => {
         setUser(session?.user ?? null);
         setIsLoading(false);
+        if (session?.user) {
+          learningService.syncLocalProgressToRemote(session.user.id).catch(() => undefined);
+        }
       }
     );
 
     supabaseBrowser.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
       setIsLoading(false);
+      if (session?.user) {
+        learningService.syncLocalProgressToRemote(session.user.id).catch(() => undefined);
+      }
     });
 
     return () => subscription.unsubscribe();

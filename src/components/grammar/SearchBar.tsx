@@ -6,7 +6,7 @@ import { Search } from "lucide-react";
 export function SearchBar({
   value,
   onChange,
-  placeholder = "搜索语法、意思、关键词...",
+  placeholder = "Search...",
 }: {
   value: string;
   onChange: (v: string) => void;

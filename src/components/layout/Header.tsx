@@ -17,6 +17,7 @@ export function Header() {
     { href: `/${locale}/study`, label: dict.nav.study },
     { href: `/${locale}/review`, label: dict.nav.review },
     { href: `/${locale}/favorites`, label: dict.nav.favorites },
+    { href: `/${locale}/my-grammar`, label: dict.nav.myGrammar },
     { href: `/${locale}/dashboard`, label: dict.nav.dashboard },
   ];
 

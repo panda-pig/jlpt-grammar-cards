@@ -1,0 +1,5944 @@
+{
+  "source": "JLPT Sensei complete grammar list",
+  "sourceUrl": "https://jlptsensei.com/complete-jlpt-grammar-list/",
+  "capturedAt": "2026-05-22",
+  "note": "Reference inventory stores grammar point labels and JLPT levels only. It is used for coverage auditing; explanations and examples are authored locally.",
+  "entries": [
+    {
+      "num": 1,
+      "level": "N1",
+      "english": "aete",
+      "japanese": "敢えて（あえて）",
+      "title": "敢えて"
+    },
+    {
+      "num": 2,
+      "level": "N2",
+      "english": "ageku",
+      "japanese": "あげく",
+      "title": "あげく"
+    },
+    {
+      "num": 3,
+      "level": "N3",
+      "english": "ageru",
+      "japanese": "上げる（あげる）",
+      "title": "上げる"
+    },
+    {
+      "num": 4,
+      "level": "N4",
+      "english": "aida",
+      "japanese": "間（あいだ）",
+      "title": "間"
+    },
+    {
+      "num": 5,
+      "level": "N4",
+      "english": "aida ni",
+      "japanese": "間に（あいだに）",
+      "title": "間に"
+    },
+    {
+      "num": 6,
+      "level": "N1",
+      "english": "akumade mo",
+      "japanese": "あくまでも",
+      "title": "あくまでも"
+    },
+    {
+      "num": 7,
+      "level": "N3",
+      "english": "amari",
+      "japanese": "あまり",
+      "title": "あまり"
+    },
+    {
+      "num": 8,
+      "level": "N3",
+      "english": "amari ni mo",
+      "japanese": "あまりにも",
+      "title": "あまりにも"
+    },
+    {
+      "num": 9,
+      "level": "N4",
+      "english": "amari~nai",
+      "japanese": "あまり～ない",
+      "title": "あまり～ない"
+    },
+    {
+      "num": 10,
+      "level": "N1",
+      "english": "an no jou",
+      "japanese": "案の定（あんのじょう）",
+      "title": "案の定"
+    },
+    {
+      "num": 11,
+      "level": "N1",
+      "english": "arakajime",
+      "japanese": "あらかじめ",
+      "title": "あらかじめ"
+    },
+    {
+      "num": 12,
+      "level": "N2",
+      "english": "aruiwa",
+      "japanese": "あるいは",
+      "title": "あるいは"
+    },
+    {
+      "num": 13,
+      "level": "N4",
+      "english": "ato de",
+      "japanese": "後で（あとで）",
+      "title": "後で"
+    },
+    {
+      "num": 14,
+      "level": "N1",
+      "english": "atte no",
+      "japanese": "あっての",
+      "title": "あっての"
+    },
+    {
+      "num": 15,
+      "level": "N3",
+      "english": "au",
+      "japanese": "合う（あう）",
+      "title": "合う"
+    },
+    {
+      "num": 16,
+      "level": "N4",
+      "english": "ba",
+      "japanese": "ば",
+      "title": "ば"
+    },
+    {
+      "num": 17,
+      "level": "N3",
+      "english": "ba ii",
+      "japanese": "ばいい",
+      "title": "ばいい"
+    },
+    {
+      "num": 18,
+      "level": "N1",
+      "english": "ba koso",
+      "japanese": "ばこそ",
+      "title": "ばこそ"
+    },
+    {
+      "num": 19,
+      "level": "N1",
+      "english": "ba sore made da / tara sore made da",
+      "japanese": "ばそれまでだ / たらそれまでだ",
+      "title": "ばそれまでだ / たらそれまでだ"
+    },
+    {
+      "num": 20,
+      "level": "N3",
+      "english": "ba yokatta",
+      "japanese": "ばよかった",
+      "title": "ばよかった"
+    },
+    {
+      "num": 21,
+      "level": "N3",
+      "english": "ba~hodo",
+      "japanese": "ば～ほど",
+      "title": "ば～ほど"
+    },
+    {
+      "num": 22,
+      "level": "N3",
+      "english": "ba~noni",
+      "japanese": "ば～のに",
+      "title": "ば～のに"
+    },
+    {
+      "num": 23,
+      "level": "N4",
+      "english": "baai wa",
+      "japanese": "場合は（ばあいは）",
+      "title": "場合は"
+    },
+    {
+      "num": 24,
+      "level": "N4",
+      "english": "bakari",
+      "japanese": "ばかり",
+      "title": "ばかり"
+    },
+    {
+      "num": 25,
+      "level": "N2",
+      "english": "bakari",
+      "japanese": "ばかり",
+      "title": "ばかり"
+    },
+    {
+      "num": 26,
+      "level": "N2",
+      "english": "bakari da",
+      "japanese": "ばかりだ",
+      "title": "ばかりだ"
+    },
+    {
+      "num": 27,
+      "level": "N3",
+      "english": "bakari de",
+      "japanese": "ばかりで",
+      "title": "ばかりで"
+    },
+    {
+      "num": 28,
+      "level": "N3",
+      "english": "bakari denaku",
+      "japanese": "ばかりでなく",
+      "title": "ばかりでなく"
+    },
+    {
+      "num": 29,
+      "level": "N2",
+      "english": "bakari ka",
+      "japanese": "ばかりか",
+      "title": "ばかりか"
+    },
+    {
+      "num": 30,
+      "level": "N2",
+      "english": "bakari ni",
+      "japanese": "ばかりに",
+      "title": "ばかりに"
+    },
+    {
+      "num": 31,
+      "level": "N1",
+      "english": "bekarazu / bekarazaru",
+      "japanese": "べからず / べからざる",
+      "title": "べからず / べからざる"
+    },
+    {
+      "num": 32,
+      "level": "N3",
+      "english": "beki da",
+      "japanese": "べきだ",
+      "title": "べきだ"
+    },
+    {
+      "num": 33,
+      "level": "N3",
+      "english": "beki dewa nai",
+      "japanese": "べきではない",
+      "title": "べきではない"
+    },
+    {
+      "num": 34,
+      "level": "N1",
+      "english": "beku",
+      "japanese": "べく",
+      "title": "べく"
+    },
+    {
+      "num": 35,
+      "level": "N1",
+      "english": "beku mo nai",
+      "japanese": "べくもない",
+      "title": "べくもない"
+    },
+    {
+      "num": 36,
+      "level": "N1",
+      "english": "beku shite",
+      "japanese": "べくして",
+      "title": "べくして"
+    },
+    {
+      "num": 37,
+      "level": "N3",
+      "english": "betsu ni~nai",
+      "japanese": "別に～ない（べつに～ない）",
+      "title": "別に～ない"
+    },
+    {
+      "num": 38,
+      "level": "N1",
+      "english": "biru / bite / bita",
+      "japanese": "びる / びて / びた",
+      "title": "びる / びて / びた"
+    },
+    {
+      "num": 39,
+      "level": "N1",
+      "english": "buri / ppuri",
+      "japanese": "ぶり / っぷり",
+      "title": "ぶり / っぷり"
+    },
+    {
+      "num": 40,
+      "level": "N3",
+      "english": "buri ni",
+      "japanese": "ぶりに",
+      "title": "ぶりに"
+    },
+    {
+      "num": 41,
+      "level": "N1",
+      "english": "buru / butte / butta",
+      "japanese": "ぶる / ぶって / ぶった",
+      "title": "ぶる / ぶって / ぶった"
+    },
+    {
+      "num": 42,
+      "level": "N5",
+      "english": "cha ikenai / ja ikenai",
+      "japanese": "ちゃいけない・じゃいけない",
+      "title": "ちゃいけない・じゃいけない"
+    },
+    {
+      "num": 43,
+      "level": "N2",
+      "english": "chinamini",
+      "japanese": "ちなみに",
+      "title": "ちなみに"
+    },
+    {
+      "num": 44,
+      "level": "N2",
+      "english": "chitto mo~nai",
+      "japanese": "ちっとも～ない",
+      "title": "ちっとも～ない"
+    },
+    {
+      "num": 45,
+      "level": "N3",
+      "english": "chuu / juu",
+      "japanese": "中（ちゅう）",
+      "title": "中"
+    },
+    {
+      "num": 46,
+      "level": "N5",
+      "english": "da / desu",
+      "japanese": "だ / です",
+      "title": "だ / です"
+    },
+    {
+      "num": 47,
+      "level": "N5",
+      "english": "dake",
+      "japanese": "だけ",
+      "title": "だけ"
+    },
+    {
+      "num": 48,
+      "level": "N3",
+      "english": "dake",
+      "japanese": "だけ",
+      "title": "だけ"
+    },
+    {
+      "num": 49,
+      "level": "N2",
+      "english": "dake atte",
+      "japanese": "だけあって",
+      "title": "だけあって"
+    },
+    {
+      "num": 50,
+      "level": "N4",
+      "english": "dake de",
+      "japanese": "だけで",
+      "title": "だけで"
+    },
+    {
+      "num": 51,
+      "level": "N3",
+      "english": "dake de naku",
+      "japanese": "だけでなく",
+      "title": "だけでなく"
+    },
+    {
+      "num": 52,
+      "level": "N2",
+      "english": "dake mashi da",
+      "japanese": "だけましだ",
+      "title": "だけましだ"
+    },
+    {
+      "num": 53,
+      "level": "N2",
+      "english": "dake ni",
+      "japanese": "だけに",
+      "title": "だけに"
+    },
+    {
+      "num": 54,
+      "level": "N2",
+      "english": "dake no koto wa aru",
+      "japanese": "だけのことはある",
+      "title": "だけのことはある"
+    },
+    {
+      "num": 55,
+      "level": "N2",
+      "english": "dake wa",
+      "japanese": "だけは",
+      "title": "だけは"
+    },
+    {
+      "num": 56,
+      "level": "N3",
+      "english": "dakedo",
+      "japanese": "だけど",
+      "title": "だけど"
+    },
+    {
+      "num": 57,
+      "level": "N1",
+      "english": "dani / dani shinai",
+      "japanese": "だに / だにしない",
+      "title": "だに / だにしない"
+    },
+    {
+      "num": 58,
+      "level": "N1",
+      "english": "dano~dano",
+      "japanese": "だの～だの",
+      "title": "だの～だの"
+    },
+    {
+      "num": 59,
+      "level": "N3",
+      "english": "darake",
+      "japanese": "だらけ",
+      "title": "だらけ"
+    },
+    {
+      "num": 60,
+      "level": "N5",
+      "english": "darou",
+      "japanese": "だろう",
+      "title": "だろう"
+    },
+    {
+      "num": 61,
+      "level": "N1",
+      "english": "darou ni",
+      "japanese": "だろうに",
+      "title": "だろうに"
+    },
+    {
+      "num": 62,
+      "level": "N4",
+      "english": "dasu",
+      "japanese": "出す（だす）",
+      "title": "出す"
+    },
+    {
+      "num": 63,
+      "level": "N2",
+      "english": "datte",
+      "japanese": "だって",
+      "title": "だって"
+    },
+    {
+      "num": 64,
+      "level": "N5",
+      "english": "de",
+      "japanese": "で",
+      "title": "で"
+    },
+    {
+      "num": 65,
+      "level": "N1",
+      "english": "de are / de arou to",
+      "japanese": "であれ / であろうと",
+      "title": "であれ / であろうと"
+    },
+    {
+      "num": 66,
+      "level": "N1",
+      "english": "de are~de are",
+      "japanese": "であれ～であれ",
+      "title": "であれ～であれ"
+    },
+    {
+      "num": 67,
+      "level": "N4",
+      "english": "de gozaimasu",
+      "japanese": "でございます",
+      "title": "でございます"
+    },
+    {
+      "num": 68,
+      "level": "N2",
+      "english": "de shika nai",
+      "japanese": "でしかない",
+      "title": "でしかない"
+    },
+    {
+      "num": 69,
+      "level": "N5",
+      "english": "demo",
+      "japanese": "でも",
+      "title": "でも"
+    },
+    {
+      "num": 70,
+      "level": "N4",
+      "english": "demo",
+      "japanese": "でも",
+      "title": "でも"
+    },
+    {
+      "num": 71,
+      "level": "N1",
+      "english": "demo ari~demo aru",
+      "japanese": "でもあり～でもある",
+      "title": "でもあり～でもある"
+    },
+    {
+      "num": 72,
+      "level": "N1",
+      "english": "demo nan demo nai / kumo nan tomo nai",
+      "japanese": "でも何でもない / くも何ともない（でもなんでもない / くもなんともない）",
+      "title": "でも何でもない / くも何ともない"
+    },
+    {
+      "num": 73,
+      "level": "N1",
+      "english": "denakute nan darou",
+      "japanese": "でなくてなんだろう",
+      "title": "でなくてなんだろう"
+    },
+    {
+      "num": 74,
+      "level": "N5",
+      "english": "deshou",
+      "japanese": "でしょう",
+      "title": "でしょう"
+    },
+    {
+      "num": 75,
+      "level": "N1",
+      "english": "dewa arumai ka",
+      "japanese": "ではあるまいか",
+      "title": "ではあるまいか"
+    },
+    {
+      "num": 76,
+      "level": "N1",
+      "english": "dewa arumai shi",
+      "japanese": "ではあるまいし",
+      "title": "ではあるまいし"
+    },
+    {
+      "num": 77,
+      "level": "N4",
+      "english": "dewa nai ka",
+      "japanese": "ではないか",
+      "title": "ではないか"
+    },
+    {
+      "num": 78,
+      "level": "N1",
+      "english": "dewa sumanai",
+      "japanese": "では済まない（ではすまない）",
+      "title": "では済まない"
+    },
+    {
+      "num": 79,
+      "level": "N2",
+      "english": "dokoro dewa nai",
+      "japanese": "どころではない",
+      "title": "どころではない"
+    },
+    {
+      "num": 80,
+      "level": "N2",
+      "english": "dokoro ka",
+      "japanese": "どころか",
+      "title": "どころか"
+    },
+    {
+      "num": 81,
+      "level": "N5",
+      "english": "donna",
+      "japanese": "どんな",
+      "title": "どんな"
+    },
+    {
+      "num": 82,
+      "level": "N3",
+      "english": "donna ni~temo",
+      "japanese": "どんなに～ても",
+      "title": "どんなに～ても"
+    },
+    {
+      "num": 83,
+      "level": "N1",
+      "english": "dou nimo~nai",
+      "japanese": "どうにも～ない",
+      "title": "どうにも～ない"
+    },
+    {
+      "num": 84,
+      "level": "N2",
+      "english": "dou yara",
+      "japanese": "どうやら",
+      "title": "どうやら"
+    },
+    {
+      "num": 85,
+      "level": "N2",
+      "english": "douse",
+      "japanese": "どうせ",
+      "title": "どうせ"
+    },
+    {
+      "num": 86,
+      "level": "N5",
+      "english": "doushite",
+      "japanese": "どうして",
+      "title": "どうして"
+    },
+    {
+      "num": 87,
+      "level": "N3",
+      "english": "doushitemo",
+      "japanese": "どうしても",
+      "title": "どうしても"
+    },
+    {
+      "num": 88,
+      "level": "N5",
+      "english": "douyatte",
+      "japanese": "どうやって",
+      "title": "どうやって"
+    },
+    {
+      "num": 89,
+      "level": "N2",
+      "english": "enai",
+      "japanese": "得ない（えない）",
+      "title": "得ない"
+    },
+    {
+      "num": 90,
+      "level": "N2",
+      "english": "eru / uru",
+      "japanese": "得る（える / うる）",
+      "title": "得る"
+    },
+    {
+      "num": 91,
+      "level": "N3",
+      "english": "furi o suru",
+      "japanese": "ふりをする",
+      "title": "ふりをする"
+    },
+    {
+      "num": 92,
+      "level": "N2",
+      "english": "futatabi",
+      "japanese": "再び（ふたたび）",
+      "title": "再び"
+    },
+    {
+      "num": 93,
+      "level": "N3",
+      "english": "futo",
+      "japanese": "ふと",
+      "title": "ふと"
+    },
+    {
+      "num": 94,
+      "level": "N2",
+      "english": "fuu ni",
+      "japanese": "ふうに",
+      "title": "ふうに"
+    },
+    {
+      "num": 95,
+      "level": "N5",
+      "english": "ga",
+      "japanese": "が",
+      "title": "が"
+    },
+    {
+      "num": 96,
+      "level": "N5",
+      "english": "ga arimasu",
+      "japanese": "があります",
+      "title": "があります"
+    },
+    {
+      "num": 97,
+      "level": "N1",
+      "english": "ga hayai ka",
+      "japanese": "が早いか（がはやいか）",
+      "title": "が早いか"
+    },
+    {
+      "num": 98,
+      "level": "N4",
+      "english": "ga hitsuyou",
+      "japanese": "が必要（がひつよう）",
+      "title": "が必要"
+    },
+    {
+      "num": 99,
+      "level": "N5",
+      "english": "ga hoshii",
+      "japanese": "がほしい",
+      "title": "がほしい"
+    },
+    {
+      "num": 100,
+      "level": "N5",
+      "english": "ga imasu",
+      "japanese": "がいます",
+      "title": "がいます"
+    },
+    {
+      "num": 101,
+      "level": "N2",
+      "english": "ga kikkake de / o kikkake ni",
+      "japanese": "がきっかけで / をきっかけに",
+      "title": "がきっかけで / をきっかけに"
+    },
+    {
+      "num": 102,
+      "level": "N4",
+      "english": "ga suru",
+      "japanese": "がする",
+      "title": "がする"
+    },
+    {
+      "num": 103,
+      "level": "N1",
+      "english": "ga/mo~nara, ~mo~da",
+      "japanese": "が/も～なら、～も～だ",
+      "title": "が/も～なら、～も～だ"
+    },
+    {
+      "num": 104,
+      "level": "N3",
+      "english": "gachi",
+      "japanese": "がち",
+      "title": "がち"
+    },
+    {
+      "num": 105,
+      "level": "N1",
+      "english": "gamashii",
+      "japanese": "がましい",
+      "title": "がましい"
+    },
+    {
+      "num": 106,
+      "level": "N4",
+      "english": "gari",
+      "japanese": "がり",
+      "title": "がり"
+    },
+    {
+      "num": 107,
+      "level": "N4",
+      "english": "garu / gatteiru",
+      "japanese": "がる / がっている",
+      "title": "がる / がっている"
+    },
+    {
+      "num": 108,
+      "level": "N3",
+      "english": "gatai",
+      "japanese": "がたい",
+      "title": "がたい"
+    },
+    {
+      "num": 109,
+      "level": "N1",
+      "english": "gatera",
+      "japanese": "がてら",
+      "title": "がてら"
+    },
+    {
+      "num": 110,
+      "level": "N2",
+      "english": "ge",
+      "japanese": "げ",
+      "title": "げ"
+    },
+    {
+      "num": 111,
+      "level": "N3",
+      "english": "gimi",
+      "japanese": "気味（ぎみ）",
+      "title": "気味"
+    },
+    {
+      "num": 112,
+      "level": "N3",
+      "english": "goto ni",
+      "japanese": "ごとに",
+      "title": "ごとに"
+    },
+    {
+      "num": 113,
+      "level": "N1",
+      "english": "gotoki / gotoku / gotoshi",
+      "japanese": "ごとき / ごとく / ごとし",
+      "title": "ごとき / ごとく / ごとし"
+    },
+    {
+      "num": 114,
+      "level": "N4",
+      "english": "gozaimasu",
+      "japanese": "ございます",
+      "title": "ございます"
+    },
+    {
+      "num": 115,
+      "level": "N1",
+      "english": "gurumi",
+      "japanese": "ぐるみ",
+      "title": "ぐるみ"
+    },
+    {
+      "num": 116,
+      "level": "N2",
+      "english": "gyaku ni",
+      "japanese": "逆に（ぎゃくに）",
+      "title": "逆に"
+    },
+    {
+      "num": 117,
+      "level": "N4",
+      "english": "hajimeru",
+      "japanese": "始める（はじめる）",
+      "title": "始める"
+    },
+    {
+      "num": 118,
+      "level": "N1",
+      "english": "hame ni naru",
+      "japanese": "羽目になる（はめになる）",
+      "title": "羽目になる"
+    },
+    {
+      "num": 119,
+      "level": "N2",
+      "english": "hanmen",
+      "japanese": "反面（はんめん）",
+      "title": "反面"
+    },
+    {
+      "num": 120,
+      "level": "N2",
+      "english": "hatashite",
+      "japanese": "果たして（はたして）",
+      "title": "果たして"
+    },
+    {
+      "num": 121,
+      "level": "N4",
+      "english": "hazu da",
+      "japanese": "はずだ",
+      "title": "はずだ"
+    },
+    {
+      "num": 122,
+      "level": "N4",
+      "english": "hazu ga nai",
+      "japanese": "はずがない",
+      "title": "はずがない"
+    },
+    {
+      "num": 123,
+      "level": "N4",
+      "english": "hitsuyou ga aru",
+      "japanese": "必要がある（ひつようがある）",
+      "title": "必要がある"
+    },
+    {
+      "num": 124,
+      "level": "N3",
+      "english": "hodo",
+      "japanese": "ほど",
+      "title": "ほど"
+    },
+    {
+      "num": 125,
+      "level": "N1",
+      "english": "hodo no koto dewa nai",
+      "japanese": "ほどのことではない",
+      "title": "ほどのことではない"
+    },
+    {
+      "num": 126,
+      "level": "N3",
+      "english": "hodo~nai",
+      "japanese": "ほど～ない",
+      "title": "ほど～ない"
+    },
+    {
+      "num": 127,
+      "level": "N5",
+      "english": "hou ga ii",
+      "japanese": "ほうがいい",
+      "title": "ほうがいい"
+    },
+    {
+      "num": 128,
+      "level": "N1",
+      "english": "hou ga mashi da",
+      "japanese": "ほうがましだ",
+      "title": "ほうがましだ"
+    },
+    {
+      "num": 129,
+      "level": "N1",
+      "english": "houdai",
+      "japanese": "放題（ほうだい）",
+      "title": "放題"
+    },
+    {
+      "num": 130,
+      "level": "N5",
+      "english": "i-adjectives",
+      "japanese": "い-adjectives",
+      "title": "い-adjectives"
+    },
+    {
+      "num": 131,
+      "level": "N5",
+      "english": "ichiban",
+      "japanese": "一番（いちばん）",
+      "title": "一番"
+    },
+    {
+      "num": 132,
+      "level": "N3",
+      "english": "ichido ni",
+      "japanese": "一度に（いちどに）",
+      "title": "一度に"
+    },
+    {
+      "num": 133,
+      "level": "N2",
+      "english": "ichiou",
+      "japanese": "一応（いちおう）",
+      "title": "一応"
+    },
+    {
+      "num": 134,
+      "level": "N2",
+      "english": "igai",
+      "japanese": "以外（いがい）",
+      "title": "以外"
+    },
+    {
+      "num": 135,
+      "level": "N2",
+      "english": "ijou ni",
+      "japanese": "以上に（いじょうに）",
+      "title": "以上に"
+    },
+    {
+      "num": 136,
+      "level": "N2",
+      "english": "ijou wa",
+      "japanese": "以上は（いじょうは）",
+      "title": "以上は"
+    },
+    {
+      "num": 137,
+      "level": "N1",
+      "english": "ikan da / ikan dewa / ikan ni yotte wa",
+      "japanese": "いかんだ / いかんでは / いかんによっては",
+      "title": "いかんだ / いかんでは / いかんによっては"
+    },
+    {
+      "num": 138,
+      "level": "N1",
+      "english": "ikan ni kakawarazu / ikan ni yorazu / ikan o towazu",
+      "japanese": "いかんにかかわらず / いかんによらず / いかんをとわず",
+      "title": "いかんにかかわらず / いかんによらず / いかんをとわず"
+    },
+    {
+      "num": 139,
+      "level": "N1",
+      "english": "ikanaru",
+      "japanese": "いかなる",
+      "title": "いかなる"
+    },
+    {
+      "num": 140,
+      "level": "N1",
+      "english": "ikani",
+      "japanese": "いかに",
+      "title": "いかに"
+    },
+    {
+      "num": 141,
+      "level": "N1",
+      "english": "ikani mo",
+      "japanese": "いかにも",
+      "title": "いかにも"
+    },
+    {
+      "num": 142,
+      "level": "N2",
+      "english": "ikinari",
+      "japanese": "いきなり",
+      "title": "いきなり"
+    },
+    {
+      "num": 143,
+      "level": "N2",
+      "english": "ikki ni",
+      "japanese": "一気に（いっきに）",
+      "title": "一気に"
+    },
+    {
+      "num": 144,
+      "level": "N4",
+      "english": "ikou kei - volitional form",
+      "japanese": "意向形 （いこうけい）",
+      "title": "意向形"
+    },
+    {
+      "num": 145,
+      "level": "N3",
+      "english": "ikura~temo",
+      "japanese": "いくら～ても",
+      "title": "いくら～ても"
+    },
+    {
+      "num": 146,
+      "level": "N3",
+      "english": "ippou da",
+      "japanese": "一方だ（いっぽうだ）",
+      "title": "一方だ"
+    },
+    {
+      "num": 147,
+      "level": "N2",
+      "english": "ippou de",
+      "japanese": "一方で（いっぽうで）",
+      "title": "一方で"
+    },
+    {
+      "num": 148,
+      "level": "N4",
+      "english": "irassharu",
+      "japanese": "いらっしゃる",
+      "title": "いらっしゃる"
+    },
+    {
+      "num": 149,
+      "level": "N5",
+      "english": "issho ni",
+      "japanese": "一緒に（いっしょに）",
+      "title": "一緒に"
+    },
+    {
+      "num": 150,
+      "level": "N4",
+      "english": "itashimasu",
+      "japanese": "いたします",
+      "title": "いたします"
+    },
+    {
+      "num": 151,
+      "level": "N5",
+      "english": "itsumo",
+      "japanese": "いつも",
+      "title": "いつも"
+    },
+    {
+      "num": 152,
+      "level": "N3",
+      "english": "ittai",
+      "japanese": "一体（いったい）",
+      "title": "一体"
+    },
+    {
+      "num": 153,
+      "level": "N2",
+      "english": "iwayuru",
+      "japanese": "いわゆる",
+      "title": "いわゆる"
+    },
+    {
+      "num": 154,
+      "level": "N2",
+      "english": "iyoiyo",
+      "japanese": "いよいよ",
+      "title": "いよいよ"
+    },
+    {
+      "num": 155,
+      "level": "N1",
+      "english": "izure ni shitemo / izure ni shiro / izure ni seyo",
+      "japanese": "いずれにしても / いずれにしろ / いずれにせよ",
+      "title": "いずれにしても / いずれにしろ / いずれにせよ"
+    },
+    {
+      "num": 156,
+      "level": "N3",
+      "english": "janai",
+      "japanese": "じゃない",
+      "title": "じゃない"
+    },
+    {
+      "num": 157,
+      "level": "N5",
+      "english": "janai / dewa nai",
+      "japanese": "じゃない・ではない",
+      "title": "じゃない・ではない"
+    },
+    {
+      "num": 158,
+      "level": "N4",
+      "english": "janai ka",
+      "japanese": "じゃないか",
+      "title": "じゃないか"
+    },
+    {
+      "num": 159,
+      "level": "N1",
+      "english": "jimita",
+      "japanese": "じみた",
+      "title": "じみた"
+    },
+    {
+      "num": 160,
+      "level": "N2",
+      "english": "jou",
+      "japanese": "上（じょう）",
+      "title": "上"
+    },
+    {
+      "num": 161,
+      "level": "N5",
+      "english": "ka",
+      "japanese": "か",
+      "title": "か"
+    },
+    {
+      "num": 162,
+      "level": "N4",
+      "english": "ka dou ka",
+      "japanese": "かどうか",
+      "title": "かどうか"
+    },
+    {
+      "num": 163,
+      "level": "N1",
+      "english": "ka ina ka",
+      "japanese": "か否か（かいなか）",
+      "title": "か否か"
+    },
+    {
+      "num": 164,
+      "level": "N3",
+      "english": "ka nani ka",
+      "japanese": "か何か（かなにか）",
+      "title": "か何か"
+    },
+    {
+      "num": 165,
+      "level": "N2",
+      "english": "ka no you ni",
+      "japanese": "かのように",
+      "title": "かのように"
+    },
+    {
+      "num": 166,
+      "level": "N4",
+      "english": "ka shira",
+      "japanese": "かしら",
+      "title": "かしら"
+    },
+    {
+      "num": 167,
+      "level": "N1",
+      "english": "ka to omoikiya",
+      "japanese": "かと思いきや（かとおもいきや）",
+      "title": "かと思いきや"
+    },
+    {
+      "num": 168,
+      "level": "N2",
+      "english": "ka to omottara",
+      "japanese": "かと思ったら（かとおもったら）",
+      "title": "かと思ったら"
+    },
+    {
+      "num": 169,
+      "level": "N5",
+      "english": "ka~ka",
+      "japanese": "か～か",
+      "title": "か～か"
+    },
+    {
+      "num": 170,
+      "level": "N2",
+      "english": "ka~nai ka no uchi ni",
+      "japanese": "か～ないかのうちに",
+      "title": "か～ないかのうちに"
+    },
+    {
+      "num": 171,
+      "level": "N2",
+      "english": "kaette",
+      "japanese": "かえって",
+      "title": "かえって"
+    },
+    {
+      "num": 172,
+      "level": "N2",
+      "english": "kagiri",
+      "japanese": "限り（かぎり）",
+      "title": "限り"
+    },
+    {
+      "num": 173,
+      "level": "N1",
+      "english": "kagiri da",
+      "japanese": "限りだ（かぎりだ）",
+      "title": "限りだ"
+    },
+    {
+      "num": 174,
+      "level": "N4",
+      "english": "kai",
+      "japanese": "かい",
+      "title": "かい"
+    },
+    {
+      "num": 175,
+      "level": "N2",
+      "english": "kai ga aru",
+      "japanese": "甲斐がある（かいがある）",
+      "title": "甲斐がある"
+    },
+    {
+      "num": 176,
+      "level": "N1",
+      "english": "kai mo naku",
+      "japanese": "甲斐もなく（かいもなく）",
+      "title": "甲斐もなく"
+    },
+    {
+      "num": 177,
+      "level": "N3",
+      "english": "kakeru",
+      "japanese": "かける",
+      "title": "かける"
+    },
+    {
+      "num": 178,
+      "level": "N4",
+      "english": "kamo shirenai",
+      "japanese": "かもしれない",
+      "title": "かもしれない"
+    },
+    {
+      "num": 179,
+      "level": "N4",
+      "english": "kana",
+      "japanese": "かな",
+      "title": "かな"
+    },
+    {
+      "num": 180,
+      "level": "N2",
+      "english": "kanenai",
+      "japanese": "かねない",
+      "title": "かねない"
+    },
+    {
+      "num": 181,
+      "level": "N2",
+      "english": "kaneru",
+      "japanese": "かねる",
+      "title": "かねる"
+    },
+    {
+      "num": 182,
+      "level": "N1",
+      "english": "kanousei ga aru",
+      "japanese": "可能性がある（かのうせいがある）",
+      "title": "可能性がある"
+    },
+    {
+      "num": 183,
+      "level": "N5",
+      "english": "kara",
+      "japanese": "から",
+      "title": "から"
+    },
+    {
+      "num": 184,
+      "level": "N1",
+      "english": "kara aru / kara suru / kara no",
+      "japanese": "からある / からする / からの",
+      "title": "からある / からする / からの"
+    },
+    {
+      "num": 185,
+      "level": "N2",
+      "english": "kara iu to",
+      "japanese": "から言うと（からいうと）",
+      "title": "から言うと"
+    },
+    {
+      "num": 186,
+      "level": "N2",
+      "english": "kara koso",
+      "japanese": "からこそ",
+      "title": "からこそ"
+    },
+    {
+      "num": 187,
+      "level": "N2",
+      "english": "kara miru to",
+      "japanese": "から見ると（からみると）",
+      "title": "から見ると"
+    },
+    {
+      "num": 188,
+      "level": "N2",
+      "english": "kara niwa",
+      "japanese": "からには",
+      "title": "からには"
+    },
+    {
+      "num": 189,
+      "level": "N2",
+      "english": "kara shite",
+      "japanese": "からして",
+      "title": "からして"
+    },
+    {
+      "num": 190,
+      "level": "N2",
+      "english": "kara suru to / kara sureba",
+      "japanese": "からすると / からすれば",
+      "title": "からすると / からすれば"
+    },
+    {
+      "num": 191,
+      "level": "N2",
+      "english": "kara to itte",
+      "japanese": "からと言って（からといって）",
+      "title": "からと言って"
+    },
+    {
+      "num": 192,
+      "level": "N4",
+      "english": "kara tsukuru",
+      "japanese": "から作る（からつくる）",
+      "title": "から作る"
+    },
+    {
+      "num": 193,
+      "level": "N3",
+      "english": "kara~ni kakete",
+      "japanese": "から〜にかけて",
+      "title": "から〜にかけて"
+    },
+    {
+      "num": 194,
+      "level": "N1",
+      "english": "kare~kare",
+      "japanese": "かれ～かれ",
+      "title": "かれ～かれ"
+    },
+    {
+      "num": 195,
+      "level": "N5",
+      "english": "kata",
+      "japanese": "方（かた）",
+      "title": "方"
+    },
+    {
+      "num": 196,
+      "level": "N1",
+      "english": "katagata",
+      "japanese": "かたがた",
+      "title": "かたがた"
+    },
+    {
+      "num": 197,
+      "level": "N1",
+      "english": "katawara",
+      "japanese": "かたわら",
+      "title": "かたわら"
+    },
+    {
+      "num": 198,
+      "level": "N1",
+      "english": "katsute",
+      "japanese": "かつて",
+      "title": "かつて"
+    },
+    {
+      "num": 199,
+      "level": "N3",
+      "english": "kawari ni",
+      "japanese": "代わりに（かわりに）",
+      "title": "代わりに"
+    },
+    {
+      "num": 200,
+      "level": "N5",
+      "english": "kedo",
+      "japanese": "けど",
+      "title": "けど"
+    },
+    {
+      "num": 201,
+      "level": "N3",
+      "english": "kekka",
+      "japanese": "結果（けっか）",
+      "title": "結果"
+    },
+    {
+      "num": 202,
+      "level": "N3",
+      "english": "kekkyoku",
+      "japanese": "結局（けっきょく）",
+      "title": "結局"
+    },
+    {
+      "num": 203,
+      "level": "N5",
+      "english": "keredo mo",
+      "japanese": "けれども",
+      "title": "けれども"
+    },
+    {
+      "num": 204,
+      "level": "N3",
+      "english": "kesshite~nai",
+      "japanese": "決して～ない（けっして～ない）",
+      "title": "決して～ない"
+    },
+    {
+      "num": 205,
+      "level": "N1",
+      "english": "kirai ga aru",
+      "japanese": "嫌いがある（きらいがある）",
+      "title": "嫌いがある"
+    },
+    {
+      "num": 206,
+      "level": "N3",
+      "english": "kirenai",
+      "japanese": "切れない（きれない）",
+      "title": "切れない"
+    },
+    {
+      "num": 207,
+      "level": "N3",
+      "english": "kiri",
+      "japanese": "きり",
+      "title": "きり"
+    },
+    {
+      "num": 208,
+      "level": "N1",
+      "english": "kiri ga nai",
+      "japanese": "切りがない（きりがない）",
+      "title": "切りがない"
+    },
+    {
+      "num": 209,
+      "level": "N3",
+      "english": "kiru",
+      "japanese": "切る（きる）",
+      "title": "切る"
+    },
+    {
+      "num": 210,
+      "level": "N1",
+      "english": "kitte no",
+      "japanese": "きっての",
+      "title": "きっての"
+    },
+    {
+      "num": 211,
+      "level": "N4",
+      "english": "kitto",
+      "japanese": "きっと",
+      "title": "きっと"
+    },
+    {
+      "num": 212,
+      "level": "N1",
+      "english": "kiwamaru / kiwamarinai",
+      "japanese": "極まる / 極まりない（きわまる / きわまりない）",
+      "title": "極まる / 極まりない"
+    },
+    {
+      "num": 213,
+      "level": "N3",
+      "english": "kke",
+      "japanese": "っけ",
+      "title": "っけ"
+    },
+    {
+      "num": 214,
+      "level": "N2",
+      "english": "kkonai",
+      "japanese": "っこない",
+      "title": "っこない"
+    },
+    {
+      "num": 215,
+      "level": "N3",
+      "english": "komu",
+      "japanese": "込む（こむ）",
+      "title": "込む"
+    },
+    {
+      "num": 216,
+      "level": "N4",
+      "english": "koro / goro",
+      "japanese": "頃（ころ / ごろ）",
+      "title": "頃"
+    },
+    {
+      "num": 217,
+      "level": "N3",
+      "english": "koso",
+      "japanese": "こそ",
+      "title": "こそ"
+    },
+    {
+      "num": 218,
+      "level": "N1",
+      "english": "koso are",
+      "japanese": "こそあれ",
+      "title": "こそあれ"
+    },
+    {
+      "num": 219,
+      "level": "N1",
+      "english": "koso sure",
+      "japanese": "こそすれ",
+      "title": "こそすれ"
+    },
+    {
+      "num": 220,
+      "level": "N1",
+      "english": "koso~ga/keredo",
+      "japanese": "こそ「～が・けれど」",
+      "title": "こそ「～が・けれど」"
+    },
+    {
+      "num": 221,
+      "level": "N4",
+      "english": "koto",
+      "japanese": "こと",
+      "title": "こと"
+    },
+    {
+      "num": 222,
+      "level": "N3",
+      "english": "koto",
+      "japanese": "こと",
+      "title": "こと"
+    },
+    {
+      "num": 223,
+      "level": "N2",
+      "english": "koto da",
+      "japanese": "ことだ",
+      "title": "ことだ"
+    },
+    {
+      "num": 224,
+      "level": "N2",
+      "english": "koto dakara",
+      "japanese": "ことだから",
+      "title": "ことだから"
+    },
+    {
+      "num": 225,
+      "level": "N4",
+      "english": "koto ga aru",
+      "japanese": "ことがある",
+      "title": "ことがある"
+    },
+    {
+      "num": 226,
+      "level": "N4",
+      "english": "koto ga dekiru",
+      "japanese": "ことができる",
+      "title": "ことができる"
+    },
+    {
+      "num": 227,
+      "level": "N1",
+      "english": "koto gotoku",
+      "japanese": "ことごとく",
+      "title": "ことごとく"
+    },
+    {
+      "num": 228,
+      "level": "N2",
+      "english": "koto ka",
+      "japanese": "ことか",
+      "title": "ことか"
+    },
+    {
+      "num": 229,
+      "level": "N3",
+      "english": "koto kara",
+      "japanese": "ことから",
+      "title": "ことから"
+    },
+    {
+      "num": 230,
+      "level": "N1",
+      "english": "koto kono ue nai / kono ue nai / kono ue naku",
+      "japanese": "ことこの上ない / この上ない / この上なく（ことこのうえない / このうえない / このうえなく）",
+      "title": "ことこの上ない / この上ない / この上なく"
+    },
+    {
+      "num": 231,
+      "level": "N1",
+      "english": "koto mo atte",
+      "japanese": "こともあって",
+      "title": "こともあって"
+    },
+    {
+      "num": 232,
+      "level": "N2",
+      "english": "koto naku",
+      "japanese": "ことなく",
+      "title": "ことなく"
+    },
+    {
+      "num": 233,
+      "level": "N1",
+      "english": "koto nashi ni",
+      "japanese": "ことなしに",
+      "title": "ことなしに"
+    },
+    {
+      "num": 234,
+      "level": "N2",
+      "english": "koto ni",
+      "japanese": "ことに",
+      "title": "ことに"
+    },
+    {
+      "num": 235,
+      "level": "N4",
+      "english": "koto ni naru",
+      "japanese": "ことになる",
+      "title": "ことになる"
+    },
+    {
+      "num": 236,
+      "level": "N3",
+      "english": "koto ni natteiru",
+      "japanese": "ことになっている",
+      "title": "ことになっている"
+    },
+    {
+      "num": 237,
+      "level": "N4",
+      "english": "koto ni suru",
+      "japanese": "ことにする",
+      "title": "ことにする"
+    },
+    {
+      "num": 238,
+      "level": "N2",
+      "english": "koto niwa naranai",
+      "japanese": "ことにはならない",
+      "title": "ことにはならない"
+    },
+    {
+      "num": 239,
+      "level": "N1",
+      "english": "koto no nai you ni",
+      "japanese": "ことのないように",
+      "title": "ことのないように"
+    },
+    {
+      "num": 240,
+      "level": "N1",
+      "english": "koto tote",
+      "japanese": "こととて",
+      "title": "こととて"
+    },
+    {
+      "num": 241,
+      "level": "N3",
+      "english": "koto wa nai",
+      "japanese": "ことはない",
+      "title": "ことはない"
+    },
+    {
+      "num": 242,
+      "level": "N3",
+      "english": "koto wa~ga",
+      "japanese": "ことは～が",
+      "title": "ことは～が"
+    },
+    {
+      "num": 243,
+      "level": "N4",
+      "english": "ku suru",
+      "japanese": "くする",
+      "title": "くする"
+    },
+    {
+      "num": 244,
+      "level": "N3",
+      "english": "kurai / gurai",
+      "japanese": "くらい / ぐらい",
+      "title": "くらい / ぐらい"
+    },
+    {
+      "num": 245,
+      "level": "N1",
+      "english": "kurai nara",
+      "japanese": "くらいなら",
+      "title": "くらいなら"
+    },
+    {
+      "num": 246,
+      "level": "N1",
+      "english": "kurai no mono da",
+      "japanese": "くらいのものだ",
+      "title": "くらいのものだ"
+    },
+    {
+      "num": 247,
+      "level": "N3",
+      "english": "kuse ni",
+      "japanese": "くせに",
+      "title": "くせに"
+    },
+    {
+      "num": 248,
+      "level": "N2",
+      "english": "kuse shite",
+      "japanese": "くせして",
+      "title": "くせして"
+    },
+    {
+      "num": 249,
+      "level": "N4",
+      "english": "kyuu ni",
+      "japanese": "急に（きゅうに）",
+      "title": "急に"
+    },
+    {
+      "num": 250,
+      "level": "N5",
+      "english": "mada",
+      "japanese": "まだ",
+      "title": "まだ"
+    },
+    {
+      "num": 251,
+      "level": "N5",
+      "english": "mada ~te imasen",
+      "japanese": "まだ～ていません",
+      "title": "まだ～ていません"
+    },
+    {
+      "num": 252,
+      "level": "N2",
+      "english": "madashimo",
+      "japanese": "まだしも",
+      "title": "まだしも"
+    },
+    {
+      "num": 253,
+      "level": "N5",
+      "english": "made",
+      "japanese": "まで",
+      "title": "まで"
+    },
+    {
+      "num": 254,
+      "level": "N1",
+      "english": "made da / made no koto da",
+      "japanese": "までだ / までのことだ",
+      "title": "までだ / までのことだ"
+    },
+    {
+      "num": 255,
+      "level": "N1",
+      "english": "made mo nai / made mo naku",
+      "japanese": "までもない / までもなく",
+      "title": "までもない / までもなく"
+    },
+    {
+      "num": 256,
+      "level": "N4",
+      "english": "made ni",
+      "japanese": "までに",
+      "title": "までに"
+    },
+    {
+      "num": 257,
+      "level": "N5",
+      "english": "mae ni",
+      "japanese": "前に（まえに）",
+      "title": "前に"
+    },
+    {
+      "num": 258,
+      "level": "N2",
+      "english": "mai",
+      "japanese": "まい",
+      "title": "まい"
+    },
+    {
+      "num": 259,
+      "level": "N1",
+      "english": "majiki",
+      "japanese": "まじき",
+      "title": "まじき"
+    },
+    {
+      "num": 260,
+      "level": "N1",
+      "english": "makuru",
+      "japanese": "まくる",
+      "title": "まくる"
+    },
+    {
+      "num": 261,
+      "level": "N4",
+      "english": "mama",
+      "japanese": "まま",
+      "title": "まま"
+    },
+    {
+      "num": 262,
+      "level": "N2",
+      "english": "mama ni",
+      "japanese": "ままに",
+      "title": "ままに"
+    },
+    {
+      "num": 263,
+      "level": "N1",
+      "english": "mamire",
+      "japanese": "まみれ",
+      "title": "まみれ"
+    },
+    {
+      "num": 264,
+      "level": "N3",
+      "english": "maru de",
+      "japanese": "まるで",
+      "title": "まるで"
+    },
+    {
+      "num": 265,
+      "level": "N1",
+      "english": "marukkiri",
+      "japanese": "まるっきり",
+      "title": "まるっきり"
+    },
+    {
+      "num": 266,
+      "level": "N3",
+      "english": "masaka",
+      "japanese": "まさか",
+      "title": "まさか"
+    },
+    {
+      "num": 267,
+      "level": "N5",
+      "english": "masen ka",
+      "japanese": "ませんか",
+      "title": "ませんか"
+    },
+    {
+      "num": 268,
+      "level": "N5",
+      "english": "mashou",
+      "japanese": "ましょう",
+      "title": "ましょう"
+    },
+    {
+      "num": 269,
+      "level": "N5",
+      "english": "mashouka",
+      "japanese": "ましょうか",
+      "title": "ましょうか"
+    },
+    {
+      "num": 270,
+      "level": "N4",
+      "english": "matawa",
+      "japanese": "または",
+      "title": "または"
+    },
+    {
+      "num": 271,
+      "level": "N2",
+      "english": "mattaku~nai",
+      "japanese": "全く～ない（まったく～ない）",
+      "title": "全く～ない"
+    },
+    {
+      "num": 272,
+      "level": "N1",
+      "english": "meku",
+      "japanese": "めく",
+      "title": "めく"
+    },
+    {
+      "num": 273,
+      "level": "N3",
+      "english": "metta ni~nai",
+      "japanese": "めったに～ない",
+      "title": "めったに～ない"
+    },
+    {
+      "num": 274,
+      "level": "N4",
+      "english": "mitai da",
+      "japanese": "みたいだ",
+      "title": "みたいだ"
+    },
+    {
+      "num": 275,
+      "level": "N4",
+      "english": "mitai na",
+      "japanese": "みたいな",
+      "title": "みたいな"
+    },
+    {
+      "num": 276,
+      "level": "N4",
+      "english": "mitai ni",
+      "japanese": "みたいに",
+      "title": "みたいに"
+    },
+    {
+      "num": 277,
+      "level": "N5",
+      "english": "mo",
+      "japanese": "も",
+      "title": "も"
+    },
+    {
+      "num": 278,
+      "level": "N4",
+      "english": "mo",
+      "japanese": "も",
+      "title": "も"
+    },
+    {
+      "num": 279,
+      "level": "N1",
+      "english": "mo douzen da",
+      "japanese": "も同然だ（もどうぜんだ）",
+      "title": "も同然だ"
+    },
+    {
+      "num": 280,
+      "level": "N2",
+      "english": "mo kamawazu",
+      "japanese": "もかまわず",
+      "title": "もかまわず"
+    },
+    {
+      "num": 281,
+      "level": "N1",
+      "english": "mo saru koto nagara",
+      "japanese": "もさることながら",
+      "title": "もさることながら"
+    },
+    {
+      "num": 282,
+      "level": "N1",
+      "english": "mo shinai de",
+      "japanese": "もしないで",
+      "title": "もしないで"
+    },
+    {
+      "num": 283,
+      "level": "N2",
+      "english": "mo touzen da",
+      "japanese": "も当然だ（もとうぜんだ）",
+      "title": "も当然だ"
+    },
+    {
+      "num": 284,
+      "level": "N3",
+      "english": "mo~ba~mo",
+      "japanese": "も～ば～も",
+      "title": "も～ば～も"
+    },
+    {
+      "num": 285,
+      "level": "N1",
+      "english": "mohaya",
+      "japanese": "もはや",
+      "title": "もはや"
+    },
+    {
+      "num": 286,
+      "level": "N2",
+      "english": "mono / mon",
+      "japanese": "もの / もん",
+      "title": "もの / もん"
+    },
+    {
+      "num": 287,
+      "level": "N2",
+      "english": "mono da",
+      "japanese": "ものだ",
+      "title": "ものだ"
+    },
+    {
+      "num": 288,
+      "level": "N2",
+      "english": "mono dakara",
+      "japanese": "ものだから",
+      "title": "ものだから"
+    },
+    {
+      "num": 289,
+      "level": "N1",
+      "english": "mono de",
+      "japanese": "もので",
+      "title": "もので"
+    },
+    {
+      "num": 290,
+      "level": "N2",
+      "english": "mono dewa nai",
+      "japanese": "ものではない",
+      "title": "ものではない"
+    },
+    {
+      "num": 291,
+      "level": "N2",
+      "english": "mono ga aru",
+      "japanese": "ものがある",
+      "title": "ものがある"
+    },
+    {
+      "num": 292,
+      "level": "N2",
+      "english": "mono ka / mon ka",
+      "japanese": "ものか / もんか",
+      "title": "ものか / もんか"
+    },
+    {
+      "num": 293,
+      "level": "N2",
+      "english": "mono nara",
+      "japanese": "ものなら",
+      "title": "ものなら"
+    },
+    {
+      "num": 294,
+      "level": "N1",
+      "english": "mono o",
+      "japanese": "ものを",
+      "title": "ものを"
+    },
+    {
+      "num": 295,
+      "level": "N1",
+      "english": "mono to omowareru / mono to mirareru",
+      "japanese": "ものと思われる / ものと見られる（ものとおもわれる / ものとみられる）",
+      "title": "ものと思われる / ものと見られる"
+    },
+    {
+      "num": 296,
+      "level": "N1",
+      "english": "mono to suru",
+      "japanese": "ものとする",
+      "title": "ものとする"
+    },
+    {
+      "num": 297,
+      "level": "N1",
+      "english": "mono toshite",
+      "japanese": "ものとして",
+      "title": "ものとして"
+    },
+    {
+      "num": 298,
+      "level": "N2",
+      "english": "monono",
+      "japanese": "ものの",
+      "title": "ものの"
+    },
+    {
+      "num": 299,
+      "level": "N3",
+      "english": "moshika shitara",
+      "japanese": "もしかしたら",
+      "title": "もしかしたら"
+    },
+    {
+      "num": 300,
+      "level": "N1",
+      "english": "moshikuwa",
+      "japanese": "もしくは",
+      "title": "もしくは"
+    },
+    {
+      "num": 301,
+      "level": "N3",
+      "english": "moshimo~tara",
+      "japanese": "もしも〜たら",
+      "title": "もしも〜たら"
+    },
+    {
+      "num": 302,
+      "level": "N2",
+      "english": "motto mo",
+      "japanese": "もっとも",
+      "title": "もっとも"
+    },
+    {
+      "num": 303,
+      "level": "N5",
+      "english": "mou",
+      "japanese": "もう",
+      "title": "もう"
+    },
+    {
+      "num": 304,
+      "level": "N2",
+      "english": "mou sukoshi de",
+      "japanese": "もう少しで（もうすこしで）",
+      "title": "もう少しで"
+    },
+    {
+      "num": 305,
+      "level": "N3",
+      "english": "muke",
+      "japanese": "向け（むけ）",
+      "title": "向け"
+    },
+    {
+      "num": 306,
+      "level": "N3",
+      "english": "muki",
+      "japanese": "向き（むき）",
+      "title": "向き"
+    },
+    {
+      "num": 307,
+      "level": "N3",
+      "english": "mushiro",
+      "japanese": "むしろ",
+      "title": "むしろ"
+    },
+    {
+      "num": 308,
+      "level": "N1",
+      "english": "n bakari ni",
+      "japanese": "んばかりに",
+      "title": "んばかりに"
+    },
+    {
+      "num": 309,
+      "level": "N1",
+      "english": "n ga tame ni",
+      "japanese": "んがために",
+      "title": "んがために"
+    },
+    {
+      "num": 310,
+      "level": "N4",
+      "english": "na",
+      "japanese": "な",
+      "title": "な"
+    },
+    {
+      "num": 311,
+      "level": "N5",
+      "english": "na-adjectives",
+      "japanese": "な-adjectives",
+      "title": "な-adjectives"
+    },
+    {
+      "num": 312,
+      "level": "N5",
+      "english": "naa",
+      "japanese": "なあ",
+      "title": "なあ"
+    },
+    {
+      "num": 313,
+      "level": "N4",
+      "english": "nado",
+      "japanese": "など",
+      "title": "など"
+    },
+    {
+      "num": 314,
+      "level": "N4",
+      "english": "nagara",
+      "japanese": "ながら",
+      "title": "ながら"
+    },
+    {
+      "num": 315,
+      "level": "N3",
+      "english": "nagara mo",
+      "japanese": "ながらも",
+      "title": "ながらも"
+    },
+    {
+      "num": 316,
+      "level": "N1",
+      "english": "nagara ni / nagara no",
+      "japanese": "ながらに / ながらの",
+      "title": "ながらに / ながらの"
+    },
+    {
+      "num": 317,
+      "level": "N2",
+      "english": "nai dewa irarenai",
+      "japanese": "ないではいられない",
+      "title": "ないではいられない"
+    },
+    {
+      "num": 318,
+      "level": "N2",
+      "english": "nai koto niwa~nai",
+      "japanese": "ないことには～ない",
+      "title": "ないことには～ない"
+    },
+    {
+      "num": 319,
+      "level": "N3",
+      "english": "nai koto wa nai",
+      "japanese": "ないことはない",
+      "title": "ないことはない"
+    },
+    {
+      "num": 320,
+      "level": "N1",
+      "english": "nai made mo",
+      "japanese": "ないまでも",
+      "title": "ないまでも"
+    },
+    {
+      "num": 321,
+      "level": "N1",
+      "english": "nai mono demo nai",
+      "japanese": "ないものでもない",
+      "title": "ないものでもない"
+    },
+    {
+      "num": 322,
+      "level": "N1",
+      "english": "nai mono ka / nai mono darou ka",
+      "japanese": "ないものか / ないものだろうか",
+      "title": "ないものか / ないものだろうか"
+    },
+    {
+      "num": 323,
+      "level": "N1",
+      "english": "nai tomo kagiranai",
+      "japanese": "ないとも限らない（ないともかぎらない）",
+      "title": "ないとも限らない"
+    },
+    {
+      "num": 324,
+      "level": "N5",
+      "english": "naide",
+      "japanese": "ないで",
+      "title": "ないで"
+    },
+    {
+      "num": 325,
+      "level": "N5",
+      "english": "naide kudasai",
+      "japanese": "ないでください",
+      "title": "ないでください"
+    },
+    {
+      "num": 326,
+      "level": "N3",
+      "english": "naito",
+      "japanese": "ないと",
+      "title": "ないと"
+    },
+    {
+      "num": 327,
+      "level": "N5",
+      "english": "naito ikenai",
+      "japanese": "ないといけない",
+      "title": "ないといけない"
+    },
+    {
+      "num": 328,
+      "level": "N2",
+      "english": "naka o / naka dewa",
+      "japanese": "中を / 中では（なかを / なかでは）",
+      "title": "中を / 中では"
+    },
+    {
+      "num": 329,
+      "level": "N3",
+      "english": "nakanaka",
+      "japanese": "なかなか",
+      "title": "なかなか"
+    },
+    {
+      "num": 330,
+      "level": "N4",
+      "english": "nakanaka~nai",
+      "japanese": "なかなか～ない",
+      "title": "なかなか～ない"
+    },
+    {
+      "num": 331,
+      "level": "N4",
+      "english": "nakereba ikenai",
+      "japanese": "なければいけない",
+      "title": "なければいけない"
+    },
+    {
+      "num": 332,
+      "level": "N4",
+      "english": "nakereba naranai",
+      "japanese": "なければならない",
+      "title": "なければならない"
+    },
+    {
+      "num": 333,
+      "level": "N5",
+      "english": "naku temo ii",
+      "japanese": "なくてもいい",
+      "title": "なくてもいい"
+    },
+    {
+      "num": 334,
+      "level": "N2",
+      "english": "naku wa nai / naku mo nai",
+      "japanese": "なくはない / なくもない",
+      "title": "なくはない / なくもない"
+    },
+    {
+      "num": 335,
+      "level": "N5",
+      "english": "nakucha",
+      "japanese": "なくちゃ",
+      "title": "なくちゃ"
+    },
+    {
+      "num": 336,
+      "level": "N1",
+      "english": "nakushite wa",
+      "japanese": "なくしては",
+      "title": "なくしては"
+    },
+    {
+      "num": 337,
+      "level": "N2",
+      "english": "nakute sumu",
+      "japanese": "なくて済む（なくてすむ）",
+      "title": "なくて済む"
+    },
+    {
+      "num": 338,
+      "level": "N5",
+      "english": "nakute wa ikenai",
+      "japanese": "なくてはいけない",
+      "title": "なくてはいけない"
+    },
+    {
+      "num": 339,
+      "level": "N5",
+      "english": "nakute wa naranai",
+      "japanese": "なくてはならない",
+      "title": "なくてはならない"
+    },
+    {
+      "num": 340,
+      "level": "N1",
+      "english": "nami",
+      "japanese": "並み（なみ）",
+      "title": "並み"
+    },
+    {
+      "num": 341,
+      "level": "N1",
+      "english": "nan to iu / nanto / nante",
+      "japanese": "なんという / なんと / なんて",
+      "title": "なんという / なんと / なんて"
+    },
+    {
+      "num": 342,
+      "level": "N2",
+      "english": "nani mo~nai",
+      "japanese": "何も～ない（なにも～ない）",
+      "title": "何も～ない"
+    },
+    {
+      "num": 343,
+      "level": "N1",
+      "english": "nani shiro",
+      "japanese": "何しろ（なにしろ）",
+      "title": "何しろ"
+    },
+    {
+      "num": 344,
+      "level": "N3",
+      "english": "nanka / nante / nado",
+      "japanese": "なんか / なんて / など",
+      "title": "なんか / なんて / など"
+    },
+    {
+      "num": 345,
+      "level": "N2",
+      "english": "nao",
+      "japanese": "なお",
+      "title": "なお"
+    },
+    {
+      "num": 346,
+      "level": "N3",
+      "english": "naosu",
+      "japanese": "直す（なおす）",
+      "title": "直す"
+    },
+    {
+      "num": 347,
+      "level": "N4",
+      "english": "nara",
+      "japanese": "なら",
+      "title": "なら"
+    },
+    {
+      "num": 348,
+      "level": "N1",
+      "english": "nara dewa",
+      "japanese": "ならでは",
+      "title": "ならでは"
+    },
+    {
+      "num": 349,
+      "level": "N1",
+      "english": "nara iza shirazu / wa iza shirazu",
+      "japanese": "ならいざしらず / はいざしらず",
+      "title": "ならいざしらず / はいざしらず"
+    },
+    {
+      "num": 350,
+      "level": "N1",
+      "english": "nari",
+      "japanese": "なり",
+      "title": "なり"
+    },
+    {
+      "num": 351,
+      "level": "N1",
+      "english": "nari ni / nari no",
+      "japanese": "なりに / なりの",
+      "title": "なりに / なりの"
+    },
+    {
+      "num": 352,
+      "level": "N1",
+      "english": "nari tomo",
+      "japanese": "なりとも",
+      "title": "なりとも"
+    },
+    {
+      "num": 353,
+      "level": "N1",
+      "english": "nari~nari",
+      "japanese": "なり～なり",
+      "title": "なり～なり"
+    },
+    {
+      "num": 354,
+      "level": "N5",
+      "english": "naru",
+      "japanese": "なる",
+      "title": "なる"
+    },
+    {
+      "num": 355,
+      "level": "N3",
+      "english": "naru beku",
+      "japanese": "なるべく",
+      "title": "なるべく"
+    },
+    {
+      "num": 356,
+      "level": "N4",
+      "english": "nasai",
+      "japanese": "なさい",
+      "title": "なさい"
+    },
+    {
+      "num": 357,
+      "level": "N4",
+      "english": "nasaru",
+      "japanese": "なさる",
+      "title": "なさる"
+    },
+    {
+      "num": 358,
+      "level": "N1",
+      "english": "nashi ni / nashi de",
+      "japanese": "なしに / なしで",
+      "title": "なしに / なしで"
+    },
+    {
+      "num": 359,
+      "level": "N3",
+      "english": "nazenara",
+      "japanese": "なぜなら",
+      "title": "なぜなら"
+    },
+    {
+      "num": 360,
+      "level": "N3",
+      "english": "ndatte",
+      "japanese": "んだって",
+      "title": "んだって"
+    },
+    {
+      "num": 361,
+      "level": "N5",
+      "english": "ndesu",
+      "japanese": "んです",
+      "title": "んです"
+    },
+    {
+      "num": 362,
+      "level": "N5",
+      "english": "ne",
+      "japanese": "ね",
+      "title": "ね"
+    },
+    {
+      "num": 363,
+      "level": "N2",
+      "english": "neba naranai",
+      "japanese": "ねばならない",
+      "title": "ねばならない"
+    },
+    {
+      "num": 364,
+      "level": "N5",
+      "english": "ni",
+      "japanese": "に",
+      "title": "に"
+    },
+    {
+      "num": 365,
+      "level": "N1",
+      "english": "ni",
+      "japanese": "に",
+      "title": "に"
+    },
+    {
+      "num": 366,
+      "level": "N1",
+      "english": "ni atai suru",
+      "japanese": "に値する（にあたいする）",
+      "title": "に値する"
+    },
+    {
+      "num": 367,
+      "level": "N2",
+      "english": "ni atatte",
+      "japanese": "にあたって",
+      "title": "にあたって"
+    },
+    {
+      "num": 368,
+      "level": "N1",
+      "english": "ni atte",
+      "japanese": "にあって",
+      "title": "にあって"
+    },
+    {
+      "num": 369,
+      "level": "N3",
+      "english": "ni chigai nai",
+      "japanese": "に違いない（にちがいない）",
+      "title": "に違いない"
+    },
+    {
+      "num": 370,
+      "level": "N3",
+      "english": "ni hanshite",
+      "japanese": "に反して（にはんして）",
+      "title": "に反して"
+    },
+    {
+      "num": 371,
+      "level": "N1",
+      "english": "ni hikikae",
+      "japanese": "に引き換え（にひきかえ）",
+      "title": "に引き換え"
+    },
+    {
+      "num": 372,
+      "level": "N2",
+      "english": "ni hoka naranai",
+      "japanese": "にほかならない",
+      "title": "にほかならない"
+    },
+    {
+      "num": 373,
+      "level": "N5",
+      "english": "ni iku",
+      "japanese": "に行く（にいく）",
+      "title": "に行く"
+    },
+    {
+      "num": 374,
+      "level": "N1",
+      "english": "ni itaru / ni itatta",
+      "japanese": "に至る / に至った（にいたる / にいたった）",
+      "title": "に至る / に至った"
+    },
+    {
+      "num": 375,
+      "level": "N1",
+      "english": "ni itaru made",
+      "japanese": "に至るまで（にいたるまで）",
+      "title": "に至るまで"
+    },
+    {
+      "num": 376,
+      "level": "N1",
+      "english": "ni itattemo",
+      "japanese": "に至っても（にいたっても）",
+      "title": "に至っても"
+    },
+    {
+      "num": 377,
+      "level": "N1",
+      "english": "ni ittate wa",
+      "japanese": "に至っては（にいたっては）",
+      "title": "に至っては"
+    },
+    {
+      "num": 378,
+      "level": "N1",
+      "english": "ni iwasereba",
+      "japanese": "に言わせれば（にいわせれば）",
+      "title": "に言わせれば"
+    },
+    {
+      "num": 379,
+      "level": "N2",
+      "english": "ni kagirazu",
+      "japanese": "に限らず（にかぎらず）",
+      "title": "に限らず"
+    },
+    {
+      "num": 380,
+      "level": "N2",
+      "english": "ni kagiru",
+      "japanese": "に限る（にかぎる）",
+      "title": "に限る"
+    },
+    {
+      "num": 381,
+      "level": "N1",
+      "english": "ni kagitta koto dewa nai",
+      "japanese": "に限ったことではない（にかぎったことではない）",
+      "title": "に限ったことではない"
+    },
+    {
+      "num": 382,
+      "level": "N2",
+      "english": "ni kagitte",
+      "japanese": "に限って（にかぎって）",
+      "title": "に限って"
+    },
+    {
+      "num": 383,
+      "level": "N1",
+      "english": "ni kakatte wa / ni kakattara / ni kakaru to / kakareba",
+      "japanese": "にかかっては / にかかったら / にかかると / かかれば",
+      "title": "にかかっては / にかかったら / にかかると / かかれば"
+    },
+    {
+      "num": 384,
+      "level": "N1",
+      "english": "ni kakatteiru",
+      "japanese": "にかかっている",
+      "title": "にかかっている"
+    },
+    {
+      "num": 385,
+      "level": "N2",
+      "english": "ni kakawarazu",
+      "japanese": "に関わらず（にかかわらず）",
+      "title": "に関わらず"
+    },
+    {
+      "num": 386,
+      "level": "N2",
+      "english": "ni kakawaru",
+      "japanese": "に関わる（にかかわる）",
+      "title": "に関わる"
+    },
+    {
+      "num": 387,
+      "level": "N3",
+      "english": "ni kakete",
+      "japanese": "にかけて",
+      "title": "にかけて"
+    },
+    {
+      "num": 388,
+      "level": "N1",
+      "english": "ni kako tsukete",
+      "japanese": "にかこつけて",
+      "title": "にかこつけて"
+    },
+    {
+      "num": 389,
+      "level": "N1",
+      "english": "ni kamakete",
+      "japanese": "にかまけて",
+      "title": "にかまけて"
+    },
+    {
+      "num": 390,
+      "level": "N3",
+      "english": "ni kan suru / ni kan shite",
+      "japanese": "に関する / に関して（にかんする / にかんして）",
+      "title": "に関する / に関して"
+    },
+    {
+      "num": 391,
+      "level": "N1",
+      "english": "ni katakunai",
+      "japanese": "に難くない（にかたくない）",
+      "title": "に難くない"
+    },
+    {
+      "num": 392,
+      "level": "N3",
+      "english": "ni kawatte / ni kawari",
+      "japanese": "にかわって / にかわり",
+      "title": "にかわって / にかわり"
+    },
+    {
+      "num": 393,
+      "level": "N4",
+      "english": "ni ki ga tsuku",
+      "japanese": "に気がつく（にきがつく）",
+      "title": "に気がつく"
+    },
+    {
+      "num": 394,
+      "level": "N2",
+      "english": "ni kimatte iru",
+      "japanese": "に決まっている（にきまっている）",
+      "title": "に決まっている"
+    },
+    {
+      "num": 395,
+      "level": "N2",
+      "english": "ni koshita koto wa nai",
+      "japanese": "に越したことはない（にこしたことはない）",
+      "title": "に越したことはない"
+    },
+    {
+      "num": 396,
+      "level": "N2",
+      "english": "ni kotaete",
+      "japanese": "に応えて（にこたえて）",
+      "title": "に応えて"
+    },
+    {
+      "num": 397,
+      "level": "N3",
+      "english": "ni kurabete",
+      "japanese": "に比べて（にくらべて）",
+      "title": "に比べて"
+    },
+    {
+      "num": 398,
+      "level": "N2",
+      "english": "ni kuwaete",
+      "japanese": "に加えて（にくわえて）",
+      "title": "に加えて"
+    },
+    {
+      "num": 399,
+      "level": "N1",
+      "english": "ni matsuwaru",
+      "japanese": "にまつわる",
+      "title": "にまつわる"
+    },
+    {
+      "num": 400,
+      "level": "N4",
+      "english": "ni mieru",
+      "japanese": "に見える（にみえる）",
+      "title": "に見える"
+    },
+    {
+      "num": 401,
+      "level": "N2",
+      "english": "ni motozuite",
+      "japanese": "に基づいて（にもとづいて）",
+      "title": "に基づいて"
+    },
+    {
+      "num": 402,
+      "level": "N2",
+      "english": "ni mukatte",
+      "japanese": "に向かって（にむかって）",
+      "title": "に向かって"
+    },
+    {
+      "num": 403,
+      "level": "N3",
+      "english": "ni nareru",
+      "japanese": "に慣れる（になれる）",
+      "title": "に慣れる"
+    },
+    {
+      "num": 404,
+      "level": "N1",
+      "english": "ni nottotte",
+      "japanese": "に則って（にのっとって）",
+      "title": "に則って"
+    },
+    {
+      "num": 405,
+      "level": "N3",
+      "english": "ni oite / ni okeru",
+      "japanese": "において / における",
+      "title": "において / における"
+    },
+    {
+      "num": 406,
+      "level": "N2",
+      "english": "ni oujite",
+      "japanese": "に応じて（におうじて）",
+      "title": "に応じて"
+    },
+    {
+      "num": 407,
+      "level": "N2",
+      "english": "ni saishite",
+      "japanese": "に際して（にさいして）",
+      "title": "に際して"
+    },
+    {
+      "num": 408,
+      "level": "N2",
+      "english": "ni sakidachi",
+      "japanese": "に先立ち（にさきだち）",
+      "title": "に先立ち"
+    },
+    {
+      "num": 409,
+      "level": "N1",
+      "english": "ni sakigakete",
+      "japanese": "に先駆けて（にさきがけて）",
+      "title": "に先駆けて"
+    },
+    {
+      "num": 410,
+      "level": "N2",
+      "english": "ni seyo/ ni shiro",
+      "japanese": "にせよ/ にしろ",
+      "title": "にせよ/ にしろ"
+    },
+    {
+      "num": 411,
+      "level": "N1",
+      "english": "ni shinobinai",
+      "japanese": "に忍びない（にしのびない）",
+      "title": "に忍びない"
+    },
+    {
+      "num": 412,
+      "level": "N2",
+      "english": "ni shiro~ni shiro",
+      "japanese": "にしろ～にしろ",
+      "title": "にしろ～にしろ"
+    },
+    {
+      "num": 413,
+      "level": "N1",
+      "english": "ni shita tokoro de / to shita tokoro de",
+      "japanese": "にしたところで / としたところで",
+      "title": "にしたところで / としたところで"
+    },
+    {
+      "num": 414,
+      "level": "N3",
+      "english": "ni shitagatte",
+      "japanese": "にしたがって",
+      "title": "にしたがって"
+    },
+    {
+      "num": 415,
+      "level": "N2",
+      "english": "ni shitara / ni sureba",
+      "japanese": "にしたら / にすれば",
+      "title": "にしたら / にすれば"
+    },
+    {
+      "num": 416,
+      "level": "N1",
+      "english": "ni shite",
+      "japanese": "にして",
+      "title": "にして"
+    },
+    {
+      "num": 417,
+      "level": "N3",
+      "english": "ni shite mo",
+      "japanese": "にしても",
+      "title": "にしても"
+    },
+    {
+      "num": 418,
+      "level": "N3",
+      "english": "ni shite wa",
+      "japanese": "にしては",
+      "title": "にしては"
+    },
+    {
+      "num": 419,
+      "level": "N2",
+      "english": "ni shitemo~ni shitemo",
+      "japanese": "にしても～にしても",
+      "title": "にしても～にしても"
+    },
+    {
+      "num": 420,
+      "level": "N1",
+      "english": "ni sokushite",
+      "japanese": "に即して（にそくして）",
+      "title": "に即して"
+    },
+    {
+      "num": 421,
+      "level": "N2",
+      "english": "ni sotte",
+      "japanese": "に沿って（にそって）",
+      "title": "に沿って"
+    },
+    {
+      "num": 422,
+      "level": "N2",
+      "english": "ni soui nai",
+      "japanese": "に相違ない（にそういない）",
+      "title": "に相違ない"
+    },
+    {
+      "num": 423,
+      "level": "N2",
+      "english": "ni suginai",
+      "japanese": "に過ぎない（にすぎない）",
+      "title": "に過ぎない"
+    },
+    {
+      "num": 424,
+      "level": "N5",
+      "english": "ni suru",
+      "japanese": "にする",
+      "title": "にする"
+    },
+    {
+      "num": 425,
+      "level": "N4",
+      "english": "ni suru",
+      "japanese": "にする",
+      "title": "にする"
+    },
+    {
+      "num": 426,
+      "level": "N1",
+      "english": "ni taeru / ni taenai",
+      "japanese": "に耐える / に耐えない（にたえる / にたえない）",
+      "title": "に耐える / に耐えない"
+    },
+    {
+      "num": 427,
+      "level": "N3",
+      "english": "ni taishite",
+      "japanese": "に対して（にたいして）",
+      "title": "に対して"
+    },
+    {
+      "num": 428,
+      "level": "N1",
+      "english": "ni taranai / ni tarinai",
+      "japanese": "に足らない / に足りない（にたらない / にたりない）",
+      "title": "に足らない / に足りない"
+    },
+    {
+      "num": 429,
+      "level": "N1",
+      "english": "ni taru / ni tariru",
+      "japanese": "に足る / に足りる（にたる / にたりる）",
+      "title": "に足る / に足りる"
+    },
+    {
+      "num": 430,
+      "level": "N1",
+      "english": "ni terashite",
+      "japanese": "に照らして（にてらして）",
+      "title": "に照らして"
+    },
+    {
+      "num": 431,
+      "level": "N1",
+      "english": "ni todomarazu",
+      "japanese": "にとどまらず",
+      "title": "にとどまらず"
+    },
+    {
+      "num": 432,
+      "level": "N2",
+      "english": "ni tomonatte",
+      "japanese": "に伴って（にともなって）",
+      "title": "に伴って"
+    },
+    {
+      "num": 433,
+      "level": "N3",
+      "english": "ni totte",
+      "japanese": "にとって",
+      "title": "にとって"
+    },
+    {
+      "num": 434,
+      "level": "N3",
+      "english": "ni tsuite",
+      "japanese": "について",
+      "title": "について"
+    },
+    {
+      "num": 435,
+      "level": "N2",
+      "english": "ni tsuke",
+      "japanese": "につけ",
+      "title": "につけ"
+    },
+    {
+      "num": 436,
+      "level": "N2",
+      "english": "ni tsuki",
+      "japanese": "につき",
+      "title": "につき"
+    },
+    {
+      "num": 437,
+      "level": "N3",
+      "english": "ni tsurete",
+      "japanese": "につれて",
+      "title": "につれて"
+    },
+    {
+      "num": 438,
+      "level": "N3",
+      "english": "ni wa",
+      "japanese": "には",
+      "title": "には"
+    },
+    {
+      "num": 439,
+      "level": "N1",
+      "english": "ni wa muri ga aru",
+      "japanese": "には無理がある（にはむりがある）",
+      "title": "には無理がある"
+    },
+    {
+      "num": 440,
+      "level": "N2",
+      "english": "ni watatte",
+      "japanese": "にわたって",
+      "title": "にわたって"
+    },
+    {
+      "num": 441,
+      "level": "N1",
+      "english": "ni yorazu",
+      "japanese": "によらず",
+      "title": "によらず"
+    },
+    {
+      "num": 442,
+      "level": "N3",
+      "english": "ni yoru to/ni yoreba",
+      "japanese": "によると /によれば",
+      "title": "によると /によれば"
+    },
+    {
+      "num": 443,
+      "level": "N3",
+      "english": "ni yotte / ni yoru",
+      "japanese": "によって / による",
+      "title": "によって / による"
+    },
+    {
+      "num": 444,
+      "level": "N5",
+      "english": "ni/e",
+      "japanese": "に/へ",
+      "title": "に/へ"
+    },
+    {
+      "num": 445,
+      "level": "N1",
+      "english": "ni~o kasanete",
+      "japanese": "に～を重ねて（に～をかさねて）",
+      "title": "に～を重ねて"
+    },
+    {
+      "num": 446,
+      "level": "N4",
+      "english": "nikui",
+      "japanese": "にくい",
+      "title": "にくい"
+    },
+    {
+      "num": 447,
+      "level": "N1",
+      "english": "nimo hodo ga aru",
+      "japanese": "にもほどがある",
+      "title": "にもほどがある"
+    },
+    {
+      "num": 448,
+      "level": "N2",
+      "english": "nimo kakawarazu",
+      "japanese": "にも関わらず（にもかかわらず）",
+      "title": "にも関わらず"
+    },
+    {
+      "num": 449,
+      "level": "N1",
+      "english": "nimo mashite",
+      "japanese": "にも増して（にもまして）",
+      "title": "にも増して"
+    },
+    {
+      "num": 450,
+      "level": "N2",
+      "english": "nite",
+      "japanese": "にて",
+      "title": "にて"
+    },
+    {
+      "num": 451,
+      "level": "N1",
+      "english": "niwa ataranai",
+      "japanese": "には当たらない（にはあたらない）",
+      "title": "には当たらない"
+    },
+    {
+      "num": 452,
+      "level": "N1",
+      "english": "niwa oyobanai",
+      "japanese": "には及ばない（にはおよばない）",
+      "title": "には及ばない"
+    },
+    {
+      "num": 453,
+      "level": "N5",
+      "english": "no",
+      "japanese": "の",
+      "title": "の"
+    },
+    {
+      "num": 454,
+      "level": "N3",
+      "english": "no deshou ka",
+      "japanese": "のでしょうか",
+      "title": "のでしょうか"
+    },
+    {
+      "num": 455,
+      "level": "N5",
+      "english": "no desu",
+      "japanese": "のです",
+      "title": "のです"
+    },
+    {
+      "num": 456,
+      "level": "N5",
+      "english": "no ga heta",
+      "japanese": "のが下手（のがへた）",
+      "title": "のが下手"
+    },
+    {
+      "num": 457,
+      "level": "N5",
+      "english": "no ga jouzu",
+      "japanese": "のが上手（のがじょうず）",
+      "title": "のが上手"
+    },
+    {
+      "num": 458,
+      "level": "N5",
+      "english": "no ga suki",
+      "japanese": "のが好き（のがすき）",
+      "title": "のが好き"
+    },
+    {
+      "num": 459,
+      "level": "N1",
+      "english": "no itari",
+      "japanese": "の至り（のいたり）",
+      "title": "の至り"
+    },
+    {
+      "num": 460,
+      "level": "N1",
+      "english": "no kiwami",
+      "japanese": "の極み（のきわみ）",
+      "title": "の極み"
+    },
+    {
+      "num": 461,
+      "level": "N2",
+      "english": "no mo motto mo da",
+      "japanese": "のももっともだ",
+      "title": "のももっともだ"
+    },
+    {
+      "num": 462,
+      "level": "N2",
+      "english": "no moto de",
+      "japanese": "の下で（のもとで）",
+      "title": "の下で"
+    },
+    {
+      "num": 463,
+      "level": "N4",
+      "english": "no naka de",
+      "japanese": "の中で（のなかで）",
+      "title": "の中で"
+    },
+    {
+      "num": 464,
+      "level": "N5",
+      "english": "no naka de [A] ga ichiban",
+      "japanese": "の中で[A]が一番（のなかで[A]がいちばん）",
+      "title": "の中で[A]が一番"
+    },
+    {
+      "num": 465,
+      "level": "N1",
+      "english": "no nan notte",
+      "japanese": "のなんのって",
+      "title": "のなんのって"
+    },
+    {
+      "num": 466,
+      "level": "N2",
+      "english": "no ue de wa",
+      "japanese": "の上では（のうえでは）",
+      "title": "の上では"
+    },
+    {
+      "num": 467,
+      "level": "N1",
+      "english": "no yara / mono yara / koto yara",
+      "japanese": "のやら / ものやら / ことやら",
+      "title": "のやら / ものやら / ことやら"
+    },
+    {
+      "num": 468,
+      "level": "N1",
+      "english": "no yara~no yara",
+      "japanese": "のやら～のやら",
+      "title": "のやら～のやら"
+    },
+    {
+      "num": 469,
+      "level": "N5",
+      "english": "node",
+      "japanese": "ので",
+      "title": "ので"
+    },
+    {
+      "num": 470,
+      "level": "N2",
+      "english": "nomi",
+      "japanese": "のみ",
+      "title": "のみ"
+    },
+    {
+      "num": 471,
+      "level": "N2",
+      "english": "nominarazu",
+      "japanese": "のみならず",
+      "title": "のみならず"
+    },
+    {
+      "num": 472,
+      "level": "N4",
+      "english": "noni",
+      "japanese": "のに",
+      "title": "のに"
+    },
+    {
+      "num": 473,
+      "level": "N4",
+      "english": "noni",
+      "japanese": "のに",
+      "title": "のに"
+    },
+    {
+      "num": 474,
+      "level": "N4",
+      "english": "nowa~da",
+      "japanese": "のは〜だ",
+      "title": "のは〜だ"
+    },
+    {
+      "num": 475,
+      "level": "N2",
+      "english": "nu",
+      "japanese": "ぬ",
+      "title": "ぬ"
+    },
+    {
+      "num": 476,
+      "level": "N2",
+      "english": "nuki ni shite / nuki de",
+      "japanese": "抜きにして / 抜きで（ぬきにして/ ぬきで）",
+      "title": "抜きにして / 抜きで"
+    },
+    {
+      "num": 477,
+      "level": "N2",
+      "english": "nuku",
+      "japanese": "抜く（ぬく）",
+      "title": "抜く"
+    },
+    {
+      "num": 478,
+      "level": "N5",
+      "english": "o / go",
+      "japanese": "お / ご",
+      "title": "お / ご"
+    },
+    {
+      "num": 479,
+      "level": "N5",
+      "english": "o / wo",
+      "japanese": "を",
+      "title": "を"
+    },
+    {
+      "num": 480,
+      "level": "N3",
+      "english": "o chuushin ni",
+      "japanese": "を中心に（をちゅうしんに）",
+      "title": "を中心に"
+    },
+    {
+      "num": 481,
+      "level": "N1",
+      "english": "o fumaete",
+      "japanese": "を踏まえて（をふまえて）",
+      "title": "を踏まえて"
+    },
+    {
+      "num": 482,
+      "level": "N3",
+      "english": "o hajime",
+      "japanese": "をはじめ",
+      "title": "をはじめ"
+    },
+    {
+      "num": 483,
+      "level": "N1",
+      "english": "o hete",
+      "japanese": "を経て（をへて）",
+      "title": "を経て"
+    },
+    {
+      "num": 484,
+      "level": "N1",
+      "english": "o hikaete",
+      "japanese": "を控えて（をひかえて）",
+      "title": "を控えて"
+    },
+    {
+      "num": 485,
+      "level": "N1",
+      "english": "o ii koto ni",
+      "japanese": "をいいことに",
+      "title": "をいいことに"
+    },
+    {
+      "num": 486,
+      "level": "N1",
+      "english": "o kaerimizu / mo kaerimizu",
+      "japanese": "を顧みず / も顧みず（をかえりみず / もかえりみず）",
+      "title": "を顧みず / も顧みず"
+    },
+    {
+      "num": 487,
+      "level": "N1",
+      "english": "o kagiri ni",
+      "japanese": "を限りに（をかぎりに）",
+      "title": "を限りに"
+    },
+    {
+      "num": 488,
+      "level": "N1",
+      "english": "o kanete",
+      "japanese": "を兼ねて（をかねて）",
+      "title": "を兼ねて"
+    },
+    {
+      "num": 489,
+      "level": "N1",
+      "english": "o kawakiri ni",
+      "japanese": "を皮切りに（をかわきりに）",
+      "title": "を皮切りに"
+    },
+    {
+      "num": 490,
+      "level": "N2",
+      "english": "o keiki ni",
+      "japanese": "を契機に（をけいきに）",
+      "title": "を契機に"
+    },
+    {
+      "num": 491,
+      "level": "N1",
+      "english": "o ki ni",
+      "japanese": "を機に（をきに）",
+      "title": "を機に"
+    },
+    {
+      "num": 492,
+      "level": "N1",
+      "english": "o kinji enai",
+      "japanese": "を禁じ得ない（をきんじえない）",
+      "title": "を禁じ得ない"
+    },
+    {
+      "num": 493,
+      "level": "N3",
+      "english": "o komete",
+      "japanese": "を込めて（をこめて）",
+      "title": "を込めて"
+    },
+    {
+      "num": 494,
+      "level": "N5",
+      "english": "o kudasai",
+      "japanese": "をください",
+      "title": "をください"
+    },
+    {
+      "num": 495,
+      "level": "N2",
+      "english": "o megutte",
+      "japanese": "をめぐって",
+      "title": "をめぐって"
+    },
+    {
+      "num": 496,
+      "level": "N1",
+      "english": "o mono tomo sezuni",
+      "japanese": "をものともせずに",
+      "title": "をものともせずに"
+    },
+    {
+      "num": 497,
+      "level": "N2",
+      "english": "o moto ni",
+      "japanese": "をもとに",
+      "title": "をもとに"
+    },
+    {
+      "num": 498,
+      "level": "N1",
+      "english": "o motte / o mochimashite",
+      "japanese": "をもって / をもちまして",
+      "title": "をもって / をもちまして"
+    },
+    {
+      "num": 499,
+      "level": "N2",
+      "english": "o nozoite",
+      "japanese": "を除いて（をのぞいて）",
+      "title": "を除いて"
+    },
+    {
+      "num": 500,
+      "level": "N1",
+      "english": "o oite~nai",
+      "japanese": "をおいて～ない",
+      "title": "をおいて～ない"
+    },
+    {
+      "num": 501,
+      "level": "N1",
+      "english": "o oshite / o oshikitte",
+      "japanese": "を押して / を押し切って（をおして / をおしきって）",
+      "title": "を押して / を押し切って"
+    },
+    {
+      "num": 502,
+      "level": "N1",
+      "english": "o sakai ni",
+      "japanese": "を境に（をさかいに）",
+      "title": "を境に"
+    },
+    {
+      "num": 503,
+      "level": "N2",
+      "english": "o towazu",
+      "japanese": "を問わず（をとわず）",
+      "title": "を問わず"
+    },
+    {
+      "num": 504,
+      "level": "N3",
+      "english": "o tsuujite / o tooshite",
+      "japanese": "を通じて / を通して（をつうじて / をとおして）",
+      "title": "を通じて / を通して"
+    },
+    {
+      "num": 505,
+      "level": "N1",
+      "english": "o yogi naku sareru",
+      "japanese": "を余儀なくされる（をよぎなくされる）",
+      "title": "を余儀なくされる"
+    },
+    {
+      "num": 506,
+      "level": "N1",
+      "english": "o yoso ni",
+      "japanese": "をよそに",
+      "title": "をよそに"
+    },
+    {
+      "num": 507,
+      "level": "N1",
+      "english": "o zentei toshite",
+      "japanese": "を前提として（をぜんていとして）",
+      "title": "を前提として"
+    },
+    {
+      "num": 508,
+      "level": "N4",
+      "english": "o~kudasai",
+      "japanese": "お～ください",
+      "title": "お～ください"
+    },
+    {
+      "num": 509,
+      "level": "N2",
+      "english": "o~negau",
+      "japanese": "お～願う（お～ねがう）",
+      "title": "お～願う"
+    },
+    {
+      "num": 510,
+      "level": "N4",
+      "english": "o~ni naru",
+      "japanese": "お～になる",
+      "title": "お～になる"
+    },
+    {
+      "num": 511,
+      "level": "N3",
+      "english": "okage de",
+      "japanese": "おかげで",
+      "title": "おかげで"
+    },
+    {
+      "num": 512,
+      "level": "N4",
+      "english": "oki ni",
+      "japanese": "おきに",
+      "title": "おきに"
+    },
+    {
+      "num": 513,
+      "level": "N2",
+      "english": "omake ni",
+      "japanese": "おまけに",
+      "title": "おまけに"
+    },
+    {
+      "num": 514,
+      "level": "N1",
+      "english": "omoi o suru",
+      "japanese": "思いをする（おもいをする）",
+      "title": "思いをする"
+    },
+    {
+      "num": 515,
+      "level": "N1",
+      "english": "ori ni",
+      "japanese": "折に（おりに）",
+      "title": "折に"
+    },
+    {
+      "num": 516,
+      "level": "N2",
+      "english": "osoraku",
+      "japanese": "恐らく（おそらく）",
+      "title": "恐らく"
+    },
+    {
+      "num": 517,
+      "level": "N2",
+      "english": "osore ga aru",
+      "japanese": "恐れがある（おそれがある）",
+      "title": "恐れがある"
+    },
+    {
+      "num": 518,
+      "level": "N4",
+      "english": "owaru",
+      "japanese": "終わる（おわる）",
+      "title": "終わる"
+    },
+    {
+      "num": 519,
+      "level": "N2",
+      "english": "oyobi",
+      "japanese": "及び（および）",
+      "title": "及び"
+    },
+    {
+      "num": 520,
+      "level": "N1",
+      "english": "oyoso",
+      "japanese": "およそ",
+      "title": "およそ"
+    },
+    {
+      "num": 521,
+      "level": "N3",
+      "english": "ppanashi",
+      "japanese": "っぱなし",
+      "title": "っぱなし"
+    },
+    {
+      "num": 522,
+      "level": "N3",
+      "english": "ppoi",
+      "japanese": "っぽい",
+      "title": "っぽい"
+    },
+    {
+      "num": 523,
+      "level": "N4",
+      "english": "rareru",
+      "japanese": "られる",
+      "title": "られる"
+    },
+    {
+      "num": 524,
+      "level": "N4",
+      "english": "rashii",
+      "japanese": "らしい",
+      "title": "らしい"
+    },
+    {
+      "num": 525,
+      "level": "N2",
+      "english": "roku ni~nai",
+      "japanese": "ろくに～ない",
+      "title": "ろくに～ない"
+    },
+    {
+      "num": 526,
+      "level": "N4",
+      "english": "sa",
+      "japanese": "さ",
+      "title": "さ"
+    },
+    {
+      "num": 527,
+      "level": "N1",
+      "english": "sa",
+      "japanese": "さ",
+      "title": "さ"
+    },
+    {
+      "num": 528,
+      "level": "N3",
+      "english": "sae",
+      "japanese": "さえ",
+      "title": "さえ"
+    },
+    {
+      "num": 529,
+      "level": "N3",
+      "english": "sae~ba",
+      "japanese": "さえ～ば",
+      "title": "さえ～ば"
+    },
+    {
+      "num": 530,
+      "level": "N3",
+      "english": "sai ni",
+      "japanese": "際に（さいに）",
+      "title": "際に"
+    },
+    {
+      "num": 531,
+      "level": "N3",
+      "english": "saichuu ni",
+      "japanese": "最中に（さいちゅうに）",
+      "title": "最中に"
+    },
+    {
+      "num": 532,
+      "level": "N2",
+      "english": "saiwai na koto ni",
+      "japanese": "幸いなことに（さいわいなことに）",
+      "title": "幸いなことに"
+    },
+    {
+      "num": 533,
+      "level": "N4",
+      "english": "sakki",
+      "japanese": "さっき",
+      "title": "さっき"
+    },
+    {
+      "num": 534,
+      "level": "N1",
+      "english": "samo",
+      "japanese": "さも",
+      "title": "さも"
+    },
+    {
+      "num": 535,
+      "level": "N1",
+      "english": "samonaito",
+      "japanese": "さもないと",
+      "title": "さもないと"
+    },
+    {
+      "num": 536,
+      "level": "N3",
+      "english": "sara ni",
+      "japanese": "さらに",
+      "title": "さらに"
+    },
+    {
+      "num": 537,
+      "level": "N4",
+      "english": "saserareru",
+      "japanese": "させられる",
+      "title": "させられる"
+    },
+    {
+      "num": 538,
+      "level": "N4",
+      "english": "saseru",
+      "japanese": "させる",
+      "title": "させる"
+    },
+    {
+      "num": 539,
+      "level": "N4",
+      "english": "sasete kudasai",
+      "japanese": "させてください",
+      "title": "させてください"
+    },
+    {
+      "num": 540,
+      "level": "N4",
+      "english": "sasuga",
+      "japanese": "さすが",
+      "title": "さすが"
+    },
+    {
+      "num": 541,
+      "level": "N3",
+      "english": "sate",
+      "japanese": "さて",
+      "title": "さて"
+    },
+    {
+      "num": 542,
+      "level": "N1",
+      "english": "sazo",
+      "japanese": "さぞ",
+      "title": "さぞ"
+    },
+    {
+      "num": 543,
+      "level": "N3",
+      "english": "sei de",
+      "japanese": "せいで",
+      "title": "せいで"
+    },
+    {
+      "num": 544,
+      "level": "N2",
+      "english": "sei ka",
+      "japanese": "せいか",
+      "title": "せいか"
+    },
+    {
+      "num": 545,
+      "level": "N3",
+      "english": "seizei",
+      "japanese": "せいぜい",
+      "title": "せいぜい"
+    },
+    {
+      "num": 546,
+      "level": "N2",
+      "english": "sekkaku",
+      "japanese": "せっかく",
+      "title": "せっかく"
+    },
+    {
+      "num": 547,
+      "level": "N2",
+      "english": "semete",
+      "japanese": "せめて",
+      "title": "せめて"
+    },
+    {
+      "num": 548,
+      "level": "N4",
+      "english": "shi",
+      "japanese": "し",
+      "title": "し"
+    },
+    {
+      "num": 549,
+      "level": "N3",
+      "english": "shibaraku",
+      "japanese": "しばらく",
+      "title": "しばらく"
+    },
+    {
+      "num": 550,
+      "level": "N2",
+      "english": "shidai",
+      "japanese": "次第（しだい）",
+      "title": "次第"
+    },
+    {
+      "num": 551,
+      "level": "N2",
+      "english": "shidai de",
+      "japanese": "次第で（しだいで）",
+      "title": "次第で"
+    },
+    {
+      "num": 552,
+      "level": "N2",
+      "english": "shidai ni",
+      "japanese": "次第に（しだいに）",
+      "title": "次第に"
+    },
+    {
+      "num": 553,
+      "level": "N2",
+      "english": "shikamo",
+      "japanese": "しかも",
+      "title": "しかも"
+    },
+    {
+      "num": 554,
+      "level": "N3",
+      "english": "shikanai",
+      "japanese": "しかない",
+      "title": "しかない"
+    },
+    {
+      "num": 555,
+      "level": "N5",
+      "english": "shikashi",
+      "japanese": "しかし",
+      "title": "しかし"
+    },
+    {
+      "num": 556,
+      "level": "N1",
+      "english": "shimatsu da",
+      "japanese": "始末だ（しまつだ）",
+      "title": "始末だ"
+    },
+    {
+      "num": 557,
+      "level": "N1",
+      "english": "soba kara",
+      "japanese": "そばから",
+      "title": "そばから"
+    },
+    {
+      "num": 558,
+      "level": "N1",
+      "english": "sobireru",
+      "japanese": "そびれる",
+      "title": "そびれる"
+    },
+    {
+      "num": 559,
+      "level": "N1",
+      "english": "sokonau / sokoneru / sonjiru",
+      "japanese": "損なう / 損ねる / 損じる（そこなう / そこねる / そんじる）",
+      "title": "損なう / 損ねる / 損じる"
+    },
+    {
+      "num": 560,
+      "level": "N4",
+      "english": "sonna ni",
+      "japanese": "そんなに",
+      "title": "そんなに"
+    },
+    {
+      "num": 561,
+      "level": "N3",
+      "english": "sono tame ni",
+      "japanese": "そのために",
+      "title": "そのために"
+    },
+    {
+      "num": 562,
+      "level": "N2",
+      "english": "sono ue",
+      "japanese": "その上（そのうえ）",
+      "title": "その上"
+    },
+    {
+      "num": 563,
+      "level": "N4",
+      "english": "sore demo",
+      "japanese": "それでも",
+      "title": "それでも"
+    },
+    {
+      "num": 564,
+      "level": "N5",
+      "english": "sore kara",
+      "japanese": "それから",
+      "title": "それから"
+    },
+    {
+      "num": 565,
+      "level": "N2",
+      "english": "sore na noni",
+      "japanese": "それなのに",
+      "title": "それなのに"
+    },
+    {
+      "num": 566,
+      "level": "N2",
+      "english": "sore nara",
+      "japanese": "それなら",
+      "title": "それなら"
+    },
+    {
+      "num": 567,
+      "level": "N4",
+      "english": "sore ni",
+      "japanese": "それに",
+      "title": "それに"
+    },
+    {
+      "num": 568,
+      "level": "N2",
+      "english": "sore ni shitemo",
+      "japanese": "それにしても",
+      "title": "それにしても"
+    },
+    {
+      "num": 569,
+      "level": "N3",
+      "english": "soretomo",
+      "japanese": "それとも",
+      "title": "それとも"
+    },
+    {
+      "num": 570,
+      "level": "N5",
+      "english": "soshite",
+      "japanese": "そして",
+      "title": "そして"
+    },
+    {
+      "num": 571,
+      "level": "N4",
+      "english": "sou da [1]",
+      "japanese": "そうだ",
+      "title": "そうだ"
+    },
+    {
+      "num": 572,
+      "level": "N4",
+      "english": "sou da [2]",
+      "japanese": "そうだ",
+      "title": "そうだ"
+    },
+    {
+      "num": 573,
+      "level": "N2",
+      "english": "sou ieba",
+      "japanese": "そう言えば（そういえば）",
+      "title": "そう言えば"
+    },
+    {
+      "num": 574,
+      "level": "N3",
+      "english": "sou mo nai /sou ni nai",
+      "japanese": "そうもない /そうにない",
+      "title": "そうもない /そうにない"
+    },
+    {
+      "num": 575,
+      "level": "N4",
+      "english": "sou ni / sou na",
+      "japanese": "そうに / そうな",
+      "title": "そうに / そうな"
+    },
+    {
+      "num": 576,
+      "level": "N2",
+      "english": "sou suru to",
+      "japanese": "そうすると",
+      "title": "そうすると"
+    },
+    {
+      "num": 577,
+      "level": "N1",
+      "english": "sube ga nai",
+      "japanese": "術がない（すべがない）",
+      "title": "術がない"
+    },
+    {
+      "num": 578,
+      "level": "N3",
+      "english": "sude ni",
+      "japanese": "すでに",
+      "title": "すでに"
+    },
+    {
+      "num": 579,
+      "level": "N2",
+      "english": "sue ni",
+      "japanese": "末に（すえに）",
+      "title": "末に"
+    },
+    {
+      "num": 580,
+      "level": "N5",
+      "english": "sugiru",
+      "japanese": "すぎる",
+      "title": "すぎる"
+    },
+    {
+      "num": 581,
+      "level": "N2",
+      "english": "sukoshi mo~nai",
+      "japanese": "少しも～ない（すこしも～ない）",
+      "title": "少しも～ない"
+    },
+    {
+      "num": 582,
+      "level": "N2",
+      "english": "sukunaku tomo",
+      "japanese": "少なくとも（すくなくとも）",
+      "title": "少なくとも"
+    },
+    {
+      "num": 583,
+      "level": "N3",
+      "english": "sunawachi",
+      "japanese": "すなわち",
+      "title": "すなわち"
+    },
+    {
+      "num": 584,
+      "level": "N1",
+      "english": "sura / de sura",
+      "japanese": "すら / ですら",
+      "title": "すら / ですら"
+    },
+    {
+      "num": 585,
+      "level": "N3",
+      "english": "suuryou + wa",
+      "japanese": "数量 + は（すうりょう + は）",
+      "title": "数量 + は"
+    },
+    {
+      "num": 586,
+      "level": "N4",
+      "english": "ta bakari",
+      "japanese": "たばかり",
+      "title": "たばかり"
+    },
+    {
+      "num": 587,
+      "level": "N1",
+      "english": "ta hazumi ni / ta hyoushi ni",
+      "japanese": "た弾みに / た拍子に（たはずみに / たひょうしに）",
+      "title": "た弾みに / た拍子に"
+    },
+    {
+      "num": 588,
+      "level": "N5",
+      "english": "ta koto ga aru",
+      "japanese": "たことがある",
+      "title": "たことがある"
+    },
+    {
+      "num": 589,
+      "level": "N1",
+      "english": "ta koto ni suru / ta koto ni naru",
+      "japanese": "たことにする / たことになる",
+      "title": "たことにする / たことになる"
+    },
+    {
+      "num": 590,
+      "level": "N3",
+      "english": "ta mono da",
+      "japanese": "たものだ",
+      "title": "たものだ"
+    },
+    {
+      "num": 591,
+      "level": "N4",
+      "english": "ta tokoro",
+      "japanese": "たところ",
+      "title": "たところ"
+    },
+    {
+      "num": 592,
+      "level": "N1",
+      "english": "ta tokoro de",
+      "japanese": "たところで",
+      "title": "たところで"
+    },
+    {
+      "num": 593,
+      "level": "N3",
+      "english": "ta totan",
+      "japanese": "たとたん",
+      "title": "たとたん"
+    },
+    {
+      "num": 594,
+      "level": "N1",
+      "english": "ta tsumori wa nai",
+      "japanese": "たつもりはない",
+      "title": "たつもりはない"
+    },
+    {
+      "num": 595,
+      "level": "N3",
+      "english": "tabi ni",
+      "japanese": "たびに",
+      "title": "たびに"
+    },
+    {
+      "num": 596,
+      "level": "N1",
+      "english": "tada~nomi da",
+      "japanese": "ただ～のみだ",
+      "title": "ただ～のみだ"
+    },
+    {
+      "num": 597,
+      "level": "N2",
+      "english": "tadachi ni",
+      "japanese": "直ちに（ただちに）",
+      "title": "直ちに"
+    },
+    {
+      "num": 598,
+      "level": "N4",
+      "english": "tadoushi & jidoushi",
+      "japanese": "他動詞 & 自動詞（たどうし & じどうし）",
+      "title": "他動詞 & 自動詞"
+    },
+    {
+      "num": 599,
+      "level": "N4",
+      "english": "tagaru",
+      "japanese": "たがる",
+      "title": "たがる"
+    },
+    {
+      "num": 600,
+      "level": "N5",
+      "english": "tai",
+      "japanese": "たい",
+      "title": "たい"
+    },
+    {
+      "num": 601,
+      "level": "N2",
+      "english": "tamae",
+      "japanese": "たまえ",
+      "title": "たまえ"
+    },
+    {
+      "num": 602,
+      "level": "N3",
+      "english": "tame ni",
+      "japanese": "ために",
+      "title": "ために"
+    },
+    {
+      "num": 603,
+      "level": "N1",
+      "english": "tameshi ga nai",
+      "japanese": "ためしがない",
+      "title": "ためしがない"
+    },
+    {
+      "num": 604,
+      "level": "N4",
+      "english": "tara",
+      "japanese": "たら",
+      "title": "たら"
+    },
+    {
+      "num": 605,
+      "level": "N4",
+      "english": "tara dou",
+      "japanese": "たらどう",
+      "title": "たらどう"
+    },
+    {
+      "num": 606,
+      "level": "N4",
+      "english": "tara ii desu ka",
+      "japanese": "たらいいですか",
+      "title": "たらいいですか"
+    },
+    {
+      "num": 607,
+      "level": "N1",
+      "english": "tara saigo / taga saigo",
+      "japanese": "たら最後 / たが最後（たらさいご / たがさいご）",
+      "title": "たら最後 / たが最後"
+    },
+    {
+      "num": 608,
+      "level": "N1",
+      "english": "tara~tade",
+      "japanese": "たら～たで",
+      "title": "たら～たで"
+    },
+    {
+      "num": 609,
+      "level": "N1",
+      "english": "tara~tokoro da",
+      "japanese": "たら～ところだ",
+      "title": "たら～ところだ"
+    },
+    {
+      "num": 610,
+      "level": "N1",
+      "english": "tari tomo",
+      "japanese": "たりとも",
+      "title": "たりとも"
+    },
+    {
+      "num": 611,
+      "level": "N5",
+      "english": "tari~tari",
+      "japanese": "たり～たり",
+      "title": "たり～たり"
+    },
+    {
+      "num": 612,
+      "level": "N1",
+      "english": "taru mono / taru",
+      "japanese": "たるもの / たる",
+      "title": "たるもの / たる"
+    },
+    {
+      "num": 613,
+      "level": "N3",
+      "english": "tashika ni",
+      "japanese": "確かに（たしかに）",
+      "title": "確かに"
+    },
+    {
+      "num": 614,
+      "level": "N3",
+      "english": "tate",
+      "japanese": "たて",
+      "title": "たて"
+    },
+    {
+      "num": 615,
+      "level": "N3",
+      "english": "tatoe~temo",
+      "japanese": "たとえ～ても",
+      "title": "たとえ～ても"
+    },
+    {
+      "num": 616,
+      "level": "N3",
+      "english": "tatoeba",
+      "japanese": "例えば（たとえば）",
+      "title": "例えば"
+    },
+    {
+      "num": 617,
+      "level": "N3",
+      "english": "tatte",
+      "japanese": "たって",
+      "title": "たって"
+    },
+    {
+      "num": 618,
+      "level": "N4",
+      "english": "te / de",
+      "japanese": "て / で",
+      "title": "て / で"
+    },
+    {
+      "num": 619,
+      "level": "N4",
+      "english": "te ageru",
+      "japanese": "てあげる",
+      "title": "てあげる"
+    },
+    {
+      "num": 620,
+      "level": "N5",
+      "english": "te aru",
+      "japanese": "てある",
+      "title": "てある"
+    },
+    {
+      "num": 621,
+      "level": "N3",
+      "english": "te bakari iru",
+      "japanese": "てばかりいる",
+      "title": "てばかりいる"
+    },
+    {
+      "num": 622,
+      "level": "N2",
+      "english": "te bakari wa irarenai",
+      "japanese": "てばかりはいられない",
+      "title": "てばかりはいられない"
+    },
+    {
+      "num": 623,
+      "level": "N2",
+      "english": "te demo",
+      "japanese": "てでも",
+      "title": "てでも"
+    },
+    {
+      "num": 624,
+      "level": "N3",
+      "english": "te goran",
+      "japanese": "てごらん",
+      "title": "てごらん"
+    },
+    {
+      "num": 625,
+      "level": "N3",
+      "english": "te hajimete",
+      "japanese": "てはじめて",
+      "title": "てはじめて"
+    },
+    {
+      "num": 626,
+      "level": "N4",
+      "english": "te hoshii",
+      "japanese": "てほしい",
+      "title": "てほしい"
+    },
+    {
+      "num": 627,
+      "level": "N4",
+      "english": "te iku",
+      "japanese": "ていく",
+      "title": "ていく"
+    },
+    {
+      "num": 628,
+      "level": "N2",
+      "english": "te irai",
+      "japanese": "て以来（ていらい）",
+      "title": "て以来"
+    },
+    {
+      "num": 629,
+      "level": "N5",
+      "english": "te iru",
+      "japanese": "ている",
+      "title": "ている"
+    },
+    {
+      "num": 630,
+      "level": "N4",
+      "english": "te ita",
+      "japanese": "ていた",
+      "title": "ていた"
+    },
+    {
+      "num": 631,
+      "level": "N4",
+      "english": "te itadakemasen ka",
+      "japanese": "ていただけませんか",
+      "title": "ていただけませんか"
+    },
+    {
+      "num": 632,
+      "level": "N2",
+      "english": "te ite wa",
+      "japanese": "ていては",
+      "title": "ていては"
+    },
+    {
+      "num": 633,
+      "level": "N1",
+      "english": "te kanawanai",
+      "japanese": "て敵わない（てかなわない）",
+      "title": "て敵わない"
+    },
+    {
+      "num": 634,
+      "level": "N5",
+      "english": "te kara",
+      "japanese": "てから",
+      "title": "てから"
+    },
+    {
+      "num": 635,
+      "level": "N3",
+      "english": "te kara de nai to",
+      "japanese": "てからでないと",
+      "title": "てからでないと"
+    },
+    {
+      "num": 636,
+      "level": "N1",
+      "english": "te kara to iu mono",
+      "japanese": "てからというもの",
+      "title": "てからというもの"
+    },
+    {
+      "num": 637,
+      "level": "N2",
+      "english": "te koso",
+      "japanese": "てこそ",
+      "title": "てこそ"
+    },
+    {
+      "num": 638,
+      "level": "N5",
+      "english": "te kudasai",
+      "japanese": "てください",
+      "title": "てください"
+    },
+    {
+      "num": 639,
+      "level": "N4",
+      "english": "te kureru",
+      "japanese": "てくれる",
+      "title": "てくれる"
+    },
+    {
+      "num": 640,
+      "level": "N4",
+      "english": "te kuru",
+      "japanese": "てくる",
+      "title": "てくる"
+    },
+    {
+      "num": 641,
+      "level": "N2",
+      "english": "te made",
+      "japanese": "てまで",
+      "title": "てまで"
+    },
+    {
+      "num": 642,
+      "level": "N4",
+      "english": "te miru",
+      "japanese": "てみる",
+      "title": "てみる"
+    },
+    {
+      "num": 643,
+      "level": "N1",
+      "english": "te miseru",
+      "japanese": "てみせる",
+      "title": "てみせる"
+    },
+    {
+      "num": 644,
+      "level": "N4",
+      "english": "te morau",
+      "japanese": "てもらう",
+      "title": "てもらう"
+    },
+    {
+      "num": 645,
+      "level": "N2",
+      "english": "te naranai",
+      "japanese": "てならない",
+      "title": "てならない"
+    },
+    {
+      "num": 646,
+      "level": "N4",
+      "english": "te oku",
+      "japanese": "ておく",
+      "title": "ておく"
+    },
+    {
+      "num": 647,
+      "level": "N1",
+      "english": "te shikaru beki da",
+      "japanese": "てしかるべきだ",
+      "title": "てしかるべきだ"
+    },
+    {
+      "num": 648,
+      "level": "N4",
+      "english": "te shimau / chau",
+      "japanese": "てしまう / ちゃう",
+      "title": "てしまう / ちゃう"
+    },
+    {
+      "num": 649,
+      "level": "N3",
+      "english": "te shou ga nai/te shikata ga nai",
+      "japanese": "てしょうがない・てしかたがない",
+      "title": "てしょうがない・てしかたがない"
+    },
+    {
+      "num": 650,
+      "level": "N4",
+      "english": "te sumimasen",
+      "japanese": "てすみません",
+      "title": "てすみません"
+    },
+    {
+      "num": 651,
+      "level": "N3",
+      "english": "te sumu",
+      "japanese": "て済む（てすむ）",
+      "title": "て済む"
+    },
+    {
+      "num": 652,
+      "level": "N1",
+      "english": "te sumu koto dewa nai",
+      "japanese": "て済むことではない（てすむことではない）",
+      "title": "て済むことではない"
+    },
+    {
+      "num": 653,
+      "level": "N2",
+      "english": "te tamaranai",
+      "japanese": "てたまらない",
+      "title": "てたまらない"
+    },
+    {
+      "num": 654,
+      "level": "N2",
+      "english": "te touzen da",
+      "japanese": "て当然だ（てとうぜんだ）",
+      "title": "て当然だ"
+    },
+    {
+      "num": 655,
+      "level": "N5",
+      "english": "te wa ikenai",
+      "japanese": "てはいけない",
+      "title": "てはいけない"
+    },
+    {
+      "num": 656,
+      "level": "N3",
+      "english": "te wa ikenai kara",
+      "japanese": "てはいけないから",
+      "title": "てはいけないから"
+    },
+    {
+      "num": 657,
+      "level": "N1",
+      "english": "te yamanai",
+      "japanese": "てやまない",
+      "title": "てやまない"
+    },
+    {
+      "num": 658,
+      "level": "N4",
+      "english": "te yaru",
+      "japanese": "てやる",
+      "title": "てやる"
+    },
+    {
+      "num": 659,
+      "level": "N4",
+      "english": "te yokatta",
+      "japanese": "てよかった",
+      "title": "てよかった"
+    },
+    {
+      "num": 660,
+      "level": "N3",
+      "english": "teiru baai janai",
+      "japanese": "ている場合じゃない（ているばあいじゃない）",
+      "title": "ている場合じゃない"
+    },
+    {
+      "num": 661,
+      "level": "N4",
+      "english": "teiru tokoro",
+      "japanese": "ているところ",
+      "title": "ているところ"
+    },
+    {
+      "num": 662,
+      "level": "N3",
+      "english": "teki",
+      "japanese": "的（てき）",
+      "title": "的"
+    },
+    {
+      "num": 663,
+      "level": "N1",
+      "english": "temae",
+      "japanese": "手前（てまえ）",
+      "title": "手前"
+    },
+    {
+      "num": 664,
+      "level": "N4",
+      "english": "temo",
+      "japanese": "ても",
+      "title": "ても"
+    },
+    {
+      "num": 665,
+      "level": "N1",
+      "english": "temo dou ni mo naranai",
+      "japanese": "てもどうにもならない",
+      "title": "てもどうにもならない"
+    },
+    {
+      "num": 666,
+      "level": "N3",
+      "english": "temo hajimaranai",
+      "japanese": "ても始まらない（てもはじまらない）",
+      "title": "ても始まらない"
+    },
+    {
+      "num": 667,
+      "level": "N5",
+      "english": "temo ii desu",
+      "japanese": "てもいいです",
+      "title": "てもいいです"
+    },
+    {
+      "num": 668,
+      "level": "N3",
+      "english": "temo kamawanai",
+      "japanese": "ても構わない（てもかまわない）",
+      "title": "ても構わない"
+    },
+    {
+      "num": 669,
+      "level": "N1",
+      "english": "temo sashitsukaenai",
+      "japanese": "ても差し支えない（てもさしつかえない）",
+      "title": "ても差し支えない"
+    },
+    {
+      "num": 670,
+      "level": "N1",
+      "english": "temo shiranai",
+      "japanese": "ても知らない（てもしらない）",
+      "title": "ても知らない"
+    },
+    {
+      "num": 671,
+      "level": "N3",
+      "english": "temo shou ga nai / temo shikata ga nai",
+      "japanese": "てもしょうがない / てもしかたがない",
+      "title": "てもしょうがない / てもしかたがない"
+    },
+    {
+      "num": 672,
+      "level": "N2",
+      "english": "tewa / dewa",
+      "japanese": "ては / では",
+      "title": "ては / では"
+    },
+    {
+      "num": 673,
+      "level": "N2",
+      "english": "tewa irarenai",
+      "japanese": "てはいられない",
+      "title": "てはいられない"
+    },
+    {
+      "num": 674,
+      "level": "N2",
+      "english": "tewa naranai",
+      "japanese": "てはならない",
+      "title": "てはならない"
+    },
+    {
+      "num": 675,
+      "level": "N2",
+      "english": "tewa~tewa",
+      "japanese": "ては～ては",
+      "title": "ては～ては"
+    },
+    {
+      "num": 676,
+      "level": "N5",
+      "english": "to",
+      "japanese": "と",
+      "title": "と"
+    },
+    {
+      "num": 677,
+      "level": "N4",
+      "english": "to",
+      "japanese": "と",
+      "title": "と"
+    },
+    {
+      "num": 678,
+      "level": "N1",
+      "english": "to aimatte",
+      "japanese": "と相まって（とあいまって）",
+      "title": "と相まって"
+    },
+    {
+      "num": 679,
+      "level": "N1",
+      "english": "to areba",
+      "japanese": "とあれば",
+      "title": "とあれば"
+    },
+    {
+      "num": 680,
+      "level": "N1",
+      "english": "to atte",
+      "japanese": "とあって",
+      "title": "とあって"
+    },
+    {
+      "num": 681,
+      "level": "N1",
+      "english": "to bakari ni",
+      "japanese": "とばかりに",
+      "title": "とばかりに"
+    },
+    {
+      "num": 682,
+      "level": "N2",
+      "english": "to douji ni",
+      "japanese": "と同時に（とどうじに）",
+      "title": "と同時に"
+    },
+    {
+      "num": 683,
+      "level": "N1",
+      "english": "to ie domo",
+      "japanese": "といえども",
+      "title": "といえども"
+    },
+    {
+      "num": 684,
+      "level": "N3",
+      "english": "to ieba",
+      "japanese": "と言えば（といえば）",
+      "title": "と言えば"
+    },
+    {
+      "num": 685,
+      "level": "N1",
+      "english": "to ienaku mo nai",
+      "japanese": "と言えなくもない（といえなくもない）",
+      "title": "と言えなくもない"
+    },
+    {
+      "num": 686,
+      "level": "N3",
+      "english": "to ii / tara ii",
+      "japanese": "といい / たらいい",
+      "title": "といい / たらいい"
+    },
+    {
+      "num": 687,
+      "level": "N1",
+      "english": "to ii~to ii",
+      "japanese": "といい～といい",
+      "title": "といい～といい"
+    },
+    {
+      "num": 688,
+      "level": "N2",
+      "english": "to itta",
+      "japanese": "といった",
+      "title": "といった"
+    },
+    {
+      "num": 689,
+      "level": "N1",
+      "english": "to ittara nai",
+      "japanese": "といったらない",
+      "title": "といったらない"
+    },
+    {
+      "num": 690,
+      "level": "N3",
+      "english": "to ittemo",
+      "japanese": "といっても",
+      "title": "といっても"
+    },
+    {
+      "num": 691,
+      "level": "N4",
+      "english": "to ittemo ii",
+      "japanese": "と言ってもいい（といってもいい）",
+      "title": "と言ってもいい"
+    },
+    {
+      "num": 692,
+      "level": "N4",
+      "english": "to iu",
+      "japanese": "という",
+      "title": "という"
+    },
+    {
+      "num": 693,
+      "level": "N1",
+      "english": "to iu",
+      "japanese": "という",
+      "title": "という"
+    },
+    {
+      "num": 694,
+      "level": "N2",
+      "english": "to iu fuu ni",
+      "japanese": "というふうに",
+      "title": "というふうに"
+    },
+    {
+      "num": 695,
+      "level": "N1",
+      "english": "to iu ka~to iu ka",
+      "japanese": "というか～というか",
+      "title": "というか～というか"
+    },
+    {
+      "num": 696,
+      "level": "N4",
+      "english": "to iu koto",
+      "japanese": "ということ",
+      "title": "ということ"
+    },
+    {
+      "num": 697,
+      "level": "N3",
+      "english": "to iu koto da",
+      "japanese": "ということだ",
+      "title": "ということだ"
+    },
+    {
+      "num": 698,
+      "level": "N2",
+      "english": "to iu koto wa",
+      "japanese": "ということは",
+      "title": "ということは"
+    },
+    {
+      "num": 699,
+      "level": "N1",
+      "english": "to iu mono",
+      "japanese": "というもの",
+      "title": "というもの"
+    },
+    {
+      "num": 700,
+      "level": "N2",
+      "english": "to iu mono da",
+      "japanese": "というものだ",
+      "title": "というものだ"
+    },
+    {
+      "num": 701,
+      "level": "N2",
+      "english": "to iu mono dewa nai",
+      "japanese": "というものではない",
+      "title": "というものではない"
+    },
+    {
+      "num": 702,
+      "level": "N3",
+      "english": "to iu nowa",
+      "japanese": "というのは",
+      "title": "というのは"
+    },
+    {
+      "num": 703,
+      "level": "N3",
+      "english": "to iu to",
+      "japanese": "と言うと（というと）",
+      "title": "と言うと"
+    },
+    {
+      "num": 704,
+      "level": "N1",
+      "english": "to iu tokoro da / to itta tokoro da",
+      "japanese": "というところだ / といったところだ",
+      "title": "というところだ / といったところだ"
+    },
+    {
+      "num": 705,
+      "level": "N1",
+      "english": "to iu wake da",
+      "japanese": "というわけだ",
+      "title": "というわけだ"
+    },
+    {
+      "num": 706,
+      "level": "N1",
+      "english": "to iu wake dewa nai",
+      "japanese": "というわけではない",
+      "title": "というわけではない"
+    },
+    {
+      "num": 707,
+      "level": "N3",
+      "english": "to iu yori",
+      "japanese": "というより",
+      "title": "というより"
+    },
+    {
+      "num": 708,
+      "level": "N4",
+      "english": "to iwarete iru",
+      "japanese": "と言われている（といわれている）",
+      "title": "と言われている"
+    },
+    {
+      "num": 709,
+      "level": "N1",
+      "english": "to iwazu~to iwazu",
+      "japanese": "といわず～といわず",
+      "title": "といわず～といわず"
+    },
+    {
+      "num": 710,
+      "level": "N2",
+      "english": "to kangaerareru",
+      "japanese": "と考えられる（とかんがえられる）",
+      "title": "と考えられる"
+    },
+    {
+      "num": 711,
+      "level": "N4",
+      "english": "to kiita",
+      "japanese": "と聞いた（ときいた）",
+      "title": "と聞いた"
+    },
+    {
+      "num": 712,
+      "level": "N1",
+      "english": "to kiteiru",
+      "japanese": "ときている",
+      "title": "ときている"
+    },
+    {
+      "num": 713,
+      "level": "N3",
+      "english": "to mieru / to miete",
+      "japanese": "とみえる / とみえて",
+      "title": "とみえる / とみえて"
+    },
+    {
+      "num": 714,
+      "level": "N1",
+      "english": "to miru to",
+      "japanese": "とみると",
+      "title": "とみると"
+    },
+    {
+      "num": 715,
+      "level": "N1",
+      "english": "to miru ya",
+      "japanese": "と見るや（とみるや）",
+      "title": "と見るや"
+    },
+    {
+      "num": 716,
+      "level": "N1",
+      "english": "to naru to / to nareba",
+      "japanese": "となると / となれば",
+      "title": "となると / となれば"
+    },
+    {
+      "num": 717,
+      "level": "N4",
+      "english": "to omou",
+      "japanese": "と思う（とおもう）",
+      "title": "と思う"
+    },
+    {
+      "num": 718,
+      "level": "N1",
+      "english": "to sareru",
+      "japanese": "とされる",
+      "title": "とされる"
+    },
+    {
+      "num": 719,
+      "level": "N3",
+      "english": "to sureba / to shitara / to suru to",
+      "japanese": "とすれば・としたら・とすると",
+      "title": "とすれば・としたら・とすると"
+    },
+    {
+      "num": 720,
+      "level": "N3",
+      "english": "to tomo ni",
+      "japanese": "と共に（とともに）",
+      "title": "と共に"
+    },
+    {
+      "num": 721,
+      "level": "N3",
+      "english": "tochuu de / tochuu ni",
+      "japanese": "途中で/途中に（とちゅうで/とちゅうに）",
+      "title": "途中で/途中に"
+    },
+    {
+      "num": 722,
+      "level": "N2",
+      "english": "toka (de)",
+      "japanese": "とか（で）",
+      "title": "とか"
+    },
+    {
+      "num": 723,
+      "level": "N4",
+      "english": "toka~toka",
+      "japanese": "とか～とか",
+      "title": "とか～とか"
+    },
+    {
+      "num": 724,
+      "level": "N5",
+      "english": "toki",
+      "japanese": "とき",
+      "title": "とき"
+    },
+    {
+      "num": 725,
+      "level": "N1",
+      "english": "tokitara",
+      "japanese": "ときたら",
+      "title": "ときたら"
+    },
+    {
+      "num": 726,
+      "level": "N2",
+      "english": "tokku ni",
+      "japanese": "とっくに",
+      "title": "とっくに"
+    },
+    {
+      "num": 727,
+      "level": "N4",
+      "english": "tokoro",
+      "japanese": "ところ",
+      "title": "ところ"
+    },
+    {
+      "num": 728,
+      "level": "N2",
+      "english": "tokoro datta",
+      "japanese": "ところだった",
+      "title": "ところだった"
+    },
+    {
+      "num": 729,
+      "level": "N3",
+      "english": "tokoro de",
+      "japanese": "ところで",
+      "title": "ところで"
+    },
+    {
+      "num": 730,
+      "level": "N3",
+      "english": "tokoro ga",
+      "japanese": "ところが",
+      "title": "ところが"
+    },
+    {
+      "num": 731,
+      "level": "N2",
+      "english": "tokoro ni",
+      "japanese": "ところに",
+      "title": "ところに"
+    },
+    {
+      "num": 732,
+      "level": "N1",
+      "english": "tokoro o",
+      "japanese": "ところを",
+      "title": "ところを"
+    },
+    {
+      "num": 733,
+      "level": "N2",
+      "english": "tokoro o miru to",
+      "japanese": "ところを見ると（ところをみると）",
+      "title": "ところを見ると"
+    },
+    {
+      "num": 734,
+      "level": "N2",
+      "english": "tomo",
+      "japanese": "とも",
+      "title": "とも"
+    },
+    {
+      "num": 735,
+      "level": "N1",
+      "english": "tomo arou mono ga",
+      "japanese": "ともあろうものが",
+      "title": "ともあろうものが"
+    },
+    {
+      "num": 736,
+      "level": "N1",
+      "english": "tomo naku / tomo nashi ni",
+      "japanese": "ともなく / ともなしに",
+      "title": "ともなく / ともなしに"
+    },
+    {
+      "num": 737,
+      "level": "N1",
+      "english": "tomo sureba",
+      "japanese": "ともすれば",
+      "title": "ともすれば"
+    },
+    {
+      "num": 738,
+      "level": "N1",
+      "english": "tomo~tomo",
+      "japanese": "とも～とも",
+      "title": "とも～とも"
+    },
+    {
+      "num": 739,
+      "level": "N3",
+      "english": "toori ni",
+      "japanese": "とおりに",
+      "title": "とおりに"
+    },
+    {
+      "num": 740,
+      "level": "N3",
+      "english": "toosu",
+      "japanese": "通す（とおす）",
+      "title": "通す"
+    },
+    {
+      "num": 741,
+      "level": "N1",
+      "english": "toriwake",
+      "japanese": "とりわけ",
+      "title": "とりわけ"
+    },
+    {
+      "num": 742,
+      "level": "N1",
+      "english": "toshita koto ga",
+      "japanese": "としたことが",
+      "title": "としたことが"
+    },
+    {
+      "num": 743,
+      "level": "N3",
+      "english": "toshite",
+      "japanese": "として",
+      "title": "として"
+    },
+    {
+      "num": 744,
+      "level": "N2",
+      "english": "toshite~nai",
+      "japanese": "として～ない",
+      "title": "として～ない"
+    },
+    {
+      "num": 745,
+      "level": "N2",
+      "english": "toshitemo",
+      "japanese": "としても",
+      "title": "としても"
+    },
+    {
+      "num": 746,
+      "level": "N1",
+      "english": "tossa ni",
+      "japanese": "とっさに",
+      "title": "とっさに"
+    },
+    {
+      "num": 747,
+      "level": "N1",
+      "english": "tote",
+      "japanese": "とて",
+      "title": "とて"
+    },
+    {
+      "num": 748,
+      "level": "N5",
+      "english": "totemo",
+      "japanese": "とても",
+      "title": "とても"
+    },
+    {
+      "num": 749,
+      "level": "N3",
+      "english": "totemo~nai",
+      "japanese": "とても～ない",
+      "title": "とても～ない"
+    },
+    {
+      "num": 750,
+      "level": "N1",
+      "english": "towa",
+      "japanese": "とは",
+      "title": "とは"
+    },
+    {
+      "num": 751,
+      "level": "N1",
+      "english": "towa ie",
+      "japanese": "とはいえ",
+      "title": "とはいえ"
+    },
+    {
+      "num": 752,
+      "level": "N3",
+      "english": "towa kagiranai",
+      "japanese": "とは限らない（とはかぎらない）",
+      "title": "とは限らない"
+    },
+    {
+      "num": 753,
+      "level": "N1",
+      "english": "towa kurabemono ni naranai",
+      "japanese": "とは比べものにならない（とはくらべものにならない）",
+      "title": "とは比べものにならない"
+    },
+    {
+      "num": 754,
+      "level": "N1",
+      "english": "towa utte kawatte / to wa utte kawari",
+      "japanese": "とは打って変わって / とは打って変わり（とはうってかわって / とはうってかわり）",
+      "title": "とは打って変わって / とは打って変わり"
+    },
+    {
+      "num": 755,
+      "level": "N1",
+      "english": "tsu~tsu",
+      "japanese": "つ～つ",
+      "title": "つ～つ"
+    },
+    {
+      "num": 756,
+      "level": "N3",
+      "english": "tsui",
+      "japanese": "つい",
+      "title": "つい"
+    },
+    {
+      "num": 757,
+      "level": "N3",
+      "english": "tsui ni",
+      "japanese": "ついに",
+      "title": "ついに"
+    },
+    {
+      "num": 758,
+      "level": "N3",
+      "english": "tsuide ni",
+      "japanese": "ついでに",
+      "title": "ついでに"
+    },
+    {
+      "num": 759,
+      "level": "N1",
+      "english": "tsukusu",
+      "japanese": "尽くす（つくす）",
+      "title": "尽くす"
+    },
+    {
+      "num": 760,
+      "level": "N3",
+      "english": "tsumari",
+      "japanese": "つまり",
+      "title": "つまり"
+    },
+    {
+      "num": 761,
+      "level": "N5",
+      "english": "tsumori",
+      "japanese": "つもり",
+      "title": "つもり"
+    },
+    {
+      "num": 762,
+      "level": "N3",
+      "english": "tsumori datta",
+      "japanese": "つもりだった",
+      "title": "つもりだった"
+    },
+    {
+      "num": 763,
+      "level": "N3",
+      "english": "tsumori de",
+      "japanese": "つもりで",
+      "title": "つもりで"
+    },
+    {
+      "num": 764,
+      "level": "N2",
+      "english": "tsutsu",
+      "japanese": "つつ",
+      "title": "つつ"
+    },
+    {
+      "num": 765,
+      "level": "N2",
+      "english": "tsutsu aru",
+      "japanese": "つつある",
+      "title": "つつある"
+    },
+    {
+      "num": 766,
+      "level": "N4",
+      "english": "tsuzukeru",
+      "japanese": "続ける（つづける）",
+      "title": "続ける"
+    },
+    {
+      "num": 767,
+      "level": "N4",
+      "english": "tte",
+      "japanese": "って",
+      "title": "って"
+    },
+    {
+      "num": 768,
+      "level": "N1",
+      "english": "tteba / ttara",
+      "japanese": "ってば / ったら",
+      "title": "ってば / ったら"
+    },
+    {
+      "num": 769,
+      "level": "N3",
+      "english": "uchi ni",
+      "japanese": "うちに",
+      "title": "うちに"
+    },
+    {
+      "num": 770,
+      "level": "N1",
+      "english": "uchi ni hairanai",
+      "japanese": "うちに入らない（うちにはいらない）",
+      "title": "うちに入らない"
+    },
+    {
+      "num": 771,
+      "level": "N3",
+      "english": "ue de",
+      "japanese": "上で（うえで）",
+      "title": "上で"
+    },
+    {
+      "num": 772,
+      "level": "N3",
+      "english": "ue ni",
+      "japanese": "上に（うえに）",
+      "title": "上に"
+    },
+    {
+      "num": 773,
+      "level": "N2",
+      "english": "ue wa",
+      "japanese": "上は（うえは）",
+      "title": "上は"
+    },
+    {
+      "num": 774,
+      "level": "N4",
+      "english": "ukemi kei",
+      "japanese": "受身形（うけみけい）",
+      "title": "受身形"
+    },
+    {
+      "num": 775,
+      "level": "N1",
+      "english": "wa",
+      "japanese": "わ",
+      "title": "わ"
+    },
+    {
+      "num": 776,
+      "level": "N5",
+      "english": "wa - topic marker",
+      "japanese": "は",
+      "title": "は"
+    },
+    {
+      "num": 777,
+      "level": "N5",
+      "english": "wa ~yori... desu",
+      "japanese": "は〜より・・・です",
+      "title": "は〜より・・・です"
+    },
+    {
+      "num": 778,
+      "level": "N3",
+      "english": "wa betsu toshite",
+      "japanese": "は別として（はべつとして）",
+      "title": "は別として"
+    },
+    {
+      "num": 779,
+      "level": "N1",
+      "english": "wa dou de are",
+      "japanese": "はどうであれ",
+      "title": "はどうであれ"
+    },
+    {
+      "num": 780,
+      "level": "N5",
+      "english": "wa dou desu ka",
+      "japanese": "はどうですか",
+      "title": "はどうですか"
+    },
+    {
+      "num": 781,
+      "level": "N3",
+      "english": "wa mochiron",
+      "japanese": "はもちろん",
+      "title": "はもちろん"
+    },
+    {
+      "num": 782,
+      "level": "N2",
+      "english": "wa moto yori",
+      "japanese": "はもとより",
+      "title": "はもとより"
+    },
+    {
+      "num": 783,
+      "level": "N1",
+      "english": "wa oroka",
+      "japanese": "はおろか",
+      "title": "はおろか"
+    },
+    {
+      "num": 784,
+      "level": "N1",
+      "english": "wa sateoki",
+      "japanese": "はさておき",
+      "title": "はさておき"
+    },
+    {
+      "num": 785,
+      "level": "N1",
+      "english": "wa socchinoke de / o socchinoke de",
+      "japanese": "はそっちのけで / をそっちのけで",
+      "title": "はそっちのけで / をそっちのけで"
+    },
+    {
+      "num": 786,
+      "level": "N2",
+      "english": "wa tomokaku",
+      "japanese": "はともかく",
+      "title": "はともかく"
+    },
+    {
+      "num": 787,
+      "level": "N3",
+      "english": "wa~de yuumei",
+      "japanese": "は～で有名（は～でゆうめい）",
+      "title": "は～で有名"
+    },
+    {
+      "num": 788,
+      "level": "N4",
+      "english": "wa~ga... wa",
+      "japanese": "は〜が… は",
+      "title": "は〜が… は"
+    },
+    {
+      "num": 789,
+      "level": "N1",
+      "english": "wa~wade",
+      "japanese": "わ〜わで",
+      "title": "わ〜わで"
+    },
+    {
+      "num": 790,
+      "level": "N3",
+      "english": "wake da",
+      "japanese": "わけだ",
+      "title": "わけだ"
+    },
+    {
+      "num": 791,
+      "level": "N3",
+      "english": "wake dewa nai",
+      "japanese": "わけではない",
+      "title": "わけではない"
+    },
+    {
+      "num": 792,
+      "level": "N3",
+      "english": "wake ga nai",
+      "japanese": "わけがない",
+      "title": "わけがない"
+    },
+    {
+      "num": 793,
+      "level": "N3",
+      "english": "wake niwa ikanai",
+      "japanese": "わけにはいかない",
+      "title": "わけにはいかない"
+    },
+    {
+      "num": 794,
+      "level": "N3",
+      "english": "wari ni",
+      "japanese": "割に（わりに）",
+      "title": "割に"
+    },
+    {
+      "num": 795,
+      "level": "N3",
+      "english": "wazato",
+      "japanese": "わざと",
+      "title": "わざと"
+    },
+    {
+      "num": 796,
+      "level": "N3",
+      "english": "wazawaza",
+      "japanese": "わざわざ",
+      "title": "わざわざ"
+    },
+    {
+      "num": 797,
+      "level": "N2",
+      "english": "wazuka ni",
+      "japanese": "わずかに",
+      "title": "わずかに"
+    },
+    {
+      "num": 798,
+      "level": "N5",
+      "english": "ya",
+      "japanese": "や",
+      "title": "や"
+    },
+    {
+      "num": 799,
+      "level": "N1",
+      "english": "ya ina ya",
+      "japanese": "や否や（やいなや）",
+      "title": "や否や"
+    },
+    {
+      "num": 800,
+      "level": "N1",
+      "english": "ya shinai",
+      "japanese": "やしない",
+      "title": "やしない"
+    },
+    {
+      "num": 801,
+      "level": "N2",
+      "english": "yagate",
+      "japanese": "やがて",
+      "title": "やがて"
+    },
+    {
+      "num": 802,
+      "level": "N2",
+      "english": "yara~yara",
+      "japanese": "やら～やら",
+      "title": "やら～やら"
+    },
+    {
+      "num": 803,
+      "level": "N1",
+      "english": "yare~yare",
+      "japanese": "やれ～やれ",
+      "title": "やれ～やれ"
+    },
+    {
+      "num": 804,
+      "level": "N4",
+      "english": "yasui",
+      "japanese": "やすい",
+      "title": "やすい"
+    },
+    {
+      "num": 805,
+      "level": "N4",
+      "english": "yatto",
+      "japanese": "やっと",
+      "title": "やっと"
+    },
+    {
+      "num": 806,
+      "level": "N5",
+      "english": "yo",
+      "japanese": "よ",
+      "title": "よ"
+    },
+    {
+      "num": 807,
+      "level": "N2",
+      "english": "yohodo / yoppodo",
+      "japanese": "よほど / よっぽど",
+      "title": "よほど / よっぽど"
+    },
+    {
+      "num": 808,
+      "level": "N4",
+      "english": "yori",
+      "japanese": "より",
+      "title": "より"
+    },
+    {
+      "num": 809,
+      "level": "N2",
+      "english": "yori",
+      "japanese": "より [2]",
+      "title": "より [2]"
+    },
+    {
+      "num": 810,
+      "level": "N5",
+      "english": "yori ~hou ga",
+      "japanese": "より～ほうが",
+      "title": "より～ほうが"
+    },
+    {
+      "num": 811,
+      "level": "N2",
+      "english": "yori hoka nai",
+      "japanese": "よりほかない",
+      "title": "よりほかない"
+    },
+    {
+      "num": 812,
+      "level": "N3",
+      "english": "yorimo",
+      "japanese": "よりも",
+      "title": "よりも"
+    },
+    {
+      "num": 813,
+      "level": "N4",
+      "english": "yotei da",
+      "japanese": "予定だ（よていだ）",
+      "title": "予定だ"
+    },
+    {
+      "num": 814,
+      "level": "N4",
+      "english": "you da",
+      "japanese": "ようだ",
+      "title": "ようだ"
+    },
+    {
+      "num": 815,
+      "level": "N2",
+      "english": "you dewa",
+      "japanese": "ようでは",
+      "title": "ようでは"
+    },
+    {
+      "num": 816,
+      "level": "N2",
+      "english": "you dewa nai ka",
+      "japanese": "ようではないか",
+      "title": "ようではないか"
+    },
+    {
+      "num": 817,
+      "level": "N1",
+      "english": "you ga / you to",
+      "japanese": "ようが / ようと",
+      "title": "ようが / ようと"
+    },
+    {
+      "num": 818,
+      "level": "N3",
+      "english": "you ga nai",
+      "japanese": "ようがない",
+      "title": "ようがない"
+    },
+    {
+      "num": 819,
+      "level": "N1",
+      "english": "you ga~you ga / you to~you to",
+      "japanese": "ようが～ようが / ようと～ようと",
+      "title": "ようが～ようが / ようと～ようと"
+    },
+    {
+      "num": 820,
+      "level": "N2",
+      "english": "you ka~mai ka",
+      "japanese": "ようか～まいか",
+      "title": "ようか～まいか"
+    },
+    {
+      "num": 821,
+      "level": "N3",
+      "english": "you na ki ga suru",
+      "japanese": "ような気がする（ようなきがする）",
+      "title": "ような気がする"
+    },
+    {
+      "num": 822,
+      "level": "N3",
+      "english": "you ni",
+      "japanese": "ように",
+      "title": "ように"
+    },
+    {
+      "num": 823,
+      "level": "N4",
+      "english": "you ni / you na",
+      "japanese": "ように / ような",
+      "title": "ように / ような"
+    },
+    {
+      "num": 824,
+      "level": "N3",
+      "english": "you ni mieru",
+      "japanese": "ように見える（ようにみえる）",
+      "title": "ように見える"
+    },
+    {
+      "num": 825,
+      "level": "N4",
+      "english": "you ni naru",
+      "japanese": "ようになる",
+      "title": "ようになる"
+    },
+    {
+      "num": 826,
+      "level": "N4",
+      "english": "you ni suru",
+      "japanese": "ようにする",
+      "title": "ようにする"
+    },
+    {
+      "num": 827,
+      "level": "N1",
+      "english": "you ni yotte wa / you dewa",
+      "japanese": "ようによっては / ようでは",
+      "title": "ようによっては / ようでは"
+    },
+    {
+      "num": 828,
+      "level": "N1",
+      "english": "you nimo~nai",
+      "japanese": "ようにも～ない",
+      "title": "ようにも～ない"
+    },
+    {
+      "num": 829,
+      "level": "N2",
+      "english": "you suru ni",
+      "japanese": "要するに（ようするに）",
+      "title": "要するに"
+    },
+    {
+      "num": 830,
+      "level": "N4",
+      "english": "you to omou",
+      "japanese": "ようと思う（ようとおもう）",
+      "title": "ようと思う"
+    },
+    {
+      "num": 831,
+      "level": "N3",
+      "english": "you to shinai",
+      "japanese": "ようとしない",
+      "title": "ようとしない"
+    },
+    {
+      "num": 832,
+      "level": "N3",
+      "english": "you to suru",
+      "japanese": "ようとする",
+      "title": "ようとする"
+    },
+    {
+      "num": 833,
+      "level": "N1",
+      "english": "you to~mai to / you ga~mai ga",
+      "japanese": "ようと～まいと / ようが～まいが",
+      "title": "ようと～まいと / ようが～まいが"
+    },
+    {
+      "num": 834,
+      "level": "N1",
+      "english": "yue ni",
+      "japanese": "ゆえに",
+      "title": "ゆえに"
+    },
+    {
+      "num": 835,
+      "level": "N2",
+      "english": "zaru o enai",
+      "japanese": "ざるを得ない（ざるをえない）",
+      "title": "ざるを得ない"
+    },
+    {
+      "num": 836,
+      "level": "N4",
+      "english": "zehi",
+      "japanese": "ぜひ",
+      "title": "ぜひ"
+    },
+    {
+      "num": 837,
+      "level": "N4",
+      "english": "zenzen~nai",
+      "japanese": "全然～ない（ぜんぜん～ない）",
+      "title": "全然～ない"
+    },
+    {
+      "num": 838,
+      "level": "N1",
+      "english": "zo / ze",
+      "japanese": "ぞ・ぜ",
+      "title": "ぞ・ぜ"
+    },
+    {
+      "num": 839,
+      "level": "N1",
+      "english": "zu jimai",
+      "japanese": "ずじまい",
+      "title": "ずじまい"
+    },
+    {
+      "num": 840,
+      "level": "N2",
+      "english": "zu ni sumu",
+      "japanese": "ずに済む （ずにすむ）",
+      "title": "ずに済む"
+    },
+    {
+      "num": 841,
+      "level": "N1",
+      "english": "zu niwa okanai / nai dewa okanai",
+      "japanese": "ずにはおかない / ないではおかない",
+      "title": "ずにはおかない / ないではおかない"
+    },
+    {
+      "num": 842,
+      "level": "N1",
+      "english": "zu niwa sumanai / nai dewa sumanai",
+      "japanese": "ずには済まない / ないでは済まない（ずにはすまない / ないではすまない）",
+      "title": "ずには済まない / ないでは済まない"
+    },
+    {
+      "num": 843,
+      "level": "N1",
+      "english": "zu tomo",
+      "japanese": "ずとも",
+      "title": "ずとも"
+    },
+    {
+      "num": 844,
+      "level": "N1",
+      "english": "zukume",
+      "japanese": "ずくめ",
+      "title": "ずくめ"
+    },
+    {
+      "num": 845,
+      "level": "N3",
+      "english": "zuni",
+      "japanese": "ずに",
+      "title": "ずに"
+    },
+    {
+      "num": 846,
+      "level": "N3",
+      "english": "zuni wa irarenai",
+      "japanese": "ずにはいられない",
+      "title": "ずにはいられない"
+    },
+    {
+      "num": 847,
+      "level": "N4",
+      "english": "zurai",
+      "japanese": "づらい",
+      "title": "づらい"
+    },
+    {
+      "num": 848,
+      "level": "N3",
+      "english": "zutsu",
+      "japanese": "ずつ",
+      "title": "ずつ"
+    }
+  ]
+}

@@ -3,12 +3,15 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { grammarService } from "@/services/grammarService";
+import { useDictionary, useLocale } from "@/components/layout/LocaleProvider";
 import { Plus, BookOpen } from "lucide-react";
 
 export default function AdminHomePage() {
+  const locale = useLocale();
+  const dict = useDictionary();
   const [entries, setEntries] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -30,15 +33,15 @@ export default function AdminHomePage() {
   if (loading) {
     return (
       <div className="max-w-4xl">
-        <h1 className="text-2xl font-bold mb-6">管理后台</h1>
-        <p className="text-[#797776] font-mono text-sm">加载中...</p>
+        <h1 className="text-2xl font-bold mb-6">{dict.admin.title}</h1>
+        <p className="text-[#797776] font-mono text-sm">{dict.common.loading}</p>
       </div>
     );
   }
 
   return (
     <div className="max-w-4xl">
-      <h1 className="text-2xl font-bold mb-6">管理后台</h1>
+      <h1 className="text-2xl font-bold mb-6">{dict.admin.title}</h1>
 
       <div className="grid gap-4 sm:grid-cols-2 mb-8">
         <Card className="bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px] ring-0 shadow-none">
@@ -60,8 +63,8 @@ export default function AdminHomePage() {
       </div>
 
       <div className="flex gap-3 mb-6">
-        <Link href="/admin/grammar/new" className={buttonVariants({ className: "rounded-full font-mono" })}><Plus className="mr-1 h-4 w-4" />新增语法</Link>
-        <Link href="/admin/grammar" className={buttonVariants({ variant: "outline", className: "rounded-full font-mono" })}><BookOpen className="mr-1 h-4 w-4" />管理语法</Link>
+        <Link href={`/${locale}/admin/grammar/new`} className={buttonVariants({ className: "rounded-full font-mono" })}><Plus className="mr-1 h-4 w-4" />{dict.admin.addGrammar}</Link>
+        <Link href={`/${locale}/admin/grammar`} className={buttonVariants({ variant: "outline", className: "rounded-full font-mono" })}><BookOpen className="mr-1 h-4 w-4" />{dict.admin.grammarList}</Link>
       </div>
 
       <h2 className="font-semibold mb-3">最近语法条目</h2>

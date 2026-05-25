@@ -1,10 +1,18 @@
 {
   "common": {
     "siteName": "JLPT Grammar Deck",
+    "siteTagline": "日语语法词卡",
     "startLearning": "开始学习",
     "viewLibrary": "查看语法库",
     "login": "登录",
-    "loading": "加载中..."
+    "loading": "加载中...",
+    "localMode": "本地体验模式",
+    "localModeDesc": "当前进度保存在本机浏览器，登录后可永久保存并跨设备同步。",
+    "syncHint": "登录后可跨设备同步学习记录。",
+    "emptyField": "—",
+    "notReviewed": "从未复习",
+    "notScheduled": "未安排",
+    "comingSoon": "即将开放"
   },
   "nav": {
     "home": "首页",
@@ -12,6 +20,7 @@
     "study": "学习",
     "review": "今日复习",
     "favorites": "收藏夹",
+    "myGrammar": "我的语法库",
     "dashboard": "Dashboard"
   },
   "mobileNav": {
@@ -27,7 +36,7 @@
     "heroSubtitle": "一个为 N1～N5 学习者设计的日语语法记忆工具。通过卡片、收藏、复习计划和相近语法对比，把零散文法整理成可以长期复习的知识系统。",
     "featuresTitle": "核心功能",
     "features": [
-      { "title": "JLPT N1～N5 文法体系", "desc": "覆盖全部等级语法，按教材路线和语法场景系统整理" },
+      { "title": "JLPT N1～N5 文法体系", "desc": "覆盖全部等级语法，按等级和语法场景系统整理" },
       { "title": "Anki 风格复习", "desc": "卡片正面展示语法，背面展示意思、接续和例句" },
       { "title": "相近语法对比", "desc": "将容易混淆的语法放在一起对比，避免记忆混淆" },
       { "title": "易错点提醒", "desc": "标注每个语法的常见错误和使用陷阱" },
@@ -43,6 +52,9 @@
       { "step": "自动安排复习", "desc": "根据遗忘曲线，自动提醒下次复习" }
     ],
     "statsTitle": "学习数据一览",
+    "previewMeaning": "并不是……；并非……",
+    "previewStructure": "接续：普通形 + わけではない",
+    "previewStatus": "状态：学习中",
     "todayReview": "今日待复习",
     "learnedGrammar": "已学习语法",
     "streakDays": "连续学习天数",
@@ -53,6 +65,7 @@
   },
   "grammar": {
     "title": "语法库",
+    "searchPlaceholder": "搜索语法、意思、关键词...",
     "filter": "筛选",
     "filterTitle": "筛选条件",
     "results": "结果",
@@ -62,6 +75,8 @@
     "noResults": "没有找到相关语法",
     "noResultsHint": "请尝试更换关键词或筛选条件",
     "notFound": "语法未找到",
+    "loadFailed": "数据加载失败，请检查网络后重试",
+    "missingItem": "语法不存在",
     "backToLibrary": "返回语法库",
     "meaning": "意思",
     "structure": "接续",
@@ -71,15 +86,24 @@
     "commonMistake": "易错点",
     "memoryTip": "记忆提示",
     "similarGrammar": "相近语法",
+    "sameTitleUses": "同名语法的其他用法",
+    "sameTitleUsesHint": "这些条目写法相同，但等级、接续或语法场景不同，学习时请分开记忆。",
     "studyStatus": "学习状态",
     "reviewCount": "复习次数",
+    "lastReviewed": "上次复习",
+    "nextReview": "下次复习",
     "masteryLevel": "掌握度",
-    "addToStudy": "开始学习"
+    "addToStudy": "开始学习",
+    "favorite": "收藏",
+    "unfavorite": "取消收藏",
+    "emptyContent": "—",
+    "quiz": "小练习"
   },
   "study": {
     "startTitle": "开始学习",
-    "startDesc": "选择等级，开始 Anki 风格的卡片学习",
+    "startDesc": "选择等级，开始 Anki 风格的新卡学习。评分后会进入 SM-2 复习计划。",
     "selectLevel": "选择等级",
+    "allLevels": "全部等级",
     "selectAll": "全选",
     "startButton": "开始学习",
     "completedTitle": "复习完成！",
@@ -90,7 +114,17 @@
     "progress": "进度",
     "level": "等级",
     "remaining": "剩余",
-    "frontPrompt": "请回忆：意思 / 接续 / 例句 / 易错点"
+    "frontPrompt": "请回忆：意思 / 接续 / 例句 / 易错点",
+    "showAnswer": "显示答案",
+    "newCards": "新卡",
+    "newCard": "新卡",
+    "learningMode": "学习模式",
+    "emptyTitle": "这个等级暂无新卡",
+    "emptyDesc": "你已经学习过当前筛选范围内的语法，可以去今日复习查看到期卡片。",
+    "reviewNow": "去今日复习",
+    "queueCount": "可学习新卡",
+    "currentCard": "当前卡片",
+    "scheduleHint": "评分后将自动更新下次复习时间、间隔和掌握度。"
   },
   "review": {
     "title": "今日复习",
@@ -107,7 +141,11 @@
     "streakMsg": "已连续学习 {days} 天。",
     "noDueCards": "今天没有需要复习的卡片",
     "noDueCardsHint": "去学习页面添加新卡片吧",
-    "goStudy": "去学习"
+    "goStudy": "去学习",
+    "oldReviewOnly": "这里只显示已经学习过且到期的旧卡。",
+    "lastRating": "上次结果",
+    "nextReview": "下次复习",
+    "reviewedCards": "已复习卡片"
   },
   "favorites": {
     "title": "收藏夹",
@@ -119,6 +157,50 @@
       "preExam": "考前复习",
       "n2Focus": "N2 重点",
       "keigo": "敬语专项"
+    }
+  },
+  "myGrammar": {
+    "title": "我的语法库",
+    "subtitle": "在默认 JLPT 语法库之上，维护只属于你的补充、修改和隐藏规则。",
+    "loginTitle": "登录后管理个人语法库",
+    "loginDesc": "未登录时仍可使用本地学习和复习；个人语法的新增、修改和隐藏需要登录后保存到账号。",
+    "loginAction": "去登录",
+    "browseDefault": "浏览默认语法库",
+    "dbNotReadyTitle": "个人语法库数据库尚未启用",
+    "dbNotReadyDesc": "当前远端 Supabase 还没有应用用户语法库 migration。页面已预留好功能，迁移完成后即可保存个人修改。",
+    "dbReadyTitle": "个人语法库已启用",
+    "dbReadyDesc": "你可以新增私有语法，也可以隐藏默认库里不想学习的条目。",
+    "localModeTitle": "本地个人语法库模式",
+    "localModeDesc": "远端数据库尚未启用时，新增和隐藏会先保存在本机浏览器；完成 migration 后可再同步到账户。",
+    "defaultDeck": "默认语法库",
+    "privateItems": "私有新增",
+    "hiddenItems": "已隐藏",
+    "overrides": "个人修改",
+    "addPrivate": "新增私有语法",
+    "addPrivateDesc": "用于记录课程、教材或老师额外补充的语法点。",
+    "manageDefault": "管理默认库",
+    "manageDefaultDesc": "搜索默认语法并从你的个人库中隐藏它；默认库本身不会被修改。",
+    "searchPlaceholder": "搜索默认语法...",
+    "hideFromMine": "从我的库隐藏",
+    "schemaCheck": "数据库检查",
+    "save": "保存语法",
+    "saving": "保存中...",
+    "disabledHint": "当前会先保存到本机浏览器，完成 Supabase migration 后再同步到账户。",
+    "saved": "已保存到你的个人语法库。",
+    "hidden": "已从你的个人语法库隐藏。",
+    "form": {
+      "title": "语法",
+      "slug": "Slug",
+      "jlptLevel": "等级",
+      "grammarType": "场景",
+      "structure": "接续",
+      "meaningZh": "中文意思",
+      "meaningEn": "英文意思",
+      "explanationZh": "中文解释",
+      "explanationEn": "英文解释",
+      "exampleJp": "日语例句",
+      "exampleZh": "中文翻译",
+      "exampleEn": "英文翻译"
     }
   },
   "dashboard": {
@@ -134,6 +216,8 @@
     "masteredGrammar": "已掌握语法",
     "favoritesCount": "收藏数量",
     "levelProgress": "JLPT 等级进度",
+    "recentReviews": "最近复习记录",
+    "noRecentReviews": "还没有复习记录",
     "shortcuts": "快捷入口",
     "continueStudy": "继续学习",
     "todayReviewBtn": "今日复习",
@@ -156,13 +240,16 @@
     "switchToLogin": "登录"
   },
   "reviewButtons": {
-    "forgot": "忘记了",
-    "vague": "有点模糊",
-    "remembered": "记住了",
-    "easy": "很简单"
+    "forgot": "Again / 忘记",
+    "vague": "Hard / 模糊",
+    "remembered": "Good / 记住",
+    "easy": "Easy / 简单"
   },
   "admin": {
     "title": "管理后台",
+    "unavailableTitle": "后台暂未开放",
+    "unavailableDesc": "当前阶段先保留管理代码结构，语法内容管理将在管理员权限设计完成后开放。",
+    "backHome": "返回首页",
     "grammarList": "管理语法",
     "addGrammar": "新增语法",
     "editGrammar": "编辑语法",
@@ -183,7 +270,6 @@
       "title": "语法标题",
       "slug": "Slug",
       "jlptLevel": "JLPT 等级",
-      "sourceRoute": "教材路线",
       "grammarType": "语法类型",
       "tags": "标签",
       "meaningCn": "中文意思",
@@ -206,8 +292,6 @@
   "filter": {
     "jlptLevel": "JLPT 等级",
     "allLevels": "全部等级",
-    "sourceRoute": "教材路线",
-    "allRoutes": "全部路线",
     "grammarType": "语法场景",
     "allTypes": "全部场景",
     "studyStatus": "学习状态",
