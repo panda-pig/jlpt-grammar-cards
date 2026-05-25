@@ -4,6 +4,7 @@ import type { ReviewHistoryRecord, ReviewRating } from "@/lib/types";
 
 const STORAGE_KEY = "jlpt-grammar-progress:v1";
 const SYNCED_USERS_KEY = "jlpt-grammar-progress-synced-users:v1";
+const LEGACY_SYNC_MARKER = "__legacy_synced__";
 
 const RATING_LABELS = {
   1: "忘记了",
@@ -149,6 +150,53 @@ function ratingLabel(rating: ReviewRating) {
   return RATING_LABELS[rating];
 }
 
+function syncFingerprint(rows: LocalProgressRow[]) {
+  const payload = rows
+    .map((row) => ({
+      grammar_id: row.grammar_id,
+      study_status: row.study_status,
+      is_favorite: row.is_favorite,
+      review_count: row.review_count,
+      mastery_level: row.mastery_level,
+      next_review_at: row.next_review_at,
+      last_reviewed_at: row.last_reviewed_at,
+      last_rating: row.last_rating,
+      interval: row.interval,
+      repetition: row.repetition,
+      ease_factor: row.ease_factor,
+      updated_at: row.updated_at,
+      review_history: canonicalizeReviewHistory(row.review_history ?? [], row.grammar_id),
+    }))
+    .sort((a, b) => a.grammar_id.localeCompare(b.grammar_id));
+  const value = JSON.stringify(payload);
+  let hash = 2166136261;
+  for (let i = 0; i < value.length; i++) {
+    hash ^= value.charCodeAt(i);
+    hash = Math.imul(hash, 16777619);
+  }
+  return `${rows.length}:${(hash >>> 0).toString(16)}`;
+}
+
+function readSyncMeta(): Record<string, string> {
+  if (!canUseStorage()) return {};
+  try {
+    const raw = window.localStorage.getItem(SYNCED_USERS_KEY);
+    if (!raw) return {};
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed)) {
+      return Object.fromEntries(parsed.map((userId) => [String(userId), LEGACY_SYNC_MARKER]));
+    }
+    return parsed && typeof parsed === "object" ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+
+function writeSyncMeta(meta: Record<string, string>) {
+  if (!canUseStorage()) return;
+  window.localStorage.setItem(SYNCED_USERS_KEY, JSON.stringify(meta));
+}
+
 export const localProgressService = {
   getAll(): LocalProgressRow[] {
     return Object.values(readStore());
@@ -247,23 +295,21 @@ export const localProgressService = {
     window.localStorage.removeItem(STORAGE_KEY);
   },
 
-  markSynced(userId: string) {
-    if (!canUseStorage()) return;
-    const synced = this.getSyncedUsers();
-    synced.add(userId);
-    window.localStorage.setItem(SYNCED_USERS_KEY, JSON.stringify(Array.from(synced)));
+  getSyncFingerprint() {
+    return syncFingerprint(this.getAll());
   },
 
-  wasSynced(userId: string) {
-    return this.getSyncedUsers().has(userId);
+  markSynced(userId: string, fingerprint?: string) {
+    const meta = readSyncMeta();
+    meta[userId] = fingerprint ?? syncFingerprint(this.getAll());
+    writeSyncMeta(meta);
+  },
+
+  wasSynced(userId: string, fingerprint?: string) {
+    return readSyncMeta()[userId] === (fingerprint ?? syncFingerprint(this.getAll()));
   },
 
   getSyncedUsers(): Set<string> {
-    if (!canUseStorage()) return new Set();
-    try {
-      return new Set(JSON.parse(window.localStorage.getItem(SYNCED_USERS_KEY) ?? "[]"));
-    } catch {
-      return new Set();
-    }
+    return new Set(Object.keys(readSyncMeta()));
   },
 };

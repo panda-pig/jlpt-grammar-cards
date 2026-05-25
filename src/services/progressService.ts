@@ -1,7 +1,7 @@
 import { supabaseBrowser as supabase } from "@/lib/supabase-browser";
 import { canonicalGrammarId } from "@/lib/grammar-dedupe";
 import { calculateSM2, ratingToQuality } from "@/lib/sm2";
-import type { ReviewRating } from "@/lib/types";
+import type { ReviewHistoryRecord, ReviewRating } from "@/lib/types";
 
 export interface ProgressRow {
   id: string;
@@ -45,6 +45,30 @@ const RATING_LABELS = {
 
 type RatingLabel = (typeof RATING_LABELS)[keyof typeof RATING_LABELS];
 
+type ImportLocalProgressRow = {
+  grammar_id: string;
+  study_status: string;
+  is_favorite: boolean;
+  review_count: number;
+  mastery_level: number;
+  next_review_at: string | null;
+  last_reviewed_at: string | null;
+  last_rating: string | null;
+  interval: number;
+  repetition: number;
+  ease_factor: number;
+  created_at?: string;
+  updated_at?: string;
+  review_history?: Array<{
+    rating: string;
+    reviewedAt: string;
+    interval: number;
+    repetition: number;
+    easeFactor: number;
+    nextReviewAt: string;
+  }>;
+};
+
 function ratingLabel(rating: ReviewRating): RatingLabel {
   return RATING_LABELS[rating];
 }
@@ -80,6 +104,115 @@ function progressPayload(userId: string, grammarId: string, values: Record<strin
     grammar_id: null,
     grammar_key: grammarKey,
   };
+}
+
+function statusRank(status: string | null | undefined) {
+  if (status === "已掌握") return 2;
+  if (status === "学习中") return 1;
+  return 0;
+}
+
+function latestDate(...values: Array<string | null | undefined>) {
+  return values.filter(Boolean).sort().at(-1) ?? null;
+}
+
+function earliestDate(...values: Array<string | null | undefined>) {
+  return values.filter(Boolean).sort()[0] ?? null;
+}
+
+function historyKey(row: Pick<ReviewHistoryRecord, "grammarId" | "rating" | "reviewedAt" | "nextReviewAt">) {
+  return [
+    canonicalGrammarId(row.grammarId),
+    row.reviewedAt,
+    row.rating,
+    row.nextReviewAt,
+  ].join("|");
+}
+
+function remoteHistoryToRecord(row: RemoteReviewHistoryRow): ReviewHistoryRecord {
+  const grammarId = canonicalGrammarId(row.grammar_key ?? row.grammar_id);
+  return {
+    id: row.id,
+    grammarId,
+    rating: row.rating,
+    reviewedAt: row.reviewed_at,
+    interval: row.interval,
+    repetition: row.repetition,
+    easeFactor: row.ease_factor,
+    nextReviewAt: row.next_review_at ?? "",
+  };
+}
+
+function localHistoryToRecord(row: ImportLocalProgressRow, history: NonNullable<ImportLocalProgressRow["review_history"]>[number]): ReviewHistoryRecord {
+  return {
+    grammarId: canonicalGrammarId(row.grammar_id),
+    rating: history.rating,
+    reviewedAt: history.reviewedAt,
+    interval: history.interval,
+    repetition: history.repetition,
+    easeFactor: history.easeFactor,
+    nextReviewAt: history.nextReviewAt,
+  };
+}
+
+function mergeImportedProgress(
+  remote: ProgressRow | undefined,
+  local: ImportLocalProgressRow,
+  mergedHistoryCount: number
+) {
+  if (!remote) return local;
+
+  const remoteUpdated = remote.updated_at ?? "";
+  const localUpdated = local.updated_at ?? "";
+  const later = localUpdated >= remoteUpdated ? local : remote;
+  const localRank = statusRank(local.study_status);
+  const remoteRank = statusRank(remote.study_status);
+  const localNext = local.next_review_at;
+  const remoteNext = remote.next_review_at;
+
+  return {
+    ...local,
+    study_status: localRank >= remoteRank ? local.study_status : remote.study_status,
+    is_favorite: local.is_favorite || remote.is_favorite,
+    review_count: Math.max(local.review_count ?? 0, remote.review_count ?? 0, mergedHistoryCount),
+    mastery_level: Math.max(local.mastery_level ?? 0, remote.mastery_level ?? 0),
+    next_review_at: earliestDate(localNext, remoteNext),
+    last_reviewed_at: latestDate(local.last_reviewed_at, remote.last_reviewed_at),
+    last_rating: later.last_rating ?? null,
+    interval: later.interval ?? 0,
+    repetition: later.repetition ?? 0,
+    ease_factor: later.ease_factor ?? 2.5,
+    updated_at: latestDate(local.updated_at, remote.updated_at) ?? new Date().toISOString(),
+  };
+}
+
+async function incrementDailyStats(userId: string, historyRows: Array<{ reviewed_at: string }>) {
+  const counts = new Map<string, number>();
+  for (const row of historyRows) {
+    const date = row.reviewed_at.split("T")[0];
+    counts.set(date, (counts.get(date) ?? 0) + 1);
+  }
+  const dates = Array.from(counts.keys());
+  if (dates.length === 0) return;
+
+  const { data: existing } = await (supabase.from("daily_stats") as any)
+    .select("*")
+    .eq("user_id", userId)
+    .in("date", dates);
+  const existingByDate = new Map((existing ?? []).map((row: any) => [row.date, row]));
+
+  await (supabase.from("daily_stats") as any).upsert(
+    dates.map((date) => {
+      const current: any = existingByDate.get(date) ?? {};
+      return {
+        ...current,
+        user_id: userId,
+        date,
+        completed: (current.completed ?? 0) + (counts.get(date) ?? 0),
+      };
+    }),
+    { onConflict: "user_id,date" }
+  ).then(() => undefined, () => undefined);
 }
 
 export const progressService = {
@@ -337,50 +470,65 @@ export const progressService = {
     return (data ?? []).map(normalizeHistoryRow);
   },
 
-  async importLocalProgress(userId: string, rows: Array<{
-    grammar_id: string;
-    study_status: string;
-    is_favorite: boolean;
-    review_count: number;
-    mastery_level: number;
-    next_review_at: string | null;
-    last_reviewed_at: string | null;
-    last_rating: string | null;
-    interval: number;
-    repetition: number;
-    ease_factor: number;
-    review_history?: Array<{
-      rating: string;
-      reviewedAt: string;
-      interval: number;
-      repetition: number;
-      easeFactor: number;
-      nextReviewAt: string;
-    }>;
-  }>) {
-    if (rows.length === 0) return;
+  async importLocalProgress(userId: string, rows: ImportLocalProgressRow[]) {
+    if (rows.length === 0) return { importedRows: 0, importedHistory: 0 };
+
+    const canonicalRows = rows.map((row) => ({
+      ...row,
+      grammar_id: canonicalGrammarId(row.grammar_id),
+    }));
+    const grammarKeys = Array.from(new Set(canonicalRows.map((row) => row.grammar_id)));
+    const [remoteRows, remoteHistory] = await Promise.all([
+      this.getByUser(userId),
+      this.getReviewHistoryByUser(userId),
+    ]);
+    const remoteByGrammar = new Map(remoteRows.map((row) => [row.grammar_key, row]));
+    const remoteHistoryByGrammar = new Map<string, ReviewHistoryRecord[]>();
+    const existingHistoryKeys = new Set<string>();
+
+    for (const history of remoteHistory) {
+      const record = remoteHistoryToRecord(history);
+      existingHistoryKeys.add(historyKey(record));
+      const list = remoteHistoryByGrammar.get(record.grammarId) ?? [];
+      list.push(record);
+      remoteHistoryByGrammar.set(record.grammarId, list);
+    }
+
+    const progressRows = canonicalRows.map((row) => {
+      const localHistory = (row.review_history ?? []).map((history) => localHistoryToRecord(row, history));
+      const remoteRowHistory = remoteHistoryByGrammar.get(row.grammar_id) ?? [];
+      const mergedHistoryCount = new Set([
+        ...remoteRowHistory.map(historyKey),
+        ...localHistory.map(historyKey),
+      ]).size;
+      const merged = mergeImportedProgress(remoteByGrammar.get(row.grammar_id), row, mergedHistoryCount);
+      return progressPayload(userId, row.grammar_id, {
+        study_status: merged.study_status,
+        is_favorite: merged.is_favorite,
+        review_count: merged.review_count,
+        mastery_level: merged.mastery_level,
+        next_review_at: merged.next_review_at,
+        last_reviewed_at: merged.last_reviewed_at,
+        last_rating: merged.last_rating,
+        interval: merged.interval,
+        repetition: merged.repetition,
+        ease_factor: merged.ease_factor,
+      });
+    });
 
     await (supabase.from("user_grammar_progress") as any).upsert(
-      rows.map((row) => progressPayload(userId, row.grammar_id, {
-        study_status: row.study_status,
-        is_favorite: row.is_favorite,
-        review_count: row.review_count,
-        mastery_level: row.mastery_level,
-        next_review_at: row.next_review_at,
-        last_reviewed_at: row.last_reviewed_at,
-        last_rating: row.last_rating,
-        interval: row.interval,
-        repetition: row.repetition,
-        ease_factor: row.ease_factor,
-      })),
+      progressRows,
       { onConflict: "user_id,grammar_key" }
     );
 
-    const historyRows = rows.flatMap((row) =>
-      (row.review_history ?? []).map((history) => ({
+    const historyRows = canonicalRows.flatMap((row) =>
+      (row.review_history ?? [])
+        .map((history) => localHistoryToRecord(row, history))
+        .filter((history) => !existingHistoryKeys.has(historyKey(history)))
+        .map((history) => ({
         user_id: userId,
         grammar_id: null,
-        grammar_key: canonicalGrammarId(row.grammar_id),
+        grammar_key: history.grammarId,
         rating: history.rating,
         reviewed_at: history.reviewedAt,
         interval: history.interval,
@@ -394,6 +542,20 @@ export const progressService = {
       await (supabase.from("review_history") as any)
         .insert(historyRows)
         .then(() => undefined, () => undefined);
+      await incrementDailyStats(userId, historyRows);
     }
+
+    return {
+      importedRows: grammarKeys.length,
+      importedHistory: historyRows.length,
+    };
+  },
+
+  async getReviewHistoryByUser(userId: string) {
+    const { data, error } = await (supabase.from("review_history") as any)
+      .select("*")
+      .eq("user_id", userId);
+    if (error) return [];
+    return (data ?? []).map(normalizeHistoryRow);
   },
 };

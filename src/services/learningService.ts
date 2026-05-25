@@ -7,6 +7,10 @@ import type { GrammarEntry, JLPTLevel, ReviewRating } from "@/lib/types";
 
 export type UnifiedProgressRow = ProgressRow | LocalProgressRow;
 export type ProgressWithGrammar = UnifiedProgressRow & { grammar: any };
+export type LocalProgressSyncResult =
+  | { status: "skipped"; importedRows: 0; importedHistory: 0 }
+  | { status: "synced"; importedRows: number; importedHistory: number }
+  | { status: "failed"; importedRows: 0; importedHistory: 0 };
 
 function todayKey(date = new Date()) {
   return date.toISOString().split("T")[0];
@@ -36,6 +40,7 @@ function attachGrammar(progress: UnifiedProgressRow[], grammarEntries: GrammarEn
 }
 
 let remoteProgressUnavailable = false;
+const syncInFlight = new Map<string, Promise<LocalProgressSyncResult>>();
 
 function fallbackToLocalProgress() {
   remoteProgressUnavailable = true;
@@ -283,18 +288,35 @@ export const learningService = {
     return getLocalRecentReviews(limit);
   },
 
-  async syncLocalProgressToRemote(userId: string) {
-    if (localProgressService.wasSynced(userId)) return;
+  async syncLocalProgressToRemote(userId: string): Promise<LocalProgressSyncResult> {
     const localRows = localProgressService.getAll();
-    if (localRows.length === 0) {
-      localProgressService.markSynced(userId);
-      return;
+    const fingerprint = localProgressService.getSyncFingerprint();
+    if (localRows.length === 0 || localProgressService.wasSynced(userId, fingerprint)) {
+      return { status: "skipped", importedRows: 0, importedHistory: 0 };
     }
-    try {
-      await progressService.importLocalProgress(userId, localRows);
-      localProgressService.markSynced(userId);
-    } catch {
-      fallbackToLocalProgress();
-    }
+
+    const syncKey = `${userId}:${fingerprint}`;
+    const existing = syncInFlight.get(syncKey);
+    if (existing) return existing;
+
+    const task: Promise<LocalProgressSyncResult> = (async () => {
+      try {
+        const result = await progressService.importLocalProgress(userId, localRows);
+        localProgressService.markSynced(userId, fingerprint);
+        return {
+          status: "synced" as const,
+          importedRows: result.importedRows,
+          importedHistory: result.importedHistory,
+        };
+      } catch {
+        fallbackToLocalProgress();
+        return { status: "failed" as const, importedRows: 0, importedHistory: 0 };
+      } finally {
+        syncInFlight.delete(syncKey);
+      }
+    })();
+
+    syncInFlight.set(syncKey, task);
+    return task;
   },
 };
