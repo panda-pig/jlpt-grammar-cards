@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Header } from "@/components/layout/Header";
 import { AdminSidebar } from "@/components/layout/AdminSidebar";
@@ -7,20 +8,45 @@ import { Card, CardContent } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { useDictionary, useLocale } from "@/components/layout/LocaleProvider";
+import { supabaseBrowser as supabase } from "@/lib/supabase-browser";
 import type { ReactNode } from "react";
 
-function isAllowedAdmin(email?: string | null) {
+function isAllowedByEmail(email?: string | null) {
   const configured = process.env.NEXT_PUBLIC_ADMIN_EMAILS?.split(",").map((item) => item.trim().toLowerCase()).filter(Boolean) ?? [];
   return !!email && configured.includes(email.toLowerCase());
 }
 
+async function checkAdminRole(): Promise<boolean> {
+  try {
+    const { data, error } = await supabase.rpc("is_admin");
+    if (error) return false;
+    return !!data;
+  } catch {
+    return false;
+  }
+}
+
 export default function AdminLayout({ children }: { children: ReactNode }) {
-  const { user, isLoading } = useAuth();
+  const { user, isLoading: authLoading } = useAuth();
   const dict = useDictionary();
   const locale = useLocale();
-  const allowed = isAllowedAdmin(user?.email);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [checking, setChecking] = useState(true);
 
-  if (isLoading) {
+  useEffect(() => {
+    if (authLoading) return;
+    if (!user) {
+      setChecking(false);
+      return;
+    }
+
+    checkAdminRole().then((roleAdmin) => {
+      setIsAdmin(roleAdmin || isAllowedByEmail(user.email));
+      setChecking(false);
+    });
+  }, [user, authLoading]);
+
+  if (authLoading || checking) {
     return (
       <div className="flex min-h-screen flex-col">
         <Header />
@@ -31,7 +57,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
     );
   }
 
-  if (!allowed) {
+  if (!isAdmin) {
     return (
       <div className="flex min-h-screen flex-col">
         <Header />

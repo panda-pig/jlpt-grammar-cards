@@ -2,6 +2,22 @@
 
 ## 2026-05-26
 
+### 13:00 — Admin 加固：基于角色的权限系统、RLS 硬化
+- **SQL 迁移** `supabase/migrations/002_admin_roles.sql`：
+  - 创建 `user_roles` 表（user_id + role: user/admin）
+  - 创建 `public.is_admin()` RPC 函数
+  - 更新 grammar RLS：读取所有人，写入仅限 admin
+  - 硬化 `user_grammar_overrides` / `user_grammar_items` RLS（仅 owner 可写）
+- **Admin layout** 从 email 白名单改为 DB role 检查：
+  - 调用 `is_admin()` RPC 判定权限
+  - 保留 email allowlist 作为 fallback（给首个 admin 过渡用）
+- **Admin dashboard** 新增"管理员权限"管理卡片：
+  - 显示当前 admin 角色状态
+  - "授予管理员"按钮（首次将自己加入 user_roles）
+  - 按邮箱添加新管理员（通过 profiles 表查找用户）
+  - 撤销管理员权限
+  - 已添加的管理员列表
+
 ### 12:30 — 我的语法库增强：编辑、删除、恢复、批量管理
 - **编辑私人语法**：点击私人语法条目的"编辑"按钮，弹出 Dialog 编辑表单
   - 支持修改标题、等级、场景、接续、中英文意思/解释/例句
