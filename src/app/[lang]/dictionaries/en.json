@@ -209,6 +209,7 @@
     "batchSelected": "Selected",
     "batchHide": "Batch Hide",
     "restoreAll": "Restore All",
+    "restore": "Restore",
     "restoreHint": "Default grammar items you've hidden — click to restore",
     "form": {
       "title": "Grammar",

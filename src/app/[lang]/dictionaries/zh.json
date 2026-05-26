@@ -209,6 +209,7 @@
     "batchSelected": "已选",
     "batchHide": "批量隐藏",
     "restoreAll": "全部恢复",
+    "restore": "恢复",
     "restoreHint": "以下是你已隐藏的默认语法条目，可以恢复显示",
     "form": {
       "title": "语法",

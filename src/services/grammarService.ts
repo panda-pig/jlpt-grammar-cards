@@ -319,6 +319,29 @@ export const grammarService = {
     return localGrammarLibraryService.getMeta(userId);
   },
 
+  async getHiddenItems(userId: string): Promise<GrammarDeckRow[]> {
+    const { data: overrides, error } = await (supabase.from("user_grammar_overrides") as any)
+      .select("*")
+      .eq("user_id", userId)
+      .eq("hidden", true);
+    if (error || !overrides?.length) return [];
+    const hiddenKeys = new Set((overrides as UserGrammarOverride[]).map((o) => o.grammar_source_key));
+    const { data: grammarRows } = await supabase.from("grammar").select("*");
+    if (!grammarRows) return [];
+    return (grammarRows as GrammarRow[])
+      .filter((row) => hiddenKeys.has(sourceKeyFor(row)))
+      .map((row) => ({ ...row, source_key: sourceKeyFor(row), is_user_created: false }));
+  },
+
+  async getHiddenCount(userId: string): Promise<number> {
+    const { count, error } = await (supabase.from("user_grammar_overrides") as any)
+      .select("*", { count: "exact", head: true })
+      .eq("user_id", userId)
+      .eq("hidden", true);
+    if (error) return localGrammarLibraryService.getMeta(userId).hiddenCount;
+    return count ?? 0;
+  },
+
   async updateUserItem(userId: string, sourceKey: string, entry: Record<string, unknown>) {
     const { data, error } = await (supabase.from("user_grammar_items") as any)
       .update({ ...entry, updated_at: new Date().toISOString() })

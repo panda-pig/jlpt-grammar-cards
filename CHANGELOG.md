@@ -2,6 +2,15 @@
 
 ## 2026-05-26
 
+### 16:00 — 修复「已隐藏」语法统计和恢复功能
+- **问题**：登录后隐藏默认语法，默认语法数减少但「已隐藏」计数不增加，且无法从已隐藏列表恢复
+- **根因**：`grammarService.hideForUser` 使用 Supabase `user_grammar_overrides` 表存储隐藏状态，但 `getLocalUserLibraryMeta` 只读取 localStorage，导致计数不一致；`getAll` 已过滤掉隐藏项，导致恢复列表为空
+- **修复**：
+  - `grammarService` 新增 `getHiddenItems(userId)` 和 `getHiddenCount(userId)`，直接从 Supabase 查询隐藏覆盖项并映射回语法条目
+  - `my-grammar` 页面：新增 `hiddenEntries` 状态，加载时同时获取隐藏列表；隐藏后调用 `refreshMeta()` 更新计数
+  - 「已隐藏」区域改为展示具体隐藏条目列表，每条目右侧带「恢复」按钮；顶部保留「全部恢复」批量操作
+  - 字典 zh/en `myGrammar` 新增 `restore` 键
+
 ### 15:45 — 学习卡片收藏按钮改为文字+高亮样式
 - **StudyFlashcard 背面收藏按钮优化**：移除小图标样式，改为明显的 pill 按钮（"收藏" / "已收藏"），带背景色和 Heart 图标，更醒目
 
