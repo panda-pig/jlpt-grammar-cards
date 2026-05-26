@@ -76,6 +76,25 @@ export default function ReviewPage() {
     [currentIndex, dueCards, userId]
   );
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (state !== "reviewing" || !dueCards[currentIndex]) return;
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement || e.target instanceof HTMLSelectElement) return;
+      if (e.key === " " || e.code === "Space") {
+        e.preventDefault();
+        setFlipped((v) => !v);
+      }
+      if (!flipped) return;
+      const ratingMap: Record<string, ReviewRating> = { "1": 1, "2": 2, "3": 3, "4": 4 };
+      if (ratingMap[e.key]) {
+        e.preventDefault();
+        handleRate(ratingMap[e.key]);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [state, currentIndex, dueCards, flipped, handleRate]);
+
   const handleRestart = async () => {
     await loadDueCards();
   };

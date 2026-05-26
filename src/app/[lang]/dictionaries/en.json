@@ -247,6 +247,25 @@
     "viewFavorites": "Saved",
     "viewGrammar": "Library"
   },
+  "settings": {
+    "title": "Account Settings",
+    "account": "Account",
+    "syncStatus": "Sync Status",
+    "changePassword": "Change Password",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm new password",
+    "updatePassword": "Update Password",
+    "updating": "Updating...",
+    "passwordUpdated": "Password updated",
+    "passwordTooShort": "Password must be at least 6 characters",
+    "passwordMismatch": "Passwords do not match",
+    "updateFailed": "Update failed, please try again",
+    "syncing": "Syncing local progress to cloud...",
+    "synced": "Synced {count} progress items and {history} review records",
+    "syncFailed": "Sync failed, local progress remains in browser",
+    "noSync": "No sync record yet",
+    "loginRequired": "Please log in to view account settings"
+  },
   "login": {
     "title": "Login",
     "register": "Register",

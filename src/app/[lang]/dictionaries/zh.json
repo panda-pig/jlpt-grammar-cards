@@ -247,6 +247,25 @@
     "viewFavorites": "查看收藏",
     "viewGrammar": "进入语法库"
   },
+  "settings": {
+    "title": "账户设置",
+    "account": "账户信息",
+    "syncStatus": "同步状态",
+    "changePassword": "修改密码",
+    "newPassword": "新密码",
+    "confirmPassword": "确认新密码",
+    "updatePassword": "更新密码",
+    "updating": "更新中...",
+    "passwordUpdated": "密码已更新",
+    "passwordTooShort": "密码至少6位字符",
+    "passwordMismatch": "两次输入的密码不一致",
+    "updateFailed": "更新失败，请重试",
+    "syncing": "正在同步本地进度到云端...",
+    "synced": "已同步 {count} 条进度，{history} 条复习记录",
+    "syncFailed": "同步失败，本地进度仍保留在浏览器",
+    "noSync": "暂无同步记录",
+    "loginRequired": "请先登录后查看账户设置"
+  },
   "login": {
     "title": "登录",
     "register": "注册",

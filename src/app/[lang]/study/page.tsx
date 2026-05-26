@@ -88,6 +88,25 @@ export default function StudyPage() {
 
   const finished = cards.length > 0 && currentIndex >= cards.length;
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (finished || !currentCard) return;
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement || e.target instanceof HTMLSelectElement) return;
+      if (e.key === " " || e.code === "Space") {
+        e.preventDefault();
+        setFlipped((v) => !v);
+      }
+      if (!flipped) return;
+      const ratingMap: Record<string, ReviewRating> = { "1": 1, "2": 2, "3": 3, "4": 4 };
+      if (ratingMap[e.key]) {
+        e.preventDefault();
+        handleRate(ratingMap[e.key]);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [currentCard, flipped, finished, handleRate]);
+
   return (
     <MainLayout>
       <div className="mx-auto flex min-h-[calc(100vh-144px)] w-full max-w-5xl flex-col px-4 py-4 sm:px-6 sm:py-6">

@@ -54,9 +54,13 @@ export function Header() {
           <LocaleSwitcher />
           {user ? (
             <>
-              <span className="font-mono text-sm text-muted-foreground max-w-[120px] truncate" title={user.email ?? ""}>
+              <Link
+                href={`/${locale}/settings`}
+                className="font-mono text-sm text-muted-foreground hover:text-foreground transition-colors max-w-[120px] truncate"
+                title={user.email ?? ""}
+              >
                 {user.email}
-              </span>
+              </Link>
               <button
                 onClick={signOut}
                 className="font-mono text-sm text-muted-foreground hover:text-foreground transition-colors"
