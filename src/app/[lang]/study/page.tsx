@@ -9,7 +9,7 @@ import { ProgressBar } from "@/components/study/ProgressBar";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { learningService } from "@/services/learningService";
+import { learningService, type UnifiedProgressRow } from "@/services/learningService";
 import { useAuth } from "@/hooks/useAuth";
 import { useDictionary, useLocale } from "@/components/layout/LocaleProvider";
 import type { GrammarEntry, JLPTLevel, ReviewRating } from "@/lib/types";
@@ -27,6 +27,7 @@ export default function StudyPage() {
   const [flipped, setFlipped] = useState(false);
   const [loading, setLoading] = useState(true);
   const [completedCount, setCompletedCount] = useState(0);
+  const [progressMap, setProgressMap] = useState<Map<string, UnifiedProgressRow>>(new Map());
 
   const currentCard = cards[currentIndex] ?? null;
   const progressValue = cards.length > 0 ? ((completedCount) / cards.length) * 100 : 0;
@@ -35,8 +36,12 @@ export default function StudyPage() {
   const loadCards = useCallback(async () => {
     setLoading(true);
     try {
-      const nextCards = await learningService.getNewStudyCards(level, user?.id);
+      const [nextCards, map] = await Promise.all([
+        learningService.getNewStudyCards(level, user?.id),
+        learningService.getProgressMap(user?.id),
+      ]);
       setCards(nextCards);
+      setProgressMap(map);
       setCurrentIndex(0);
       setCompletedCount(0);
       setFlipped(false);
@@ -68,6 +73,18 @@ export default function StudyPage() {
       setCurrentIndex((index) => index + 1);
     }
   };
+
+  const handleToggleFavorite = async () => {
+    if (!currentCard) return;
+    const next = await learningService.toggleFavorite(currentCard.id, user?.id);
+    setProgressMap((prev) => {
+      const map = new Map(prev);
+      map.set(currentCard.id, { ...prev.get(currentCard.id), ...next } as UnifiedProgressRow);
+      return map;
+    });
+  };
+
+  const currentCardFavorite = currentCard ? !!progressMap.get(currentCard.id)?.is_favorite : false;
 
   const finished = cards.length > 0 && currentIndex >= cards.length;
 
@@ -175,7 +192,7 @@ export default function StudyPage() {
         ) : (
           <div className="flex flex-1 flex-col justify-center gap-5 py-5 pb-24 md:pb-8">
             {currentCard && (
-              <StudyFlashcard grammar={currentCard} flipped={flipped} onFlip={() => setFlipped((value) => !value)} />
+              <StudyFlashcard grammar={currentCard} flipped={flipped} onFlip={() => setFlipped((value) => !value)} isFavorite={currentCardFavorite} onToggleFavorite={handleToggleFavorite} />
             )}
             <div className="mx-auto w-full max-w-lg">
               {flipped ? (

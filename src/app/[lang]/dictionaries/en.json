@@ -5,6 +5,7 @@
     "startLearning": "Start Learning",
     "viewLibrary": "Browse Library",
     "login": "Login",
+    "logout": "Log out",
     "loading": "Loading...",
     "localMode": "Local trial mode",
     "localModeDesc": "Progress is saved in this browser. Log in to keep it permanently and sync across devices.",

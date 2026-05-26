@@ -227,6 +227,16 @@ export default function ReviewPage() {
   const grammar = currentCard.grammar ? toGrammarEntry(currentCard.grammar) : null;
   const progress = dueCards.length > 0 ? ((currentIndex + 1) / dueCards.length) * 100 : 0;
 
+  const handleToggleFavorite = async () => {
+    if (!grammar) return;
+    await learningService.toggleFavorite(grammar.id, userId);
+    setDueCards((prev) => {
+      const next = [...prev];
+      next[currentIndex] = { ...next[currentIndex], is_favorite: !next[currentIndex].is_favorite };
+      return next;
+    });
+  };
+
   return (
     <MainLayout>
       <div className="flex flex-col">
@@ -240,7 +250,7 @@ export default function ReviewPage() {
 
         <div className="flex-1 flex items-center justify-center px-6 py-4">
           {grammar && (
-            <StudyFlashcard grammar={grammar} flipped={flipped} onFlip={() => setFlipped(!flipped)} />
+            <StudyFlashcard grammar={grammar} flipped={flipped} onFlip={() => setFlipped(!flipped)} isFavorite={!!currentCard?.is_favorite} onToggleFavorite={handleToggleFavorite} />
           )}
         </div>
 

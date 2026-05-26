@@ -29,7 +29,7 @@ const LEVELS: JLPTLevel[] = ["N5", "N4", "N3", "N2", "N1"];
 const CATEGORIES = Object.keys(CATEGORY_LABELS) as GrammarCategory[];
 
 const emptyForm = {
-  title: "", slug: "", jlptLevel: "N3" as JLPTLevel, grammarType: "その他" as GrammarCategory,
+  title: "", jlptLevel: "N3" as JLPTLevel, grammarType: "その他" as GrammarCategory,
   structure: "", meaningZh: "", meaningEn: "", explanationZh: "", explanationEn: "",
   exampleJp: "", exampleZh: "", exampleEn: "",
 };
@@ -107,7 +107,7 @@ export default function MyGrammarPage() {
     if (!user || !form.title.trim()) return;
     setSaving(true); setMessage("");
     try {
-      const slug = form.slug.trim() || makeSlug(form.title);
+      const slug = makeSlug(form.title);
       await grammarService.createUserItem(user.id, {
         title: form.title.trim(), slug,
         jlpt_level: form.jlptLevel, source_route: "综合", grammar_type: form.grammarType, tags: [],
@@ -309,7 +309,6 @@ export default function MyGrammarPage() {
                 <p className="mt-1 text-sm leading-relaxed text-[#797776]">{t.addPrivateDesc}</p>
                 <div className="mt-4 grid gap-4 sm:grid-cols-2">
                   <Field label={t.form.title}><Input value={form.title} onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))} disabled={!canEdit} /></Field>
-                  <Field label={t.form.slug}><Input value={form.slug} onChange={(e) => setForm((f) => ({ ...f, slug: e.target.value }))} placeholder={makeSlug(form.title)} disabled={!canEdit} /></Field>
                   <Field label={t.form.jlptLevel}>
                     <select className="h-8 w-full rounded-lg border border-input bg-transparent px-2.5 text-sm" value={form.jlptLevel} onChange={(e) => setForm((f) => ({ ...f, jlptLevel: e.target.value as JLPTLevel }))} disabled={!canEdit}>
                       {LEVELS.map((l) => <option key={l} value={l}>{l}</option>)}

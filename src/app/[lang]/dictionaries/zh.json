@@ -5,6 +5,7 @@
     "startLearning": "开始学习",
     "viewLibrary": "查看语法库",
     "login": "登录",
+    "logout": "退出",
     "loading": "加载中...",
     "localMode": "本地体验模式",
     "localModeDesc": "当前进度保存在本机浏览器，登录后可永久保存并跨设备同步。",

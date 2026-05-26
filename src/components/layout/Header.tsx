@@ -5,11 +5,13 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 import { useDictionary, useLocale } from "./LocaleProvider";
+import { useAuth } from "@/hooks/useAuth";
 
 export function Header() {
   const pathname = usePathname();
   const dict = useDictionary();
   const locale = useLocale();
+  const { user, signOut } = useAuth();
 
   const navItems = [
     { href: `/${locale}`, label: dict.nav.home },
@@ -50,12 +52,26 @@ export function Header() {
 
         <div className="hidden md:flex items-center gap-3">
           <LocaleSwitcher />
-          <Link
-            href={`/${locale}/login`}
-            className="font-mono text-sm text-muted-foreground hover:text-foreground transition-colors"
-          >
-            {dict.common.login}
-          </Link>
+          {user ? (
+            <>
+              <span className="font-mono text-sm text-muted-foreground max-w-[120px] truncate" title={user.email ?? ""}>
+                {user.email}
+              </span>
+              <button
+                onClick={signOut}
+                className="font-mono text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                {dict.common.logout}
+              </button>
+            </>
+          ) : (
+            <Link
+              href={`/${locale}/login`}
+              className="font-mono text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              {dict.common.login}
+            </Link>
+          )}
           <Link
             href={`/${locale}/study`}
             className="font-mono text-sm bg-[#242424] text-[#f6f3f1] rounded-full px-5 py-2.5 hover:bg-black transition-colors"

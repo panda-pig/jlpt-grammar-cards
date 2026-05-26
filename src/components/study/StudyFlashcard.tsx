@@ -2,6 +2,7 @@
 
 import { LevelBadge } from "@/components/grammar/LevelBadge";
 import { GrammarTypeBadge } from "@/components/grammar/GrammarTypeBadge";
+import { FavoriteButton } from "@/components/grammar/FavoriteButton";
 import { useDictionary, useLocale } from "@/components/layout/LocaleProvider";
 import { localizedGrammar, localizedStructure } from "@/lib/grammar-content";
 import type { GrammarEntry } from "@/lib/types";
@@ -10,10 +11,14 @@ export function StudyFlashcard({
   grammar,
   flipped,
   onFlip,
+  isFavorite,
+  onToggleFavorite,
 }: {
   grammar: GrammarEntry;
   flipped: boolean;
   onFlip: () => void;
+  isFavorite: boolean;
+  onToggleFavorite: () => void;
 }) {
   const locale = useLocale();
   const dict = useDictionary();
@@ -75,6 +80,7 @@ export function StudyFlashcard({
             <div className="flex items-center gap-2">
               <LevelBadge level={grammar.jlptLevel} />
               <h3 className="font-serif text-xl font-medium">{grammar.title}</h3>
+              <FavoriteButton isFavorite={isFavorite} onToggle={onToggleFavorite} />
             </div>
             <div>
               <p className="font-mono text-xs text-[#797776] mb-1">{dict.grammar.meaning}</p>
