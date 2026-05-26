@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/hooks/useAuth";
-import { GrammarProvider } from "@/context/GrammarContext";
-import "./[lang]/globals.css";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "JLPT Grammar Deck — Anki-Style JLPT Grammar Learning",
@@ -19,9 +18,7 @@ export default function RootLayout({
     <html lang="zh-CN" className="h-full antialiased">
       <body className="min-h-full flex flex-col bg-background">
         <AuthProvider>
-          <GrammarProvider>
-            <TooltipProvider>{children}</TooltipProvider>
-          </GrammarProvider>
+          <TooltipProvider>{children}</TooltipProvider>
         </AuthProvider>
       </body>
     </html>

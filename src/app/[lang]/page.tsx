@@ -1,10 +1,14 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useDictionary, useLocale } from "@/components/layout/LocaleProvider";
+import { useAuth } from "@/hooks/useAuth";
+import { grammarService } from "@/services/grammarService";
+import { learningService } from "@/services/learningService";
 import { BookOpen, RotateCcw, Brain, AlertTriangle, Bookmark, BarChart3, ArrowRight, Play } from "lucide-react";
 
 const featureIcons = [
@@ -19,6 +23,52 @@ const featureIcons = [
 export default function HomePage() {
   const dict = useDictionary();
   const locale = useLocale();
+  const { user } = useAuth();
+  const [stats, setStats] = useState({ totalGrammar: 680, learned: 0, due: 0, mastered: 0 });
+  const [levelPcts, setLevelPcts] = useState<Record<string, number>>({ N5: 0, N4: 0, N3: 0, N2: 0, N1: 0 });
+
+  useEffect(() => {
+    (async () => {
+      const [rows, progressMap] = await Promise.all([
+        grammarService.getAll(user?.id ?? undefined).catch(() => [] as any[]),
+        learningService.getProgressMap(user?.id ?? undefined).catch(() => new Map()),
+      ]);
+
+      const total = rows.length;
+      const byLevel: Record<string, { total: number; learned: number }> = { N5: { total: 0, learned: 0 }, N4: { total: 0, learned: 0 }, N3: { total: 0, learned: 0 }, N2: { total: 0, learned: 0 }, N1: { total: 0, learned: 0 } };
+      let learned = 0;
+      let mastered = 0;
+
+      for (const row of rows) {
+        const level = row.jlpt_level ?? row.jlptLevel;
+        if (byLevel[level]) byLevel[level].total++;
+        const progress = progressMap.get(String(row.source_key ?? row.id));
+        if (progress) {
+          if (progress.study_status === "学习中" || progress.study_status === "已掌握") {
+            learned++;
+            if (byLevel[level]) byLevel[level].learned++;
+          }
+          if (progress.study_status === "已掌握") mastered++;
+        }
+      }
+
+      const now = Date.now();
+      let due = 0;
+      for (const [, p] of progressMap) {
+        if (p.next_review_at && new Date(p.next_review_at).getTime() <= now && p.study_status === "学习中") {
+          due++;
+        }
+      }
+
+      const pcts: Record<string, number> = {};
+      for (const lv of ["N5", "N4", "N3", "N2", "N1"]) {
+        pcts[lv] = byLevel[lv].total > 0 ? Math.round((byLevel[lv].learned / byLevel[lv].total) * 100) : 0;
+      }
+
+      setStats({ totalGrammar: total, learned, due, mastered });
+      setLevelPcts(pcts);
+    })();
+  }, [user]);
 
   return (
     <MainLayout>
@@ -123,10 +173,10 @@ export default function HomePage() {
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
             {[
-              { value: "30", label: dict.home.todayReview },
-              { value: "0", label: dict.home.learnedGrammar },
-              { value: "0", label: dict.home.streakDays },
-              { value: "1004", label: dict.home.totalGrammar },
+              { value: String(stats.due), label: dict.home.todayReview },
+              { value: String(stats.learned), label: dict.home.learnedGrammar },
+              { value: String(stats.mastered), label: dict.home.masteredGrammar },
+              { value: String(stats.totalGrammar), label: dict.home.totalGrammar },
             ].map((s, i) => (
               <Card key={i} className="border border-[rgba(36,36,36,0.16)] rounded-[40px] bg-[#f6f3f1]">
                 <CardContent className="p-8 text-center">
@@ -144,10 +194,10 @@ export default function HomePage() {
                 <div key={level}>
                   <div className="flex items-center justify-between mb-2">
                     <span className="font-mono text-sm">{level}</span>
-                    <span className="font-mono text-sm text-[#797776]">0%</span>
+                    <span className="font-mono text-sm text-[#797776]">{levelPcts[level]}%</span>
                   </div>
                   <div className="h-2 bg-[rgba(36,36,36,0.08)] rounded-full overflow-hidden">
-                    <div className="h-full bg-[#242424] rounded-full" style={{ width: "0%" }} />
+                    <div className="h-full bg-[#242424] rounded-full transition-all duration-500" style={{ width: `${levelPcts[level]}%` }} />
                   </div>
                 </div>
               ))}
