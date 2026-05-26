@@ -165,98 +165,127 @@ export default function HomePage() {
         </section>
 
         {/* Learning Flow */}
-        <section className="mx-auto max-w-[1432px] px-6 py-20 md:py-28">
-          <div className="grid lg:grid-cols-2 gap-16 items-start">
-            <div className="lg:sticky lg:top-24">
-              <h2 className="font-serif text-2xl md:text-3xl tracking-[-0.02em]">
-                {dict.home.flowTitle}
-              </h2>
-              <p className="mt-3 text-sm text-[#797776] max-w-md leading-relaxed">
-                选择等级 → 浏览学习 → 卡片复习 → 评分反馈 → 自动排期。无需手动记录，系统根据你的记忆曲线自动安排下一次复习。
-              </p>
-              <div className="mt-6">
-                <Link
-                  href={`/${locale}/study`}
-                  className="inline-flex items-center gap-2 bg-[#242424] text-[#f6f3f1] rounded-full px-5 py-2.5 font-mono text-sm hover:bg-black transition-colors"
-                >
-                  <Play className="h-4 w-4" />
-                  {dict.common.startLearning}
-                </Link>
-              </div>
-            </div>
+        <section className="mx-auto max-w-[1200px] px-6 py-20 md:py-28">
+          <div className="text-center mb-12">
+            <h2 className="font-serif text-2xl md:text-3xl tracking-[-0.02em]">
+              {dict.home.flowTitle}
+            </h2>
+            <p className="mt-3 text-sm text-[#797776] max-w-lg mx-auto leading-relaxed">
+              选择等级 → 浏览学习 → 卡片复习 → 评分反馈 → 自动排期
+            </p>
+          </div>
 
-            <div className="relative">
-              <div className="absolute left-[19px] top-2 bottom-2 w-px bg-[rgba(36,36,36,0.12)]" />
-              <div className="space-y-6">
-                {dict.home.flowSteps.map((step, i) => (
-                  <div key={i} className="flex gap-4 relative">
-                    <div className="relative z-10 w-10 h-10 rounded-full bg-[#242424] text-[#f6f3f1] flex items-center justify-center shrink-0 font-mono text-xs font-medium">
-                      {i + 1}
-                    </div>
-                    <div className="pt-1.5">
-                      <h3 className="font-mono text-sm font-medium text-[#242424]">{step.step}</h3>
-                      <p className="text-sm text-[#797776] mt-1 leading-relaxed">{step.desc}</p>
-                    </div>
+          <div className="grid md:grid-cols-5 gap-4 items-start">
+            {dict.home.flowSteps.map((step, i) => (
+              <div key={i} className="relative">
+                <div className="bg-[#fbfaf8] border border-[rgba(36,36,36,0.12)] rounded-[24px] p-5 text-center h-full">
+                  <div className="w-8 h-8 rounded-full bg-[#242424] text-[#f6f3f1] flex items-center justify-center mx-auto mb-3 font-mono text-xs font-medium">
+                    {i + 1}
                   </div>
-                ))}
+                  <p className="font-mono text-sm font-medium text-[#242424] mb-1">{step.step}</p>
+                  <p className="text-xs text-[#797776] leading-relaxed">{step.desc}</p>
+                </div>
+                {i < dict.home.flowSteps.length - 1 && (
+                  <div className="hidden md:block absolute top-1/2 -right-2 transform -translate-y-1/2 z-10">
+                    <ArrowRight className="h-4 w-4 text-[#242424]/30" />
+                  </div>
+                )}
               </div>
-            </div>
+            ))}
+          </div>
+
+          <div className="mt-10 text-center">
+            <Link
+              href={`/${locale}/study`}
+              className="inline-flex items-center gap-2 bg-[#242424] text-[#f6f3f1] rounded-full px-6 py-3 font-mono text-sm hover:bg-black transition-colors"
+            >
+              <Play className="h-4 w-4" />
+              {dict.common.startLearning}
+            </Link>
           </div>
         </section>
 
         {/* Dashboard Preview */}
-        <section className="mx-auto max-w-[1432px] px-6 py-20 md:py-28">
-          <h2 className="font-serif text-2xl md:text-3xl text-center mb-12 tracking-[-0.02em]">
-            {dict.home.statsTitle}
-          </h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+        <section className="mx-auto max-w-[1200px] px-6 py-20 md:py-28">
+          <div className="text-center mb-12">
+            <h2 className="font-serif text-2xl md:text-3xl tracking-[-0.02em]">
+              {dict.home.statsTitle}
+            </h2>
+            <p className="mt-3 text-sm text-[#797776]">
+              实时追踪你的学习进度
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
             {[
-              { value: String(stats.due), label: dict.home.todayReview },
-              { value: String(stats.learned), label: dict.home.learnedGrammar },
-              { value: String(stats.mastered), label: dict.home.masteredGrammar },
-              { value: String(stats.totalGrammar), label: dict.home.totalGrammar },
+              { value: String(stats.due), label: dict.home.todayReview, color: "bg-[#cfdaf5]" },
+              { value: String(stats.learned), label: dict.home.learnedGrammar, color: "bg-[#dcebd8]" },
+              { value: String(stats.mastered), label: dict.home.masteredGrammar, color: "bg-[#fff6df]" },
+              { value: String(stats.totalGrammar), label: dict.home.totalGrammar, color: "bg-[#f4b4a8]/40" },
             ].map((s, i) => (
-              <Card key={i} className="border border-[rgba(36,36,36,0.16)] rounded-[40px] bg-[#f6f3f1]">
-                <CardContent className="p-8 text-center">
-                  <p className="font-mono text-4xl font-medium text-[#000000]">{s.value}</p>
-                  <p className="text-sm text-[#4e4d4d] mt-2">{s.label}</p>
+              <Card key={i} className={`border-0 rounded-[28px] ${s.color} shadow-none`}>
+                <CardContent className="p-6 text-center">
+                  <p className="font-mono text-3xl font-medium text-[#242424]">{s.value}</p>
+                  <p className="text-sm text-[#242424]/70 mt-1">{s.label}</p>
                 </CardContent>
               </Card>
             ))}
           </div>
 
-          <div className="bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px] p-8 md:p-10">
-            <h3 className="font-mono text-base font-medium mb-6">{dict.home.levelProgress}</h3>
-            <div className="space-y-5">
-              {(["N5","N4","N3","N2","N1"] as const).map((level) => (
-                <div key={level}>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="font-mono text-sm">{level}</span>
-                    <span className="font-mono text-sm text-[#797776]">{levelPcts[level]}%</span>
+          <Card className="border border-[rgba(36,36,36,0.12)] rounded-[28px] bg-[#fbfaf8] shadow-none overflow-hidden">
+            <CardContent className="p-8 md:p-10">
+              <div className="flex items-center justify-between mb-8">
+                <h3 className="font-mono text-sm font-medium text-[#242424]">{dict.home.levelProgress}</h3>
+                <Link href={`/${locale}/dashboard`} className="font-mono text-xs text-[#797776] hover:text-[#242424] transition-colors">
+                  查看详情 →
+                </Link>
+              </div>
+              <div className="space-y-6">
+                {(["N5","N4","N3","N2","N1"] as const).map((level) => (
+                  <div key={level}>
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-3">
+                        <span className="w-8 h-8 rounded-lg bg-[#242424] text-[#f6f3f1] flex items-center justify-center font-mono text-xs font-medium">
+                          {level}
+                        </span>
+                        <span className="font-mono text-xs text-[#797776]">{levelPcts[level]}% 完成</span>
+                      </div>
+                    </div>
+                    <div className="h-2.5 bg-[rgba(36,36,36,0.08)] rounded-full overflow-hidden">
+                      <div className="h-full bg-[#242424] rounded-full transition-all duration-500" style={{ width: `${levelPcts[level]}%` }} />
+                    </div>
                   </div>
-                  <div className="h-2 bg-[rgba(36,36,36,0.08)] rounded-full overflow-hidden">
-                    <div className="h-full bg-[#242424] rounded-full transition-all duration-500" style={{ width: `${levelPcts[level]}%` }} />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
         </section>
 
         {/* CTA Section */}
-        <section className="mx-auto max-w-[1432px] px-6 pb-16 md:pb-24">
-          <div className="bg-[#242424] rounded-[28px] p-8 md:p-12 text-center max-w-3xl mx-auto">
-            <h2 className="font-serif text-lg md:text-2xl text-[#f6f3f1] tracking-[-0.02em]">
-              {dict.home.ctaText}
-            </h2>
-            <div className="mt-5">
-              <Link
-                href={`/${locale}/study`}
-                className="inline-flex items-center justify-center gap-2 bg-[#f6f3f1] text-[#242424] rounded-full px-6 py-3 font-mono text-sm hover:bg-white transition-colors"
-              >
-                <Play className="h-4 w-4" />
-                {dict.home.ctaButton}
-              </Link>
+        <section className="mx-auto max-w-[1200px] px-6 pb-16 md:pb-24">
+          <div className="relative bg-[#242424] rounded-[32px] p-10 md:p-16 text-center overflow-hidden">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[#cfdaf5] rounded-full opacity-10 -translate-y-1/2 translate-x-1/2" />
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#fff6df] rounded-full opacity-10 translate-y-1/2 -translate-x-1/2" />
+
+            <div className="relative z-10 max-w-xl mx-auto">
+              <h2 className="font-serif text-xl md:text-3xl text-[#f6f3f1] tracking-[-0.02em] leading-tight">
+                {dict.home.ctaText}
+              </h2>
+              <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+                <Link
+                  href={`/${locale}/study`}
+                  className="inline-flex items-center justify-center gap-2 bg-[#f6f3f1] text-[#242424] rounded-full px-8 py-3.5 font-mono text-sm hover:bg-white transition-colors"
+                >
+                  <Play className="h-4 w-4" />
+                  {dict.home.ctaButton}
+                </Link>
+                <Link
+                  href={`/${locale}/grammar`}
+                  className="inline-flex items-center justify-center gap-2 bg-transparent text-[#f6f3f1] border border-[#f6f3f1]/30 rounded-full px-8 py-3.5 font-mono text-sm hover:bg-[#f6f3f1]/10 transition-colors"
+                >
+                  {dict.common.viewLibrary}
+                </Link>
+              </div>
             </div>
           </div>
         </section>
