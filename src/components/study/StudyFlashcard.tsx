@@ -2,10 +2,11 @@
 
 import { LevelBadge } from "@/components/grammar/LevelBadge";
 import { GrammarTypeBadge } from "@/components/grammar/GrammarTypeBadge";
-import { FavoriteButton } from "@/components/grammar/FavoriteButton";
 import { useDictionary, useLocale } from "@/components/layout/LocaleProvider";
 import { localizedGrammar, localizedStructure } from "@/lib/grammar-content";
+import { cn } from "@/lib/utils";
 import type { GrammarEntry } from "@/lib/types";
+import { Heart } from "lucide-react";
 
 export function StudyFlashcard({
   grammar,
@@ -77,10 +78,27 @@ export function StudyFlashcard({
           }}
         >
           <div className="flex flex-col gap-4">
-            <div className="flex items-center gap-2">
-              <LevelBadge level={grammar.jlptLevel} />
-              <h3 className="font-serif text-xl font-medium">{grammar.title}</h3>
-              <FavoriteButton isFavorite={isFavorite} onToggle={onToggleFavorite} />
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <LevelBadge level={grammar.jlptLevel} />
+                <h3 className="font-serif text-xl font-medium">{grammar.title}</h3>
+              </div>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onToggleFavorite();
+                }}
+                className={cn(
+                  "inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-medium transition-colors shrink-0",
+                  isFavorite
+                    ? "bg-[#c47a6a] text-white hover:bg-[#a06050]"
+                    : "bg-[#242424] text-[#f6f3f1] hover:bg-black"
+                )}
+              >
+                <Heart className={cn("h-4 w-4", isFavorite && "fill-current")} />
+                {isFavorite ? "已收藏" : "收藏"}
+              </button>
             </div>
             <div>
               <p className="font-mono text-xs text-[#797776] mb-1">{dict.grammar.meaning}</p>
