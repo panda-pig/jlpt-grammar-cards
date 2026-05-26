@@ -74,26 +74,30 @@ export default function HomePage() {
     <MainLayout>
       <div className="bg-background">
         {/* Hero Section */}
-        <section className="mx-auto max-w-[1432px] px-6 pt-16 pb-20 md:pt-20 md:pb-24">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <section className="mx-auto max-w-[1200px] px-6 pt-12 pb-16 md:pt-16 md:pb-20">
+          <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-10 lg:gap-14 items-center">
             <div className="text-center lg:text-left">
-              <h1 className="font-serif text-[clamp(40px,6vw,72px)] leading-[1.1] tracking-[-0.02em] text-[#000000]">
-                {dict.home.heroTitle1}<br />{dict.home.heroTitle2}
+              <div className="inline-flex items-center gap-2 rounded-full bg-[rgba(36,36,36,0.06)] px-4 py-1.5 mb-6">
+                <BookOpen className="h-3.5 w-3.5 text-[#242424]" />
+                <span className="font-mono text-xs text-[#242424]">{dict.home.totalGrammar} {stats.totalGrammar}</span>
+              </div>
+              <h1 className="font-serif text-[clamp(32px,5vw,56px)] leading-[1.15] tracking-[-0.02em] text-[#000000]">
+                {dict.home.heroTitle1}{dict.home.heroTitle2}
               </h1>
-              <p className="mt-4 text-base md:text-lg text-[#4e4d4d] leading-relaxed max-w-lg mx-auto lg:mx-0">
+              <p className="mt-4 text-sm md:text-base text-[#797776] leading-relaxed max-w-md mx-auto lg:mx-0">
                 {dict.home.heroSubtitle}
               </p>
               <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
                 <Link
                   href={`/${locale}/study`}
-                  className="inline-flex items-center justify-center gap-2 bg-[#242424] text-[#f6f3f1] rounded-full px-6 py-3.5 font-mono text-sm hover:bg-black transition-colors"
+                  className="inline-flex items-center justify-center gap-2 bg-[#242424] text-[#f6f3f1] rounded-full px-6 py-3 font-mono text-sm hover:bg-black transition-colors"
                 >
                   <Play className="h-4 w-4" />
                   {dict.common.startLearning}
                 </Link>
                 <Link
                   href={`/${locale}/grammar`}
-                  className="inline-flex items-center justify-center gap-2 bg-transparent text-[#242424] border border-[#242424] rounded-full px-6 py-3.5 font-mono text-sm hover:bg-[rgba(36,36,36,0.06)] transition-colors"
+                  className="inline-flex items-center justify-center gap-2 bg-transparent text-[#242424] border border-[rgba(36,36,36,0.2)] rounded-full px-6 py-3 font-mono text-sm hover:bg-[rgba(36,36,36,0.04)] transition-colors"
                 >
                   {dict.common.viewLibrary}
                 </Link>
@@ -101,21 +105,30 @@ export default function HomePage() {
             </div>
 
             <div className="flex justify-center lg:justify-end">
-              <div className="w-full max-w-sm bg-[#cfdaf5] rounded-[40px] p-8 md:p-10 min-h-[360px] flex flex-col justify-between">
+              <div className="w-full max-w-[340px] bg-[#cfdaf5] rounded-[32px] p-7 md:p-8 flex flex-col gap-6 shadow-sm">
                 <div>
-                  <Badge variant="outline" className="rounded-full border-[#242424]/20 text-[#242424] font-mono text-xs mb-4">
-                    N3
-                  </Badge>
-                  <h2 className="font-serif text-[clamp(28px,4vw,48px)] leading-[1.1] text-[#000000]">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Badge variant="outline" className="rounded-full border-[#242424]/20 text-[#242424] font-mono text-[10px] px-2.5 py-0.5">
+                      N3
+                    </Badge>
+                    <span className="font-mono text-[10px] text-[#797776]">Noun-phrase + わけではない</span>
+                  </div>
+                  <h2 className="font-serif text-[clamp(24px,3.5vw,36px)] leading-[1.1] text-[#000000]">
                     ～わけではない
                   </h2>
-                  <p className="mt-3 text-[#4e4d4d] text-sm">
+                  <p className="mt-2.5 text-sm text-[#242424]/80 font-medium">
                     {dict.home.previewMeaning}
                   </p>
                 </div>
-                <div className="space-y-2 text-sm text-[#4e4d4d]">
-                  <p>{dict.home.previewStructure}</p>
-                  <p>{dict.home.previewStatus}</p>
+                <div className="space-y-2">
+                  <div className="rounded-2xl bg-white/50 px-4 py-3">
+                    <p className="font-mono text-[10px] text-[#797776] mb-1">{dict.home.previewStructure}</p>
+                    <p className="text-sm text-[#242424]">普通形 + わけではない</p>
+                  </div>
+                  <div className="rounded-2xl bg-white/50 px-4 py-3">
+                    <p className="font-mono text-[10px] text-[#797776] mb-1">{dict.home.previewStatus}</p>
+                    <p className="text-sm text-[#242424]">学习中</p>
+                  </div>
                 </div>
               </div>
             </div>
