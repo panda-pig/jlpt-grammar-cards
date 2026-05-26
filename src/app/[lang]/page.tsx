@@ -11,13 +11,13 @@ import { grammarService } from "@/services/grammarService";
 import { learningService } from "@/services/learningService";
 import { BookOpen, RotateCcw, Brain, AlertTriangle, Bookmark, BarChart3, ArrowRight, Play } from "lucide-react";
 
-const featureIcons = [
-  <BookOpen key="1" className="h-5 w-5" />,
-  <RotateCcw key="2" className="h-5 w-5" />,
-  <Brain key="3" className="h-5 w-5" />,
-  <AlertTriangle key="4" className="h-5 w-5" />,
-  <Bookmark key="5" className="h-5 w-5" />,
-  <BarChart3 key="6" className="h-5 w-5" />,
+const featureList = [
+  { icon: BookOpen, color: "bg-[#cfdaf5] text-[#242424]" },
+  { icon: RotateCcw, color: "bg-[#fff6df] text-[#8a6a20]" },
+  { icon: Brain, color: "bg-[#dcebd8] text-[#315b3b]" },
+  { icon: AlertTriangle, color: "bg-[#f4b4a8]/40 text-[#7a3a30]" },
+  { icon: Bookmark, color: "bg-[#e8e0f5] text-[#5a3a8a]" },
+  { icon: BarChart3, color: "bg-[#d8e8f0] text-[#2a5a7a]" },
 ];
 
 export default function HomePage() {
@@ -74,7 +74,7 @@ export default function HomePage() {
     <MainLayout>
       <div className="bg-background">
         {/* Hero Section */}
-        <section className="mx-auto max-w-[1432px] px-6 pt-16 pb-20 md:pt-24 md:pb-28">
+        <section className="mx-auto max-w-[1432px] px-6 pt-16 pb-20 md:pt-20 md:pb-24">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="text-center lg:text-left">
               <h1 className="font-serif text-[clamp(40px,6vw,72px)] leading-[1.1] tracking-[-0.02em] text-[#000000]">
@@ -123,51 +123,76 @@ export default function HomePage() {
         </section>
 
         {/* Feature Cards */}
-        <section className="mx-auto max-w-[1432px] px-6 pb-20 md:pb-28">
-          <h2 className="font-serif text-2xl md:text-3xl text-center mb-12 tracking-[-0.02em]">
-            {dict.home.featuresTitle}
-          </h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {dict.home.features.map((f, i) => (
-              <div
-                key={i}
-                className="bg-[#cfdaf5] rounded-[40px] p-8 hover:translate-y-[-2px] transition-transform"
-              >
-                <div className="w-10 h-10 rounded-full bg-[#242424] text-[#f6f3f1] flex items-center justify-center mb-4">
-                  {featureIcons[i]}
+        <section className="mx-auto max-w-[1432px] px-6 py-20 md:py-28">
+          <div className="mb-12 text-center">
+            <h2 className="font-serif text-2xl md:text-3xl tracking-[-0.02em]">
+              {dict.home.featuresTitle}
+            </h2>
+            <p className="mt-3 text-sm text-[#797776] max-w-lg mx-auto">
+              从语法库浏览到智能复习，覆盖完整学习闭环
+            </p>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {dict.home.features.map((f, i) => {
+              const Icon = featureList[i].icon;
+              return (
+                <div
+                  key={i}
+                  className="bg-[#fbfaf8] border border-[rgba(36,36,36,0.12)] rounded-[24px] p-6 hover:shadow-sm transition-shadow"
+                >
+                  <div className={`w-10 h-10 rounded-xl ${featureList[i].color} flex items-center justify-center mb-4`}>
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <h3 className="font-mono text-sm font-medium mb-2 text-[#242424]">{f.title}</h3>
+                  <p className="text-sm text-[#797776] leading-relaxed">{f.desc}</p>
                 </div>
-                <h3 className="font-mono text-base font-medium mb-2">{f.title}</h3>
-                <p className="text-sm text-[#4e4d4d] leading-relaxed">{f.desc}</p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </section>
 
         {/* Learning Flow */}
-        <section className="mx-auto max-w-[1432px] px-6 pb-20 md:pb-28">
-          <h2 className="font-serif text-2xl md:text-3xl text-center mb-12 tracking-[-0.02em]">
-            {dict.home.flowTitle}
-          </h2>
-          <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-0">
-            {dict.home.flowSteps.map((step, i) => (
-              <div key={i} className="flex items-center gap-4">
-                <div className="bg-[#cfdaf5] rounded-[40px] px-6 py-6 text-center min-w-[150px]">
-                  <div className="w-7 h-7 rounded-full bg-[#242424] text-[#f6f3f1] flex items-center justify-center mx-auto mb-2 font-mono text-xs font-medium">
-                    {i + 1}
-                  </div>
-                  <p className="font-mono text-sm font-medium text-[#000000]">{step.step}</p>
-                  <p className="text-xs text-[#4e4d4d] mt-1 leading-relaxed">{step.desc}</p>
-                </div>
-                {i < dict.home.flowSteps.length - 1 && (
-                  <ArrowRight className="hidden md:block h-5 w-5 text-[#242424]/40 shrink-0 mx-2" />
-                )}
+        <section className="mx-auto max-w-[1432px] px-6 py-20 md:py-28">
+          <div className="grid lg:grid-cols-2 gap-16 items-start">
+            <div className="lg:sticky lg:top-24">
+              <h2 className="font-serif text-2xl md:text-3xl tracking-[-0.02em]">
+                {dict.home.flowTitle}
+              </h2>
+              <p className="mt-3 text-sm text-[#797776] max-w-md leading-relaxed">
+                选择等级 → 浏览学习 → 卡片复习 → 评分反馈 → 自动排期。无需手动记录，系统根据你的记忆曲线自动安排下一次复习。
+              </p>
+              <div className="mt-6">
+                <Link
+                  href={`/${locale}/study`}
+                  className="inline-flex items-center gap-2 bg-[#242424] text-[#f6f3f1] rounded-full px-5 py-2.5 font-mono text-sm hover:bg-black transition-colors"
+                >
+                  <Play className="h-4 w-4" />
+                  {dict.common.startLearning}
+                </Link>
               </div>
-            ))}
+            </div>
+
+            <div className="relative">
+              <div className="absolute left-[19px] top-2 bottom-2 w-px bg-[rgba(36,36,36,0.12)]" />
+              <div className="space-y-6">
+                {dict.home.flowSteps.map((step, i) => (
+                  <div key={i} className="flex gap-4 relative">
+                    <div className="relative z-10 w-10 h-10 rounded-full bg-[#242424] text-[#f6f3f1] flex items-center justify-center shrink-0 font-mono text-xs font-medium">
+                      {i + 1}
+                    </div>
+                    <div className="pt-1.5">
+                      <h3 className="font-mono text-sm font-medium text-[#242424]">{step.step}</h3>
+                      <p className="text-sm text-[#797776] mt-1 leading-relaxed">{step.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </section>
 
         {/* Dashboard Preview */}
-        <section className="mx-auto max-w-[1432px] px-6 pb-20 md:pb-28">
+        <section className="mx-auto max-w-[1432px] px-6 py-20 md:py-28">
           <h2 className="font-serif text-2xl md:text-3xl text-center mb-12 tracking-[-0.02em]">
             {dict.home.statsTitle}
           </h2>
@@ -206,8 +231,8 @@ export default function HomePage() {
         </section>
 
         {/* CTA Section */}
-        <section className="mx-auto max-w-[1432px] px-6 pb-12 md:pb-20">
-          <div className="bg-[#242424] rounded-3xl p-6 md:p-10 text-center max-w-3xl mx-auto">
+        <section className="mx-auto max-w-[1432px] px-6 pb-16 md:pb-24">
+          <div className="bg-[#242424] rounded-[28px] p-8 md:p-12 text-center max-w-3xl mx-auto">
             <h2 className="font-serif text-lg md:text-2xl text-[#f6f3f1] tracking-[-0.02em]">
               {dict.home.ctaText}
             </h2>
