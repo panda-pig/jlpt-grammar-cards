@@ -18,6 +18,8 @@ interface AuthContextValue {
   signIn: (email: string, password: string) => Promise<void>;
   signInWithGoogle: () => Promise<void>;
   signOut: () => Promise<void>;
+  resetPassword: (email: string) => Promise<void>;
+  updatePassword: (password: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -75,7 +77,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [syncStatus.status]);
 
   const signUp = async (email: string, password: string) => {
-    const { error } = await supabaseBrowser.auth.signUp({ email, password });
+    const { error } = await supabaseBrowser.auth.signUp({
+      email,
+      password,
+      options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
+    });
+    if (error) throw error;
+  };
+
+  const resetPassword = async (email: string) => {
+    const { error } = await supabaseBrowser.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/auth/callback?next=/reset-password`,
+    });
+    if (error) throw error;
+  };
+
+  const updatePassword = async (password: string) => {
+    const { error } = await supabaseBrowser.auth.updateUser({ password });
     if (error) throw error;
   };
 
@@ -97,7 +115,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isLoading, syncStatus, signUp, signIn, signInWithGoogle, signOut }}>
+    <AuthContext.Provider value={{ user, isLoading, syncStatus, signUp, signIn, signInWithGoogle, signOut, resetPassword, updatePassword }}>
       {children}
     </AuthContext.Provider>
   );

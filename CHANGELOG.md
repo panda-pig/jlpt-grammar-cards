@@ -2,6 +2,25 @@
 
 ## 2026-05-26
 
+### 14:50 — 恢复邮箱验证流程
+- **`useAuth.tsx` 改回标准注册**：移除注册后自动登录逻辑，恢复 Supabase 标准 signUp 流程（发送验证邮件）
+- **登录页更新**：注册成功后显示绿色提示（"注册成功！请查收验证邮件，确认后即可登录。"），并自动切回登录模式
+
+### 14:20 — 修复登录问题、新增忘记密码功能
+- **修复 `middleware.ts` 缺失**：删除误创建的 `src/middleware.ts`，Next.js 16 使用 `proxy.ts` 作为中间件，解决冲突后启动正常。
+- **登录页增强**：
+  - 新增 Supabase 错误码映射：`invalid_credentials` → "邮箱或密码错误"，`email_not_confirmed` → "邮箱尚未验证" 等，避免用户看到英文 raw error
+  - 注册成功后显示绿色提示（"注册成功！请查收验证邮件，确认后即可登录。"），不再直接跳转
+  - 新增「忘记密码？」链接，跳转至找回密码页
+- **`useAuth.tsx` 增强**：
+  - `signUp` 增加 `emailRedirectTo`，注册后自动跳转验证
+  - 新增 `resetPassword(email)`：发送 Supabase 密码重置邮件
+  - 新增 `updatePassword(password)`：更新用户密码
+- **新增页面**：
+  - `/[lang]/forgot-password`：输入邮箱发送重置链接
+  - `/[lang]/reset-password`：解析 URL hash 中的 `access_token` + `refresh_token`，设置 session 后允许输入新密码
+- **字典更新**：zh/en `login` 区块新增 10 个 key（`forgotPassword`, `resetPassword`, `sendResetLink`, `resetLinkSent`, `newPassword`, `updatePassword`, `passwordUpdated`, `backToLogin`, `emailNotConfirmed`, `invalidCredentials`, `userNotFound`, `weakPassword`）
+
 ### 13:00 — Admin 加固：基于角色的权限系统、RLS 硬化
 - **SQL 迁移** `supabase/migrations/002_admin_roles.sql`：
   - 创建 `user_roles` 表（user_id + role: user/admin）

@@ -10,6 +10,24 @@ import { useAuth } from "@/hooks/useAuth";
 import { useDictionary, useLocale } from "@/components/layout/LocaleProvider";
 import { AlertCircle } from "lucide-react";
 
+function getAuthErrorMessage(err: any, dict: any): string {
+  const code = err?.code || "";
+  const msg = err?.message || "";
+  if (code === "email_not_confirmed" || msg.includes("Email not confirmed")) {
+    return dict.login.emailNotConfirmed;
+  }
+  if (code === "invalid_credentials" || msg.includes("Invalid login credentials")) {
+    return dict.login.invalidCredentials;
+  }
+  if (code === "user_not_found" || msg.includes("user not found")) {
+    return dict.login.userNotFound;
+  }
+  if (code === "weak_password" || msg.includes("weak")) {
+    return dict.login.weakPassword;
+  }
+  return msg || "Login failed";
+}
+
 export default function LoginPage() {
   const router = useRouter();
   const dict = useDictionary();
@@ -19,21 +37,25 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [info, setInfo] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    setInfo("");
     setLoading(true);
     try {
       if (mode === "login") {
         await signIn(email, password);
+        router.push(`/${locale}/dashboard`);
       } else {
         await signUp(email, password);
+        setInfo("注册成功！请查收验证邮件，确认后即可登录。");
+        setMode("login");
       }
-      router.push(`/${locale}/dashboard`);
     } catch (err: any) {
-      setError(err.message || "Login failed");
+      setError(getAuthErrorMessage(err, dict));
     } finally {
       setLoading(false);
     }
@@ -44,7 +66,7 @@ export default function LoginPage() {
     try {
       await signInWithGoogle();
     } catch (err: any) {
-      setError(err.message || "Google login failed");
+      setError(getAuthErrorMessage(err, dict));
     }
   };
 
@@ -59,8 +81,15 @@ export default function LoginPage() {
 
             {error && (
               <div className="flex items-center gap-2 text-sm text-[#c47a6a]">
-                <AlertCircle className="h-4 w-4" />
+                <AlertCircle className="h-4 w-4 shrink-0" />
                 {error}
+              </div>
+            )}
+
+            {info && (
+              <div className="flex items-center gap-2 text-sm text-[#6a8a5a]">
+                <AlertCircle className="h-4 w-4 shrink-0" />
+                {info}
               </div>
             )}
 
@@ -81,6 +110,17 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 className="rounded-full"
               />
+              {mode === "login" && (
+                <div className="text-right">
+                  <button
+                    type="button"
+                    onClick={() => router.push(`/${locale}/forgot-password`)}
+                    className="font-mono text-xs text-[#797776] hover:text-[#242424] underline transition-colors"
+                  >
+                    {dict.login.forgotPassword}
+                  </button>
+                </div>
+              )}
               <Button type="submit" disabled={loading} className="w-full rounded-full font-mono">
                 {loading
                   ? dict.login.processing
@@ -114,3 +154,4 @@ export default function LoginPage() {
     </MainLayout>
   );
 }
+

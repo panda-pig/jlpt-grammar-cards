@@ -258,7 +258,19 @@
     "noAccount": "No account?",
     "hasAccount": "Have an account?",
     "switchToRegister": "Sign up",
-    "switchToLogin": "Log in"
+    "switchToLogin": "Log in",
+    "forgotPassword": "Forgot password?",
+    "resetPassword": "Reset Password",
+    "sendResetLink": "Send reset link",
+    "resetLinkSent": "Reset link sent. Please check your email inbox.",
+    "newPassword": "New password",
+    "updatePassword": "Update password",
+    "passwordUpdated": "Password updated. Please log in with your new password.",
+    "backToLogin": "Back to login",
+    "emailNotConfirmed": "Email not confirmed. Please check your inbox for the verification email.",
+    "invalidCredentials": "Invalid email or password. Please try again.",
+    "userNotFound": "This email is not registered.",
+    "weakPassword": "Password is too weak. Please use at least 6 characters."
   },
   "reviewButtons": {
     "forgot": "Again / Forgot",
