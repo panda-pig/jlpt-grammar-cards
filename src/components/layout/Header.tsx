@@ -2,16 +2,30 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 import { useDictionary, useLocale } from "./LocaleProvider";
 import { useAuth } from "@/hooks/useAuth";
+import { supabaseBrowser } from "@/lib/supabase-browser";
 
 export function Header() {
   const pathname = usePathname();
   const dict = useDictionary();
   const locale = useLocale();
   const { user, signOut } = useAuth();
+  const [displayName, setDisplayName] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!user?.id) return;
+    (supabaseBrowser.from("profiles") as any)
+      .select("display_name")
+      .eq("id", user.id)
+      .single()
+      .then(({ data }: any) => {
+        setDisplayName(data?.display_name ?? null);
+      });
+  }, [user?.id]);
 
   const navItems = [
     { href: `/${locale}`, label: dict.nav.home },
@@ -57,9 +71,9 @@ export function Header() {
               <Link
                 href={`/${locale}/settings`}
                 className="font-mono text-sm text-muted-foreground hover:text-foreground transition-colors max-w-[120px] truncate"
-                title={user.email ?? ""}
+                title={displayName || user.email || ""}
               >
-                {user.email}
+                {displayName || user.email}
               </Link>
               <button
                 onClick={signOut}

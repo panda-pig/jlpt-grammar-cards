@@ -66,6 +66,7 @@ export default function SettingsPage() {
       if (updateError) throw updateError;
       setOriginalDisplayName(displayName.trim());
       setSuccess(t.usernameUpdated);
+      window.location.reload();
     } catch (err: any) {
       setError(err.message || t.updateFailed);
     } finally {
