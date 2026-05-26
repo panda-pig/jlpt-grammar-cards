@@ -11,13 +11,17 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { grammarService } from "@/services/grammarService";
 import { toGrammarEntry } from "@/lib/mappers";
 import { CATEGORY_LABELS } from "@/lib/types";
 import { useAuth } from "@/hooks/useAuth";
 import { useDictionary, useLocale } from "@/components/layout/LocaleProvider";
 import type { GrammarCategory, GrammarEntry, JLPTLevel } from "@/lib/types";
-import { BookOpen, Database, EyeOff, Layers3, Lock, PencilLine, Plus, Search } from "lucide-react";
+import {
+  BookOpen, Database, EyeOff, Layers3, Lock, PencilLine, Plus, Search,
+  Trash2, Undo2, CheckSquare, Square, X,
+} from "lucide-react";
 
 type LibraryStatus = Awaited<ReturnType<typeof grammarService.getUserLibraryStatus>>;
 
@@ -25,32 +29,19 @@ const LEVELS: JLPTLevel[] = ["N5", "N4", "N3", "N2", "N1"];
 const CATEGORIES = Object.keys(CATEGORY_LABELS) as GrammarCategory[];
 
 const emptyForm = {
-  title: "",
-  slug: "",
-  jlptLevel: "N3" as JLPTLevel,
-  grammarType: "その他" as GrammarCategory,
-  structure: "",
-  meaningZh: "",
-  meaningEn: "",
-  explanationZh: "",
-  explanationEn: "",
-  exampleJp: "",
-  exampleZh: "",
-  exampleEn: "",
+  title: "", slug: "", jlptLevel: "N3" as JLPTLevel, grammarType: "その他" as GrammarCategory,
+  structure: "", meaningZh: "", meaningEn: "", explanationZh: "", explanationEn: "",
+  exampleJp: "", exampleZh: "", exampleEn: "",
 };
 
+const BASE_EDIT_FIELDS = ["title", "jlptLevel", "grammarType", "structure", "meaningZh", "meaningEn", "explanationZh", "explanationEn", "exampleJp", "exampleZh", "exampleEn"] as const;
+type EditField = (typeof BASE_EDIT_FIELDS)[number];
+
 function makeSlug(title: string) {
-  const normalized = title.trim().replace(/\s+/g, "-");
-  return `${normalized || "grammar"}-${Date.now()}`;
+  return `${title.trim().replace(/\s+/g, "-") || "grammar"}-${Date.now()}`;
 }
 
-function Field({
-  label,
-  children,
-}: {
-  label: string;
-  children: ReactNode;
-}) {
+function Field({ label, children }: { label: string; children: ReactNode }) {
   return (
     <label className="block space-y-1.5">
       <span className="font-mono text-xs font-medium text-[#797776]">{label}</span>
@@ -72,6 +63,10 @@ export default function MyGrammarPage() {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
   const [libraryMeta, setLibraryMeta] = useState({ privateCount: 0, hiddenCount: 0, overrideCount: 0 });
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editForm, setEditForm] = useState<Record<string, string>>({});
+  const [batchMode, setBatchMode] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     let alive = true;
@@ -86,93 +81,151 @@ export default function MyGrammarPage() {
         setStatus(statusResult);
         setEntries(rows.map(toGrammarEntry));
         setLibraryMeta(user?.id ? grammarService.getLocalUserLibraryMeta(user.id) : { privateCount: 0, hiddenCount: 0, overrideCount: 0 });
-      } finally {
-        if (alive) setLoading(false);
-      }
+      } finally { if (alive) setLoading(false); }
     }
     load();
-    return () => {
-      alive = false;
-    };
+    return () => { alive = false; };
   }, [user?.id]);
 
   const ready = !!status?.ready;
   const canEdit = !!user;
-  const localPersonalMode = !!user && !ready;
-  const privateCount = entries.filter((entry) => entry.isUserCreated).length;
-  const defaultCount = entries.filter((entry) => !entry.isUserCreated).length;
+  const privateEntries = entries.filter((e) => e.isUserCreated);
+  const defaultEntries = entries.filter((e) => !e.isUserCreated);
+  const privateCount = privateEntries.length;
+  const defaultCount = defaultEntries.length;
+
   const filteredDefaults = useMemo(() => {
     const q = search.trim().toLowerCase();
-    const defaults = entries.filter((entry) => !entry.isUserCreated);
-    if (!q) return defaults.slice(0, 8);
-    return defaults
-      .filter((entry) =>
-        entry.title.toLowerCase().includes(q) ||
-        entry.meaningZh.toLowerCase().includes(q) ||
-        entry.meaningEn.toLowerCase().includes(q) ||
-        entry.structure.toLowerCase().includes(q)
-      )
-      .slice(0, 8);
-  }, [entries, search]);
-
-  const updateForm = (key: keyof typeof emptyForm, value: string) => {
-    setForm((current) => ({ ...current, [key]: value }));
-  };
+    if (!q) return defaultEntries.slice(0, 20);
+    return defaultEntries.filter((e) =>
+      e.title.toLowerCase().includes(q) || e.meaningZh.toLowerCase().includes(q) ||
+      e.meaningEn.toLowerCase().includes(q) || e.structure.toLowerCase().includes(q)
+    ).slice(0, 20);
+  }, [defaultEntries, search]);
 
   const handleCreate = async () => {
     if (!user || !form.title.trim()) return;
-    setSaving(true);
-    setMessage("");
+    setSaving(true); setMessage("");
     try {
       const slug = form.slug.trim() || makeSlug(form.title);
       await grammarService.createUserItem(user.id, {
-        title: form.title.trim(),
-        slug,
-        jlpt_level: form.jlptLevel,
-        source_route: "综合",
-        grammar_type: form.grammarType,
-        tags: [],
-        meaning_cn: form.meaningZh,
-        meaning_zh: form.meaningZh,
-        meaning_en: form.meaningEn,
+        title: form.title.trim(), slug,
+        jlpt_level: form.jlptLevel, source_route: "综合", grammar_type: form.grammarType, tags: [],
+        meaning_cn: form.meaningZh, meaning_zh: form.meaningZh, meaning_en: form.meaningEn,
         structure: form.structure,
-        explanation: form.explanationZh,
-        explanation_zh: form.explanationZh,
-        explanation_en: form.explanationEn,
-        usage_note: "",
-        usage_note_zh: "",
-        usage_note_en: "",
-        example_jp: form.exampleJp,
-        example_cn: form.exampleZh,
-        example_zh: form.exampleZh,
-        example_en: form.exampleEn,
+        explanation: form.explanationZh, explanation_zh: form.explanationZh, explanation_en: form.explanationEn,
+        usage_note: "", usage_note_zh: "", usage_note_en: "",
+        example_jp: form.exampleJp, example_cn: form.exampleZh, example_zh: form.exampleZh, example_en: form.exampleEn,
       });
       const rows = await grammarService.getAll(user.id);
       setEntries(rows.map(toGrammarEntry));
       setLibraryMeta(grammarService.getLocalUserLibraryMeta(user.id));
       setForm(emptyForm);
       setMessage(t.saved);
-    } finally {
-      setSaving(false);
-    }
+    } finally { setSaving(false); }
   };
 
   const handleHide = async (entry: GrammarEntry) => {
     if (!user) return;
-    await grammarService.hideForUser(user.id, entry.id);
-    setEntries((current) => current.filter((item) => item.id !== entry.id));
+    await grammarService.hideForUser(user.id, entry.baseGrammarKey || entry.id);
+    setEntries((c) => c.filter((e) => e.id !== entry.id));
     setLibraryMeta(grammarService.getLocalUserLibraryMeta(user.id));
     setMessage(t.hidden);
   };
 
+  const handleRestore = async (entry: GrammarEntry) => {
+    if (!user) return;
+    await grammarService.restoreForUser(user.id, entry.baseGrammarKey || entry.id);
+    const rows = await grammarService.getAll(user.id);
+    setEntries(rows.map(toGrammarEntry));
+    setLibraryMeta(grammarService.getLocalUserLibraryMeta(user.id));
+    setMessage(t.restored || "已恢复");
+  };
+
+  const handleDeletePrivate = async (entry: GrammarEntry) => {
+    if (!user || !confirm("确定要删除这条私人语法吗？此操作不可撤销。")) return;
+    await grammarService.deleteUserItem(user.id, entry.baseGrammarKey || entry.id);
+    setEntries((c) => c.filter((e) => e.id !== entry.id));
+    setLibraryMeta(grammarService.getLocalUserLibraryMeta(user.id));
+    setMessage(t.deleted || "已删除");
+  };
+
+  const handleStartEdit = (entry: GrammarEntry) => {
+    setEditingId(entry.id);
+    setEditForm({
+      title: entry.title,
+      jlptLevel: entry.jlptLevel,
+      grammarType: entry.grammarType,
+      structure: entry.structure,
+      meaningZh: entry.meaningZh,
+      meaningEn: entry.meaningEn,
+      explanationZh: entry.explanationZh,
+      explanationEn: entry.explanationEn,
+      exampleJp: entry.exampleJp,
+      exampleZh: entry.exampleZh,
+      exampleEn: entry.exampleEn,
+    });
+  };
+
+  const handleSaveEdit = async () => {
+    if (!user || !editingId || !editForm.title?.trim()) return;
+    await grammarService.updateUserItem(user.id, editingId, {
+      title: editForm.title.trim(),
+      jlpt_level: editForm.jlptLevel,
+      grammar_type: editForm.grammarType,
+      structure: editForm.structure,
+      meaning_zh: editForm.meaningZh,
+      meaning_en: editForm.meaningEn,
+      explanation_zh: editForm.explanationZh,
+      explanation_en: editForm.explanationEn,
+      example_jp: editForm.exampleJp,
+      example_zh: editForm.exampleZh,
+      example_en: editForm.exampleEn,
+      updated_at: new Date().toISOString(),
+    });
+    const rows = await grammarService.getAll(user.id);
+    setEntries(rows.map(toGrammarEntry));
+    setEditingId(null);
+    setMessage(t.saved);
+  };
+
+  const toggleSelect = (id: string) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
+  };
+
+  const selectAllDefaults = () => {
+    setSelectedIds(new Set(filteredDefaults.map((e) => e.id)));
+  };
+
+  const clearSelection = () => {
+    setSelectedIds(new Set());
+    setBatchMode(false);
+  };
+
+  const batchHide = async () => {
+    if (!user || selectedIds.size === 0) return;
+    if (!confirm(`确定要隐藏选中的 ${selectedIds.size} 个语法吗？`)) return;
+    for (const id of selectedIds) {
+      const entry = entries.find((e) => e.id === id);
+      if (entry && !entry.isUserCreated) {
+        await grammarService.hideForUser(user.id, entry.baseGrammarKey || id);
+      }
+    }
+    const rows = await grammarService.getAll(user.id);
+    setEntries(rows.map(toGrammarEntry));
+    setLibraryMeta(grammarService.getLocalUserLibraryMeta(user.id));
+    clearSelection();
+    setMessage(`已隐藏 ${selectedIds.size} 个语法`);
+  };
+
+  // ---- render ----
+
   if (loading) {
-    return (
-      <MainLayout>
-        <div className="mx-auto flex min-h-[320px] max-w-5xl items-center justify-center py-6">
-          <p className="font-mono text-sm text-[#797776]">{dict.common.loading}</p>
-        </div>
-      </MainLayout>
-    );
+    return <MainLayout><div className="mx-auto flex min-h-[320px] max-w-5xl items-center justify-center py-6"><p className="font-mono text-sm text-[#797776]">{dict.common.loading}</p></div></MainLayout>;
   }
 
   if (!user) {
@@ -181,18 +234,12 @@ export default function MyGrammarPage() {
         <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
           <Card className="rounded-[36px] border border-[rgba(36,36,36,0.16)] bg-[#f6f3f1] shadow-none">
             <CardContent className="p-6 sm:p-8">
-              <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-[#242424] text-[#f6f3f1]">
-                <Lock className="h-5 w-5" />
-              </div>
+              <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-[#242424] text-[#f6f3f1]"><Lock className="h-5 w-5" /></div>
               <h1 className="font-serif text-3xl text-[#242424]">{t.loginTitle}</h1>
               <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[#797776]">{t.loginDesc}</p>
               <div className="mt-6 flex flex-wrap gap-3">
-                <Link href={`/${locale}/login`} className={buttonVariants({ className: "rounded-full font-mono" })}>
-                  {t.loginAction}
-                </Link>
-                <Link href={`/${locale}/grammar`} className={buttonVariants({ variant: "outline", className: "rounded-full font-mono" })}>
-                  {t.browseDefault}
-                </Link>
+                <Link href={`/${locale}/login`} className={buttonVariants({ className: "rounded-full font-mono" })}>{t.loginAction}</Link>
+                <Link href={`/${locale}/grammar`} className={buttonVariants({ variant: "outline", className: "rounded-full font-mono" })}>{t.browseDefault}</Link>
               </div>
             </CardContent>
           </Card>
@@ -215,18 +262,18 @@ export default function MyGrammarPage() {
           </Badge>
         </div>
 
+        {/* db status */}
         <div className="mb-5 rounded-[28px] border border-[rgba(36,36,36,0.16)] bg-[#fff6df] px-4 py-3 text-sm leading-relaxed text-[#4e4d4d]">
           <div className="flex items-start gap-3">
             <Database className="mt-0.5 h-4 w-4 shrink-0 text-[#a08040]" />
             <div>
-              <p className="font-mono text-xs font-medium text-[#242424]">
-                {ready ? t.dbReadyTitle : t.localModeTitle}
-              </p>
+              <p className="font-mono text-xs font-medium text-[#242424]">{ready ? t.dbReadyTitle : t.localModeTitle}</p>
               <p className="mt-1">{ready ? t.dbReadyDesc : t.localModeDesc}</p>
             </div>
           </div>
         </div>
 
+        {/* stats */}
         <div className="mb-6 grid gap-3 sm:grid-cols-4">
           {[
             { label: t.defaultDeck, value: defaultCount, icon: BookOpen },
@@ -244,83 +291,86 @@ export default function MyGrammarPage() {
           ))}
         </div>
 
+        {/* message */}
+        {message && (
+          <div className="mb-5 rounded-full bg-[#dcebd8] px-4 py-2 text-sm text-[#315b3b] font-mono flex items-center justify-between">
+            <span>{message}</span>
+            <button onClick={() => setMessage("")}><X className="h-3.5 w-3.5" /></button>
+          </div>
+        )}
+
         <div className="grid gap-5 lg:grid-cols-[minmax(0,1.1fr)_minmax(340px,0.9fr)]">
-          <Card className="rounded-[36px] border border-[rgba(36,36,36,0.16)] bg-[#f6f3f1] shadow-none">
-            <CardContent className="p-5 sm:p-6">
-              <div className="mb-5 flex items-start justify-between gap-4">
-                <div>
-                  <h2 className="font-serif text-2xl text-[#242424]">{t.addPrivate}</h2>
-                  <p className="mt-1 text-sm leading-relaxed text-[#797776]">{t.addPrivateDesc}</p>
-                </div>
-                {localPersonalMode && <Badge variant="secondary" className="rounded-full font-mono text-xs">{dict.common.localMode}</Badge>}
-              </div>
-
-              <div className="grid gap-4 sm:grid-cols-2">
-                <Field label={t.form.title}>
-                  <Input value={form.title} onChange={(event) => updateForm("title", event.target.value)} disabled={!canEdit} />
-                </Field>
-                <Field label={t.form.slug}>
-                  <Input value={form.slug} onChange={(event) => updateForm("slug", event.target.value)} placeholder={makeSlug(form.title)} disabled={!canEdit} />
-                </Field>
-                <Field label={t.form.jlptLevel}>
-                  <select
-                    className="h-8 w-full rounded-lg border border-input bg-transparent px-2.5 text-sm"
-                    value={form.jlptLevel}
-                    onChange={(event) => updateForm("jlptLevel", event.target.value)}
-                    disabled={!canEdit}
-                  >
-                    {LEVELS.map((level) => <option key={level} value={level}>{level}</option>)}
-                  </select>
-                </Field>
-                <Field label={t.form.grammarType}>
-                  <select
-                    className="h-8 w-full rounded-lg border border-input bg-transparent px-2.5 text-sm"
-                    value={form.grammarType}
-                    onChange={(event) => updateForm("grammarType", event.target.value)}
-                    disabled={!canEdit}
-                  >
-                    {CATEGORIES.map((category) => <option key={category} value={category}>{category}</option>)}
-                  </select>
-                </Field>
-                <Field label={t.form.structure}>
-                  <Input value={form.structure} onChange={(event) => updateForm("structure", event.target.value)} disabled={!canEdit} />
-                </Field>
-                <Field label={t.form.meaningZh}>
-                  <Input value={form.meaningZh} onChange={(event) => updateForm("meaningZh", event.target.value)} disabled={!canEdit} />
-                </Field>
-                <Field label={t.form.meaningEn}>
-                  <Input value={form.meaningEn} onChange={(event) => updateForm("meaningEn", event.target.value)} disabled={!canEdit} />
-                </Field>
-                <Field label={t.form.exampleJp}>
-                  <Input value={form.exampleJp} onChange={(event) => updateForm("exampleJp", event.target.value)} disabled={!canEdit} />
-                </Field>
-                <Field label={t.form.exampleZh}>
-                  <Input value={form.exampleZh} onChange={(event) => updateForm("exampleZh", event.target.value)} disabled={!canEdit} />
-                </Field>
-                <Field label={t.form.exampleEn}>
-                  <Input value={form.exampleEn} onChange={(event) => updateForm("exampleEn", event.target.value)} disabled={!canEdit} />
-                </Field>
-                <div className="sm:col-span-2">
-                  <Field label={t.form.explanationZh}>
-                    <Textarea value={form.explanationZh} onChange={(event) => updateForm("explanationZh", event.target.value)} disabled={!canEdit} />
-                  </Field>
-                </div>
-                <div className="sm:col-span-2">
-                  <Field label={t.form.explanationEn}>
-                    <Textarea value={form.explanationEn} onChange={(event) => updateForm("explanationEn", event.target.value)} disabled={!canEdit} />
-                  </Field>
-                </div>
-              </div>
-
-              {localPersonalMode && <p className="mt-4 text-xs text-[#797776]">{t.disabledHint}</p>}
-              {message && <p className="mt-4 text-sm text-[#315b3b]">{message}</p>}
-              <Button className="mt-5 rounded-full font-mono" onClick={handleCreate} disabled={!canEdit || saving || !form.title.trim()}>
-                <Plus className="mr-1 h-4 w-4" />{saving ? t.saving : t.save}
-              </Button>
-            </CardContent>
-          </Card>
-
+          {/* left: add + private list */}
           <div className="space-y-5">
+            {/* add form */}
+            <Card className="rounded-[36px] border border-[rgba(36,36,36,0.16)] bg-[#f6f3f1] shadow-none">
+              <CardContent className="p-5 sm:p-6">
+                <h2 className="font-serif text-2xl text-[#242424]">{t.addPrivate}</h2>
+                <p className="mt-1 text-sm leading-relaxed text-[#797776]">{t.addPrivateDesc}</p>
+                <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                  <Field label={t.form.title}><Input value={form.title} onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))} disabled={!canEdit} /></Field>
+                  <Field label={t.form.slug}><Input value={form.slug} onChange={(e) => setForm((f) => ({ ...f, slug: e.target.value }))} placeholder={makeSlug(form.title)} disabled={!canEdit} /></Field>
+                  <Field label={t.form.jlptLevel}>
+                    <select className="h-8 w-full rounded-lg border border-input bg-transparent px-2.5 text-sm" value={form.jlptLevel} onChange={(e) => setForm((f) => ({ ...f, jlptLevel: e.target.value as JLPTLevel }))} disabled={!canEdit}>
+                      {LEVELS.map((l) => <option key={l} value={l}>{l}</option>)}
+                    </select>
+                  </Field>
+                  <Field label={t.form.grammarType}>
+                    <select className="h-8 w-full rounded-lg border border-input bg-transparent px-2.5 text-sm" value={form.grammarType} onChange={(e) => setForm((f) => ({ ...f, grammarType: e.target.value as GrammarCategory }))} disabled={!canEdit}>
+                      {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+                    </select>
+                  </Field>
+                  <Field label={t.form.structure}><Input value={form.structure} onChange={(e) => setForm((f) => ({ ...f, structure: e.target.value }))} disabled={!canEdit} /></Field>
+                  <Field label={t.form.meaningZh}><Input value={form.meaningZh} onChange={(e) => setForm((f) => ({ ...f, meaningZh: e.target.value }))} disabled={!canEdit} /></Field>
+                  <Field label={t.form.meaningEn}><Input value={form.meaningEn} onChange={(e) => setForm((f) => ({ ...f, meaningEn: e.target.value }))} disabled={!canEdit} /></Field>
+                  <Field label={t.form.exampleJp}><Input value={form.exampleJp} onChange={(e) => setForm((f) => ({ ...f, exampleJp: e.target.value }))} disabled={!canEdit} /></Field>
+                  <Field label={t.form.exampleZh}><Input value={form.exampleZh} onChange={(e) => setForm((f) => ({ ...f, exampleZh: e.target.value }))} disabled={!canEdit} /></Field>
+                  <Field label={t.form.exampleEn}><Input value={form.exampleEn} onChange={(e) => setForm((f) => ({ ...f, exampleEn: e.target.value }))} disabled={!canEdit} /></Field>
+                  <div className="sm:col-span-2"><Field label={t.form.explanationZh}><Textarea value={form.explanationZh} onChange={(e) => setForm((f) => ({ ...f, explanationZh: e.target.value }))} disabled={!canEdit} /></Field></div>
+                  <div className="sm:col-span-2"><Field label={t.form.explanationEn}><Textarea value={form.explanationEn} onChange={(e) => setForm((f) => ({ ...f, explanationEn: e.target.value }))} disabled={!canEdit} /></Field></div>
+                </div>
+                <Button className="mt-5 rounded-full font-mono" onClick={handleCreate} disabled={!canEdit || saving || !form.title.trim()}>
+                  <Plus className="mr-1 h-4 w-4" />{saving ? t.saving : t.save}
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* private items list */}
+            {privateEntries.length > 0 && (
+              <Card className="rounded-[36px] border border-[rgba(36,36,36,0.16)] bg-[#f6f3f1] shadow-none">
+                <CardContent className="p-5">
+                  <h2 className="font-serif text-xl text-[#242424]">{t.managePrivate || "我的私人语法"}</h2>
+                  <p className="mt-1 text-sm text-[#797776]">{t.managePrivateDesc || "你在默认语法库之外自行添加的语法条目"}</p>
+                  <div className="mt-4 space-y-2">
+                    {privateEntries.map((entry) => (
+                      <div key={entry.id} className="rounded-[24px] border border-[rgba(36,36,36,0.12)] bg-[#fbfaf8] p-3">
+                        <div className="mb-1 flex flex-wrap items-center gap-1.5">
+                          <span className="font-semibold text-[#242424]">{entry.title}</span>
+                          <LevelBadge level={entry.jlptLevel} />
+                          <GrammarTypeBadge category={entry.grammarType} />
+                          <Badge className="rounded-full font-mono text-[10px] bg-[#cfdaf5] text-[#242424]">{t.privateItems || "私人"}</Badge>
+                        </div>
+                        <p className="line-clamp-1 text-xs text-[#797776]">{entry.structure}</p>
+                        <p className="mt-1 line-clamp-2 text-sm text-[#4e4d4d]">{entry.meaningZh}</p>
+                        <div className="mt-3 flex justify-end gap-2">
+                          <Button variant="outline" size="sm" className="rounded-full font-mono" onClick={() => handleStartEdit(entry)}>
+                            <PencilLine className="mr-1 h-3.5 w-3.5" />{t.edit || "编辑"}
+                          </Button>
+                          <Button variant="outline" size="sm" className="rounded-full font-mono text-[#c47a6a]" onClick={() => handleDeletePrivate(entry)}>
+                            <Trash2 className="mr-1 h-3.5 w-3.5" />{t.delete || "删除"}
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+          </div>
+
+          {/* right: default + hidden */}
+          <div className="space-y-5">
+            {/* default deck management */}
             <Card className="rounded-[36px] border border-[rgba(36,36,36,0.16)] bg-[#f6f3f1] shadow-none">
               <CardContent className="p-5">
                 <div className="mb-4 flex items-start gap-3">
@@ -330,36 +380,92 @@ export default function MyGrammarPage() {
                     <p className="mt-1 text-sm leading-relaxed text-[#797776]">{t.manageDefaultDesc}</p>
                   </div>
                 </div>
-                <div className="mb-4 flex items-center gap-2 rounded-full border border-[rgba(36,36,36,0.16)] px-3">
-                  <Search className="h-4 w-4 text-[#797776]" />
-                  <Input
-                    className="border-0 px-0 shadow-none focus-visible:ring-0"
-                    value={search}
-                    onChange={(event) => setSearch(event.target.value)}
-                    placeholder={t.searchPlaceholder}
-                  />
+
+                {/* search + batch toggle */}
+                <div className="mb-3 flex items-center gap-2">
+                  <div className="flex flex-1 items-center gap-2 rounded-full border border-[rgba(36,36,36,0.16)] px-3">
+                    <Search className="h-4 w-4 text-[#797776]" />
+                    <Input className="border-0 px-0 shadow-none focus-visible:ring-0" value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t.searchPlaceholder} />
+                  </div>
+                  <Button variant={batchMode ? "default" : "outline"} size="sm" className="rounded-full font-mono text-xs" onClick={() => { setBatchMode(!batchMode); clearSelection(); }}>
+                    <CheckSquare className="mr-1 h-3.5 w-3.5" />{batchMode ? (t.deselectAll || "取消") : (t.batchActions || "批量")}
+                  </Button>
                 </div>
+
+                {/* batch action bar */}
+                {batchMode && selectedIds.size > 0 && (
+                  <div className="mb-3 flex items-center gap-2 rounded-full bg-[#242424] px-3 py-1.5 text-xs text-[#f6f3f1]">
+                    <span className="font-mono">{t.batchSelected || "已选"} {selectedIds.size}</span>
+                    <div className="flex-1" />
+                    <Button size="sm" className="h-7 rounded-full font-mono text-[10px] bg-[#f6f3f1] text-[#242424] hover:bg-white" onClick={selectAllDefaults}>{t.selectAll || "全选"}</Button>
+                    <Button size="sm" className="h-7 rounded-full font-mono text-[10px] bg-[#f4b4a8] text-[#7a3a30] hover:bg-[#f0a098]" onClick={batchHide}>{t.batchHide || "批量隐藏"}</Button>
+                    <button onClick={clearSelection}><X className="h-3.5 w-3.5" /></button>
+                  </div>
+                )}
+
                 <div className="space-y-2">
                   {filteredDefaults.map((entry) => (
                     <div key={entry.id} className="rounded-[24px] border border-[rgba(36,36,36,0.12)] bg-[#fbfaf8] p-3">
-                      <div className="mb-1 flex flex-wrap items-center gap-1.5">
-                        <span className="font-semibold text-[#242424]">{entry.title}</span>
-                        <LevelBadge level={entry.jlptLevel} />
-                        <GrammarTypeBadge category={entry.grammarType} />
-                      </div>
-                      <p className="line-clamp-1 text-xs text-[#797776]">{entry.structure}</p>
-                      <p className="mt-1 line-clamp-2 text-sm text-[#4e4d4d]">{entry.meaningZh}</p>
-                      <div className="mt-3 flex justify-end">
-                        <Button variant="outline" size="sm" className="rounded-full font-mono" disabled={!canEdit} onClick={() => handleHide(entry)}>
-                          <EyeOff className="mr-1 h-3.5 w-3.5" />{t.hideFromMine}
-                        </Button>
+                      <div className="flex items-start gap-2">
+                        {batchMode && (
+                          <button onClick={() => toggleSelect(entry.id)} className="mt-1 shrink-0">
+                            {selectedIds.has(entry.id) ? <CheckSquare className="h-4 w-4 text-[#242424]" /> : <Square className="h-4 w-4 text-[#797776]" />}
+                          </button>
+                        )}
+                        <div className="flex-1 min-w-0">
+                          <div className="mb-1 flex flex-wrap items-center gap-1.5">
+                            <span className="font-semibold text-[#242424]">{entry.title}</span>
+                            <LevelBadge level={entry.jlptLevel} />
+                            <GrammarTypeBadge category={entry.grammarType} />
+                          </div>
+                          <p className="line-clamp-1 text-xs text-[#797776]">{entry.structure}</p>
+                          <p className="mt-1 line-clamp-2 text-sm text-[#4e4d4d]">{entry.meaningZh}</p>
+                        </div>
+                        {!batchMode && (
+                          <Button variant="outline" size="sm" className="shrink-0 rounded-full font-mono" disabled={!canEdit} onClick={() => handleHide(entry)}>
+                            <EyeOff className="mr-1 h-3.5 w-3.5" />{t.hideFromMine}
+                          </Button>
+                        )}
                       </div>
                     </div>
                   ))}
+                  {filteredDefaults.length === 0 && (
+                    <p className="py-8 text-center text-sm text-[#797776]">无匹配结果</p>
+                  )}
                 </div>
               </CardContent>
             </Card>
 
+            {/* hidden items — restore */}
+            {libraryMeta.hiddenCount > 0 && (
+              <Card className="rounded-[36px] border border-[rgba(36,36,36,0.16)] bg-[#fff6df] shadow-none">
+                <CardContent className="p-5">
+                  <div className="mb-3 flex items-center gap-2">
+                    <EyeOff className="h-4 w-4 text-[#a08040]" />
+                    <h3 className="font-serif text-lg text-[#242424]">{t.hiddenItems} ({libraryMeta.hiddenCount})</h3>
+                  </div>
+                  <p className="mb-4 text-sm text-[#797776]">{t.restoreHint || "以下是你已隐藏的默认语法条目，可以在下方恢复显示"}</p>
+                  <Button variant="outline" size="sm" className="rounded-full font-mono" onClick={async () => {
+                    if (!user) return;
+                    const hiddenIds = grammarService.getLocalUserLibraryMeta(user.id);
+                    if (hiddenIds.hiddenCount === 0) return;
+                    const rows = await grammarService.getAll(user.id);
+                    const hidden = rows.filter((r: any) => r.is_hidden).map(toGrammarEntry);
+                    for (const h of hidden) {
+                      await grammarService.restoreForUser(user.id, h.baseGrammarKey || h.id);
+                    }
+                    const refreshed = await grammarService.getAll(user.id);
+                    setEntries(refreshed.map(toGrammarEntry));
+                    setLibraryMeta(grammarService.getLocalUserLibraryMeta(user.id));
+                    setMessage(t.restored || "已全部恢复");
+                  }}>
+                    <Undo2 className="mr-1 h-3.5 w-3.5" />{t.restoreAll || "全部恢复"}
+                  </Button>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* schema check */}
             <Card className="rounded-[36px] border border-[rgba(36,36,36,0.16)] bg-[#f6f3f1] shadow-none">
               <CardContent className="p-5">
                 <h2 className="mb-3 font-serif text-xl text-[#242424]">{t.schemaCheck}</h2>
@@ -378,6 +484,38 @@ export default function MyGrammarPage() {
           </div>
         </div>
       </div>
+
+      {/* edit dialog */}
+      <Dialog open={!!editingId} onOpenChange={(open) => { if (!open) setEditingId(null); }}>
+        <DialogContent className="max-h-[85vh] max-w-lg overflow-y-auto rounded-[36px] border border-[rgba(36,36,36,0.16)] bg-[#f6f3f1] shadow-none">
+          <DialogTitle className="font-serif text-xl">{t.editTitle || "编辑私人语法"}</DialogTitle>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            <Field label={t.form.title}><Input value={editForm.title || ""} onChange={(e) => setEditForm((f) => ({ ...f, title: e.target.value }))} /></Field>
+            <Field label={t.form.jlptLevel}>
+              <select className="h-8 w-full rounded-lg border border-input bg-transparent px-2.5 text-sm" value={editForm.jlptLevel || ""} onChange={(e) => setEditForm((f) => ({ ...f, jlptLevel: e.target.value }))}>
+                {LEVELS.map((l) => <option key={l} value={l}>{l}</option>)}
+              </select>
+            </Field>
+            <Field label={t.form.grammarType}>
+              <select className="h-8 w-full rounded-lg border border-input bg-transparent px-2.5 text-sm" value={editForm.grammarType || ""} onChange={(e) => setEditForm((f) => ({ ...f, grammarType: e.target.value }))}>
+                {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+              </select>
+            </Field>
+            <Field label={t.form.structure}><Input value={editForm.structure || ""} onChange={(e) => setEditForm((f) => ({ ...f, structure: e.target.value }))} /></Field>
+            <Field label={t.form.meaningZh}><Input value={editForm.meaningZh || ""} onChange={(e) => setEditForm((f) => ({ ...f, meaningZh: e.target.value }))} /></Field>
+            <Field label={t.form.meaningEn}><Input value={editForm.meaningEn || ""} onChange={(e) => setEditForm((f) => ({ ...f, meaningEn: e.target.value }))} /></Field>
+            <Field label={t.form.exampleJp}><Input value={editForm.exampleJp || ""} onChange={(e) => setEditForm((f) => ({ ...f, exampleJp: e.target.value }))} /></Field>
+            <Field label={t.form.exampleZh}><Input value={editForm.exampleZh || ""} onChange={(e) => setEditForm((f) => ({ ...f, exampleZh: e.target.value }))} /></Field>
+            <Field label={t.form.exampleEn}><Input value={editForm.exampleEn || ""} onChange={(e) => setEditForm((f) => ({ ...f, exampleEn: e.target.value }))} /></Field>
+            <div className="sm:col-span-2"><Field label={t.form.explanationZh}><Textarea value={editForm.explanationZh || ""} onChange={(e) => setEditForm((f) => ({ ...f, explanationZh: e.target.value }))} /></Field></div>
+            <div className="sm:col-span-2"><Field label={t.form.explanationEn}><Textarea value={editForm.explanationEn || ""} onChange={(e) => setEditForm((f) => ({ ...f, explanationEn: e.target.value }))} /></Field></div>
+          </div>
+          <div className="mt-5 flex gap-3">
+            <Button className="rounded-full font-mono" onClick={handleSaveEdit}>{t.save}</Button>
+            <Button variant="outline" className="rounded-full font-mono" onClick={() => setEditingId(null)}>{t.cancel || "取消"}</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </MainLayout>
   );
 }
