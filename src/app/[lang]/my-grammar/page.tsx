@@ -355,6 +355,60 @@ export default function MyGrammarPage() {
               </CardContent>
             </Card>
 
+            {/* hidden items — restore */}
+            {libraryMeta.hiddenCount > 0 && (
+              <Card className="rounded-[36px] border border-[rgba(36,36,36,0.16)] bg-[#fff6df] shadow-none">
+                <CardContent className="p-5">
+                  <div className="mb-3 flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                      <EyeOff className="h-4 w-4 text-[#a08040]" />
+                      <h3 className="font-serif text-lg text-[#242424]">{t.hiddenItems} ({libraryMeta.hiddenCount})</h3>
+                    </div>
+                    <Button variant="outline" size="sm" className="rounded-full font-mono" onClick={async () => {
+                      if (!user) return;
+                      for (const h of hiddenEntries) {
+                        await grammarService.restoreForUser(user.id, h.baseGrammarKey || h.id);
+                      }
+                      const refreshed = await grammarService.getAll(user.id);
+                      setEntries(refreshed.map(toGrammarEntry));
+                      await refreshMeta();
+                      setMessage(t.restored || "已全部恢复");
+                    }}>
+                      <Undo2 className="mr-1 h-3.5 w-3.5" />{t.restoreAll || "全部恢复"}
+                    </Button>
+                  </div>
+                  <p className="mb-4 text-sm text-[#797776]">{t.restoreHint || "以下是你已隐藏的默认语法条目，点击恢复按钮可重新显示"}</p>
+                  <div className="space-y-2">
+                    {hiddenEntries.map((entry) => (
+                      <div key={entry.id} className="rounded-[24px] border border-[rgba(36,36,36,0.12)] bg-white/60 p-3">
+                        <div className="flex items-start gap-2">
+                          <div className="flex-1 min-w-0">
+                            <div className="mb-1 flex flex-wrap items-center gap-1.5">
+                              <span className="font-semibold text-[#242424]">{entry.title}</span>
+                              <LevelBadge level={entry.jlptLevel} />
+                              <GrammarTypeBadge category={entry.grammarType} />
+                            </div>
+                            <p className="line-clamp-1 text-xs text-[#797776]">{entry.structure}</p>
+                            <p className="mt-1 line-clamp-2 text-sm text-[#4e4d4d]">{entry.meaningZh}</p>
+                          </div>
+                          <Button variant="outline" size="sm" className="shrink-0 rounded-full font-mono" onClick={async () => {
+                            if (!user) return;
+                            await grammarService.restoreForUser(user.id, entry.baseGrammarKey || entry.id);
+                            const refreshed = await grammarService.getAll(user.id);
+                            setEntries(refreshed.map(toGrammarEntry));
+                            await refreshMeta();
+                            setMessage(t.restored || "已恢复");
+                          }}>
+                            <Undo2 className="mr-1 h-3.5 w-3.5" />{t.restore || "恢复"}
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
             {/* private items list */}
             {privateEntries.length > 0 && (
               <Card className="rounded-[36px] border border-[rgba(36,36,36,0.16)] bg-[#f6f3f1] shadow-none">
@@ -455,60 +509,6 @@ export default function MyGrammarPage() {
                 </div>
               </CardContent>
             </Card>
-
-            {/* hidden items — restore */}
-            {libraryMeta.hiddenCount > 0 && (
-              <Card className="rounded-[36px] border border-[rgba(36,36,36,0.16)] bg-[#fff6df] shadow-none">
-                <CardContent className="p-5">
-                  <div className="mb-3 flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-2">
-                      <EyeOff className="h-4 w-4 text-[#a08040]" />
-                      <h3 className="font-serif text-lg text-[#242424]">{t.hiddenItems} ({libraryMeta.hiddenCount})</h3>
-                    </div>
-                    <Button variant="outline" size="sm" className="rounded-full font-mono" onClick={async () => {
-                      if (!user) return;
-                      for (const h of hiddenEntries) {
-                        await grammarService.restoreForUser(user.id, h.baseGrammarKey || h.id);
-                      }
-                      const refreshed = await grammarService.getAll(user.id);
-                      setEntries(refreshed.map(toGrammarEntry));
-                      await refreshMeta();
-                      setMessage(t.restored || "已全部恢复");
-                    }}>
-                      <Undo2 className="mr-1 h-3.5 w-3.5" />{t.restoreAll || "全部恢复"}
-                    </Button>
-                  </div>
-                  <p className="mb-4 text-sm text-[#797776]">{t.restoreHint || "以下是你已隐藏的默认语法条目，点击恢复按钮可重新显示"}</p>
-                  <div className="space-y-2">
-                    {hiddenEntries.map((entry) => (
-                      <div key={entry.id} className="rounded-[24px] border border-[rgba(36,36,36,0.12)] bg-white/60 p-3">
-                        <div className="flex items-start gap-2">
-                          <div className="flex-1 min-w-0">
-                            <div className="mb-1 flex flex-wrap items-center gap-1.5">
-                              <span className="font-semibold text-[#242424]">{entry.title}</span>
-                              <LevelBadge level={entry.jlptLevel} />
-                              <GrammarTypeBadge category={entry.grammarType} />
-                            </div>
-                            <p className="line-clamp-1 text-xs text-[#797776]">{entry.structure}</p>
-                            <p className="mt-1 line-clamp-2 text-sm text-[#4e4d4d]">{entry.meaningZh}</p>
-                          </div>
-                          <Button variant="outline" size="sm" className="shrink-0 rounded-full font-mono" onClick={async () => {
-                            if (!user) return;
-                            await grammarService.restoreForUser(user.id, entry.baseGrammarKey || entry.id);
-                            const refreshed = await grammarService.getAll(user.id);
-                            setEntries(refreshed.map(toGrammarEntry));
-                            await refreshMeta();
-                            setMessage(t.restored || "已恢复");
-                          }}>
-                            <Undo2 className="mr-1 h-3.5 w-3.5" />{t.restore || "恢复"}
-                          </Button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            )}
 
             {/* schema check */}
             <Card className="rounded-[36px] border border-[rgba(36,36,36,0.16)] bg-[#f6f3f1] shadow-none">
