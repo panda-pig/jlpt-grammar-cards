@@ -21,6 +21,10 @@ const localGrammarData = grammarData as unknown as GrammarRow[];
 const localGrammarById = new Map(localGrammarData.map((item: any) => [String(item.id), item]));
 const localOrderById = new Map(localGrammarData.map((item: any, index) => [String(item.id), index]));
 
+let cachedRemoteDeck: GrammarDeckRow[] | null = null;
+let cachedRemoteDeckAt = 0;
+const CACHE_TTL_MS = 5 * 60 * 1000;
+
 const OVERRIDABLE_FIELDS = [
   "title",
   "slug",
@@ -122,6 +126,12 @@ function sortDeckRows(rows: GrammarDeckRow[]) {
 }
 
 async function getRemoteDeck(userId: string): Promise<GrammarDeckRow[]> {
+  const now = Date.now();
+  if (cachedRemoteDeck && now - cachedRemoteDeckAt < CACHE_TTL_MS) {
+    const hiddenIds = localGrammarLibraryService.getHiddenIds(userId);
+    return cachedRemoteDeck.filter((row) => !hiddenIds.has(canonicalGrammarId(String(row.source_key ?? row.id))));
+  }
+
   const [grammarResult, overridesResult, userItemsResult] = await Promise.all([
     supabase.from("grammar").select("*"),
     (supabase.from("user_grammar_overrides") as any).select("*").eq("user_id", userId),
@@ -147,7 +157,12 @@ async function getRemoteDeck(userId: string): Promise<GrammarDeckRow[]> {
     .filter(Boolean) as GrammarDeckRow[];
   const userRows = ((userItemsResult.data ?? []) as UserGrammarItem[]).map((row) => normalizeUserItem(row));
 
-  return sortDeckRows([...systemRows, ...userRows]);
+  const fullDeck = sortDeckRows([...systemRows, ...userRows]);
+  cachedRemoteDeck = fullDeck;
+  cachedRemoteDeckAt = Date.now();
+
+  const hiddenIds = localGrammarLibraryService.getHiddenIds(userId);
+  return fullDeck.filter((row) => !hiddenIds.has(canonicalGrammarId(String(row.source_key ?? row.id))));
 }
 
 function fallbackLocalDeck(userId?: string | null) {
@@ -164,7 +179,14 @@ function fallbackLocalDeck(userId?: string | null) {
   return sortDeckRows([...systemRows, ...userRows] as GrammarDeckRow[]);
 }
 
+function clearGrammarCache() {
+  cachedRemoteDeck = null;
+  cachedRemoteDeckAt = 0;
+}
+
 export const grammarService = {
+  _clearCache: clearGrammarCache,
+
   async getUserLibraryStatus() {
     const checks = {
       grammarStableKeys: false,
