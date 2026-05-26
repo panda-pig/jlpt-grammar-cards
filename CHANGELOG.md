@@ -2,6 +2,17 @@
 
 ## 2026-05-26
 
+### 15:10 — 部署到 Vercel 生产环境
+- **GitHub**：推送最新代码到 `panda-pig/jlpt-grammar-cards` main 分支
+- **Vercel 部署**：`vercel --prod` 成功构建并部署
+- **生产地址**：https://jlpt-grammar-cards.vercel.app
+- **环境变量**：NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY 已在 Vercel 配置
+- **验证结果**：
+  - /zh → 200 OK
+  - /zh/login → 200 OK
+  - /zh/grammar → 200 OK（语法数据正常加载）
+  - /zh/dashboard → 200 OK
+
 ### 14:50 — 恢复邮箱验证流程
 - **`useAuth.tsx` 改回标准注册**：移除注册后自动登录逻辑，恢复 Supabase 标准 signUp 流程（发送验证邮件）
 - **登录页更新**：注册成功后显示绿色提示（"注册成功！请查收验证邮件，确认后即可登录。"），并自动切回登录模式
