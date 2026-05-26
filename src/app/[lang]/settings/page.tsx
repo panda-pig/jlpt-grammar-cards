@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Button } from "@/components/ui/button";
@@ -8,6 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/hooks/useAuth";
 import { useDictionary, useLocale } from "@/components/layout/LocaleProvider";
+import { supabaseBrowser } from "@/lib/supabase-browser";
 import { AlertCircle, CheckCircle, User, Lock, RotateCcw, LogOut } from "lucide-react";
 
 export default function SettingsPage() {
@@ -17,11 +18,22 @@ export default function SettingsPage() {
   const { user, signOut, updatePassword, syncStatus } = useAuth();
   const t = dict.settings;
 
+  const [displayName, setDisplayName] = useState("");
+  const [originalDisplayName, setOriginalDisplayName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!user?.id) return;
+    (supabaseBrowser.from("profiles") as any).select("display_name").eq("id", user.id).single().then(({ data }: any) => {
+      const name = data?.display_name ?? "";
+      setDisplayName(name);
+      setOriginalDisplayName(name);
+    });
+  }, [user?.id]);
 
   if (!user) {
     return (
@@ -39,6 +51,27 @@ export default function SettingsPage() {
       </MainLayout>
     );
   }
+
+  const handleUpdateDisplayName = async () => {
+    setError("");
+    setSuccess("");
+    if (!user?.id) return;
+    if (displayName.trim() === originalDisplayName) {
+      setError(t.usernameSame);
+      return;
+    }
+    setLoading(true);
+    try {
+      const { error: updateError } = await (supabaseBrowser.from("profiles") as any).update({ display_name: displayName.trim() }).eq("id", user.id);
+      if (updateError) throw updateError;
+      setOriginalDisplayName(displayName.trim());
+      setSuccess(t.usernameUpdated);
+    } catch (err: any) {
+      setError(err.message || t.updateFailed);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleUpdatePassword = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -90,6 +123,22 @@ export default function SettingsPage() {
                   <p className="font-mono text-sm font-medium text-[#242424]">{t.account}</p>
                   <p className="font-mono text-xs text-[#797776]">{user.email}</p>
                 </div>
+              </div>
+              <div className="space-y-3">
+                <Input
+                  placeholder={t.usernamePlaceholder}
+                  value={displayName}
+                  onChange={(e) => setDisplayName(e.target.value)}
+                  className="rounded-full"
+                />
+                <Button
+                  variant="outline"
+                  className="w-full rounded-full font-mono"
+                  onClick={handleUpdateDisplayName}
+                  disabled={loading}
+                >
+                  {loading ? t.updating : t.updateUsername}
+                </Button>
               </div>
             </CardContent>
           </Card>
