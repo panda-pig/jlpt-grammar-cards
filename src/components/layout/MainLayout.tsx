@@ -16,7 +16,7 @@ export function MainLayout({
     <div className="flex flex-col min-h-screen bg-background">
       {!hideNotification && <NotificationBar />}
       <Header />
-      <main className="flex-1">
+      <main className="flex-1 pb-[72px] xl:pb-0">
         {children}
       </main>
       <MobileBottomNav />

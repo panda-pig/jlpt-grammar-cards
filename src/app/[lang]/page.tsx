@@ -20,6 +20,14 @@ const featureList = [
   { icon: BarChart3, color: "bg-[#d8e8f0] text-[#2a5a7a]" },
 ];
 
+const flowVisuals = [
+  { icon: BarChart3, color: "bg-[#d8e8f0] text-[#2a5a7a]" },
+  { icon: BookOpen, color: "bg-[#cfdaf5] text-[#242424]" },
+  { icon: RotateCcw, color: "bg-[#fff6df] text-[#8a6a20]" },
+  { icon: Brain, color: "bg-[#dcebd8] text-[#315b3b]" },
+  { icon: Bookmark, color: "bg-[#e8e0f5] text-[#5a3a8a]" },
+];
+
 export default function HomePage() {
   const dict = useDictionary();
   const locale = useLocale();
@@ -72,46 +80,47 @@ export default function HomePage() {
 
   return (
     <MainLayout>
-      <div className="bg-background">
+      <div className="overflow-x-hidden bg-background">
         {/* Hero Section */}
         <section className="mx-auto max-w-[1200px] px-6 pt-10 pb-12 md:pt-14 md:pb-16">
-          <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-8 lg:gap-12 items-center">
-            <div className="text-center lg:text-left">
+          <div className="grid min-w-0 gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:gap-12 items-center">
+            <div className="min-w-0 text-center lg:text-left">
               <div className="inline-flex items-center gap-2 rounded-full bg-[rgba(36,36,36,0.06)] px-3 py-1 mb-4">
                 <BookOpen className="h-3 w-3 text-[#242424]" />
                 <span className="font-mono text-[10px] text-[#242424]">{dict.home.totalGrammar} {stats.totalGrammar}</span>
               </div>
-              <h1 className="font-serif text-[clamp(28px,4.5vw,48px)] leading-[1.15] tracking-[-0.02em] text-[#000000]">
-                {dict.home.heroTitle1}{dict.home.heroTitle2}
+              <h1 className="mx-auto max-w-[11em] font-serif text-[clamp(28px,4.5vw,48px)] leading-[1.15] tracking-[-0.02em] text-[#000000] lg:mx-0 lg:max-w-none">
+                <span>{dict.home.heroTitle1}</span>
+                <span className="block sm:inline">{dict.home.heroTitle2}</span>
               </h1>
-              <p className="mt-3 text-sm text-[#797776] leading-relaxed max-w-md mx-auto lg:mx-0">
+              <p className="mx-auto mt-3 max-w-[22rem] text-sm leading-relaxed text-[#797776] lg:mx-0 lg:max-w-md">
                 {dict.home.heroSubtitle}
               </p>
-              <div className="mt-5 flex flex-col sm:flex-row gap-2.5 justify-center lg:justify-start">
+              <div className="mx-auto mt-5 flex w-full max-w-[21rem] flex-col gap-2.5 justify-center sm:max-w-none sm:flex-row lg:mx-0 lg:justify-start">
                 <Link
                   href={`/${locale}/study`}
-                  className="inline-flex items-center justify-center gap-2 bg-[#242424] text-[#f6f3f1] rounded-full px-5 py-2.5 font-mono text-sm hover:bg-black transition-colors"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#242424] px-5 py-2.5 font-mono text-sm text-[#f6f3f1] transition-colors hover:bg-black sm:w-auto"
                 >
                   <Play className="h-4 w-4" />
                   {dict.common.startLearning}
                 </Link>
                 <Link
                   href={`/${locale}/grammar`}
-                  className="inline-flex items-center justify-center gap-2 bg-transparent text-[#242424] border border-[rgba(36,36,36,0.2)] rounded-full px-5 py-2.5 font-mono text-sm hover:bg-[rgba(36,36,36,0.04)] transition-colors"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-[rgba(36,36,36,0.2)] bg-transparent px-5 py-2.5 font-mono text-sm text-[#242424] transition-colors hover:bg-[rgba(36,36,36,0.04)] sm:w-auto"
                 >
                   {dict.common.viewLibrary}
                 </Link>
               </div>
             </div>
 
-            <div className="flex justify-center lg:justify-end">
-              <div className="w-full max-w-[320px] bg-[#cfdaf5] rounded-[24px] p-6 flex flex-col gap-4 shadow-sm">
+            <div className="flex min-w-0 justify-center lg:justify-end">
+              <div className="flex w-full max-w-[calc(100vw-48px)] min-w-0 flex-col gap-4 rounded-[24px] bg-[#cfdaf5] p-6 shadow-sm sm:max-w-[320px]">
                 <div>
                   <div className="flex items-center gap-2 mb-2">
                     <Badge variant="outline" className="rounded-full border-[#242424]/20 text-[#242424] font-mono text-[10px] px-2 py-0.5">
                       N3
                     </Badge>
-                    <span className="font-mono text-[10px] text-[#797776]">Noun-phrase + わけではない</span>
+                    <span className="min-w-0 truncate font-mono text-[10px] text-[#797776]">Noun-phrase + わけではない</span>
                   </div>
                   <h2 className="font-serif text-[clamp(22px,3vw,32px)] leading-[1.1] text-[#000000]">
                     ～わけではない
@@ -165,7 +174,7 @@ export default function HomePage() {
         </section>
 
         {/* Learning Flow */}
-        <section className="mx-auto max-w-[1200px] px-6 py-12 md:py-16">
+        <section className="mx-auto max-w-[1120px] px-6 py-10 md:py-14">
           <div className="text-center mb-8">
             <h2 className="font-serif text-xl md:text-2xl tracking-[-0.02em]">
               {dict.home.flowTitle}
@@ -175,23 +184,36 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-            {dict.home.flowSteps.map((step, i) => (
-              <div key={i} className="relative">
-                <div className="bg-[#fbfaf8] border border-[rgba(36,36,36,0.12)] rounded-[20px] p-4 text-center h-full">
-                  <div className="w-7 h-7 rounded-full bg-[#242424] text-[#f6f3f1] flex items-center justify-center mx-auto mb-2 font-mono text-[10px] font-medium">
-                    {i + 1}
+          <div className="relative overflow-hidden rounded-[28px] border border-[rgba(36,36,36,0.12)] bg-[#fbfaf8] p-3 shadow-[0_16px_40px_rgba(36,36,36,0.04)] md:p-4">
+            <div className="pointer-events-none absolute left-[8%] right-[8%] top-[55px] hidden h-px bg-[rgba(36,36,36,0.12)] md:block" />
+            <div className="grid gap-3 md:grid-cols-5">
+              {dict.home.flowSteps.map((step, i) => {
+                const FlowIcon = flowVisuals[i].icon;
+                return (
+                  <div key={i} className="relative">
+                    <div className="group flex h-full min-h-[150px] flex-col rounded-[22px] border border-[rgba(36,36,36,0.08)] bg-[#f6f3f1] p-4 transition-all hover:-translate-y-0.5 hover:border-[rgba(36,36,36,0.16)] hover:shadow-[0_12px_24px_rgba(36,36,36,0.06)]">
+                      <div className="mb-4 flex items-center justify-between">
+                        <div className={`flex h-9 w-9 items-center justify-center rounded-xl ${flowVisuals[i].color}`}>
+                          <FlowIcon className="h-4 w-4" />
+                        </div>
+                        <span className="flex h-6 min-w-6 items-center justify-center rounded-full bg-[#242424] px-2 font-mono text-[10px] font-medium text-[#f6f3f1]">
+                          {String(i + 1).padStart(2, "0")}
+                        </span>
+                      </div>
+                      <p className="font-mono text-sm font-medium leading-tight text-[#242424]">{step.step}</p>
+                      <p className="mt-2 text-xs leading-relaxed text-[#797776]">{step.desc}</p>
+                    </div>
+                    {i < dict.home.flowSteps.length - 1 && (
+                      <div className="absolute left-full top-[42px] z-10 hidden -translate-x-1/2 md:block">
+                        <div className="flex h-6 w-6 items-center justify-center rounded-full border border-[rgba(36,36,36,0.12)] bg-[#fbfaf8]">
+                          <ArrowRight className="h-3 w-3 text-[#242424]/40" />
+                        </div>
+                      </div>
+                    )}
                   </div>
-                  <p className="font-mono text-xs font-medium text-[#242424] mb-0.5">{step.step}</p>
-                  <p className="text-[10px] text-[#797776] leading-relaxed">{step.desc}</p>
-                </div>
-                {i < dict.home.flowSteps.length - 1 && (
-                  <div className="hidden md:block absolute top-1/2 -right-1.5 transform -translate-y-1/2 z-10">
-                    <ArrowRight className="h-3 w-3 text-[#242424]/30" />
-                  </div>
-                )}
-              </div>
-            ))}
+                );
+              })}
+            </div>
           </div>
 
           <div className="mt-6 text-center">

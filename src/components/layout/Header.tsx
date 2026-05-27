@@ -44,7 +44,7 @@ export function Header() {
           {dict.common.siteName}
         </Link>
 
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden xl:flex items-center gap-8">
           {navItems.map((item) => {
             const active = pathname === item.href || (item.href !== `/${locale}` && pathname.startsWith(item.href));
             return (
@@ -64,7 +64,7 @@ export function Header() {
           })}
         </nav>
 
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden xl:flex items-center gap-3">
           <LocaleSwitcher />
           {user ? (
             <>

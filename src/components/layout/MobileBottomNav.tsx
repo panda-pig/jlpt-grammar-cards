@@ -59,7 +59,7 @@ export function MobileBottomNav() {
   ];
 
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-background border-t border-[rgba(36,36,36,0.16)] h-[72px]">
+    <nav className="xl:hidden fixed bottom-0 left-0 right-0 z-50 bg-background border-t border-[rgba(36,36,36,0.16)] h-[72px]">
       <div className="grid grid-cols-5 h-full">
         {mobileLinks.map((link) => {
           const active = pathname === link.href || (link.href !== `/${locale}` && pathname.startsWith(link.href));
