@@ -419,6 +419,138 @@ export interface Database {
           created_at?: string;
         };
       };
+      payments: {
+        Row: {
+          id: string;
+          user_id: string | null;
+          type: "tip" | "pro_lifetime";
+          provider: "wechat" | "alipay";
+          channel: "native" | "h5" | "jsapi" | "mini_program";
+          amount_cents: number;
+          currency: string;
+          status: "pending" | "paid" | "failed" | "closed" | "refunded";
+          out_trade_no: string;
+          provider_transaction_id: string | null;
+          provider_prepay_id: string | null;
+          qr_code_url: string | null;
+          payer_openid: string | null;
+          nickname: string | null;
+          message: string | null;
+          metadata: Json;
+          paid_at: string | null;
+          expires_at: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id?: string | null;
+          type: "tip" | "pro_lifetime";
+          provider: "wechat" | "alipay";
+          channel: "native" | "h5" | "jsapi" | "mini_program";
+          amount_cents: number;
+          currency?: string;
+          status?: "pending" | "paid" | "failed" | "closed" | "refunded";
+          out_trade_no: string;
+          provider_transaction_id?: string | null;
+          provider_prepay_id?: string | null;
+          qr_code_url?: string | null;
+          payer_openid?: string | null;
+          nickname?: string | null;
+          message?: string | null;
+          metadata?: Json;
+          paid_at?: string | null;
+          expires_at?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string | null;
+          type?: "tip" | "pro_lifetime";
+          provider?: "wechat" | "alipay";
+          channel?: "native" | "h5" | "jsapi" | "mini_program";
+          amount_cents?: number;
+          currency?: string;
+          status?: "pending" | "paid" | "failed" | "closed" | "refunded";
+          out_trade_no?: string;
+          provider_transaction_id?: string | null;
+          provider_prepay_id?: string | null;
+          qr_code_url?: string | null;
+          payer_openid?: string | null;
+          nickname?: string | null;
+          message?: string | null;
+          metadata?: Json;
+          paid_at?: string | null;
+          expires_at?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      user_entitlements: {
+        Row: {
+          id: string;
+          user_id: string;
+          plan: "free" | "pro";
+          source_payment_id: string | null;
+          lifetime: boolean;
+          starts_at: string;
+          expires_at: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          plan: "free" | "pro";
+          source_payment_id?: string | null;
+          lifetime?: boolean;
+          starts_at?: string;
+          expires_at?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          plan?: "free" | "pro";
+          source_payment_id?: string | null;
+          lifetime?: boolean;
+          starts_at?: string;
+          expires_at?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      payment_events: {
+        Row: {
+          id: string;
+          payment_id: string | null;
+          provider: "wechat" | "alipay";
+          event_type: string;
+          event_id: string | null;
+          payload: Json;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          payment_id?: string | null;
+          provider: "wechat" | "alipay";
+          event_type: string;
+          event_id?: string | null;
+          payload?: Json;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          payment_id?: string | null;
+          provider?: "wechat" | "alipay";
+          event_type?: string;
+          event_id?: string | null;
+          payload?: Json;
+          created_at?: string;
+        };
+      };
     };
     Views: {
       [_ in never]: never;

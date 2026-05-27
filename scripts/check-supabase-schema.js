@@ -60,7 +60,13 @@ async function main() {
     sampleKeys: keyData?.[0] ? Object.keys(keyData[0]) : [],
   });
 
-  for (const table of ["user_grammar_overrides", "user_grammar_items"]) {
+  for (const table of [
+    "user_grammar_overrides",
+    "user_grammar_items",
+    "payments",
+    "payment_events",
+    "user_entitlements",
+  ]) {
     const { data, error } = await supabase.from(table).select("id").limit(1);
     checks.push({
       name: table,
