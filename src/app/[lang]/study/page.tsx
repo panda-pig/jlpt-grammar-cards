@@ -61,7 +61,7 @@ export default function StudyPage() {
     if (levelParam && levelOptions.includes(levelParam)) setLevel(levelParam);
   }, [levelOptions]);
 
-  const handleRate = async (rating: ReviewRating) => {
+  const handleRate = useCallback(async (rating: ReviewRating) => {
     if (!currentCard) return;
     await learningService.startLearning(currentCard.id, user?.id);
     await learningService.recordReview(currentCard.id, rating, user?.id);
@@ -72,7 +72,7 @@ export default function StudyPage() {
     } else {
       setCurrentIndex((index) => index + 1);
     }
-  };
+  }, [cards.length, currentCard, currentIndex, user?.id]);
 
   const handleToggleFavorite = async () => {
     if (!currentCard) return;

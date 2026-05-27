@@ -34,9 +34,6 @@ const emptyForm = {
   exampleJp: "", exampleZh: "", exampleEn: "",
 };
 
-const BASE_EDIT_FIELDS = ["title", "jlptLevel", "grammarType", "structure", "meaningZh", "meaningEn", "explanationZh", "explanationEn", "exampleJp", "exampleZh", "exampleEn"] as const;
-type EditField = (typeof BASE_EDIT_FIELDS)[number];
-
 function makeSlug(title: string) {
   return `${title.trim().replace(/\s+/g, "-") || "grammar"}-${Date.now()}`;
 }
@@ -140,7 +137,7 @@ export default function MyGrammarPage() {
       });
       const rows = await grammarService.getAll(user.id);
       setEntries(rows.map(toGrammarEntry));
-      setLibraryMeta(grammarService.getLocalUserLibraryMeta(user.id));
+      await refreshMeta();
       setForm(emptyForm);
       setMessage(t.saved);
     } finally { setSaving(false); }
@@ -154,21 +151,12 @@ export default function MyGrammarPage() {
     setMessage(t.hidden);
   };
 
-  const handleRestore = async (entry: GrammarEntry) => {
-    if (!user) return;
-    await grammarService.restoreForUser(user.id, entry.baseGrammarKey || entry.id);
-    const rows = await grammarService.getAll(user.id);
-    setEntries(rows.map(toGrammarEntry));
-    setLibraryMeta(grammarService.getLocalUserLibraryMeta(user.id));
-    setMessage(t.restored || "已恢复");
-  };
-
   const handleDeletePrivate = async (entry: GrammarEntry) => {
-    if (!user || !confirm("确定要删除这条私人语法吗？此操作不可撤销。")) return;
+    if (!user || !confirm(t.deleteConfirm)) return;
     await grammarService.deleteUserItem(user.id, entry.baseGrammarKey || entry.id);
     setEntries((c) => c.filter((e) => e.id !== entry.id));
-    setLibraryMeta(grammarService.getLocalUserLibraryMeta(user.id));
-    setMessage(t.deleted || "已删除");
+    await refreshMeta();
+    setMessage(t.deleted);
   };
 
   const handleStartEdit = (entry: GrammarEntry) => {
@@ -213,7 +201,8 @@ export default function MyGrammarPage() {
   const toggleSelect = (id: string) => {
     setSelectedIds((prev) => {
       const next = new Set(prev);
-      next.has(id) ? next.delete(id) : next.add(id);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
       return next;
     });
   };
@@ -229,7 +218,7 @@ export default function MyGrammarPage() {
 
   const batchHide = async () => {
     if (!user || selectedIds.size === 0) return;
-    if (!confirm(`确定要隐藏选中的 ${selectedIds.size} 个语法吗？`)) return;
+    if (!confirm(t.batchHideConfirm.replace("{count}", String(selectedIds.size)))) return;
     for (const id of selectedIds) {
       const entry = entries.find((e) => e.id === id);
       if (entry && !entry.isUserCreated) {
@@ -238,9 +227,9 @@ export default function MyGrammarPage() {
     }
     const rows = await grammarService.getAll(user.id);
     setEntries(rows.map(toGrammarEntry));
-    setLibraryMeta(grammarService.getLocalUserLibraryMeta(user.id));
+    await refreshMeta();
     clearSelection();
-    setMessage(`已隐藏 ${selectedIds.size} 个语法`);
+    setMessage(t.batchHidden.replace("{count}", String(selectedIds.size)));
   };
 
   // ---- render ----
@@ -372,12 +361,12 @@ export default function MyGrammarPage() {
                       const refreshed = await grammarService.getAll(user.id);
                       setEntries(refreshed.map(toGrammarEntry));
                       await refreshMeta();
-                      setMessage(t.restored || "已全部恢复");
+                      setMessage(t.allRestored);
                     }}>
-                      <Undo2 className="mr-1 h-3.5 w-3.5" />{t.restoreAll || "全部恢复"}
+                      <Undo2 className="mr-1 h-3.5 w-3.5" />{t.restoreAll}
                     </Button>
                   </div>
-                  <p className="mb-4 text-sm text-[#797776]">{t.restoreHint || "以下是你已隐藏的默认语法条目，点击恢复按钮可重新显示"}</p>
+                  <p className="mb-4 text-sm text-[#797776]">{t.restoreHint}</p>
                   <div className="space-y-2">
                     {hiddenEntries.map((entry) => (
                       <div key={entry.id} className="rounded-[24px] border border-[rgba(36,36,36,0.12)] bg-white/60 p-3">
@@ -397,9 +386,9 @@ export default function MyGrammarPage() {
                             const refreshed = await grammarService.getAll(user.id);
                             setEntries(refreshed.map(toGrammarEntry));
                             await refreshMeta();
-                            setMessage(t.restored || "已恢复");
+                            setMessage(t.restored);
                           }}>
-                            <Undo2 className="mr-1 h-3.5 w-3.5" />{t.restore || "恢复"}
+                            <Undo2 className="mr-1 h-3.5 w-3.5" />{t.restore}
                           </Button>
                         </div>
                       </div>
@@ -413,8 +402,8 @@ export default function MyGrammarPage() {
             {privateEntries.length > 0 && (
               <Card className="rounded-[36px] border border-[rgba(36,36,36,0.16)] bg-[#f6f3f1] shadow-none">
                 <CardContent className="p-5">
-                  <h2 className="font-serif text-xl text-[#242424]">{t.managePrivate || "我的私人语法"}</h2>
-                  <p className="mt-1 text-sm text-[#797776]">{t.managePrivateDesc || "你在默认语法库之外自行添加的语法条目"}</p>
+                  <h2 className="font-serif text-xl text-[#242424]">{t.managePrivate}</h2>
+                  <p className="mt-1 text-sm text-[#797776]">{t.managePrivateDesc}</p>
                   <div className="mt-4 space-y-2">
                     {privateEntries.map((entry) => (
                       <div key={entry.id} className="rounded-[24px] border border-[rgba(36,36,36,0.12)] bg-[#fbfaf8] p-3">
@@ -422,16 +411,16 @@ export default function MyGrammarPage() {
                           <span className="font-semibold text-[#242424]">{entry.title}</span>
                           <LevelBadge level={entry.jlptLevel} />
                           <GrammarTypeBadge category={entry.grammarType} />
-                          <Badge className="rounded-full font-mono text-[10px] bg-[#cfdaf5] text-[#242424]">{t.privateItems || "私人"}</Badge>
+                          <Badge className="rounded-full font-mono text-[10px] bg-[#cfdaf5] text-[#242424]">{t.privateBadge}</Badge>
                         </div>
                         <p className="line-clamp-1 text-xs text-[#797776]">{entry.structure}</p>
                         <p className="mt-1 line-clamp-2 text-sm text-[#4e4d4d]">{entry.meaningZh}</p>
                         <div className="mt-3 flex justify-end gap-2">
                           <Button variant="outline" size="sm" className="rounded-full font-mono" onClick={() => handleStartEdit(entry)}>
-                            <PencilLine className="mr-1 h-3.5 w-3.5" />{t.edit || "编辑"}
+                            <PencilLine className="mr-1 h-3.5 w-3.5" />{t.edit}
                           </Button>
                           <Button variant="outline" size="sm" className="rounded-full font-mono text-[#c47a6a]" onClick={() => handleDeletePrivate(entry)}>
-                            <Trash2 className="mr-1 h-3.5 w-3.5" />{t.delete || "删除"}
+                            <Trash2 className="mr-1 h-3.5 w-3.5" />{t.delete}
                           </Button>
                         </div>
                       </div>
@@ -462,17 +451,17 @@ export default function MyGrammarPage() {
                     <Input className="border-0 px-0 shadow-none focus-visible:ring-0" value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t.searchPlaceholder} />
                   </div>
                   <Button variant={batchMode ? "default" : "outline"} size="sm" className="rounded-full font-mono text-xs" onClick={() => { setBatchMode(!batchMode); clearSelection(); }}>
-                    <CheckSquare className="mr-1 h-3.5 w-3.5" />{batchMode ? (t.deselectAll || "取消") : (t.batchActions || "批量")}
+                    <CheckSquare className="mr-1 h-3.5 w-3.5" />{batchMode ? t.deselectAll : t.batchActions}
                   </Button>
                 </div>
 
                 {/* batch action bar */}
                 {batchMode && selectedIds.size > 0 && (
                   <div className="mb-3 flex items-center gap-2 rounded-full bg-[#242424] px-3 py-1.5 text-xs text-[#f6f3f1]">
-                    <span className="font-mono">{t.batchSelected || "已选"} {selectedIds.size}</span>
+                    <span className="font-mono">{t.batchSelected} {selectedIds.size}</span>
                     <div className="flex-1" />
-                    <Button size="sm" className="h-7 rounded-full font-mono text-[10px] bg-[#f6f3f1] text-[#242424] hover:bg-white" onClick={selectAllDefaults}>{t.selectAll || "全选"}</Button>
-                    <Button size="sm" className="h-7 rounded-full font-mono text-[10px] bg-[#f4b4a8] text-[#7a3a30] hover:bg-[#f0a098]" onClick={batchHide}>{t.batchHide || "批量隐藏"}</Button>
+                    <Button size="sm" className="h-7 rounded-full font-mono text-[10px] bg-[#f6f3f1] text-[#242424] hover:bg-white" onClick={selectAllDefaults}>{t.selectAll}</Button>
+                    <Button size="sm" className="h-7 rounded-full font-mono text-[10px] bg-[#f4b4a8] text-[#7a3a30] hover:bg-[#f0a098]" onClick={batchHide}>{t.batchHide}</Button>
                     <button onClick={clearSelection}><X className="h-3.5 w-3.5" /></button>
                   </div>
                 )}
@@ -504,7 +493,7 @@ export default function MyGrammarPage() {
                     </div>
                   ))}
                   {filteredDefaults.length === 0 && (
-                    <p className="py-8 text-center text-sm text-[#797776]">无匹配结果</p>
+                    <p className="py-8 text-center text-sm text-[#797776]">{t.noMatches}</p>
                   )}
                 </div>
               </CardContent>
@@ -533,7 +522,7 @@ export default function MyGrammarPage() {
       {/* edit dialog */}
       <Dialog open={!!editingId} onOpenChange={(open) => { if (!open) setEditingId(null); }}>
         <DialogContent className="max-h-[85vh] max-w-lg overflow-y-auto rounded-[36px] border border-[rgba(36,36,36,0.16)] bg-[#f6f3f1] shadow-none">
-          <DialogTitle className="font-serif text-xl">{t.editTitle || "编辑私人语法"}</DialogTitle>
+          <DialogTitle className="font-serif text-xl">{t.editTitle}</DialogTitle>
           <div className="mt-4 grid gap-3 sm:grid-cols-2">
             <Field label={t.form.title}><Input value={editForm.title || ""} onChange={(e) => setEditForm((f) => ({ ...f, title: e.target.value }))} /></Field>
             <Field label={t.form.jlptLevel}>
@@ -557,7 +546,7 @@ export default function MyGrammarPage() {
           </div>
           <div className="mt-5 flex gap-3">
             <Button className="rounded-full font-mono" onClick={handleSaveEdit}>{t.save}</Button>
-            <Button variant="outline" className="rounded-full font-mono" onClick={() => setEditingId(null)}>{t.cancel || "取消"}</Button>
+            <Button variant="outline" className="rounded-full font-mono" onClick={() => setEditingId(null)}>{t.cancel}</Button>
           </div>
         </DialogContent>
       </Dialog>

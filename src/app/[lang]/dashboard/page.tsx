@@ -34,6 +34,22 @@ const LEVEL_BAR_COLORS: Record<string, string> = {
   N1: "bg-[#8a4a4a]",
 };
 
+const RATING_KEYS = ["忘记了", "有点模糊", "记住了", "很简单"] as const;
+
+function normalizeRatingKey(rating: string | null | undefined): (typeof RATING_KEYS)[number] | null {
+  const aliases: Record<string, (typeof RATING_KEYS)[number]> = {
+    Again: "忘记了",
+    Hard: "有点模糊",
+    Good: "记住了",
+    Easy: "很简单",
+    忘记了: "忘记了",
+    有点模糊: "有点模糊",
+    记住了: "记住了",
+    很简单: "很简单",
+  };
+  return rating ? aliases[rating] ?? null : null;
+}
+
 function useDashboardData() {
   const { user } = useAuth();
   const [stats, setStats] = useState({ todayDue: 0, todayNew: 0, todayCompleted: 0, streakDays: 0 });
@@ -67,12 +83,10 @@ function useDashboardData() {
   }, [loadStats]);
 
   const ratingDistribution = useMemo(() => {
-    const dist = { Again: 0, Hard: 0, Good: 0, Easy: 0 };
+    const dist = Object.fromEntries(RATING_KEYS.map((key) => [key, 0])) as Record<(typeof RATING_KEYS)[number], number>;
     for (const row of progressMap.values()) {
-      if (row.last_rating) {
-        const key = row.last_rating as keyof typeof dist;
-        if (key in dist) dist[key]++;
-      }
+      const key = normalizeRatingKey(row.last_rating);
+      if (key) dist[key]++;
     }
     return dist;
   }, [progressMap]);
@@ -197,11 +211,11 @@ export default function DashboardPage() {
   }
 
   const totalReviews = Object.values(ratingDistribution).reduce((a, b) => a + b, 0);
-  const ratingColors: Record<string, string> = {
-    Again: "#c47a6a",
-    Hard: "#e8c178",
-    Good: "#6a8a5a",
-    Easy: "#4a8a6a",
+  const ratingColors: Record<(typeof RATING_KEYS)[number], string> = {
+    忘记了: "#c47a6a",
+    有点模糊: "#e8c178",
+    记住了: "#6a8a5a",
+    很简单: "#4a8a6a",
   };
 
   return (
@@ -268,7 +282,9 @@ export default function DashboardPage() {
                           <div className={`h-full ${LEVEL_BAR_COLORS[lp.level]} rounded-full transition-all duration-700`} style={{ width: `${pct}%` }} />
                         </div>
                         {masteredPct > 0 && (
-                          <p className="font-mono text-[10px] text-[#797776] mt-1">已掌握 {lp.mastered} ({masteredPct}%)</p>
+                          <p className="font-mono text-[10px] text-[#797776] mt-1">
+                            {dict.dashboard.masteredLabel.replace("{count}", String(lp.mastered)).replace("{percent}", String(masteredPct))}
+                          </p>
                         )}
                       </div>
                     );
@@ -280,7 +296,7 @@ export default function DashboardPage() {
             <Card className="rounded-[28px] border border-[rgba(36,36,36,0.12)] bg-[#fbfaf8] shadow-none">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="font-mono text-sm font-medium text-[#242424]">近7天学习趋势</h2>
+                  <h2 className="font-mono text-sm font-medium text-[#242424]">{dict.dashboard.weeklyTrend}</h2>
                   <Calendar className="h-4 w-4 text-[#797776]" />
                 </div>
                 <BarChart data={weeklyTrend} />
@@ -291,16 +307,16 @@ export default function DashboardPage() {
           <div className="space-y-4">
             <Card className="rounded-[28px] border border-[rgba(36,36,36,0.12)] bg-[#fbfaf8] shadow-none">
               <CardContent className="p-5 flex flex-col items-center">
-                <h2 className="font-mono text-sm font-medium text-[#242424] mb-4 self-start">掌握率</h2>
-                <DonutChart percentage={masteryRate} label="已学习 → 已掌握" color="#6a8a5a" />
+                <h2 className="font-mono text-sm font-medium text-[#242424] mb-4 self-start">{dict.dashboard.masteryRate}</h2>
+                <DonutChart percentage={masteryRate} label={dict.dashboard.masteryRateLabel} color="#6a8a5a" />
                 <div className="grid grid-cols-2 gap-2 w-full mt-4">
                   <div className="text-center rounded-2xl bg-[#dcebd8]/40 px-3 py-2">
                     <p className="font-mono text-lg font-medium text-[#315b3b]">{overall.totalMastered}</p>
-                    <p className="font-mono text-[10px] text-[#797776]">已掌握</p>
+                    <p className="font-mono text-[10px] text-[#797776]">{dict.dashboard.masteredShort}</p>
                   </div>
                   <div className="text-center rounded-2xl bg-[#cfdaf5]/40 px-3 py-2">
                     <p className="font-mono text-lg font-medium text-[#2a3a5a]">{overall.totalLearned - overall.totalMastered}</p>
-                    <p className="font-mono text-[10px] text-[#797776]">学习中</p>
+                    <p className="font-mono text-[10px] text-[#797776]">{dict.dashboard.learningShort}</p>
                   </div>
                 </div>
               </CardContent>
@@ -308,21 +324,22 @@ export default function DashboardPage() {
 
             <Card className="rounded-[28px] border border-[rgba(36,36,36,0.12)] bg-[#fbfaf8] shadow-none">
               <CardContent className="p-5">
-                <h2 className="font-mono text-sm font-medium text-[#242424] mb-4">评分分布</h2>
+                <h2 className="font-mono text-sm font-medium text-[#242424] mb-4">{dict.dashboard.ratingDistribution}</h2>
                 {totalReviews === 0 ? (
-                  <p className="text-sm text-[#797776] text-center py-4">暂无评分数据</p>
+                  <p className="text-sm text-[#797776] text-center py-4">{dict.dashboard.noRatingData}</p>
                 ) : (
                   <div className="space-y-3">
                     {Object.entries(ratingDistribution).map(([key, count]) => {
+                      const ratingKey = key as (typeof RATING_KEYS)[number];
                       const pct = Math.round((count / totalReviews) * 100);
                       return (
                         <div key={key}>
                           <div className="flex items-center justify-between mb-1">
-                            <span className="font-mono text-xs text-[#242424]">{ratingLabelForLocale(key, locale)}</span>
+                            <span className="font-mono text-xs text-[#242424]">{ratingLabelForLocale(ratingKey, locale)}</span>
                             <span className="font-mono text-xs text-[#797776]">{count} ({pct}%)</span>
                           </div>
                           <div className="h-2 bg-[rgba(36,36,36,0.08)] rounded-full overflow-hidden">
-                            <div className="h-full rounded-full transition-all duration-500" style={{ width: `${pct}%`, backgroundColor: ratingColors[key] }} />
+                            <div className="h-full rounded-full transition-all duration-500" style={{ width: `${pct}%`, backgroundColor: ratingColors[ratingKey] }} />
                           </div>
                         </div>
                       );
@@ -347,7 +364,8 @@ export default function DashboardPage() {
                   const level = grammar.jlptLevel ?? grammar.jlpt_level;
                   const rating = review.rating ?? review.last_rating;
                   const reviewedAt = review.reviewedAt ?? review.reviewed_at;
-                  const ratingColor = ratingColors[rating] ?? "#797776";
+                  const normalizedRating = normalizeRatingKey(rating);
+                  const ratingColor = normalizedRating ? ratingColors[normalizedRating] : "#797776";
                   return (
                     <div key={`${review.grammar_id}-${reviewedAt}-${index}`} className="flex items-center gap-3 py-2 border-b border-[rgba(36,36,36,0.06)] last:border-0">
                       <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: ratingColor }} />

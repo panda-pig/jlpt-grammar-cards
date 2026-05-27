@@ -21,8 +21,7 @@ const localGrammarData = grammarData as unknown as GrammarRow[];
 const localGrammarById = new Map(localGrammarData.map((item: any) => [String(item.id), item]));
 const localOrderById = new Map(localGrammarData.map((item: any, index) => [String(item.id), index]));
 
-let cachedRemoteDeck: GrammarDeckRow[] | null = null;
-let cachedRemoteDeckAt = 0;
+const cachedRemoteDeckByUser = new Map<string, { deck: GrammarDeckRow[]; cachedAt: number }>();
 const CACHE_TTL_MS = 5 * 60 * 1000;
 
 const OVERRIDABLE_FIELDS = [
@@ -127,9 +126,10 @@ function sortDeckRows(rows: GrammarDeckRow[]) {
 
 async function getRemoteDeck(userId: string): Promise<GrammarDeckRow[]> {
   const now = Date.now();
-  if (cachedRemoteDeck && now - cachedRemoteDeckAt < CACHE_TTL_MS) {
+  const cache = cachedRemoteDeckByUser.get(userId);
+  if (cache && now - cache.cachedAt < CACHE_TTL_MS) {
     const hiddenIds = localGrammarLibraryService.getHiddenIds(userId);
-    return cachedRemoteDeck.filter((row) => !hiddenIds.has(canonicalGrammarId(String(row.source_key ?? row.id))));
+    return cache.deck.filter((row) => !hiddenIds.has(canonicalGrammarId(String(row.source_key ?? row.id))));
   }
 
   const [grammarResult, overridesResult, userItemsResult] = await Promise.all([
@@ -158,8 +158,7 @@ async function getRemoteDeck(userId: string): Promise<GrammarDeckRow[]> {
   const userRows = ((userItemsResult.data ?? []) as UserGrammarItem[]).map((row) => normalizeUserItem(row));
 
   const fullDeck = sortDeckRows([...systemRows, ...userRows]);
-  cachedRemoteDeck = fullDeck;
-  cachedRemoteDeckAt = Date.now();
+  cachedRemoteDeckByUser.set(userId, { deck: fullDeck, cachedAt: Date.now() });
 
   const hiddenIds = localGrammarLibraryService.getHiddenIds(userId);
   return fullDeck.filter((row) => !hiddenIds.has(canonicalGrammarId(String(row.source_key ?? row.id))));
@@ -180,8 +179,7 @@ function fallbackLocalDeck(userId?: string | null) {
 }
 
 function clearGrammarCache() {
-  cachedRemoteDeck = null;
-  cachedRemoteDeckAt = 0;
+  cachedRemoteDeckByUser.clear();
 }
 
 export const grammarService = {
@@ -267,18 +265,21 @@ export const grammarService = {
   async create(entry: GrammarInsert | Record<string, unknown>) {
     const { data, error } = await (supabase.from("grammar") as any).insert(entry).select().single();
     if (error) throw error;
+    clearGrammarCache();
     return data as GrammarRow;
   },
 
   async update(id: string, entry: GrammarUpdate | Record<string, unknown>) {
     const { data, error } = await (supabase.from("grammar") as any).update(entry).eq("id", id).select().single();
     if (error) throw error;
+    clearGrammarCache();
     return data as GrammarRow;
   },
 
   async delete(id: string) {
     const { error } = await supabase.from("grammar").delete().eq("id", id);
     if (error) throw error;
+    clearGrammarCache();
   },
 
   async upsertUserOverride(
@@ -299,6 +300,7 @@ export const grammarService = {
       .select()
       .single();
     if (error) throw error;
+    clearGrammarCache();
     return data as UserGrammarOverride;
   },
 
@@ -331,6 +333,7 @@ export const grammarService = {
         .select()
         .single();
       if (error) throw error;
+      clearGrammarCache();
       return normalizeUserItem(data as UserGrammarItem);
     } catch {
       return localGrammarLibraryService.createItem(userId, entry) as unknown as GrammarDeckRow;
@@ -351,7 +354,7 @@ export const grammarService = {
     const { data: grammarRows } = await supabase.from("grammar").select("*");
     if (!grammarRows) return [];
     return (grammarRows as GrammarRow[])
-      .filter((row) => hiddenKeys.has(sourceKeyFor(row)))
+      .filter((row) => hiddenKeys.has(canonicalGrammarId(sourceKeyFor(row))))
       .map((row) => ({ ...row, source_key: sourceKeyFor(row), is_user_created: false }));
   },
 
@@ -372,6 +375,7 @@ export const grammarService = {
       .select()
       .single();
     if (error) throw error;
+    clearGrammarCache();
     return normalizeUserItem(data as UserGrammarItem);
   },
 
@@ -382,5 +386,6 @@ export const grammarService = {
       .eq("user_id", userId)
       .eq("source_key", sourceKey);
     if (error) throw error;
+    clearGrammarCache();
   },
 };

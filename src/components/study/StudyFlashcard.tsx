@@ -97,7 +97,7 @@ export function StudyFlashcard({
                 )}
               >
                 <Heart className={cn("h-4 w-4", isFavorite && "fill-current")} />
-                {isFavorite ? "已收藏" : "收藏"}
+                {isFavorite ? dict.grammar.favorited : dict.grammar.favorite}
               </button>
             </div>
             <div>

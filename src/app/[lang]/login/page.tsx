@@ -25,7 +25,7 @@ function getAuthErrorMessage(err: any, dict: any): string {
   if (code === "weak_password" || msg.includes("weak")) {
     return dict.login.weakPassword;
   }
-  return msg || "Login failed";
+  return msg || dict.login.loginFailed;
 }
 
 export default function LoginPage() {
@@ -51,7 +51,7 @@ export default function LoginPage() {
         router.push(`/${locale}/dashboard`);
       } else {
         await signUp(email, password);
-        setInfo("注册成功！请查收验证邮件，确认后即可登录。");
+        setInfo(dict.login.registerSuccess);
         setMode("login");
       }
     } catch (err: any) {
@@ -154,4 +154,3 @@ export default function LoginPage() {
     </MainLayout>
   );
 }
-
