@@ -26,6 +26,7 @@
     "review": "Review",
     "favorites": "Favorites",
     "myGrammar": "My Library",
+    "pro": "Pro",
     "dashboard": "Analytics"
   },
   "mobileNav": {
@@ -74,7 +75,9 @@
     "totalGrammar": "Total Grammar",
     "levelProgress": "N1–N5 Progress",
     "ctaText": "Start truly remembering JLPT grammar today.",
-    "ctaButton": "Start Learning Now"
+    "ctaButton": "Start Learning Now",
+    "ctaPro": "Unlock Pro",
+    "ctaSupport": "Support the Author"
   },
   "grammar": {
     "title": "Grammar Library",
@@ -289,7 +292,55 @@
     "synced": "Synced {count} progress items and {history} review records",
     "syncFailed": "Sync failed, local progress remains in browser",
     "noSync": "No sync record yet",
-    "loginRequired": "Please log in to view account settings"
+    "loginRequired": "Please log in to view account settings",
+    "planTitle": "Current Plan",
+    "planFree": "Free local and cloud study",
+    "planPro": "Pro Lifetime",
+    "planFreeDesc": "Core study, favorites, SM-2 review, and progress sync are available.",
+    "planProDesc": "Lifetime unlock for upcoming advanced features while supporting the project.",
+    "upgradePro": "View Pro",
+    "supportAuthor": "Support Author"
+  },
+  "commerce": {
+    "proTitle": "JLPT Grammar Deck Pro",
+    "proSubtitle": "A one-time purchase that supports a more complete grammar library, personal library management, and advanced review features.",
+    "price": "¥5.9",
+    "lifetime": "Lifetime",
+    "currentPlan": "Current Plan",
+    "freePlan": "Free",
+    "proPlan": "Pro",
+    "activePro": "You already have Pro Lifetime",
+    "loginRequired": "Log in before purchasing Pro so the entitlement can be attached to your account.",
+    "loginToBuy": "Log in to Buy",
+    "buyPro": "Buy Pro Lifetime",
+    "creatingOrder": "Creating order...",
+    "supportTitle": "Support the Author",
+    "supportSubtitle": "If this grammar flashcard system helps you, you can support future updates with a small tip.",
+    "supportAnonymous": "Tips are available without logging in.",
+    "amount": "Amount",
+    "customAmount": "Custom amount",
+    "nickname": "Nickname (optional)",
+    "message": "Message (optional)",
+    "tipButton": "Tip with WeChat Pay",
+    "paymentUnavailableTitle": "WeChat Pay is being connected",
+    "paymentUnavailableDesc": "The payment and entitlement foundation is live. Real checkout will open after merchant credentials, certificates, and webhook verification are configured.",
+    "orderCreated": "Order Created",
+    "orderPendingDesc": "Scan with WeChat to complete payment. Your entitlement will update automatically after payment.",
+    "qrCodeUrl": "QR code URL",
+    "paymentFailed": "Could not create the order. Please try again later.",
+    "featuresTitle": "Pro will unlock first",
+    "proFeatures": [
+      { "title": "Enhanced Personal Library", "desc": "More flexible tools to add, hide, edit, and organize your own grammar items." },
+      { "title": "Advanced Review Analytics", "desc": "Track forgetting curves, rating distributions, and weak grammar points." },
+      { "title": "Continuous Content Expansion", "desc": "Priority support for richer N1/N2/N3 entries with Chinese and English explanations." },
+      { "title": "Mini Program Sync", "desc": "After the WeChat Mini Program launches, Pro entitlement will sync with your account." }
+    ],
+    "freeFeatures": [
+      "Default JLPT grammar library",
+      "Anki-style study and review",
+      "Favorites and basic analytics",
+      "Local trial and login sync"
+    ]
   },
   "login": {
     "title": "Login",

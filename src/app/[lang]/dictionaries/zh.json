@@ -26,6 +26,7 @@
     "review": "今日复习",
     "favorites": "收藏夹",
     "myGrammar": "我的语法库",
+    "pro": "Pro",
     "dashboard": "学习数据"
   },
   "mobileNav": {
@@ -74,7 +75,9 @@
     "totalGrammar": "语法总数",
     "levelProgress": "N1～N5 学习进度",
     "ctaText": "从今天开始，用卡片方式真正记住日语语法。",
-    "ctaButton": "立即开始学习"
+    "ctaButton": "立即开始学习",
+    "ctaPro": "解锁 Pro",
+    "ctaSupport": "打赏作者"
   },
   "grammar": {
     "title": "语法库",
@@ -289,7 +292,55 @@
     "synced": "已同步 {count} 条进度，{history} 条复习记录",
     "syncFailed": "同步失败，本地进度仍保留在浏览器",
     "noSync": "暂无同步记录",
-    "loginRequired": "请先登录后查看账户设置"
+    "loginRequired": "请先登录后查看账户设置",
+    "planTitle": "当前方案",
+    "planFree": "Free 本地与云端学习",
+    "planPro": "Pro 永久版",
+    "planFreeDesc": "基础学习、收藏、SM-2 复习和进度同步已可使用。",
+    "planProDesc": "永久解锁后续高级能力，支持项目继续维护。",
+    "upgradePro": "查看 Pro",
+    "supportAuthor": "打赏作者"
+  },
+  "commerce": {
+    "proTitle": "JLPT Grammar Deck Pro",
+    "proSubtitle": "一次性买断，支持后续更完整的语法库、个人管理和高级复习能力。",
+    "price": "¥5.9",
+    "lifetime": "永久版",
+    "currentPlan": "当前权益",
+    "freePlan": "Free",
+    "proPlan": "Pro",
+    "activePro": "你已拥有 Pro 永久版",
+    "loginRequired": "购买 Pro 需要先登录，用于把权益绑定到你的账号。",
+    "loginToBuy": "登录后购买",
+    "buyPro": "购买 Pro 永久版",
+    "creatingOrder": "正在创建订单...",
+    "supportTitle": "打赏作者",
+    "supportSubtitle": "如果这个语法卡片系统帮到了你，可以用一杯咖啡的价格支持继续更新。",
+    "supportAnonymous": "未登录也可以打赏。",
+    "amount": "金额",
+    "customAmount": "自定义金额",
+    "nickname": "昵称（可选）",
+    "message": "留言（可选）",
+    "tipButton": "微信扫码打赏",
+    "paymentUnavailableTitle": "微信支付正在接入中",
+    "paymentUnavailableDesc": "支付与权益基础设施已经上线，商户号、证书和回调验签配置完成后即可开放真实付款。",
+    "orderCreated": "订单已创建",
+    "orderPendingDesc": "请使用微信扫码完成支付。支付完成后权益会自动更新。",
+    "qrCodeUrl": "二维码链接",
+    "paymentFailed": "订单创建失败，请稍后重试。",
+    "featuresTitle": "Pro 将优先解锁",
+    "proFeatures": [
+      { "title": "个人语法库增强", "desc": "更灵活地新增、隐藏、修改和整理自己的语法条目。" },
+      { "title": "高级复习统计", "desc": "查看遗忘曲线、评分分布和薄弱语法追踪。" },
+      { "title": "内容持续扩充", "desc": "优先支持更完整的 N1/N2/N3 内容与中英解释。" },
+      { "title": "小程序权益同步", "desc": "后续微信小程序上线后，Pro 权益随账号同步。" }
+    ],
+    "freeFeatures": [
+      "默认 JLPT 语法库",
+      "Anki 风格学习与复习",
+      "收藏与基础统计",
+      "本地体验和登录同步"
+    ]
   },
   "login": {
     "title": "登录",

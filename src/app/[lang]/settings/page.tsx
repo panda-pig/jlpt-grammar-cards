@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { useAuth } from "@/hooks/useAuth";
 import { useDictionary, useLocale } from "@/components/layout/LocaleProvider";
 import { supabaseBrowser } from "@/lib/supabase-browser";
-import { AlertCircle, CheckCircle, User, Lock, RotateCcw, LogOut } from "lucide-react";
+import { AlertCircle, CheckCircle, Crown, Heart, User, Lock, RotateCcw, LogOut } from "lucide-react";
 
 export default function SettingsPage() {
   const router = useRouter();
@@ -25,6 +25,7 @@ export default function SettingsPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isPro, setIsPro] = useState(false);
 
   useEffect(() => {
     if (!user?.id) return;
@@ -33,6 +34,14 @@ export default function SettingsPage() {
       setDisplayName(name);
       setOriginalDisplayName(name);
     });
+  }, [user?.id]);
+
+  useEffect(() => {
+    if (!user?.id) return;
+    fetch("/api/me/entitlements", { cache: "no-store" })
+      .then((response) => response.json())
+      .then((data) => setIsPro(Boolean(data?.isPro)))
+      .catch(() => setIsPro(false));
   }, [user?.id]);
 
   if (!user) {
@@ -151,6 +160,39 @@ export default function SettingsPage() {
                 <p className="font-mono text-sm font-medium text-[#242424]">{t.syncStatus}</p>
               </div>
               <p className="text-sm text-[#797776]">{syncText}</p>
+            </CardContent>
+          </Card>
+
+          <Card className="rounded-[28px] border border-[rgba(36,36,36,0.12)] bg-[#fbfaf8] shadow-none">
+            <CardContent className="p-5">
+              <div className="flex items-start justify-between gap-4">
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Crown className="h-4 w-4 text-[#8a6a20]" />
+                    <p className="font-mono text-sm font-medium text-[#242424]">{t.planTitle}</p>
+                  </div>
+                  <p className="font-mono text-sm text-[#242424]">{isPro ? t.planPro : t.planFree}</p>
+                  <p className="mt-1 text-xs leading-relaxed text-[#797776]">{isPro ? t.planProDesc : t.planFreeDesc}</p>
+                </div>
+              </div>
+              <div className="mt-4 grid grid-cols-2 gap-2">
+                <Button
+                  variant="outline"
+                  className="rounded-full font-mono"
+                  onClick={() => router.push(`/${locale}/pro`)}
+                >
+                  <Crown className="mr-1 h-4 w-4" />
+                  {t.upgradePro}
+                </Button>
+                <Button
+                  variant="outline"
+                  className="rounded-full font-mono"
+                  onClick={() => router.push(`/${locale}/support`)}
+                >
+                  <Heart className="mr-1 h-4 w-4" />
+                  {t.supportAuthor}
+                </Button>
+              </div>
             </CardContent>
           </Card>
 

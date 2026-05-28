@@ -9,7 +9,7 @@ import { useDictionary, useLocale } from "@/components/layout/LocaleProvider";
 import { useAuth } from "@/hooks/useAuth";
 import { grammarService } from "@/services/grammarService";
 import { learningService } from "@/services/learningService";
-import { BookOpen, RotateCcw, Brain, AlertTriangle, Bookmark, BarChart3, ArrowRight, Play } from "lucide-react";
+import { BookOpen, RotateCcw, Brain, AlertTriangle, Bookmark, BarChart3, ArrowRight, Play, Crown, Heart } from "lucide-react";
 
 const featureList = [
   { icon: BookOpen, color: "bg-[#cfdaf5] text-[#242424]" },
@@ -285,15 +285,12 @@ export default function HomePage() {
 
         {/* CTA Section */}
         <section className="mx-auto max-w-[1200px] px-6 pb-12 md:pb-16">
-          <div className="relative bg-[#242424] rounded-[24px] p-8 md:p-12 text-center overflow-hidden">
-            <div className="absolute top-0 right-0 w-48 h-48 bg-[#cfdaf5] rounded-full opacity-10 -translate-y-1/2 translate-x-1/2" />
-            <div className="absolute bottom-0 left-0 w-32 h-32 bg-[#fff6df] rounded-full opacity-10 translate-y-1/2 -translate-x-1/2" />
-
-            <div className="relative z-10 max-w-lg mx-auto">
-              <h2 className="font-serif text-lg md:text-2xl text-[#f6f3f1] tracking-[-0.02em] leading-tight">
+          <div className="bg-[#242424] rounded-[24px] p-8 md:p-12 text-center overflow-hidden">
+            <div className="max-w-xl mx-auto">
+              <h2 className="mx-auto max-w-[15rem] font-serif text-lg leading-tight text-[#f6f3f1] tracking-[-0.02em] sm:max-w-none md:text-2xl">
                 {dict.home.ctaText}
               </h2>
-              <div className="mt-6 flex flex-col sm:flex-row gap-2.5 justify-center">
+              <div className="mt-6 grid gap-2.5 sm:grid-cols-3">
                 <Link
                   href={`/${locale}/study`}
                   className="inline-flex items-center justify-center gap-2 bg-[#f6f3f1] text-[#242424] rounded-full px-6 py-2.5 font-mono text-sm hover:bg-white transition-colors"
@@ -302,10 +299,18 @@ export default function HomePage() {
                   {dict.home.ctaButton}
                 </Link>
                 <Link
-                  href={`/${locale}/grammar`}
+                  href={`/${locale}/pro`}
                   className="inline-flex items-center justify-center gap-2 bg-transparent text-[#f6f3f1] border border-[#f6f3f1]/30 rounded-full px-6 py-2.5 font-mono text-sm hover:bg-[#f6f3f1]/10 transition-colors"
                 >
-                  {dict.common.viewLibrary}
+                  <Crown className="h-4 w-4" />
+                  {dict.home.ctaPro}
+                </Link>
+                <Link
+                  href={`/${locale}/support`}
+                  className="inline-flex items-center justify-center gap-2 bg-transparent text-[#f6f3f1] border border-[#f6f3f1]/30 rounded-full px-6 py-2.5 font-mono text-sm hover:bg-[#f6f3f1]/10 transition-colors"
+                >
+                  <Heart className="h-4 w-4" />
+                  {dict.home.ctaSupport}
                 </Link>
               </div>
             </div>

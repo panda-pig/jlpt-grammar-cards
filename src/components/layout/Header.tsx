@@ -34,6 +34,7 @@ export function Header() {
     { href: `/${locale}/review`, label: dict.nav.review },
     { href: `/${locale}/favorites`, label: dict.nav.favorites },
     { href: `/${locale}/my-grammar`, label: dict.nav.myGrammar },
+    { href: `/${locale}/pro`, label: dict.nav.pro },
     { href: `/${locale}/dashboard`, label: dict.nav.dashboard },
   ];
 
@@ -44,7 +45,7 @@ export function Header() {
           {dict.common.siteName}
         </Link>
 
-        <nav className="hidden xl:flex items-center gap-8">
+        <nav className="hidden xl:flex items-center gap-6">
           {navItems.map((item) => {
             const active = pathname === item.href || (item.href !== `/${locale}` && pathname.startsWith(item.href));
             return (
