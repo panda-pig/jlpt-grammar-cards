@@ -14,7 +14,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useDictionary, useLocale } from "@/components/layout/LocaleProvider";
 import type { UnifiedProgressRow } from "@/services/learningService";
 import {
-  BookOpen, Flame, Heart, RotateCcw, TrendingUp, WifiOff,
+  BookOpen, CheckCircle, Crown, Flame, Heart, RotateCcw, TrendingUp, WifiOff,
   Target, Zap, Award, Calendar
 } from "lucide-react";
 
@@ -200,6 +200,14 @@ export default function DashboardPage() {
     ratingDistribution, weeklyTrend, masteryRate, loading,
   } = useDashboardData();
 
+  const [entitlement, setEntitlement] = useState<{ isPro: boolean; startsAt: string | null } | null>(null);
+  useEffect(() => {
+    fetch("/api/me/entitlements", { cache: "no-store" })
+      .then((r) => r.json())
+      .then((d) => setEntitlement({ isPro: Boolean(d.isPro), startsAt: d.startsAt ?? null }))
+      .catch(() => setEntitlement({ isPro: false, startsAt: null }));
+  }, []);
+
   if (loading) {
     return (
       <MainLayout>
@@ -249,11 +257,54 @@ export default function DashboardPage() {
           <KpiCard icon={Flame} value={stats.streakDays} label={dict.dashboard.streak} color="bg-[#f4b4a8]/40" textColor="text-[#7a3a30]" />
         </div>
 
-        <div className="grid grid-cols-3 gap-3 mb-6">
+        <div className="grid grid-cols-3 gap-3 mb-4">
           <KpiCard icon={Target} value={overall.totalLearned} label={dict.dashboard.learnedGrammar} color="bg-[#f6f3f1] border border-[rgba(36,36,36,0.12)]" />
           <KpiCard icon={Award} value={overall.totalMastered} label={dict.dashboard.masteredGrammar} color="bg-[#f6f3f1] border border-[rgba(36,36,36,0.12)]" />
           <KpiCard icon={Heart} value={overall.totalFavorites} label={dict.dashboard.favoritesCount} color="bg-[#f6f3f1] border border-[rgba(36,36,36,0.12)]" />
         </div>
+
+        {/* Pro status banner */}
+        {entitlement !== null && (
+          <div className="mb-6">
+            {entitlement.isPro ? (
+              <div className="flex items-center justify-between gap-4 rounded-[24px] bg-[#dcebd8] px-5 py-3.5">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#315b3b]/10">
+                    <Crown className="h-4 w-4 text-[#315b3b]" />
+                  </div>
+                  <div>
+                    <p className="font-mono text-sm font-medium text-[#315b3b]">{dict.dashboard.proStatusTitle}</p>
+                    {entitlement.startsAt && (
+                      <p className="font-mono text-xs text-[#315b3b]/70">
+                        {dict.dashboard.proActivatedOn.replace("{date}", formatDate(entitlement.startsAt, locale))}
+                      </p>
+                    )}
+                  </div>
+                </div>
+                <div className="flex shrink-0 items-center gap-1.5 rounded-full bg-[#315b3b]/10 px-3 py-1">
+                  <CheckCircle className="h-3.5 w-3.5 text-[#315b3b]" />
+                  <span className="font-mono text-[11px] text-[#315b3b]">{dict.dashboard.proActivatedBadge}</span>
+                </div>
+              </div>
+            ) : (
+              <Link
+                href={`/${locale}/pro`}
+                className="flex items-center justify-between gap-4 rounded-[24px] border border-[rgba(36,36,36,0.12)] bg-[#fbfaf8] px-5 py-3.5 transition-colors hover:bg-[rgba(36,36,36,0.04)]"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[rgba(36,36,36,0.06)]">
+                    <Crown className="h-4 w-4 text-[#242424]" />
+                  </div>
+                  <div>
+                    <p className="font-mono text-sm font-medium text-[#242424]">{dict.dashboard.upgradeProTitle}</p>
+                    <p className="font-mono text-xs text-[#797776]">{dict.dashboard.upgradeProNote}</p>
+                  </div>
+                </div>
+                <span className="shrink-0 font-mono text-sm text-[#797776]">→</span>
+              </Link>
+            )}
+          </div>
+        )}
 
         <div className="grid lg:grid-cols-[1fr_280px] gap-4 mb-6">
           <div className="space-y-4">

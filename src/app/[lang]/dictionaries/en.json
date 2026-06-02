@@ -114,7 +114,9 @@
     "favorited": "Saved",
     "unfavorite": "Remove",
     "emptyContent": "—",
-    "quiz": "Mini Quiz"
+    "quiz": "Mini Quiz",
+    "tipTitle": "Support the Author",
+    "tipDesc": "If this grammar card helped you, consider buying the author a coffee."
   },
   "study": {
     "startTitle": "Start Studying",
@@ -227,6 +229,10 @@
     "restoreHint": "Default grammar items you've hidden — click to restore",
     "privateBadge": "Private",
     "noMatches": "No matches",
+    "freeLimit": "Free: max {limit}",
+    "proUnlimited": "Pro: unlimited",
+    "freeLimitReached": "Free plan limit reached ({limit} entries). Upgrade Pro to add more.",
+    "upgradeForMore": "Upgrade Pro",
     "form": {
       "title": "Grammar",
       "slug": "Slug",
@@ -269,7 +275,12 @@
     "continueStudy": "Continue",
     "todayReviewBtn": "Review",
     "viewFavorites": "Saved",
-    "viewGrammar": "Library"
+    "viewGrammar": "Library",
+    "proStatusTitle": "Pro Lifetime",
+    "proActivatedOn": "Activated {date}",
+    "proActivatedBadge": "Active",
+    "upgradeProTitle": "Unlock Pro Lifetime",
+    "upgradeProNote": "One-time ¥5.9 — supports a richer grammar library and advanced features"
   },
   "settings": {
     "title": "Account Settings",
@@ -299,7 +310,9 @@
     "planFreeDesc": "Core study, favorites, SM-2 review, and progress sync are available.",
     "planProDesc": "Lifetime unlock for upcoming advanced features while supporting the project.",
     "upgradePro": "View Pro",
-    "supportAuthor": "Support Author"
+    "supportAuthor": "Support Author",
+    "proActivatedOn": "Activated {date}",
+    "proLifetime": "Lifetime license — no renewal needed"
   },
   "commerce": {
     "proTitle": "JLPT Grammar Deck Pro",
@@ -325,8 +338,14 @@
     "paymentUnavailableTitle": "WeChat Pay is being connected",
     "paymentUnavailableDesc": "The payment and entitlement foundation is live. Real checkout will open after merchant credentials, certificates, and webhook verification are configured.",
     "orderCreated": "Order Created",
-    "orderPendingDesc": "Scan with WeChat to complete payment. Your entitlement will update automatically after payment.",
+    "orderPendingDesc": "Scan the QR code below with WeChat to complete payment. Your entitlement will update automatically.",
+    "orderPaid": "Payment confirmed! Pro Lifetime is now active.",
+    "orderExpired": "Order has expired. Please click buy again.",
+    "orderPolling": "Waiting for payment confirmation...",
+    "scanWithWechat": "Scan with WeChat",
     "qrCodeUrl": "QR code URL",
+    "copyLink": "Copy link",
+    "copied": "Copied",
     "paymentFailed": "Could not create the order. Please try again later.",
     "featuresTitle": "Pro will unlock first",
     "proFeatures": [

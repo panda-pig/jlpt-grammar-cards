@@ -21,7 +21,7 @@ import { getSameTitleEntries, grammarVariantLabel } from "@/lib/grammar-relation
 import { useAuth } from "@/hooks/useAuth";
 import { useDictionary, useLocale } from "@/components/layout/LocaleProvider";
 import type { GrammarEntry, StudyStatus } from "@/lib/types";
-import { ArrowLeft, BookOpen, WifiOff } from "lucide-react";
+import { ArrowLeft, BookOpen, Coffee, WifiOff } from "lucide-react";
 
 function DetailSection({
   title,
@@ -277,6 +277,23 @@ export default function GrammarDetailPage() {
                 </CardContent>
               </Card>
             )}
+
+            {/* Tip card */}
+            <Card className="bg-[#fbfaf8] border border-[rgba(36,36,36,0.12)] rounded-[40px] ring-0 shadow-none">
+              <CardContent className="p-5 space-y-3">
+                <div className="flex items-center gap-2">
+                  <Coffee className="h-4 w-4 text-[#8a6a20]" />
+                  <h3 className="font-mono text-sm font-medium text-[#242424]">{dict.grammar.tipTitle}</h3>
+                </div>
+                <p className="text-xs leading-relaxed text-[#797776]">{dict.grammar.tipDesc}</p>
+                <Link
+                  href={`/${locale}/support`}
+                  className={buttonVariants({ variant: "outline", size: "sm", className: "w-full rounded-full font-mono text-xs" })}
+                >
+                  {dict.settings.supportAuthor}
+                </Link>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>

@@ -14,7 +14,43 @@ function errorResponse(code: string, message: string, status: number) {
   return NextResponse.json({ error: { code, message } }, { status });
 }
 
+// ---------------------------------------------------------------------------
+// In-memory IP rate limiter — 5 orders per 10 minutes per IP.
+// Works across concurrent requests within the same Fluid Compute container.
+// A distributed store (e.g. Redis) would be needed for multi-instance coverage,
+// but this provides meaningful protection for the single-tenant use case.
+// ---------------------------------------------------------------------------
+const orderRateLimiter = new Map<string, number[]>();
+const RATE_LIMIT_MAX = 5;
+const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const hits = (orderRateLimiter.get(ip) ?? []).filter((t) => now - t < RATE_LIMIT_WINDOW_MS);
+  if (hits.length >= RATE_LIMIT_MAX) return false;
+  hits.push(now);
+  orderRateLimiter.set(ip, hits);
+  return true;
+}
+
+function getClientIp(request: Request): string {
+  return (
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+    request.headers.get("x-real-ip") ??
+    "unknown"
+  );
+}
+
 export async function POST(request: Request) {
+  const ip = getClientIp(request);
+  if (!checkRateLimit(ip)) {
+    return errorResponse(
+      "rate_limit_exceeded",
+      "Too many order requests. Please try again in a few minutes.",
+      429
+    );
+  }
+
   try {
     const body = await request.json().catch(() => ({}));
     const supabase = await createClient();

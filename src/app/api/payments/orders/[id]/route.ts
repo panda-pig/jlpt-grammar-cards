@@ -14,6 +14,9 @@ export async function GET(
     const { id } = await params;
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
+    // TODO: For anonymous tip orders (user_id IS NULL), any caller with the UUID can
+    // query status — this is intentional because the UUID acts as a secret token.
+    // Document this assumption if the access model ever changes.
     const payment = await paymentService.getPaymentStatus(id, user?.id ?? null);
 
     if (!payment) {

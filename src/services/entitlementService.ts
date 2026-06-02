@@ -6,6 +6,7 @@ export interface EntitlementState {
   plan: UserPlan;
   isPro: boolean;
   lifetime: boolean;
+  startsAt: string | null;
   expiresAt: string | null;
   sourcePaymentId: string | null;
 }
@@ -14,6 +15,7 @@ const FREE_ENTITLEMENT: EntitlementState = {
   plan: "free",
   isPro: false,
   lifetime: false,
+  startsAt: null,
   expiresAt: null,
   sourcePaymentId: null,
 };
@@ -33,6 +35,7 @@ function toEntitlementState(row: any | null): EntitlementState {
     plan: "pro",
     isPro: true,
     lifetime: Boolean(row.lifetime),
+    startsAt: row.starts_at ?? null,
     expiresAt: row.expires_at ?? null,
     sourcePaymentId: row.source_payment_id ?? null,
   };

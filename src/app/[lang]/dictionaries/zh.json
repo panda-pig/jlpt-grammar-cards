@@ -114,7 +114,9 @@
     "favorited": "已收藏",
     "unfavorite": "取消收藏",
     "emptyContent": "—",
-    "quiz": "小练习"
+    "quiz": "小练习",
+    "tipTitle": "支持作者",
+    "tipDesc": "如果这个语法卡片对你有帮助，欢迎请作者喝杯咖啡。"
   },
   "study": {
     "startTitle": "开始学习",
@@ -227,6 +229,10 @@
     "restoreHint": "以下是你已隐藏的默认语法条目，可以恢复显示",
     "privateBadge": "私人",
     "noMatches": "无匹配结果",
+    "freeLimit": "Free 限 {limit} 条",
+    "proUnlimited": "Pro 无限制",
+    "freeLimitReached": "已达 Free 版上限（{limit} 条）。升级 Pro 可无限新增。",
+    "upgradeForMore": "升级 Pro",
     "form": {
       "title": "语法",
       "slug": "Slug",
@@ -269,7 +275,12 @@
     "continueStudy": "继续学习",
     "todayReviewBtn": "今日复习",
     "viewFavorites": "查看收藏",
-    "viewGrammar": "进入语法库"
+    "viewGrammar": "进入语法库",
+    "proStatusTitle": "Pro 永久版",
+    "proActivatedOn": "激活于 {date}",
+    "proActivatedBadge": "已激活",
+    "upgradeProTitle": "解锁 Pro 永久版",
+    "upgradeProNote": "一次性 ¥5.9，支持更完整的语法库和高级功能"
   },
   "settings": {
     "title": "账户设置",
@@ -299,7 +310,9 @@
     "planFreeDesc": "基础学习、收藏、SM-2 复习和进度同步已可使用。",
     "planProDesc": "永久解锁后续高级能力，支持项目继续维护。",
     "upgradePro": "查看 Pro",
-    "supportAuthor": "打赏作者"
+    "supportAuthor": "打赏作者",
+    "proActivatedOn": "激活于 {date}",
+    "proLifetime": "永久授权，无需续费"
   },
   "commerce": {
     "proTitle": "JLPT Grammar Deck Pro",
@@ -325,8 +338,14 @@
     "paymentUnavailableTitle": "微信支付正在接入中",
     "paymentUnavailableDesc": "支付与权益基础设施已经上线，商户号、证书和回调验签配置完成后即可开放真实付款。",
     "orderCreated": "订单已创建",
-    "orderPendingDesc": "请使用微信扫码完成支付。支付完成后权益会自动更新。",
+    "orderPendingDesc": "请使用微信扫描下方二维码完成支付。支付完成后权益自动更新。",
+    "orderPaid": "支付成功！Pro 永久版已激活。",
+    "orderExpired": "订单已过期，请重新点击购买。",
+    "orderPolling": "等待支付确认中...",
+    "scanWithWechat": "微信扫一扫",
     "qrCodeUrl": "二维码链接",
+    "copyLink": "复制链接",
+    "copied": "已复制",
     "paymentFailed": "订单创建失败，请稍后重试。",
     "featuresTitle": "Pro 将优先解锁",
     "proFeatures": [
