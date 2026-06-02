@@ -340,6 +340,7 @@
     "orderCreated": "Order Created",
     "orderPendingDesc": "Scan the QR code below with WeChat to complete payment. Your entitlement will update automatically.",
     "orderPaid": "Payment confirmed! Pro Lifetime is now active.",
+    "orderPaidTip": "Payment confirmed. Thank you for your support!",
     "orderExpired": "Order has expired. Please click buy again.",
     "orderPolling": "Waiting for payment confirmation...",
     "scanWithWechat": "Scan with WeChat",

@@ -2,20 +2,14 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { AlertCircle, Heart, MessageCircle, QrCode, Sparkles } from "lucide-react";
+import { AlertCircle, Heart, MessageCircle, Sparkles } from "lucide-react";
 import { MainLayout } from "@/components/layout/MainLayout";
+import { PaymentQrPanel, type ClientPaymentOrder } from "@/components/shared/PaymentQrPanel";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useDictionary, useLocale } from "@/components/layout/LocaleProvider";
+import { usePaymentOrderPolling } from "@/hooks/usePaymentOrderPolling";
 import { cn } from "@/lib/utils";
-
-type PaymentOrder = {
-  paymentId: string;
-  outTradeNo: string;
-  amountCents: number;
-  status: string;
-  qrCodeUrl: string | null;
-};
 
 const presetAmounts = [300, 590, 1200, 3000];
 
@@ -28,13 +22,15 @@ export default function SupportPage() {
   const [customYuan, setCustomYuan] = useState("");
   const [nickname, setNickname] = useState("");
   const [message, setMessage] = useState("");
-  const [order, setOrder] = useState<PaymentOrder | null>(null);
+  const [order, setOrder] = useState<ClientPaymentOrder | null>(null);
   const [status, setStatus] = useState<"idle" | "creating" | "unavailable" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
 
   const selectedAmount = customYuan
     ? Math.max(100, Math.round(Number(customYuan) * 100))
     : amountCents;
+
+  usePaymentOrderPolling({ order, setOrder });
 
   const handleCreateTip = async () => {
     setOrder(null);
@@ -175,7 +171,7 @@ export default function SupportPage() {
             <Button
               className="mt-5 h-11 w-full rounded-full bg-[#242424] font-mono text-[#f6f3f1] hover:bg-black"
               onClick={handleCreateTip}
-              disabled={status === "creating"}
+              disabled={status === "creating" || order?.status === "pending"}
             >
               {status === "creating" ? t.creatingOrder : t.tipButton}
             </Button>
@@ -196,20 +192,7 @@ export default function SupportPage() {
               </div>
             )}
 
-            {order && (
-              <div className="mt-4 rounded-[18px] border border-[#6a8a5a]/25 bg-[#dcebd8] p-4 text-sm text-[#315b3b]">
-                <div className="flex items-center gap-2 font-mono font-medium">
-                  <QrCode className="h-4 w-4" />
-                  {t.orderCreated}
-                </div>
-                <p className="mt-2 text-xs leading-relaxed">{t.orderPendingDesc}</p>
-                {order.qrCodeUrl && (
-                  <p className="mt-3 break-all rounded-xl bg-white/50 p-3 font-mono text-[11px]">
-                    {t.qrCodeUrl}: {order.qrCodeUrl}
-                  </p>
-                )}
-              </div>
-            )}
+            <PaymentQrPanel order={order} text={{ ...t, orderPaid: t.orderPaidTip }} className="mt-4" />
           </div>
         </section>
       </div>

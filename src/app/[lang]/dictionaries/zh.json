@@ -340,6 +340,7 @@
     "orderCreated": "订单已创建",
     "orderPendingDesc": "请使用微信扫描下方二维码完成支付。支付完成后权益自动更新。",
     "orderPaid": "支付成功！Pro 永久版已激活。",
+    "orderPaidTip": "支付成功，感谢你的支持！",
     "orderExpired": "订单已过期，请重新点击购买。",
     "orderPolling": "等待支付确认中...",
     "scanWithWechat": "微信扫一扫",

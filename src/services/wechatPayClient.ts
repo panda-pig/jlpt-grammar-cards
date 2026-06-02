@@ -24,6 +24,7 @@ export interface WeChatNativeOrderResult {
 
 export interface WeChatNotifyResult {
   eventType: string;
+  notificationId: string | null;
   outTradeNo: string;
   transactionId: string;
   openid: string | null;
@@ -32,6 +33,7 @@ export interface WeChatNotifyResult {
 
 // Module-level cert cache — stays warm across requests in the same Fluid Compute container
 const platformCertCache = new Map<string, { pem: string; expiresAt: number }>();
+const NOTIFY_MAX_CLOCK_SKEW_SECONDS = 5 * 60;
 
 function getEnv(name: string): string | undefined {
   return process.env[name]?.trim();
@@ -164,6 +166,10 @@ function verifyRsaSignature(certPem: string, message: string, signatureBase64: s
   }
 }
 
+function allowDecryptOnlyNotifyFallback(): boolean {
+  return process.env.NODE_ENV !== "production" && getEnv("WECHAT_PAY_ALLOW_DECRYPT_ONLY_NOTIFY") === "true";
+}
+
 export const wechatPayClient = {
   isConfigured(): boolean {
     return Boolean(
@@ -240,18 +246,30 @@ export const wechatPayClient = {
     const signatureB64 = request.headers.get("Wechatpay-Signature") ?? "";
     const serialNo = request.headers.get("Wechatpay-Serial") ?? "";
 
-    // Attempt RSA signature verification using WeChat's platform certificate.
-    // If the cert cannot be fetched we still proceed — AES-GCM is authenticated
-    // encryption, so a successfully decrypted payload is still tamper-evident.
+    if (!timestamp || !nonce || !signatureB64 || !serialNo) {
+      throw new Error("WeChat Pay notification: missing signature headers.");
+    }
+
+    const timestampSeconds = Number(timestamp);
+    const nowSeconds = Math.floor(Date.now() / 1000);
+    if (!Number.isFinite(timestampSeconds) || Math.abs(nowSeconds - timestampSeconds) > NOTIFY_MAX_CLOCK_SKEW_SECONDS) {
+      throw new Error("WeChat Pay notification: timestamp is outside the allowed window.");
+    }
+
+    // Verify RSA signature using WeChat's platform certificate. Production
+    // callbacks fail closed if the platform certificate cannot be fetched.
     const certPem = await fetchPlatformCert(serialNo);
     if (certPem) {
       const message = `${timestamp}\n${nonce}\n${body}\n`;
       if (!verifyRsaSignature(certPem, message, signatureB64)) {
         throw new Error("WeChat Pay notification: RSA signature verification failed.");
       }
+    } else if (!allowDecryptOnlyNotifyFallback()) {
+      throw new Error("WeChat Pay notification: platform certificate unavailable.");
     }
 
     const payload = JSON.parse(body) as {
+      id?: string;
       event_type: string;
       resource: {
         associated_data: string;
@@ -272,6 +290,7 @@ export const wechatPayClient = {
 
     return {
       eventType: payload.event_type,
+      notificationId: payload.id ?? null,
       outTradeNo: transaction.out_trade_no,
       transactionId: transaction.transaction_id,
       openid: transaction.payer?.openid ?? null,

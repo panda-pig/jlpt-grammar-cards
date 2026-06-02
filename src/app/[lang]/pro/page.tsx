@@ -1,14 +1,15 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { AlertCircle, CheckCircle, Copy, Crown, Library, LineChart, Loader2, QrCode, ShieldCheck, Smartphone } from "lucide-react";
-import { QRCodeSVG } from "qrcode.react";
+import { AlertCircle, CheckCircle, Crown, Library, LineChart, ShieldCheck, Smartphone } from "lucide-react";
 import { MainLayout } from "@/components/layout/MainLayout";
+import { PaymentQrPanel, type ClientPaymentOrder } from "@/components/shared/PaymentQrPanel";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { useDictionary, useLocale } from "@/components/layout/LocaleProvider";
+import { usePaymentOrderPolling } from "@/hooks/usePaymentOrderPolling";
 
 type EntitlementResponse = {
   authenticated: boolean;
@@ -16,18 +17,6 @@ type EntitlementResponse = {
   isPro: boolean;
   lifetime: boolean;
 };
-
-type PaymentOrder = {
-  paymentId: string;
-  outTradeNo: string;
-  amountCents: number;
-  status: string;
-  qrCodeUrl: string | null;
-  expiresAt: string | null;
-};
-
-const POLL_INTERVAL_MS = 3000;
-const POLL_MAX_ATTEMPTS = 200; // ~10 minutes
 
 const featureIcons = [Library, LineChart, ShieldCheck, Smartphone];
 
@@ -39,11 +28,9 @@ export default function ProPage() {
   const t = dict.commerce;
 
   const [entitlement, setEntitlement] = useState<EntitlementResponse | null>(null);
-  const [order, setOrder] = useState<PaymentOrder | null>(null);
+  const [order, setOrder] = useState<ClientPaymentOrder | null>(null);
   const [status, setStatus] = useState<"idle" | "creating" | "unavailable" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
-  const [copied, setCopied] = useState(false);
-  const pollAttemptsRef = useRef(0);
 
   useEffect(() => {
     fetch("/api/me/entitlements", { cache: "no-store" })
@@ -52,42 +39,13 @@ export default function ProPage() {
       .catch(() => setEntitlement(null));
   }, []);
 
-  // Poll order status after creation until paid or expired
-  useEffect(() => {
-    if (!order || order.status !== "pending") return;
+  const refreshEntitlement = useCallback(async () => {
+    const entRes = await fetch("/api/me/entitlements", { cache: "no-store" });
+    const entData = await entRes.json();
+    setEntitlement(entData);
+  }, []);
 
-    pollAttemptsRef.current = 0;
-
-    const timer = setInterval(async () => {
-      pollAttemptsRef.current += 1;
-      if (pollAttemptsRef.current > POLL_MAX_ATTEMPTS) {
-        clearInterval(timer);
-        return;
-      }
-
-      try {
-        const res = await fetch(`/api/payments/orders/${order.paymentId}`, { cache: "no-store" });
-        if (!res.ok) return;
-        const data: PaymentOrder = await res.json();
-
-        setOrder((prev) => (prev?.paymentId === data.paymentId ? data : prev));
-
-        if (data.status === "paid") {
-          clearInterval(timer);
-          // Refresh entitlement to show activated state
-          const entRes = await fetch("/api/me/entitlements", { cache: "no-store" });
-          const entData = await entRes.json();
-          setEntitlement(entData);
-        } else if (data.expiresAt && new Date(data.expiresAt) < new Date()) {
-          clearInterval(timer);
-        }
-      } catch {
-        // Ignore transient network errors; polling continues
-      }
-    }, POLL_INTERVAL_MS);
-
-    return () => clearInterval(timer);
-  }, [order?.paymentId, order?.status]);
+  usePaymentOrderPolling({ order, setOrder, onPaid: refreshEntitlement });
 
   const handleBuyPro = async () => {
     setOrder(null);
@@ -125,20 +83,7 @@ export default function ProPage() {
     }
   };
 
-  const handleCopyQrLink = async () => {
-    if (!order?.qrCodeUrl) return;
-    try {
-      await navigator.clipboard.writeText(order.qrCodeUrl);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      // clipboard not available
-    }
-  };
-
   const isPro = Boolean(entitlement?.isPro);
-  const orderPaid = order?.status === "paid";
-  const orderExpired = Boolean(order?.expiresAt && new Date(order.expiresAt) < new Date() && order.status === "pending");
 
   return (
     <MainLayout>
@@ -241,58 +186,7 @@ export default function ProPage() {
               </div>
             )}
 
-            {/* QR code panel — shown while pending */}
-            {order && order.status === "pending" && !orderExpired && order.qrCodeUrl && (
-              <div className="mt-4 rounded-[18px] border border-[rgba(36,36,36,0.10)] bg-white p-4">
-                <div className="flex items-center gap-2 font-mono text-sm font-medium text-[#242424]">
-                  <QrCode className="h-4 w-4" />
-                  {t.orderCreated}
-                </div>
-                <p className="mt-1.5 text-xs leading-relaxed text-[#797776]">{t.orderPendingDesc}</p>
-
-                <div className="mt-4 flex flex-col items-center gap-3">
-                  <div className="rounded-xl border border-[rgba(36,36,36,0.08)] bg-white p-3">
-                    <QRCodeSVG
-                      value={order.qrCodeUrl}
-                      size={192}
-                      bgColor="#ffffff"
-                      fgColor="#242424"
-                      level="M"
-                    />
-                  </div>
-                  <p className="font-mono text-[11px] text-[#797776]">{t.scanWithWechat}</p>
-                </div>
-
-                <button
-                  onClick={handleCopyQrLink}
-                  className="mt-3 flex w-full items-center justify-center gap-1.5 rounded-[14px] border border-[rgba(36,36,36,0.12)] py-2 font-mono text-[11px] text-[#797776] transition-colors hover:bg-[rgba(36,36,36,0.04)]"
-                >
-                  <Copy className="h-3 w-3" />
-                  {copied ? t.copied : t.copyLink}
-                </button>
-
-                <div className="mt-3 flex items-center gap-1.5 font-mono text-[11px] text-[#797776]">
-                  <Loader2 className="h-3 w-3 animate-spin" />
-                  {t.orderPolling}
-                </div>
-              </div>
-            )}
-
-            {/* Paid success */}
-            {orderPaid && (
-              <div className="mt-4 flex items-center gap-2 rounded-[18px] bg-[#dcebd8] px-4 py-3 text-sm text-[#315b3b]">
-                <CheckCircle className="h-4 w-4 shrink-0" />
-                <span>{t.orderPaid}</span>
-              </div>
-            )}
-
-            {/* Expired */}
-            {orderExpired && (
-              <div className="mt-4 flex items-center gap-2 rounded-[18px] border border-[#d8b15a]/30 bg-[#fff6df] px-4 py-3 text-sm text-[#8a6a20]">
-                <AlertCircle className="h-4 w-4 shrink-0" />
-                <span>{t.orderExpired}</span>
-              </div>
-            )}
+            <PaymentQrPanel order={order} text={t} className="mt-4" />
 
             <Link
               href={`/${locale}/support`}

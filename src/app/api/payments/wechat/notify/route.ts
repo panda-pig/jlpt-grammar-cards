@@ -17,7 +17,7 @@ export async function POST(request: Request) {
         provider: "wechat",
         providerTransactionId: result.transactionId,
         payerOpenid: result.openid,
-        eventId: null,
+        eventId: result.notificationId,
         rawPayload: result.raw as Record<string, Json | undefined>,
       });
     }

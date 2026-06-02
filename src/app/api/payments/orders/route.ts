@@ -42,17 +42,17 @@ function getClientIp(request: Request): string {
 }
 
 export async function POST(request: Request) {
-  const ip = getClientIp(request);
-  if (!checkRateLimit(ip)) {
-    return errorResponse(
-      "rate_limit_exceeded",
-      "Too many order requests. Please try again in a few minutes.",
-      429
-    );
-  }
-
   try {
     const body = await request.json().catch(() => ({}));
+    const ip = getClientIp(request);
+    if (!checkRateLimit(ip)) {
+      return errorResponse(
+        "rate_limit_exceeded",
+        "Too many order requests. Please try again in a few minutes.",
+        429
+      );
+    }
+
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
