@@ -33,16 +33,16 @@ function DetailSection({
   accent?: "plain" | "blue" | "warm" | "rose";
 }) {
   const styles = {
-    plain: "bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)]",
-    blue: "bg-[#cfdaf5]",
-    warm: "bg-[#fff6df] border border-[rgba(232,193,120,0.55)]",
+    plain: "bg-[#fbfaf8] border border-[#ded8d0]",
+    blue: "bg-[#cfdaf5] border border-[rgba(100,140,220,.18)]",
+    warm: "bg-[#fff6df] border border-[#e8c178]/55",
     rose: "bg-[#f4b4a8]/18 border border-[rgba(244,180,168,0.45)]",
   };
 
   return (
-    <Card className={`${styles[accent]} rounded-[32px] ring-0 shadow-none`}>
+    <Card className={`${styles[accent]} rounded-[18px] ring-0 shadow-none`}>
       <CardContent className="p-5">
-        <h3 className="mb-2 font-mono text-xs font-medium uppercase text-[#797776]">{title}</h3>
+        <h3 className="mb-2 font-mono text-[10px] font-medium uppercase tracking-[.06em] text-[#797776]">{title}</h3>
         {children}
       </CardContent>
     </Card>
@@ -164,17 +164,21 @@ export default function GrammarDetailPage() {
     <MainLayout>
       <div className="mx-auto max-w-4xl py-4 sm:py-6">
         {!user && (
-          <div className="mb-4 flex items-start gap-3 rounded-[28px] border border-[rgba(36,36,36,0.16)] bg-[#fff6df] px-4 py-3 text-sm text-[#4e4d4d]">
+          <div className="mb-4 flex items-start gap-3 rounded-[14px] border border-[#e8c178]/50 bg-[#fff6df] px-4 py-3 text-sm text-[#4e4d4d]">
             <WifiOff className="mt-0.5 h-4 w-4 shrink-0 text-[#a08040]" />
             <p>{dict.common.localModeDesc}</p>
           </div>
         )}
         <div className="mb-6">
-          <Link href={`/${locale}/grammar`} className={buttonVariants({ variant: "ghost", size: "sm", className: "mb-2" })}>
+          <Link href={`/${locale}/grammar`} className={buttonVariants({ variant: "ghost", size: "sm", className: "mb-3 -ml-2" })}>
             <ArrowLeft className="mr-1 h-4 w-4" />{dict.grammar.backToLibrary}
           </Link>
-          <div className="flex items-center gap-2 flex-wrap">
-            <h1 className="text-3xl font-bold">{grammar.title}</h1>
+          <div className="mb-2 flex items-center gap-[10px] font-mono text-[12px] uppercase tracking-[.06em] text-[#797776]">
+            <div className="h-px w-8 bg-[#242424]" />
+            JLPT {grammar.jlptLevel} Grammar
+          </div>
+          <div className="flex items-center gap-3 flex-wrap">
+            <h1 className="font-serif text-[clamp(28px,3.6vw,46px)] font-bold leading-[1.08] tracking-[-0.022em] text-black text-balance">{grammar.title}</h1>
             <LevelBadge level={grammar.jlptLevel} />
             <GrammarTypeBadge category={grammar.grammarType as any} />
             <FavoriteButton isFavorite={!!progress?.is_favorite} onToggle={handleFavoriteToggle} />
@@ -218,7 +222,7 @@ export default function GrammarDetailPage() {
           </div>
 
           <div className="space-y-4">
-            <Card className="bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px] ring-0 shadow-none">
+            <Card className="bg-[#fbfaf8] border border-[#ded8d0] rounded-[18px] ring-0 shadow-none">
               <CardContent className="p-5 space-y-3">
                 <h3 className="font-semibold">{dict.grammar.studyStatus}</h3>
                 <Badge variant="secondary" className="rounded-full font-mono text-xs">{studyStatusLabel(studyStatus, locale)}</Badge>
@@ -235,7 +239,7 @@ export default function GrammarDetailPage() {
             </Card>
 
             {sameTitleEntries.length > 0 && (
-              <Card className="bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px] ring-0 shadow-none">
+              <Card className="bg-[#fbfaf8] border border-[#ded8d0] rounded-[18px] ring-0 shadow-none">
                 <CardContent className="p-5">
                   <h3 className="font-semibold mb-2">{dict.grammar.sameTitleUses}</h3>
                   <p className="mb-3 text-xs leading-relaxed text-[#797776]">{dict.grammar.sameTitleUsesHint}</p>
@@ -246,7 +250,7 @@ export default function GrammarDetailPage() {
                         <Link
                           key={entry.id}
                           href={`/${locale}/grammar/${entry.slug}`}
-                          className="block rounded-[24px] border border-[rgba(36,36,36,0.12)] px-3 py-2 text-sm transition-colors hover:bg-[#cfdaf5]/45"
+                          className="block rounded-[12px] border border-[#ded8d0] px-3 py-2 text-sm transition-colors hover:border-[#242424] hover:bg-[#cfdaf5]/45"
                         >
                           <div className="flex flex-wrap items-center gap-1.5">
                             <span className="font-semibold">{entry.title}</span>
@@ -263,7 +267,7 @@ export default function GrammarDetailPage() {
             )}
 
             {grammar.similarGrammar?.length > 0 && (
-              <Card className="bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px] ring-0 shadow-none">
+              <Card className="bg-[#fbfaf8] border border-[#ded8d0] rounded-[18px] ring-0 shadow-none">
                 <CardContent className="p-5">
                   <h3 className="font-semibold mb-3">{dict.grammar.similarGrammar}</h3>
                   <div className="space-y-2">
@@ -279,7 +283,7 @@ export default function GrammarDetailPage() {
             )}
 
             {/* Tip card */}
-            <Card className="bg-[#fbfaf8] border border-[rgba(36,36,36,0.12)] rounded-[40px] ring-0 shadow-none">
+            <Card className="bg-[#fbfaf8] border border-[#ded8d0] rounded-[18px] ring-0 shadow-none">
               <CardContent className="p-5 space-y-3">
                 <div className="flex items-center gap-2">
                   <Coffee className="h-4 w-4 text-[#8a6a20]" />

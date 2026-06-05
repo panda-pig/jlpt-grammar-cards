@@ -111,7 +111,7 @@ export default function StudyPage() {
     <MainLayout>
       <div className="mx-auto flex min-h-[calc(100vh-144px)] w-full max-w-5xl flex-col px-4 py-4 sm:px-6 sm:py-6">
         {!user && (
-          <div className="mb-4 flex items-start gap-3 rounded-[28px] border border-[rgba(36,36,36,0.16)] bg-[#fff6df] px-4 py-3 text-sm text-[#4e4d4d]">
+          <div className="mb-4 flex items-start gap-3 rounded-[14px] border border-[#e8c178]/50 bg-[#fff6df] px-4 py-3 text-sm text-[#4e4d4d]">
             <WifiOff className="mt-0.5 h-4 w-4 shrink-0 text-[#a08040]" />
             <div>
               <p className="font-mono text-xs font-medium text-[#242424]">{dict.common.localMode}</p>
@@ -131,7 +131,7 @@ export default function StudyPage() {
           </div>
           <div className="flex items-center gap-2">
             <Select value={level} onValueChange={(value) => setLevel(value as StudyLevel)}>
-              <SelectTrigger className="w-32 rounded-full border-[rgba(36,36,36,0.16)] bg-transparent">
+              <SelectTrigger className="w-32 rounded-full border-[#ded8d0] bg-transparent">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -149,13 +149,13 @@ export default function StudyPage() {
         </div>
 
         <div className="mb-4 grid gap-3 sm:grid-cols-3">
-          <Card className="rounded-[32px] border border-[rgba(36,36,36,0.16)] bg-[#f6f3f1] shadow-none">
+          <Card className="rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] shadow-none">
             <CardContent className="p-4">
               <p className="font-mono text-xs text-[#797776]">{dict.study.queueCount}</p>
               <p className="mt-1 font-mono text-2xl font-medium text-[#242424]">{cards.length}</p>
             </CardContent>
           </Card>
-          <Card className="rounded-[32px] border border-[rgba(36,36,36,0.16)] bg-[#f6f3f1] shadow-none">
+          <Card className="rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] shadow-none">
             <CardContent className="p-4">
               <p className="font-mono text-xs text-[#797776]">{dict.study.currentCard}</p>
               <p className="mt-1 font-mono text-2xl font-medium text-[#242424]">
@@ -163,7 +163,7 @@ export default function StudyPage() {
               </p>
             </CardContent>
           </Card>
-          <Card className="rounded-[32px] border border-[rgba(36,36,36,0.16)] bg-[#f6f3f1] shadow-none">
+          <Card className="rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] shadow-none">
             <CardContent className="p-4">
               <p className="font-mono text-xs text-[#797776]">{dict.study.remaining}</p>
               <p className="mt-1 font-mono text-2xl font-medium text-[#242424]">{finished ? 0 : remaining}</p>
@@ -179,7 +179,7 @@ export default function StudyPage() {
           </div>
         ) : cards.length === 0 ? (
           <div className="flex flex-1 items-center justify-center py-16">
-            <Card className="w-full max-w-sm rounded-[40px] border border-[rgba(36,36,36,0.16)] bg-[#f6f3f1] shadow-none">
+            <Card className="w-full max-w-sm rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] shadow-none">
               <CardContent className="space-y-4 p-6 text-center">
                 <BookOpen className="mx-auto h-10 w-10 text-[#5a6fa0]" />
                 <h2 className="text-xl font-bold">{dict.study.emptyTitle}</h2>
@@ -192,7 +192,7 @@ export default function StudyPage() {
           </div>
         ) : finished ? (
           <div className="flex flex-1 items-center justify-center py-16">
-            <Card className="w-full max-w-sm rounded-[40px] border border-[rgba(36,36,36,0.16)] bg-[#f6f3f1] shadow-none">
+            <Card className="w-full max-w-sm rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] shadow-none">
               <CardContent className="space-y-4 p-6 text-center">
                 <Sparkles className="mx-auto h-10 w-10 text-[#4a8a6a]" />
                 <h2 className="text-xl font-bold">{dict.study.completedTitle}</h2>

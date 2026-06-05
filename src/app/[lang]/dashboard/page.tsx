@@ -134,7 +134,7 @@ function KpiCard({
   textColor?: string;
 }) {
   return (
-    <Card className={`${color} border-0 rounded-[28px] shadow-none`}>
+    <Card className={`${color} border-0 rounded-[18px] shadow-none`}>
       <CardContent className="p-5">
         <div className="flex items-start justify-between">
           <div>
@@ -230,7 +230,7 @@ export default function DashboardPage() {
     <MainLayout>
       <div className="mx-auto max-w-5xl px-4 py-6 md:py-8">
         {!user && (
-          <div className="mb-5 flex items-start gap-3 rounded-[24px] border border-[rgba(36,36,36,0.12)] bg-[#fff6df] px-4 py-3 text-sm text-[#4e4d4d]">
+          <div className="mb-5 flex items-start gap-3 rounded-[14px] border border-[#e8c178]/50 bg-[#fff6df] px-4 py-3 text-sm text-[#4e4d4d]">
             <WifiOff className="mt-0.5 h-4 w-4 shrink-0 text-[#a08040]" />
             <p>{dict.common.localModeDesc}</p>
           </div>
@@ -268,7 +268,7 @@ export default function DashboardPage() {
         {entitlement !== null && (
           <div className="mb-6">
             {entitlement.isPro ? (
-              <div className="flex items-center justify-between gap-4 rounded-[24px] bg-[#dcebd8] px-5 py-3.5">
+              <div className="flex items-center justify-between gap-4 rounded-[18px] bg-[#dcebd8] px-5 py-3.5">
                 <div className="flex items-center gap-3">
                   <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#315b3b]/10">
                     <Crown className="h-4 w-4 text-[#315b3b]" />
@@ -290,7 +290,7 @@ export default function DashboardPage() {
             ) : (
               <Link
                 href={`/${locale}/pro`}
-                className="flex items-center justify-between gap-4 rounded-[24px] border border-[rgba(36,36,36,0.12)] bg-[#fbfaf8] px-5 py-3.5 transition-colors hover:bg-[rgba(36,36,36,0.04)]"
+                className="flex items-center justify-between gap-4 rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] px-5 py-3.5 transition-colors hover:border-[#242424]"
               >
                 <div className="flex items-center gap-3">
                   <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[rgba(36,36,36,0.06)]">
@@ -309,7 +309,7 @@ export default function DashboardPage() {
 
         <div className="grid lg:grid-cols-[1fr_280px] gap-4 mb-6">
           <div className="space-y-4">
-            <Card className="rounded-[28px] border border-[rgba(36,36,36,0.12)] bg-[#fbfaf8] shadow-none">
+            <Card className="rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] shadow-none">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between mb-5">
                   <h2 className="font-mono text-sm font-medium text-[#242424]">{dict.dashboard.levelProgress}</h2>
@@ -345,7 +345,7 @@ export default function DashboardPage() {
               </CardContent>
             </Card>
 
-            <Card className="rounded-[28px] border border-[rgba(36,36,36,0.12)] bg-[#fbfaf8] shadow-none">
+            <Card className="rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] shadow-none">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="font-mono text-sm font-medium text-[#242424]">{dict.dashboard.weeklyTrend}</h2>
@@ -357,7 +357,7 @@ export default function DashboardPage() {
           </div>
 
           <div className="space-y-4">
-            <Card className="rounded-[28px] border border-[rgba(36,36,36,0.12)] bg-[#fbfaf8] shadow-none">
+            <Card className="rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] shadow-none">
               <CardContent className="p-5 flex flex-col items-center">
                 <h2 className="font-mono text-sm font-medium text-[#242424] mb-4 self-start">{dict.dashboard.masteryRate}</h2>
                 <DonutChart percentage={masteryRate} label={dict.dashboard.masteryRateLabel} color="#6a8a5a" />
@@ -374,7 +374,7 @@ export default function DashboardPage() {
               </CardContent>
             </Card>
 
-            <Card className="rounded-[28px] border border-[rgba(36,36,36,0.12)] bg-[#fbfaf8] shadow-none">
+            <Card className="rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] shadow-none">
               <CardContent className="p-5">
                 <h2 className="font-mono text-sm font-medium text-[#242424] mb-4">{dict.dashboard.ratingDistribution}</h2>
                 {totalReviews === 0 ? (
@@ -403,7 +403,7 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <Card className="rounded-[28px] border border-[rgba(36,36,36,0.12)] bg-[#fbfaf8] shadow-none mb-6">
+        <Card className="rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] shadow-none mb-6">
           <CardContent className="p-5">
             <h2 className="font-mono text-sm font-medium text-[#242424] mb-4">{dict.dashboard.recentReviews}</h2>
             {recentReviews.length === 0 ? (

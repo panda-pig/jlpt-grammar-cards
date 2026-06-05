@@ -103,7 +103,7 @@ export default function ReviewPage() {
     return (
       <MainLayout>
         {!user && (
-          <div className="mx-auto mt-4 flex max-w-4xl items-start gap-3 rounded-[28px] border border-[rgba(36,36,36,0.16)] bg-[#fff6df] px-4 py-3 text-sm text-[#4e4d4d]">
+          <div className="mx-auto mt-4 flex max-w-4xl items-start gap-3 rounded-[14px] border border-[#e8c178]/50 bg-[#fff6df] px-4 py-3 text-sm text-[#4e4d4d]">
             <WifiOff className="mt-0.5 h-4 w-4 shrink-0 text-[#a08040]" />
             <div>
               <p className="font-mono text-xs font-medium text-[#242424]">{dict.common.localMode}</p>
@@ -122,7 +122,7 @@ export default function ReviewPage() {
     return (
       <MainLayout>
         <div className="flex items-center justify-center py-20">
-          <Card className="w-full max-w-sm bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px]">
+          <Card className="w-full max-w-sm bg-[#fbfaf8] border border-[#ded8d0] rounded-[18px] shadow-none">
             <CardContent className="p-6 text-center space-y-4">
               <Sparkles className="h-10 w-10 mx-auto text-[#4a8a6a]" />
               <h2 className="text-xl font-bold">{dict.review.noDueCards}</h2>
@@ -145,7 +145,7 @@ export default function ReviewPage() {
     return (
       <MainLayout>
         {!user && (
-          <div className="mx-auto mt-4 flex max-w-4xl items-start gap-3 rounded-[28px] border border-[rgba(36,36,36,0.16)] bg-[#fff6df] px-4 py-3 text-sm text-[#4e4d4d]">
+          <div className="mx-auto mt-4 flex max-w-4xl items-start gap-3 rounded-[14px] border border-[#e8c178]/50 bg-[#fff6df] px-4 py-3 text-sm text-[#4e4d4d]">
             <WifiOff className="mt-0.5 h-4 w-4 shrink-0 text-[#a08040]" />
             <div>
               <p className="font-mono text-xs font-medium text-[#242424]">{dict.common.localMode}</p>
@@ -164,19 +164,19 @@ export default function ReviewPage() {
           <p className="mb-4 text-sm text-[#797776]">{dict.review.oldReviewOnly}</p>
 
           <div className="grid gap-3 sm:grid-cols-4 mb-8">
-            <Card className="bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px]"><CardContent className="p-4 text-center">
+            <Card className="bg-[#fbfaf8] border border-[#ded8d0] rounded-[18px] shadow-none"><CardContent className="p-4 text-center">
               <p className="text-2xl font-bold font-mono text-[#242424]">{total}</p>
               <p className="font-mono text-xs text-[#797776]">{dict.review.dueCards}</p>
             </CardContent></Card>
-            <Card className="bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px]"><CardContent className="p-4 text-center">
+            <Card className="bg-[#fbfaf8] border border-[#ded8d0] rounded-[18px] shadow-none"><CardContent className="p-4 text-center">
               <p className="text-2xl font-bold font-mono text-[#242424]">{dailyStats.todayNew}</p>
               <p className="font-mono text-xs text-[#797776]">{dict.review.newCards}</p>
             </CardContent></Card>
-            <Card className="bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px]"><CardContent className="p-4 text-center">
+            <Card className="bg-[#fbfaf8] border border-[#ded8d0] rounded-[18px] shadow-none"><CardContent className="p-4 text-center">
               <p className="text-2xl font-bold font-mono text-[#242424]">{done}</p>
               <p className="font-mono text-xs text-[#797776]">{dict.review.completed}</p>
             </CardContent></Card>
-            <Card className="bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px]"><CardContent className="p-4 text-center">
+            <Card className="bg-[#fbfaf8] border border-[#ded8d0] rounded-[18px] shadow-none"><CardContent className="p-4 text-center">
               <p className="text-2xl font-bold font-mono text-[#242424]">{pct}%</p>
               <p className="font-mono text-xs text-[#797776]">{dict.review.completionRate}</p>
             </CardContent></Card>
@@ -191,7 +191,7 @@ export default function ReviewPage() {
             {dueCards.map((r) => {
               const grammar = toGrammarEntry(r.grammar);
               return (
-                <Card key={r.grammar_id} className="bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px] transition-all hover:shadow-[rgba(0,0,0,0.1)_0px_0px_10px_0px]">
+                <Card key={r.grammar_id} className="bg-[#fbfaf8] border border-[#ded8d0] rounded-[14px] shadow-none transition-all hover:border-[#242424]">
                   <CardContent className="p-3 flex items-center gap-3">
                     <LevelBadge level={grammar.jlptLevel} />
                     <span className="font-medium flex-1">{grammar.title}</span>
@@ -216,13 +216,13 @@ export default function ReviewPage() {
     return (
       <MainLayout>
         {!user && (
-          <div className="mx-auto mt-4 flex max-w-sm items-start gap-3 rounded-[28px] border border-[rgba(36,36,36,0.16)] bg-[#fff6df] px-4 py-3 text-sm text-[#4e4d4d]">
+          <div className="mx-auto mt-4 flex max-w-sm items-start gap-3 rounded-[14px] border border-[#e8c178]/50 bg-[#fff6df] px-4 py-3 text-sm text-[#4e4d4d]">
             <WifiOff className="mt-0.5 h-4 w-4 shrink-0 text-[#a08040]" />
             <p>{dict.common.syncHint}</p>
           </div>
         )}
         <div className="flex items-center justify-center py-20">
-          <Card className="w-full max-w-sm bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px]">
+          <Card className="w-full max-w-sm bg-[#fbfaf8] border border-[#ded8d0] rounded-[18px] shadow-none">
             <CardContent className="p-6 text-center space-y-4">
               <Sparkles className="h-10 w-10 mx-auto text-[#4a8a6a]" />
               <h2 className="text-xl font-bold">{dict.review.completedTitle}</h2>

@@ -40,7 +40,7 @@ export function GrammarCard({
 
   return (
     <Link href={`/${locale}/grammar/${grammar.slug}`}>
-      <div className="group h-full bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px] p-6 md:p-8 transition-all hover:translate-y-[-2px] hover:shadow-[rgba(0,0,0,0.1)_0px_0px_10px_0px]">
+      <div className="group h-full bg-[#fbfaf8] border border-[#ded8d0] rounded-[18px] p-5 md:p-6 transition-all hover:translate-y-[-2px] hover:border-[#242424] hover:shadow-[4px_4px_0_#ded8d0]">
         <div className="flex items-start justify-between gap-2">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-1.5 flex-wrap mb-3">
@@ -65,7 +65,7 @@ export function GrammarCard({
         </div>
         <div className="flex items-center gap-1.5 mt-4 flex-wrap">
           {tags.map((tag) => (
-            <Badge key={tag.raw} variant="outline" className="rounded-full text-[10px] px-2 py-0.5 border-[rgba(36,36,36,0.16)] text-[#797776]">
+            <Badge key={tag.raw} variant="outline" className="rounded-full text-[10px] px-2 py-0.5 border-[#ded8d0] text-[#797776]">
               {tag.label}
             </Badge>
           ))}

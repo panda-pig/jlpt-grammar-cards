@@ -86,7 +86,7 @@ export default function GrammarLibraryPage() {
     <MainLayout>
       <div className="mx-auto max-w-6xl py-4 sm:py-6">
         {!user && (
-          <div className="mb-4 flex items-start gap-3 rounded-[28px] border border-[rgba(36,36,36,0.16)] bg-[#fff6df] px-4 py-3 text-sm text-[#4e4d4d]">
+          <div className="mb-4 flex items-start gap-3 rounded-[14px] border border-[#e8c178]/50 bg-[#fff6df] px-4 py-3 text-sm text-[#4e4d4d]">
             <WifiOff className="mt-0.5 h-4 w-4 shrink-0 text-[#a08040]" />
             <div>
               <p className="font-mono text-xs font-medium text-[#242424]">{dict.common.localMode}</p>
@@ -104,7 +104,7 @@ export default function GrammarLibraryPage() {
           <div className="flex items-center gap-3">
             <h1 className="font-serif text-[clamp(28px,3.6vw,46px)] font-bold leading-[1.08] tracking-[-0.022em] text-black text-balance">{dict.grammar.title}</h1>
             <Sheet>
-              <SheetTrigger className="md:hidden inline-flex items-center justify-center gap-1.5 border border-[rgba(36,36,36,0.16)] bg-transparent px-3 py-1.5 text-sm font-mono hover:bg-[#cfdaf5] transition-colors">
+              <SheetTrigger className="md:hidden inline-flex items-center justify-center gap-1.5 rounded-full border border-[#ded8d0] bg-transparent px-3 py-1.5 text-sm font-mono hover:bg-[#cfdaf5] transition-colors">
                 <SlidersHorizontal className="h-4 w-4" />{dict.grammar.filter}
               </SheetTrigger>
               <SheetContent side="left" className="w-72">
