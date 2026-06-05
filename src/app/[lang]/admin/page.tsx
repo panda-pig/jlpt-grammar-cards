@@ -78,7 +78,7 @@ export default function AdminHomePage() {
   if (loading) {
     return (
       <div className="max-w-4xl">
-        <h1 className="text-2xl font-bold mb-6">{dict.admin.title}</h1>
+        <h1 className="mb-6 font-serif text-[clamp(24px,3vw,36px)] font-bold tracking-[-0.02em] text-[#242424]">{dict.admin.title}</h1>
         <p className="text-[#797776] font-mono text-sm">{dict.common.loading}</p>
       </div>
     );
@@ -86,16 +86,16 @@ export default function AdminHomePage() {
 
   return (
     <div className="max-w-4xl">
-      <h1 className="text-2xl font-bold mb-6">{dict.admin.title}</h1>
+      <h1 className="mb-6 font-serif text-[clamp(24px,3vw,36px)] font-bold tracking-[-0.02em] text-[#242424]">{dict.admin.title}</h1>
 
       <div className="grid gap-4 sm:grid-cols-2 mb-8">
-        <Card className="bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px] ring-0 shadow-none">
+        <Card className="bg-[#fbfaf8] border border-[#ded8d0] rounded-[18px] ring-0 shadow-none">
           <CardContent className="p-5">
             <p className="text-3xl font-bold font-mono text-[#242424]">{entries.length}</p>
             <p className="font-mono text-sm text-[#797776]">语法总数</p>
           </CardContent>
         </Card>
-        <Card className="bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px] ring-0 shadow-none">
+        <Card className="bg-[#fbfaf8] border border-[#ded8d0] rounded-[18px] ring-0 shadow-none">
           <CardContent className="p-5">
             <div className="flex flex-wrap gap-2">
               {Object.entries(levelCounts).map(([level, count]) => (
@@ -112,14 +112,14 @@ export default function AdminHomePage() {
         <Link href={`/${locale}/admin/grammar`} className={buttonVariants({ variant: "outline", className: "rounded-full font-mono" })}><BookOpen className="mr-1 h-4 w-4" />管理语法</Link>
       </div>
 
-      <Card className="mb-8 bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px] ring-0 shadow-none">
+      <Card className="mb-8 bg-[#fbfaf8] border border-[#ded8d0] rounded-[18px] ring-0 shadow-none">
         <CardContent className="p-6">
           <div className="flex items-center gap-3 mb-4">
             <Shield className="h-5 w-5 text-[#242424]" />
             <h2 className="font-bold text-lg">管理员权限</h2>
           </div>
 
-          <div className="mb-4 flex items-center gap-3 p-3 rounded-2xl bg-[#fbfaf8] border border-[rgba(36,36,36,0.12)]">
+          <div className="mb-4 flex items-center gap-3 p-3 rounded-[12px] bg-[#f6f3f1] border border-[#ded8d0]">
             <span className="font-mono text-sm">当前角色:</span>
             <Badge className={`rounded-full font-mono text-xs ${isRoleAdmin ? "bg-[#dcebd8] text-[#315b3b]" : "bg-[#fff6df] text-[#7a5b20]"}`}>
               {isRoleAdmin ? "管理员 (admin)" : "无管理员角色"}
@@ -167,7 +167,7 @@ export default function AdminHomePage() {
             <p className="mt-3 text-sm text-[#315b3b] font-mono">{roleMsg}</p>
           )}
 
-          <div className="mt-4 p-3 rounded-2xl bg-[#fff6df] border border-[rgba(36,36,36,0.12)]">
+          <div className="mt-4 p-3 rounded-[12px] bg-[#fff6df] border border-[#e8c178]/50">
             <p className="text-sm text-[#4e4d4d]">
               管理员角色通过 <code className="bg-[rgba(36,36,36,0.06)] px-1 rounded font-mono text-xs">user_roles</code> 表和 RLS 策略控制。仅管理员可以新增/编辑/删除默认语法库。将此角色授予当前用户后，语法库的写入操作才能成功。
             </p>
@@ -178,7 +178,7 @@ export default function AdminHomePage() {
       <h2 className="font-semibold mb-3">最近语法条目</h2>
       <div className="space-y-2">
         {entries.slice(0, 5).map((g) => (
-          <Card key={g.id} className="bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px] ring-0 shadow-none transition-all hover:shadow-[rgba(0,0,0,0.1)_0px_0px_10px_0px]">
+          <Card key={g.id} className="bg-[#fbfaf8] border border-[#ded8d0] rounded-[18px] ring-0 shadow-none transition-all hover:shadow-[rgba(0,0,0,0.1)_0px_0px_10px_0px]">
             <CardContent className="p-3 flex items-center gap-3">
               <Badge variant="outline" className="rounded-full font-mono text-xs">{g.jlpt_level}</Badge>
               <span className="font-medium flex-1">{g.title}</span>

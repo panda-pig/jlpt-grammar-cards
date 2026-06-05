@@ -64,8 +64,8 @@ export default function ResetPasswordPage() {
     return (
       <MainLayout hideNotification>
         <div className="flex items-center justify-center py-12 sm:py-20 px-4">
-          <Card className="w-full max-w-sm bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px] ring-0 shadow-none">
-            <CardContent className="p-6 text-center font-mono text-sm text-[#797776]">
+          <Card className="card-soft w-full max-w-sm bg-[#fbfaf8] border border-[#ded8d0] rounded-[20px] ring-0 shadow-none">
+            <CardContent className="p-7 text-center font-mono text-sm text-[#797776]">
               {dict.login.processing}
             </CardContent>
           </Card>
@@ -77,9 +77,17 @@ export default function ResetPasswordPage() {
   return (
     <MainLayout hideNotification>
       <div className="flex items-center justify-center py-12 sm:py-20 px-4">
-        <Card className="w-full max-w-sm bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px] ring-0 shadow-none">
-          <CardContent className="p-6 space-y-4">
-            <h1 className="text-xl font-bold">{dict.login.resetPassword}</h1>
+        <Card className="card-soft w-full max-w-sm bg-[#fbfaf8] border border-[#ded8d0] rounded-[20px] ring-0 shadow-none">
+          <CardContent className="p-7 space-y-5">
+            <div className="flex flex-col items-center text-center gap-3">
+              <div
+                className="flex h-12 w-12 items-center justify-center rounded-full border border-[#242424]"
+                style={{ background: "#fff6df", boxShadow: "3px 3px 0 #cfdaf5", fontFamily: "var(--font-serif)", fontSize: "22px", fontWeight: 700 }}
+              >
+                文
+              </div>
+              <h1 className="font-serif text-2xl font-bold tracking-[-0.02em] text-[#242424]">{dict.login.resetPassword}</h1>
+            </div>
 
             {error && (
               <div className="flex items-center gap-2 text-sm text-[#c47a6a]">

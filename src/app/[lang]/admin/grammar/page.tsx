@@ -42,7 +42,7 @@ export default function AdminGrammarListPage() {
   if (loading) {
     return (
       <div className="max-w-5xl">
-        <h1 className="text-2xl font-bold mb-6">{dict.admin.grammarList}</h1>
+        <h1 className="mb-6 font-serif text-[clamp(24px,3vw,36px)] font-bold tracking-[-0.02em] text-[#242424]">{dict.admin.grammarList}</h1>
         <p className="text-[#797776] font-mono text-sm">{dict.common.loading}</p>
       </div>
     );
@@ -51,7 +51,7 @@ export default function AdminGrammarListPage() {
   return (
     <div className="max-w-5xl">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">{dict.admin.grammarList}</h1>
+        <h1 className="font-serif text-[clamp(24px,3vw,36px)] font-bold tracking-[-0.02em] text-[#242424]">{dict.admin.grammarList}</h1>
         <Link href={`/${locale}/admin/grammar/new`} className={buttonVariants({ size: "sm", className: "rounded-full font-mono" })}><Plus className="mr-1 h-4 w-4" />{dict.admin.addGrammar}</Link>
       </div>
 
@@ -66,11 +66,11 @@ export default function AdminGrammarListPage() {
       </div>
 
       <div className="hidden md:block">
-        <div className="grid grid-cols-4 gap-2 font-mono text-xs font-medium text-[#797776] px-4 py-2 border-b border-[rgba(36,36,36,0.16)]">
+        <div className="grid grid-cols-4 gap-2 font-mono text-xs font-medium text-[#797776] px-4 py-2 border-b border-[#ded8d0]">
           <span>语法</span><span>等级</span><span>分类</span><span>操作</span>
         </div>
         {paged.map((g) => (
-          <div key={g.id} className="grid grid-cols-4 gap-2 px-4 py-3 border-b border-[rgba(36,36,36,0.16)] items-center text-sm">
+          <div key={g.id} className="grid grid-cols-4 gap-2 px-4 py-3 border-b border-[#ded8d0] items-center text-sm">
             <span className="font-medium truncate">{g.title}</span>
             <span><Badge variant="outline" className="rounded-full font-mono text-xs">{g.jlpt_level}</Badge></span>
             <span className="font-mono text-xs text-[#797776]">{g.grammar_type}</span>
@@ -86,7 +86,7 @@ export default function AdminGrammarListPage() {
 
       <div className="md:hidden space-y-2">
         {paged.map((g) => (
-          <Card key={g.id} className="bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px] ring-0 shadow-none">
+          <Card key={g.id} className="bg-[#fbfaf8] border border-[#ded8d0] rounded-[14px] ring-0 shadow-none">
             <CardContent className="p-3">
               <div className="flex items-center justify-between">
                 <span className="font-medium">{g.title}</span>

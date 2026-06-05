@@ -87,6 +87,19 @@ export function Header() {
           })}
         </nav>
 
+        {/* Mobile/tablet actions — locale switch + login (header nav is xl-only) */}
+        <div className="flex xl:hidden items-center gap-2">
+          <LocaleSwitcher />
+          {!user && (
+            <Link
+              href={`/${locale}/login`}
+              className="font-mono text-xs rounded-full border border-[#ded8d0] px-3 py-1 text-[#797776] hover:border-[#242424] hover:text-[#242424] transition-colors"
+            >
+              {dict.common.login}
+            </Link>
+          )}
+        </div>
+
         {/* Right actions */}
         <div className="hidden xl:flex items-center gap-3">
           <LocaleSwitcher />

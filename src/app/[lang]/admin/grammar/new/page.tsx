@@ -60,10 +60,10 @@ export default function AdminNewGrammarPage() {
       <Link href="/admin/grammar" className={buttonVariants({ variant: "ghost", size: "sm", className: "mb-4" })}>
         <ArrowLeft className="mr-1 h-4 w-4" />返回
       </Link>
-      <h1 className="text-2xl font-bold mb-6">新增语法</h1>
+      <h1 className="mb-6 font-serif text-[clamp(24px,3vw,36px)] font-bold tracking-[-0.02em] text-[#242424]">新增语法</h1>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <Card className="bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px] ring-0 shadow-none">
+        <Card className="bg-[#fbfaf8] border border-[#ded8d0] rounded-[18px] ring-0 shadow-none">
           <CardContent className="p-5 space-y-3">
             <h3 className="font-semibold text-sm">基本信息</h3>
             <div className="grid gap-3 sm:grid-cols-2">
@@ -84,7 +84,7 @@ export default function AdminNewGrammarPage() {
           </CardContent>
         </Card>
 
-        <Card className="bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px] ring-0 shadow-none">
+        <Card className="bg-[#fbfaf8] border border-[#ded8d0] rounded-[18px] ring-0 shadow-none">
           <CardContent className="p-5 space-y-3">
             <h3 className="font-semibold text-sm">意思</h3>
             <Input placeholder="中文意思 *" required value={form.meaning_cn} onChange={(e) => updateField("meaning_cn", e.target.value)} className="rounded-full" />
@@ -92,29 +92,29 @@ export default function AdminNewGrammarPage() {
           </CardContent>
         </Card>
 
-        <Card className="bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px] ring-0 shadow-none">
+        <Card className="bg-[#fbfaf8] border border-[#ded8d0] rounded-[18px] ring-0 shadow-none">
           <CardContent className="p-5 space-y-3">
             <h3 className="font-semibold text-sm">语法详解</h3>
             <Input placeholder="接续" value={form.structure} onChange={(e) => updateField("structure", e.target.value)} className="rounded-full" />
-            <Textarea placeholder="详细解释" value={form.explanation} onChange={(e) => updateField("explanation", e.target.value)} className="rounded-2xl min-h-[80px]" />
-            <Textarea placeholder="使用场景" value={form.usage_note} onChange={(e) => updateField("usage_note", e.target.value)} className="rounded-2xl min-h-[60px]" />
+            <Textarea placeholder="详细解释" value={form.explanation} onChange={(e) => updateField("explanation", e.target.value)} className="rounded-[12px] min-h-[80px]" />
+            <Textarea placeholder="使用场景" value={form.usage_note} onChange={(e) => updateField("usage_note", e.target.value)} className="rounded-[12px] min-h-[60px]" />
           </CardContent>
         </Card>
 
-        <Card className="bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px] ring-0 shadow-none">
+        <Card className="bg-[#fbfaf8] border border-[#ded8d0] rounded-[18px] ring-0 shadow-none">
           <CardContent className="p-5 space-y-3">
             <h3 className="font-semibold text-sm">例句</h3>
-            <Textarea placeholder="日语例句" value={form.example_jp} onChange={(e) => updateField("example_jp", e.target.value)} className="rounded-2xl min-h-[60px]" />
-            <Textarea placeholder="中文翻译" value={form.example_cn} onChange={(e) => updateField("example_cn", e.target.value)} className="rounded-2xl min-h-[60px]" />
+            <Textarea placeholder="日语例句" value={form.example_jp} onChange={(e) => updateField("example_jp", e.target.value)} className="rounded-[12px] min-h-[60px]" />
+            <Textarea placeholder="中文翻译" value={form.example_cn} onChange={(e) => updateField("example_cn", e.target.value)} className="rounded-[12px] min-h-[60px]" />
             <Input placeholder="注音假名" value={form.furigana} onChange={(e) => updateField("furigana", e.target.value)} className="rounded-full" />
           </CardContent>
         </Card>
 
-        <Card className="bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px] ring-0 shadow-none">
+        <Card className="bg-[#fbfaf8] border border-[#ded8d0] rounded-[18px] ring-0 shadow-none">
           <CardContent className="p-5 space-y-3">
             <h3 className="font-semibold text-sm">易错点与记忆</h3>
-            <Textarea placeholder="常见错误" value={form.common_mistake} onChange={(e) => updateField("common_mistake", e.target.value)} className="rounded-2xl min-h-[60px]" />
-            <Textarea placeholder="记忆提示" value={form.memory_tip} onChange={(e) => updateField("memory_tip", e.target.value)} className="rounded-2xl min-h-[60px]" />
+            <Textarea placeholder="常见错误" value={form.common_mistake} onChange={(e) => updateField("common_mistake", e.target.value)} className="rounded-[12px] min-h-[60px]" />
+            <Textarea placeholder="记忆提示" value={form.memory_tip} onChange={(e) => updateField("memory_tip", e.target.value)} className="rounded-[12px] min-h-[60px]" />
           </CardContent>
         </Card>
 

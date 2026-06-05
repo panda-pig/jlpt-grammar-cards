@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Header } from "@/components/layout/Header";
-import { AdminSidebar } from "@/components/layout/AdminSidebar";
+import { AdminSidebar, AdminMobileNav } from "@/components/layout/AdminSidebar";
 import { Card, CardContent } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
@@ -62,7 +62,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
       <div className="flex min-h-screen flex-col">
         <Header />
         <main className="flex flex-1 items-center justify-center bg-background p-6">
-          <Card className="w-full max-w-md rounded-[40px] border border-[rgba(36,36,36,0.16)] bg-[#f6f3f1] shadow-none">
+          <Card className="card-soft w-full max-w-md rounded-[20px] border border-[#ded8d0] bg-[#fbfaf8] shadow-none">
             <CardContent className="space-y-4 p-6 text-center">
               <h1 className="font-serif text-2xl">{dict.admin.unavailableTitle}</h1>
               <p className="text-sm leading-relaxed text-[#797776]">{dict.admin.unavailableDesc}</p>
@@ -79,9 +79,10 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
+      <AdminMobileNav />
       <div className="flex flex-1">
         <AdminSidebar />
-        <main className="flex-1 overflow-auto p-6 bg-background">{children}</main>
+        <main className="flex-1 overflow-auto p-4 sm:p-6 bg-background">{children}</main>
       </div>
     </div>
   );
