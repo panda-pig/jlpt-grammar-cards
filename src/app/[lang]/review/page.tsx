@@ -154,7 +154,13 @@ export default function ReviewPage() {
           </div>
         )}
         <div className="mx-auto max-w-4xl py-4 sm:py-6">
-          <h1 className="text-2xl font-bold mb-6">{dict.review.title}</h1>
+          <div className="mb-5">
+            <div className="mb-2 flex items-center gap-[10px] font-mono text-[12px] uppercase tracking-[.06em] text-[#797776]">
+              <div className="h-px w-8 bg-[#242424]" />
+              SM-2 Spaced Repetition
+            </div>
+            <h1 className="font-serif text-[clamp(28px,3.6vw,46px)] font-bold leading-[1.08] tracking-[-0.022em] text-black text-balance">{dict.review.title}</h1>
+          </div>
           <p className="mb-4 text-sm text-[#797776]">{dict.review.oldReviewOnly}</p>
 
           <div className="grid gap-3 sm:grid-cols-4 mb-8">

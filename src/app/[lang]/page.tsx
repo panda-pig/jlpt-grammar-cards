@@ -1,142 +1,227 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { MainLayout } from "@/components/layout/MainLayout";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { useDictionary, useLocale } from "@/components/layout/LocaleProvider";
 import { useAuth } from "@/hooks/useAuth";
 import { grammarService } from "@/services/grammarService";
 import { learningService } from "@/services/learningService";
-import { BookOpen, RotateCcw, Brain, AlertTriangle, Bookmark, BarChart3, ArrowRight, Play, Crown, Heart } from "lucide-react";
+import { Crown, Heart, Play } from "lucide-react";
 
-const featureList = [
-  { icon: BookOpen, color: "bg-[#cfdaf5] text-[#242424]" },
-  { icon: RotateCcw, color: "bg-[#fff6df] text-[#8a6a20]" },
-  { icon: Brain, color: "bg-[#dcebd8] text-[#315b3b]" },
-  { icon: AlertTriangle, color: "bg-[#f4b4a8]/40 text-[#7a3a30]" },
-  { icon: Bookmark, color: "bg-[#e8e0f5] text-[#5a3a8a]" },
-  { icon: BarChart3, color: "bg-[#d8e8f0] text-[#2a5a7a]" },
+// ── Marquee grammar items ──────────────────────────────────────────
+const MARQUEE_ITEMS = [
+  { text: "わけではない", level: "N3" },
+  { text: "にもかかわらず", level: "N2" },
+  { text: "に違いない", level: "N3" },
+  { text: "をはじめ", level: "N3" },
+  { text: "ばかりか", level: "N2" },
+  { text: "ことになっている", level: "N3" },
+  { text: "からこそ", level: "N3" },
+  { text: "といえども", level: "N1" },
+  { text: "をものともせず", level: "N1" },
+  { text: "に足りる", level: "N1" },
+  { text: "てはならない", level: "N4" },
+  { text: "ようとしない", level: "N2" },
+  { text: "てしかたがない", level: "N3" },
+  { text: "のみならず", level: "N1" },
+  { text: "ものだから", level: "N3" },
 ];
 
-const flowVisuals = [
-  { icon: BarChart3, color: "bg-[#d8e8f0] text-[#2a5a7a]" },
-  { icon: BookOpen, color: "bg-[#cfdaf5] text-[#242424]" },
-  { icon: RotateCcw, color: "bg-[#fff6df] text-[#8a6a20]" },
-  { icon: Brain, color: "bg-[#dcebd8] text-[#315b3b]" },
-  { icon: Bookmark, color: "bg-[#e8e0f5] text-[#5a3a8a]" },
-];
+const LEVEL_BADGE: Record<string, string> = {
+  N5: "bg-[#dcebd8] text-[#315b3b]",
+  N4: "bg-[#d8e8f0] text-[#2a5a7a]",
+  N3: "bg-[#cfdaf5] text-[#2a3a5a]",
+  N2: "bg-[#e8e0f5] text-[#5a3a8a]",
+  N1: "bg-[#f4b4a8] text-[#7a3a30]",
+};
 
+const FLOW_ICONS = ["🎯", "📖", "🃏", "⭐", "✅"];
+const FLOW_COLORS = [
+  "bg-[#d8e8f0]",
+  "bg-[#cfdaf5]",
+  "bg-[#fff6df]",
+  "bg-[#f4b4a8]/40",
+  "bg-[#dcebd8]",
+];
+const FLOW_CHIPS = ["N2 · 条件表达", "〜に限らず", "Good → +3天", "Due 18 今日", "Pinned N1 敬語"];
+
+// ── Component ──────────────────────────────────────────────────────
 export default function HomePage() {
   const dict = useDictionary();
   const locale = useLocale();
   const { user } = useAuth();
-  const [stats, setStats] = useState({ totalGrammar: 680, learned: 0, due: 0, mastered: 0 });
-  const [levelPcts, setLevelPcts] = useState<Record<string, number>>({ N5: 0, N4: 0, N3: 0, N2: 0, N1: 0 });
 
+  const [stats, setStats] = useState({ totalGrammar: 955, learned: 0, due: 0, mastered: 0 });
+  const [levelPcts, setLevelPcts] = useState<Record<string, number>>({ N5: 0, N4: 0, N3: 0, N2: 0, N1: 0 });
+  const [cardFlipped, setCardFlipped] = useState(false);
+  const [marqueeHovered, setMarqueeHovered] = useState(false);
+  const flipTimer = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
+  const userFlipped = useRef(false);
+
+  // Load stats
   useEffect(() => {
     (async () => {
-      const [rows, progressMap] = await Promise.all([
-        grammarService.getAll(user?.id ?? undefined).catch(() => [] as any[]),
-        learningService.getProgressMap(user?.id ?? undefined).catch(() => new Map()),
-      ]);
+      try {
+        const [rows, progressMap] = await Promise.all([
+          grammarService.getAll(user?.id ?? undefined).catch(() => [] as any[]),
+          learningService.getProgressMap(user?.id ?? undefined).catch(() => new Map()),
+        ]);
+        const total = rows.length;
+        const byLevel: Record<string, { total: number; learned: number }> = {
+          N5: { total: 0, learned: 0 }, N4: { total: 0, learned: 0 },
+          N3: { total: 0, learned: 0 }, N2: { total: 0, learned: 0 }, N1: { total: 0, learned: 0 },
+        };
+        let learned = 0, mastered = 0, due = 0;
+        const now = Date.now();
 
-      const total = rows.length;
-      const byLevel: Record<string, { total: number; learned: number }> = { N5: { total: 0, learned: 0 }, N4: { total: 0, learned: 0 }, N3: { total: 0, learned: 0 }, N2: { total: 0, learned: 0 }, N1: { total: 0, learned: 0 } };
-      let learned = 0;
-      let mastered = 0;
-
-      for (const row of rows) {
-        const level = row.jlpt_level ?? row.jlptLevel;
-        if (byLevel[level]) byLevel[level].total++;
-        const progress = progressMap.get(String(row.source_key ?? row.id));
-        if (progress) {
-          if (progress.study_status === "学习中" || progress.study_status === "已掌握") {
-            learned++;
-            if (byLevel[level]) byLevel[level].learned++;
+        for (const row of rows) {
+          const level = row.jlpt_level ?? row.jlptLevel;
+          if (byLevel[level]) byLevel[level].total++;
+          const p = progressMap.get(String(row.source_key ?? row.id));
+          if (p) {
+            if (p.study_status === "学习中" || p.study_status === "已掌握") {
+              learned++;
+              if (byLevel[level]) byLevel[level].learned++;
+            }
+            if (p.study_status === "已掌握") mastered++;
+            if (p.next_review_at && new Date(p.next_review_at).getTime() <= now && p.study_status === "学习中") due++;
           }
-          if (progress.study_status === "已掌握") mastered++;
         }
-      }
 
-      const now = Date.now();
-      let due = 0;
-      for (const [, p] of progressMap) {
-        if (p.next_review_at && new Date(p.next_review_at).getTime() <= now && p.study_status === "学习中") {
-          due++;
-        }
-      }
+        const pcts: Record<string, number> = {};
+        for (const lv of ["N5", "N4", "N3", "N2", "N1"])
+          pcts[lv] = byLevel[lv].total > 0 ? Math.round((byLevel[lv].learned / byLevel[lv].total) * 100) : 0;
 
-      const pcts: Record<string, number> = {};
-      for (const lv of ["N5", "N4", "N3", "N2", "N1"]) {
-        pcts[lv] = byLevel[lv].total > 0 ? Math.round((byLevel[lv].learned / byLevel[lv].total) * 100) : 0;
-      }
-
-      setStats({ totalGrammar: total, learned, due, mastered });
-      setLevelPcts(pcts);
+        setStats({ totalGrammar: total, learned, due, mastered });
+        setLevelPcts(pcts);
+      } catch { /* fallback to defaults */ }
     })();
   }, [user]);
 
+  // Auto-flip flashcard
+  useEffect(() => {
+    const start = setTimeout(() => {
+      flipTimer.current = setInterval(() => {
+        if (!userFlipped.current) setCardFlipped(f => !f);
+      }, 3200);
+    }, 1800);
+    return () => { clearTimeout(start); clearInterval(flipTimer.current); };
+  }, []);
+
+  const handleCardClick = () => {
+    userFlipped.current = true;
+    clearInterval(flipTimer.current);
+    setCardFlipped(f => !f);
+  };
+
+  const allMarqueeItems = [...MARQUEE_ITEMS, ...MARQUEE_ITEMS];
+
   return (
     <MainLayout>
-      <div className="overflow-x-hidden bg-background">
-        {/* Hero Section */}
-        <section className="mx-auto max-w-[1200px] px-6 pt-10 pb-12 md:pt-14 md:pb-16">
-          <div className="grid min-w-0 gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:gap-12 items-center">
-            <div className="min-w-0 text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 rounded-full bg-[rgba(36,36,36,0.06)] px-3 py-1 mb-4">
-                <BookOpen className="h-3 w-3 text-[#242424]" />
-                <span className="font-mono text-[10px] text-[#242424]">{dict.home.totalGrammar} {stats.totalGrammar}</span>
+      <div className="overflow-x-hidden">
+
+        {/* ══ HERO ═══════════════════════════════════════════════════ */}
+        <section className="mx-auto max-w-[1160px] px-6 pt-16 pb-14 md:pt-20 md:pb-16">
+          <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+
+            {/* Copy */}
+            <div className="text-center lg:text-left">
+              <div className="mb-5 flex items-center justify-center gap-[10px] font-mono text-[12px] uppercase tracking-[.06em] text-[#797776] lg:justify-start">
+                <div className="h-px w-8 bg-[#242424]" />
+                N1–N5 Grammar Cards · SM-2 Review
               </div>
-              <h1 className="mx-auto max-w-[11em] font-serif text-[clamp(28px,4.5vw,48px)] leading-[1.15] tracking-[-0.02em] text-[#000000] lg:mx-0 lg:max-w-none">
-                <span>{dict.home.heroTitle1}</span>
-                <span className="block sm:inline">{dict.home.heroTitle2}</span>
+              <h1 className="mb-4 font-serif text-[clamp(42px,5.6vw,70px)] font-bold leading-[1.02] tracking-[-0.025em] text-black">
+                把日语语法<br />变成每天<br />能复习的词卡。
               </h1>
-              <p className="mx-auto mt-3 max-w-[22rem] text-sm leading-relaxed text-[#797776] lg:mx-0 lg:max-w-md">
-                {dict.home.heroSubtitle}
+              <p className="mb-7 mx-auto max-w-[480px] text-[17px] leading-[1.75] text-[#4c4947] lg:mx-0">
+                面向中文学习者的 JLPT 语法牌组：例句、接续、易混点与间隔复习，放在同一个桌面里。先用访客模式开始，之后再同步到账号。
               </p>
-              <div className="mx-auto mt-5 flex w-full max-w-[21rem] flex-col gap-2.5 justify-center sm:max-w-none sm:flex-row lg:mx-0 lg:justify-start">
-                <Link
-                  href={`/${locale}/study`}
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#242424] px-5 py-2.5 font-mono text-sm text-[#f6f3f1] transition-colors hover:bg-black sm:w-auto"
-                >
-                  <Play className="h-4 w-4" />
-                  {dict.common.startLearning}
+              <div className="mb-6 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
+                <Link href={`/${locale}/study`} className="btn-v3-primary">
+                  <Play className="h-4 w-4" /> {dict.common.startLearning}
                 </Link>
-                <Link
-                  href={`/${locale}/grammar`}
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-[rgba(36,36,36,0.2)] bg-transparent px-5 py-2.5 font-mono text-sm text-[#242424] transition-colors hover:bg-[rgba(36,36,36,0.04)] sm:w-auto"
-                >
+                <Link href={`/${locale}/grammar`} className="btn-v3-secondary">
                   {dict.common.viewLibrary}
                 </Link>
               </div>
+              <div className="mb-5 flex flex-wrap justify-center gap-[6px] lg:justify-start">
+                {(["N5", "N4", "N3", "N2", "N1"] as const).map((lv) => (
+                  <span key={lv} className={`font-mono text-[11px] font-bold px-[11px] py-[4px] rounded-full ${LEVEL_BADGE[lv]}`}>
+                    {lv}
+                  </span>
+                ))}
+              </div>
+              <div className="flex items-center justify-center gap-[10px] text-[14px] text-[#797776] lg:justify-start">
+                <div className="h-[8px] w-[8px] shrink-0 rounded-full bg-[#315b3b] shadow-[0_0_0_5px_rgba(220,235,216,.9)]" />
+                本地访客进度可用，登录后同步到账号与复习队列。
+              </div>
             </div>
 
-            <div className="flex min-w-0 justify-center lg:justify-end">
-              <div className="flex w-full max-w-[calc(100vw-48px)] min-w-0 flex-col gap-4 rounded-[24px] bg-[#cfdaf5] p-6 shadow-sm sm:max-w-[320px]">
-                <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <Badge variant="outline" className="rounded-full border-[#242424]/20 text-[#242424] font-mono text-[10px] px-2 py-0.5">
-                      N3
-                    </Badge>
-                    <span className="min-w-0 truncate font-mono text-[10px] text-[#797776]">Noun-phrase + わけではない</span>
-                  </div>
-                  <h2 className="font-serif text-[clamp(22px,3vw,32px)] leading-[1.1] text-[#000000]">
-                    ～わけではない
-                  </h2>
-                  <p className="mt-2 text-sm text-[#242424]/80 font-medium">
-                    {dict.home.previewMeaning}
-                  </p>
-                </div>
-                <div className="space-y-2">
-                  <div className="rounded-xl bg-white/50 px-3 py-2.5">
-                    <p className="font-mono text-[10px] text-[#797776] mb-0.5">{dict.home.previewStructure}</p>
-                    <p className="text-sm text-[#242424]">{dict.home.previewStructurePattern}</p>
-                  </div>
-                  <div className="rounded-xl bg-white/50 px-3 py-2.5">
-                    <p className="font-mono text-[10px] text-[#797776] mb-0.5">{dict.home.previewStatus}</p>
-                    <p className="text-sm text-[#242424]">{dict.home.previewStatusValue}</p>
+            {/* Flashcard */}
+            <div className="flex justify-center lg:justify-end">
+              <div className="relative" style={{ width: 310, height: 410 }}>
+                <div className="absolute inset-0 rounded-[22px] border border-[#ded8d0] bg-[#fbfaf8]"
+                  style={{ transform: "rotate(5deg) translate(7px,12px)", zIndex: 0 }} />
+                <div className="absolute inset-0 rounded-[22px] border border-[#ded8d0] bg-[#fbfaf8]"
+                  style={{ transform: "rotate(-4deg) translate(-5px,16px)", zIndex: 0 }} />
+                <div className="fc-perspective absolute inset-0" style={{ zIndex: 1 }}>
+                  <div
+                    className={`fc-inner w-full h-full cursor-pointer select-none ${cardFlipped ? "fc-flipped" : ""}`}
+                    onClick={handleCardClick}
+                  >
+                    {/* Front */}
+                    <div className="fc-face absolute inset-0 rounded-[22px] p-7 flex flex-col"
+                      style={{ background: "#cfdaf5", border: "1px solid rgba(100,140,220,.18)",
+                        boxShadow: "0 28px 64px rgba(100,140,220,.22), 0 4px 16px rgba(36,36,36,.06)" }}>
+                      <div className="mb-2 flex items-center gap-[7px] font-mono text-[11px] text-[rgba(36,36,36,.5)]">
+                        <span className="rounded-full bg-[rgba(36,36,36,.08)] px-[9px] py-[3px] font-bold">N3</span>
+                        <span>条件・逆接</span>
+                      </div>
+                      <div className="font-serif text-[44px] leading-[1.08] text-black flex-1 flex items-center">
+                        ～わけでは<br />ない
+                      </div>
+                      <div className="rounded-[11px] bg-[rgba(255,255,255,.52)] p-[11px]">
+                        <div className="font-mono text-[10px] text-[rgba(36,36,36,.42)] mb-[3px]">接続形式</div>
+                        <div className="font-mono text-[12px] text-[rgba(36,36,36,.7)]">普通形 + わけではない</div>
+                      </div>
+                      <div className="mt-[10px] text-center font-mono text-[10px] text-[rgba(36,36,36,.38)]">
+                        点击查看详解 →
+                      </div>
+                    </div>
+                    {/* Back */}
+                    <div className="fc-face fc-face-back absolute inset-0 rounded-[22px] p-7 flex flex-col"
+                      style={{ background: "#fbfaf8", border: "1px solid #ded8d0",
+                        boxShadow: "0 24px 56px rgba(36,36,36,.1), 0 4px 14px rgba(36,36,36,.05)" }}>
+                      <div className="mb-3 flex items-center justify-between">
+                        <span className="font-mono text-[11px] font-bold rounded-full bg-[#cfdaf5] text-[#2a3a5a] px-[11px] py-[4px]">N3</span>
+                        <span className="font-mono text-[10px] text-[#797776]">点击翻回</span>
+                      </div>
+                      <div className="text-[19px] font-semibold text-[#242424] mb-3 leading-[1.4]">
+                        并不是……；<br />并非真的……
+                      </div>
+                      <div className="mb-2">
+                        <div className="font-mono text-[10px] uppercase tracking-[.06em] text-[#797776] mb-1">例句</div>
+                        <div className="text-[14px] font-medium leading-[1.5]">嫌いなわけではないが、好きでもない。</div>
+                        <div className="text-[12px] text-[#797776] mt-[2px]">并不是讨厌，只是也不喜欢。</div>
+                      </div>
+                      <div className="rounded-[10px] bg-[#fff6df] p-[10px] text-[12px] text-[#8a6a20] leading-[1.5]">
+                        <div className="font-mono text-[10px] mb-[3px]">⚠ 易错点</div>
+                        与「わけがない」区分：后者强调客观上"不可能"，语气更强。
+                      </div>
+                      <div className="mt-auto grid grid-cols-4 gap-[5px] pt-3">
+                        {[
+                          { label: "Again", cls: "bg-[#f4b4a8] text-[#7a3a30]" },
+                          { label: "Hard",  cls: "bg-[#fff6df] text-[#8a6a20]" },
+                          { label: "Good ✓",cls: "bg-[#cfdaf5] text-[#2a3a5a]" },
+                          { label: "Easy",  cls: "bg-[#dcebd8] text-[#315b3b]" },
+                        ].map((b) => (
+                          <div key={b.label} className={`rounded-[9px] py-[8px] text-center font-mono text-[10px] font-bold ${b.cls}`}>
+                            {b.label}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -144,178 +229,289 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Feature Cards */}
-        <section className="mx-auto max-w-[1200px] px-6 py-12 md:py-16">
-          <div className="mb-8 text-center">
-            <h2 className="font-serif text-xl md:text-2xl tracking-[-0.02em]">
-              {dict.home.featuresTitle}
-            </h2>
-            <p className="mt-2 text-sm text-[#797776]">
-              {dict.home.featuresSubtitle}
-            </p>
-          </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {dict.home.features.map((f, i) => {
-              const Icon = featureList[i].icon;
-              return (
-                <div
-                  key={i}
-                  className="bg-[#fbfaf8] border border-[rgba(36,36,36,0.12)] rounded-[20px] p-5 hover:shadow-sm transition-shadow"
-                >
-                  <div className={`w-9 h-9 rounded-lg ${featureList[i].color} flex items-center justify-center mb-3`}>
-                    <Icon className="h-4 w-4" />
-                  </div>
-                  <h3 className="font-mono text-sm font-medium mb-1 text-[#242424]">{f.title}</h3>
-                  <p className="text-xs text-[#797776] leading-relaxed">{f.desc}</p>
-                </div>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* Learning Flow */}
-        <section className="mx-auto max-w-[1120px] px-6 py-10 md:py-14">
-          <div className="text-center mb-8">
-            <h2 className="font-serif text-xl md:text-2xl tracking-[-0.02em]">
-              {dict.home.flowTitle}
-            </h2>
-            <p className="mt-2 text-sm text-[#797776]">
-              {dict.home.flowSubtitle}
-            </p>
-          </div>
-
-          <div className="relative overflow-hidden rounded-[28px] border border-[rgba(36,36,36,0.12)] bg-[#fbfaf8] p-3 shadow-[0_16px_40px_rgba(36,36,36,0.04)] md:p-4">
-            <div className="pointer-events-none absolute left-[8%] right-[8%] top-[55px] hidden h-px bg-[rgba(36,36,36,0.12)] md:block" />
-            <div className="grid gap-3 md:grid-cols-5">
-              {dict.home.flowSteps.map((step, i) => {
-                const FlowIcon = flowVisuals[i].icon;
-                return (
-                  <div key={i} className="relative">
-                    <div className="group flex h-full min-h-[150px] flex-col rounded-[22px] border border-[rgba(36,36,36,0.08)] bg-[#f6f3f1] p-4 transition-all hover:-translate-y-0.5 hover:border-[rgba(36,36,36,0.16)] hover:shadow-[0_12px_24px_rgba(36,36,36,0.06)]">
-                      <div className="mb-4 flex items-center justify-between">
-                        <div className={`flex h-9 w-9 items-center justify-center rounded-xl ${flowVisuals[i].color}`}>
-                          <FlowIcon className="h-4 w-4" />
-                        </div>
-                        <span className="flex h-6 min-w-6 items-center justify-center rounded-full bg-[#242424] px-2 font-mono text-[10px] font-medium text-[#f6f3f1]">
-                          {String(i + 1).padStart(2, "0")}
-                        </span>
-                      </div>
-                      <p className="font-mono text-sm font-medium leading-tight text-[#242424]">{step.step}</p>
-                      <p className="mt-2 text-xs leading-relaxed text-[#797776]">{step.desc}</p>
-                    </div>
-                    {i < dict.home.flowSteps.length - 1 && (
-                      <div className="absolute left-full top-[42px] z-10 hidden -translate-x-1/2 md:block">
-                        <div className="flex h-6 w-6 items-center justify-center rounded-full border border-[rgba(36,36,36,0.12)] bg-[#fbfaf8]">
-                          <ArrowRight className="h-3 w-3 text-[#242424]/40" />
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          <div className="mt-6 text-center">
-            <Link
-              href={`/${locale}/study`}
-              className="inline-flex items-center gap-2 bg-[#242424] text-[#f6f3f1] rounded-full px-5 py-2.5 font-mono text-sm hover:bg-black transition-colors"
-            >
-              <Play className="h-4 w-4" />
-              {dict.common.startLearning}
-            </Link>
-          </div>
-        </section>
-
-        {/* Dashboard Preview */}
-        <section className="mx-auto max-w-[1200px] px-6 py-12 md:py-16">
-          <div className="text-center mb-8">
-            <h2 className="font-serif text-xl md:text-2xl tracking-[-0.02em]">
-              {dict.home.statsTitle}
-            </h2>
-            <p className="mt-2 text-sm text-[#797776]">
-              {dict.home.statsSubtitle}
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
-            {[
-              { value: String(stats.due), label: dict.home.todayReview, color: "bg-[#cfdaf5]" },
-              { value: String(stats.learned), label: dict.home.learnedGrammar, color: "bg-[#dcebd8]" },
-              { value: String(stats.mastered), label: dict.home.masteredGrammar, color: "bg-[#fff6df]" },
-              { value: String(stats.totalGrammar), label: dict.home.totalGrammar, color: "bg-[#f4b4a8]/40" },
-            ].map((s, i) => (
-              <Card key={i} className={`border-0 rounded-[20px] ${s.color} shadow-none`}>
-                <CardContent className="p-5 text-center">
-                  <p className="font-mono text-2xl font-medium text-[#242424]">{s.value}</p>
-                  <p className="text-xs text-[#242424]/70 mt-0.5">{s.label}</p>
-                </CardContent>
-              </Card>
+        {/* ══ MARQUEE ════════════════════════════════════════════════ */}
+        <div
+          className="border-y border-[#ded8d0] bg-[rgba(251,250,247,.82)] py-[13px] overflow-hidden"
+          onMouseEnter={() => setMarqueeHovered(true)}
+          onMouseLeave={() => setMarqueeHovered(false)}
+        >
+          <div className={`flex w-max ${marqueeHovered ? "animate-marquee-paused" : "animate-marquee"}`}>
+            {allMarqueeItems.map((item, i) => (
+              <span key={i} className="inline-flex items-center gap-2 whitespace-nowrap px-[18px]">
+                <span className="font-mono text-[13px] font-semibold text-[#242424]">{item.text}</span>
+                <span className={`font-mono text-[10px] font-bold px-[8px] py-[3px] rounded-full ${LEVEL_BADGE[item.level]}`}>
+                  {item.level}
+                </span>
+                <span className="text-[#ded8d0] text-[18px] mx-[2px]">·</span>
+              </span>
             ))}
           </div>
+        </div>
 
-          <Card className="border border-[rgba(36,36,36,0.12)] rounded-[24px] bg-[#fbfaf8] shadow-none overflow-hidden">
-            <CardContent className="p-6 md:p-8">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="font-mono text-sm font-medium text-[#242424]">{dict.home.levelProgress}</h3>
-                <Link href={`/${locale}/dashboard`} className="font-mono text-xs text-[#797776] hover:text-[#242424] transition-colors">
-                  {dict.home.viewDetails}
-                </Link>
+        {/* ══ FEATURES (Bento) ═══════════════════════════════════════ */}
+        <section className="mx-auto max-w-[1160px] px-6 py-16 md:py-20">
+          <div className="mb-10 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <div className="mb-[6px] flex items-center gap-[10px] font-mono text-[12px] uppercase tracking-[.06em] text-[#797776]">
+                <div className="h-px w-8 bg-[#242424]" />
+                Study Surface
               </div>
-              <div className="space-y-4">
-                {(["N5","N4","N3","N2","N1"] as const).map((level) => (
-                  <div key={level}>
-                    <div className="flex items-center gap-2 mb-1.5">
-                      <span className="w-7 h-7 rounded-md bg-[#242424] text-[#f6f3f1] flex items-center justify-center font-mono text-[10px] font-medium">
-                        {level}
-                      </span>
-                      <span className="font-mono text-[10px] text-[#797776]">
-                        {dict.home.levelComplete.replace("{percent}", String(levelPcts[level]))}
-                      </span>
+              <h2 className="font-serif text-[clamp(28px,3.8vw,46px)] font-bold leading-[1.1] tracking-[-0.02em] text-balance">
+                不是资料堆，而是可复习的语法系统。
+              </h2>
+            </div>
+            <Link href={`/${locale}/grammar`} className="btn-v3-secondary shrink-0 self-start sm:self-end">
+              {dict.common.viewLibrary}
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-[10px]">
+            {/* Grammar library */}
+            <div className="lg:col-span-7 rounded-[18px] border border-[rgba(100,140,220,.16)] bg-[#cfdaf5]/40 p-6">
+              <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-[rgba(36,36,36,.08)] text-xl">📚</div>
+              <div className="font-mono text-[15px] font-bold mb-2">JLPT N1～N5 语法库</div>
+              <div className="text-[13px] text-[#797776] leading-[1.65]">{stats.totalGrammar}+ 条按等级、语法场景、来源系统整理，支持关键词搜索、多维度筛选。</div>
+              <div className="mt-5 flex flex-wrap gap-[6px]">
+                {[
+                  { text: "から〜にかけて", lv: "N2", c: "#5a3a8a" },
+                  { text: "ものだから",     lv: "N3", c: "#315b3b" },
+                  { text: "に違いない",     lv: "N3", c: "#2a3a5a" },
+                  { text: "といえども",     lv: "N1", c: "#7a3a30" },
+                  { text: "のみならず",     lv: "N1", c: "#7a3a30" },
+                  { text: "に足りる",       lv: "N1", c: "#7a3a30" },
+                ].map((t) => (
+                  <div key={t.text} className="rounded-[10px] border border-[#ded8d0] bg-[#f6f3f1] px-[11px] py-[7px] font-mono text-[11px]">
+                    <div className="font-bold text-[#242424]">{t.text}</div>
+                    <div className="text-[10px] mt-[2px]" style={{ color: t.c }}>{t.lv}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* SM-2 */}
+            <div className="lg:col-span-5 rounded-[18px] border border-[rgba(49,91,59,.12)] bg-[#dcebd8]/50 p-6">
+              <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-[rgba(36,36,36,.08)] text-xl">🔄</div>
+              <div className="font-mono text-[15px] font-bold mb-2">SM-2 间隔复习</div>
+              <div className="text-[13px] text-[#797776] leading-[1.65]">根据掌握度动态调整间隔，在遗忘曲线最佳时机自动提醒复习。</div>
+              <div className="mt-5 flex h-[58px] items-end gap-[5px]">
+                {[18, 34, 50, 64, 78, 92, 100].map((h, i) => (
+                  <div key={i} className="flex-1 rounded-t-[4px] bg-[#315b3b]" style={{ height: `${h}%`, opacity: 0.3 + i * 0.1 }} />
+                ))}
+              </div>
+              <div className="mt-[5px] font-mono text-[10px] text-[#315b3b] opacity-75">掌握度越高，间隔递增 →</div>
+            </div>
+
+            {/* 3 narrow cards */}
+            {[
+              { title: "相近语法对比", desc: "「のに」vs「のだから」，每条标注常见混淆项与核心区别。", icon: "🔍", bg: "bg-[#e8e0f5]/30" },
+              { title: "学习进度追踪", desc: "Dashboard 实时展示已学/掌握数量、连续天数和评分分布。", icon: "📊", bg: "bg-[#fff6df]/50" },
+              { title: "Guest 模式",   desc: "无需注册即可学习，登录后一键同步本地进度到账号。",     icon: "☁️", bg: "bg-[#d8e8f0]/40" },
+            ].map((f) => (
+              <div key={f.title} className={`lg:col-span-4 rounded-[18px] border border-[#ded8d0] ${f.bg} p-6`}>
+                <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-[rgba(36,36,36,.07)] text-xl">{f.icon}</div>
+                <div className="font-mono text-[15px] font-bold mb-2">{f.title}</div>
+                <div className="text-[13px] text-[#797776] leading-[1.65]">{f.desc}</div>
+              </div>
+            ))}
+
+            {/* Personal library */}
+            <div className="sm:col-span-2 lg:col-span-12 rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] p-6 flex flex-col sm:flex-row items-start sm:items-center gap-6">
+              <div className="flex-1 min-w-0">
+                <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-[#f4b4a8]/40 text-xl">✏️</div>
+                <div className="font-mono text-[15px] font-bold mb-2">个人语法库</div>
+                <div className="text-[13px] text-[#797776] leading-[1.65]">新增私有条目，隐藏不需要的语法，备注个人理解。Pro 用户无限制。</div>
+              </div>
+              <div className="flex flex-wrap gap-[7px] shrink-0">
+                <div className="rounded-[10px] bg-[#f4b4a8] px-[13px] py-[7px] font-mono text-[11px] font-bold text-[#7a3a30]">+ 新增私有语法</div>
+                {["眼から鱗 · 私人", "お世話になります"].map((t) => (
+                  <div key={t} className="rounded-[10px] border border-[#ded8d0] bg-[#f6f3f1] px-[13px] py-[7px] font-mono text-[11px] text-[#797776]">{t}</div>
+                ))}
+                <div className="rounded-[10px] border border-[#ded8d0] bg-[#f6f3f1] px-[13px] py-[7px] font-mono text-[11px] text-[#797776] opacity-40 line-through">N3 已隐藏</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ══ LEARNING FLOW ══════════════════════════════════════════ */}
+        <section className="border-t border-[#ded8d0] bg-[rgba(251,250,247,.78)]">
+          <div className="mx-auto max-w-[1160px] px-6 py-16 md:py-20">
+            <div className="grid gap-10 lg:grid-cols-[minmax(220px,320px)_1fr]">
+              <div className="border-l-2 border-[#242424] pl-5 lg:sticky lg:top-24 lg:self-start">
+                <div className="mb-[6px] flex items-center gap-[10px] font-mono text-[12px] uppercase tracking-[.06em] text-[#797776]">
+                  <div className="h-px w-8 bg-[#242424]" />
+                  Five-step learning loop
+                </div>
+                <h2 className="font-serif text-[clamp(26px,3.4vw,40px)] font-bold leading-[1.1] tracking-[-0.02em] mt-2 text-balance">
+                  从查语法到复习，一条完整轨道。
+                </h2>
+                <p className="mt-3 text-[15px] text-[#797776] leading-[1.7]">
+                  选等级、读卡、打分、进队列、沉淀到收藏库——5 步形成闭环。
+                </p>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-5 border border-[#c9c1b8] rounded-[18px] overflow-hidden bg-[#c9c1b8] gap-px">
+                {dict.home.flowSteps.map((step, i) => (
+                  <div key={i} className="bg-[#fbfaf8] p-5 flex flex-col hover:bg-[rgba(207,218,245,.18)] transition-colors">
+                    <div className="mb-3 flex h-[36px] w-[36px] items-center justify-center rounded-full border border-[#242424] bg-[#fbfaf8] font-mono text-[12px] font-bold">
+                      {String(i + 1).padStart(2, "0")}
                     </div>
-                    <div className="h-2 bg-[rgba(36,36,36,0.08)] rounded-full overflow-hidden">
-                      <div className="h-full bg-[#242424] rounded-full transition-all duration-500" style={{ width: `${levelPcts[level]}%` }} />
+                    <div className={`mb-3 flex h-[38px] w-[38px] items-center justify-center rounded-[10px] text-[17px] ${FLOW_COLORS[i]}`}>
+                      {FLOW_ICONS[i]}
+                    </div>
+                    <div className="font-serif text-[15px] font-bold mb-[6px] leading-[1.2]">{step.step}</div>
+                    <div className="text-[12px] text-[#66615d] leading-[1.6] flex-1">{step.desc}</div>
+                    <div className="mt-3 self-start rounded-full border border-[#ded8d0] bg-[#f6f3f1] px-[10px] py-[4px] font-mono text-[10px] font-bold text-[#797776]">
+                      {FLOW_CHIPS[i]}
                     </div>
                   </div>
                 ))}
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </section>
 
-        {/* CTA Section */}
-        <section className="mx-auto max-w-[1200px] px-6 pb-12 md:pb-16">
-          <div className="bg-[#242424] rounded-[24px] p-8 md:p-12 text-center overflow-hidden">
-            <div className="max-w-xl mx-auto">
-              <h2 className="mx-auto max-w-[15rem] font-serif text-lg leading-tight text-[#f6f3f1] tracking-[-0.02em] sm:max-w-none md:text-2xl">
-                {dict.home.ctaText}
-              </h2>
-              <div className="mt-6 grid gap-2.5 sm:grid-cols-3">
-                <Link
-                  href={`/${locale}/study`}
-                  className="inline-flex items-center justify-center gap-2 bg-[#f6f3f1] text-[#242424] rounded-full px-6 py-2.5 font-mono text-sm hover:bg-white transition-colors"
-                >
-                  <Play className="h-4 w-4" />
-                  {dict.home.ctaButton}
-                </Link>
-                <Link
-                  href={`/${locale}/pro`}
-                  className="inline-flex items-center justify-center gap-2 bg-transparent text-[#f6f3f1] border border-[#f6f3f1]/30 rounded-full px-6 py-2.5 font-mono text-sm hover:bg-[#f6f3f1]/10 transition-colors"
-                >
-                  <Crown className="h-4 w-4" />
-                  {dict.home.ctaPro}
-                </Link>
-                <Link
-                  href={`/${locale}/support`}
-                  className="inline-flex items-center justify-center gap-2 bg-transparent text-[#f6f3f1] border border-[#f6f3f1]/30 rounded-full px-6 py-2.5 font-mono text-sm hover:bg-[#f6f3f1]/10 transition-colors"
-                >
-                  <Heart className="h-4 w-4" />
-                  {dict.home.ctaSupport}
-                </Link>
+        {/* ══ PRODUCT PREVIEW ════════════════════════════════════════ */}
+        <section className="mx-auto max-w-[1160px] px-6 py-16 md:py-20">
+          <div className="mb-10">
+            <div className="mb-[6px] flex items-center gap-[10px] font-mono text-[12px] uppercase tracking-[.06em] text-[#797776]">
+              <div className="h-px w-8 bg-[#242424]" />
+              Product Preview
+            </div>
+            <h2 className="font-serif text-[clamp(28px,3.8vw,46px)] font-bold leading-[1.1] tracking-[-0.02em] text-balance">
+              首页也能看到学习状态，而不是只看口号。
+            </h2>
+          </div>
+          <div className="grid gap-4 md:grid-cols-2">
+            {/* Card spread */}
+            <div>
+              <div className="mb-3 font-mono text-[11px] uppercase tracking-[.07em] text-[#797776]">语法卡 · 正面 / 背面</div>
+              <div className="grid grid-cols-2 gap-[10px]">
+                <div className="rounded-[20px] border border-[rgba(100,140,220,.15)] bg-[#cfdaf5] p-5">
+                  <div className="mb-3 font-mono text-[10px] uppercase tracking-[.07em] text-[#797776]">正面</div>
+                  <div className="font-serif text-[32px] leading-[1.1] text-black mb-3">～わけでは<br />ない</div>
+                  <div className="rounded-[9px] bg-[rgba(255,255,255,.55)] p-[9px]">
+                    <div className="font-mono text-[10px] text-[rgba(36,36,36,.4)] mb-[3px]">接続形式</div>
+                    <div className="font-mono text-[11px] text-[rgba(36,36,36,.6)]">普通形 + わけではない</div>
+                  </div>
+                  <div className="mt-3 flex gap-[6px]">
+                    <span className="font-mono text-[11px] font-bold bg-[#cfdaf5] text-[#2a3a5a] border border-[rgba(36,36,36,.1)] rounded-full px-[10px] py-[3px]">N3</span>
+                  </div>
+                </div>
+                <div className="rounded-[20px] border border-[#ded8d0] bg-[#fbfaf8] p-5">
+                  <div className="mb-3 font-mono text-[10px] uppercase tracking-[.07em] text-[#797776]">背面</div>
+                  <div className="text-[16px] font-semibold mb-3 leading-[1.4]">并不是……；<br />并非真的……</div>
+                  <div className="text-[12px] font-medium leading-[1.5]">嫌いなわけではないが…</div>
+                  <div className="text-[11px] text-[#797776] mt-[2px]">并不是讨厌，只是也不喜欢。</div>
+                  <div className="mt-3 rounded-[9px] bg-[#fff6df] p-[9px] text-[11px] text-[#8a6a20] leading-[1.5]">
+                    <div className="font-mono text-[10px] mb-[2px]">⚠ 易错点</div>
+                    「わけがない」强调"不可能"，本式强调主观否定。
+                  </div>
+                  <div className="mt-3 grid grid-cols-4 gap-[4px]">
+                    {[
+                      { l: "Again", c: "bg-[#f4b4a8] text-[#7a3a30]" },
+                      { l: "Hard",  c: "bg-[#fff6df] text-[#8a6a20]" },
+                      { l: "Good",  c: "bg-[#cfdaf5] text-[#2a3a5a]" },
+                      { l: "Easy",  c: "bg-[#dcebd8] text-[#315b3b]" },
+                    ].map((b) => (
+                      <div key={b.l} className={`rounded-[8px] py-[6px] text-center font-mono text-[10px] font-bold ${b.c}`}>{b.l}</div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Dashboard */}
+            <div>
+              <div className="mb-3 font-mono text-[11px] uppercase tracking-[.07em] text-[#797776]">学习仪表盘</div>
+              <div className="rounded-[18px] border border-[#242424] overflow-hidden bg-[#fffefa]"
+                style={{ boxShadow: "0 10px 30px rgba(36,36,36,.08)" }}>
+                <div className="px-5 pt-5 pb-0 flex items-center justify-between gap-3 mb-4">
+                  <h3 className="font-serif text-[22px] font-bold">N1–N5 掌握率</h3>
+                  <span className="rounded-full border border-[#ded8d0] bg-[#dcebd8] px-[10px] py-[6px] font-mono text-[11px] font-bold text-[#315b3b] whitespace-nowrap">
+                    SM-2 synced
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 gap-px bg-[#ded8d0] border-t border-b border-[#ded8d0]">
+                  {[
+                    { val: stats.totalGrammar, lbl: "语法总数" },
+                    { val: stats.learned, lbl: "已学习" },
+                    { val: stats.due, lbl: "今日到期" },
+                    { val: stats.mastered, lbl: "稳定掌握" },
+                  ].map((m) => (
+                    <div key={m.lbl} className="bg-[#fffefa] px-5 py-4">
+                      <div className="font-serif text-[32px] leading-[1]">{m.val}</div>
+                      <div className="mt-[5px] text-[12px] text-[#797776]">{m.lbl}</div>
+                    </div>
+                  ))}
+                </div>
+                <div className="p-5 grid gap-[12px]">
+                  {(["N5", "N4", "N3", "N2", "N1"] as const).map((lv) => (
+                    <div key={lv} className="grid grid-cols-[34px_1fr_36px] gap-3 items-center">
+                      <span className="font-mono text-[12px] font-bold">{lv}</span>
+                      <div className="h-[20px] rounded-full border border-[#ded8d0] overflow-hidden bg-[#ece7e0]">
+                        <div className="h-full rounded-full transition-all duration-700"
+                          style={{ width: `${levelPcts[lv]}%`, background: "linear-gradient(90deg,#f4b4a8,#fff6df)" }} />
+                      </div>
+                      <span className="font-mono text-[12px] font-bold text-right">{levelPcts[lv]}%</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
         </section>
+
+        {/* ══ STATS ══════════════════════════════════════════════════ */}
+        <section className="border-t border-[#ded8d0]">
+          <div className="mx-auto max-w-[1160px] px-6 py-14">
+            <div className="grid grid-cols-2 sm:grid-cols-4 border border-[#242424] bg-[#242424] gap-px">
+              {[
+                { val: `${stats.totalGrammar}+`, lbl: "语法条目" },
+                { val: "5",     lbl: "JLPT 等级" },
+                { val: "SM·2", lbl: "复习算法" },
+                { val: "中/EN", lbl: "双语界面" },
+              ].map((s) => (
+                <div key={s.lbl} className="bg-[#fffefa] py-[28px] px-6 text-center">
+                  <div className="font-serif text-[36px] leading-[1] mb-[6px]">{s.val}</div>
+                  <div className="font-mono text-[11px] text-[#797776]">{s.lbl}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ══ CTA (V1 border style) ══════════════════════════════════ */}
+        <section className="mx-auto max-w-[1160px] px-6 pb-16 md:pb-20">
+          <div className="border-t-2 border-b-2 border-[#242424] py-10">
+            <div className="grid gap-8 md:grid-cols-[1fr_auto] items-center">
+              <div>
+                <div className="mb-[6px] font-mono text-[12px] uppercase tracking-[.06em] text-[#797776]">Start with local mode</div>
+                <h2 className="font-serif text-[clamp(32px,4.8vw,58px)] font-bold leading-[1.02] tracking-[-0.02em] text-balance">
+                  今天先完成 {stats.due || 18} 张，到期队列会等你回来。
+                </h2>
+                <p className="mt-3 max-w-[600px] text-[17px] text-[#797776] leading-[1.7]">
+                  免费开始学习 N5–N1 语法卡。Pro 永久版用于支持项目、解锁更多同步与高级复习能力。
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-3">
+                <Link href={`/${locale}/study`} className="btn-v3-primary">
+                  <Play className="h-4 w-4" /> {dict.home.ctaButton}
+                </Link>
+                <Link href={`/${locale}/grammar`} className="btn-v3-secondary">
+                  {dict.common.viewLibrary}
+                </Link>
+              </div>
+            </div>
+          </div>
+          <div className="mt-5 flex flex-wrap gap-5 text-[14px] text-[#797776]">
+            <Link href={`/${locale}/pro`} className="underline underline-offset-4 hover:text-[#242424] transition-colors flex items-center gap-1">
+              <Crown className="h-3.5 w-3.5" /> {dict.home.ctaPro}
+            </Link>
+            <Link href={`/${locale}/support`} className="underline underline-offset-4 hover:text-[#242424] transition-colors flex items-center gap-1">
+              <Heart className="h-3.5 w-3.5" /> {dict.home.ctaSupport}
+            </Link>
+          </div>
+        </section>
+
       </div>
     </MainLayout>
   );

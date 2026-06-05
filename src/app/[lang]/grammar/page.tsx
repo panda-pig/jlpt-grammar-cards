@@ -95,8 +95,14 @@ export default function GrammarLibraryPage() {
           </div>
         )}
         <div className="mb-6 space-y-4">
+          <div>
+            <div className="mb-2 flex items-center gap-[10px] font-mono text-[12px] uppercase tracking-[.06em] text-[#797776]">
+              <div className="h-px w-8 bg-[#242424]" />
+              JLPT N1–N5 Grammar Library
+            </div>
+          </div>
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-serif font-bold">{dict.grammar.title}</h1>
+            <h1 className="font-serif text-[clamp(28px,3.6vw,46px)] font-bold leading-[1.08] tracking-[-0.022em] text-black text-balance">{dict.grammar.title}</h1>
             <Sheet>
               <SheetTrigger className="md:hidden inline-flex items-center justify-center gap-1.5 border border-[rgba(36,36,36,0.16)] bg-transparent px-3 py-1.5 text-sm font-mono hover:bg-[#cfdaf5] transition-colors">
                 <SlidersHorizontal className="h-4 w-4" />{dict.grammar.filter}

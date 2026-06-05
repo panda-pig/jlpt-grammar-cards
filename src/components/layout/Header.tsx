@@ -39,13 +39,35 @@ export function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-40 bg-background border-b border-[rgba(36,36,36,0.16)]">
-      <div className="mx-auto max-w-[1432px] px-6 h-[72px] flex items-center justify-between">
-        <Link href={`/${locale}`} className="font-mono text-sm font-medium tracking-tight text-foreground">
-          {dict.common.siteName}
+    <header className="sticky top-0 z-40 border-b border-[#ded8d0] bg-[rgba(246,243,241,0.88)] backdrop-blur-[18px]">
+      <div className="mx-auto max-w-[1432px] px-6 h-[68px] flex items-center justify-between gap-4">
+
+        {/* Brand mark */}
+        <Link href={`/${locale}`} className="flex items-center gap-3 shrink-0">
+          <div
+            className="w-[38px] h-[38px] rounded-full border border-[#242424] flex items-center justify-center shrink-0"
+            style={{
+              background: "#fff6df",
+              boxShadow: "3px 3px 0 #cfdaf5",
+              fontFamily: "var(--font-serif)",
+              fontSize: "18px",
+              fontWeight: 700,
+            }}
+          >
+            文
+          </div>
+          <div className="hidden sm:block">
+            <div className="font-serif text-[15px] font-bold leading-tight text-[#242424]">
+              {dict.common.siteName}
+            </div>
+            <div className="font-mono text-[10px] text-[#797776] tracking-wide">
+              日语语法词卡
+            </div>
+          </div>
         </Link>
 
-        <nav className="hidden xl:flex items-center gap-6">
+        {/* Desktop nav */}
+        <nav className="hidden xl:flex items-center gap-5">
           {navItems.map((item) => {
             const active = pathname === item.href || (item.href !== `/${locale}` && pathname.startsWith(item.href));
             return (
@@ -53,10 +75,10 @@ export function Header() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "font-mono text-sm transition-colors hover:text-foreground",
+                  "font-mono text-[13px] transition-colors hover:text-[#242424]",
                   active
-                    ? "text-foreground underline underline-offset-[6px] decoration-1"
-                    : "text-muted-foreground"
+                    ? "text-[#242424] underline underline-offset-[6px] decoration-1"
+                    : "text-[#797776]"
                 )}
               >
                 {item.label}
@@ -65,20 +87,21 @@ export function Header() {
           })}
         </nav>
 
+        {/* Right actions */}
         <div className="hidden xl:flex items-center gap-3">
           <LocaleSwitcher />
           {user ? (
             <>
               <Link
                 href={`/${locale}/settings`}
-                className="font-mono text-sm text-muted-foreground hover:text-foreground transition-colors max-w-[120px] truncate"
+                className="font-mono text-[13px] text-[#797776] hover:text-[#242424] transition-colors max-w-[120px] truncate"
                 title={displayName || user.email || ""}
               >
                 {displayName || user.email}
               </Link>
               <button
                 onClick={signOut}
-                className="font-mono text-sm text-muted-foreground hover:text-foreground transition-colors"
+                className="font-mono text-[13px] text-[#797776] hover:text-[#242424] transition-colors"
               >
                 {dict.common.logout}
               </button>
@@ -86,15 +109,12 @@ export function Header() {
           ) : (
             <Link
               href={`/${locale}/login`}
-              className="font-mono text-sm text-muted-foreground hover:text-foreground transition-colors"
+              className="font-mono text-[13px] text-[#797776] hover:text-[#242424] transition-colors"
             >
               {dict.common.login}
             </Link>
           )}
-          <Link
-            href={`/${locale}/study`}
-            className="font-mono text-sm bg-[#242424] text-[#f6f3f1] rounded-full px-5 py-2.5 hover:bg-black transition-colors"
-          >
+          <Link href={`/${locale}/study`} className="btn-v3-primary text-[13px] px-5 py-2.5">
             {dict.common.startLearning}
           </Link>
         </div>

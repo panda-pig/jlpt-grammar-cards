@@ -52,9 +52,9 @@
   --radius: 2.5rem;
   --background: #f6f3f1;
   --foreground: #242424;
-  --card: #ffffff;
+  --card: #fbfaf8;
   --card-foreground: #242424;
-  --popover: #ffffff;
+  --popover: #fbfaf8;
   --popover-foreground: #242424;
   --primary: #242424;
   --primary-foreground: #f6f3f1;
@@ -65,8 +65,9 @@
   --accent: #cfdaf5;
   --accent-foreground: #242424;
   --destructive: #f4b4a8;
-  --border: rgba(36, 36, 36, 0.16);
-  --input: rgba(36, 36, 36, 0.16);
+  /* Warm border — slightly more visible on textured background */
+  --border: #ded8d0;
+  --input: #ded8d0;
   --ring: #242424;
   --chart-1: #a7dcc3;
   --chart-2: #a0b5eb;
@@ -79,17 +80,122 @@
   --sidebar-primary-foreground: #f6f3f1;
   --sidebar-accent: #cfdaf5;
   --sidebar-accent-foreground: #242424;
-  --sidebar-border: rgba(36, 36, 36, 0.16);
+  --sidebar-border: #ded8d0;
   --sidebar-ring: #242424;
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
-  --font-serif: Georgia, "Noto Serif", "Times New Roman", Times, "Songti SC", "SimSun", serif;
-  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  /* Serif: Chinese-first for JLPT content */
+  --font-sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", Roboto, sans-serif;
+  --font-serif: "Songti SC", "Noto Serif CJK SC", "Iowan Old Style", Georgia, "Noto Serif", "Times New Roman", serif;
+  --font-mono: "SFMono-Regular", "SF Mono", "Cascadia Mono", "IBM Plex Mono", Menlo, Consolas, monospace;
+}
+
+/* ── V3 Background: ruled lines + warm radial glow on html ──
+   Applied to <html> so nothing can cover it with bg-background */
+html {
+  background:
+    linear-gradient(rgba(36, 36, 36, .030) 1px, transparent 1px) 0 0 / 100% 32px,
+    radial-gradient(ellipse at 20% 8%, rgba(255, 246, 223, .72), transparent 38%),
+    #f6f3f1;
+  background-attachment: local;
 }
 
 body {
-  background: var(--background);
+  background: transparent;        /* let html texture show through */
   color: var(--foreground);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Dot-grain overlay — added as a fixed div in MainLayout */
+.page-grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9000;
+  opacity: .20;
+  background-image: repeating-radial-gradient(
+    circle at 0 0,
+    rgba(36, 36, 36, .18) 0 1px,
+    transparent 1px 6px
+  );
+  mix-blend-mode: multiply;
+}
+
+/* ── Flashcard 3D flip ── */
+.fc-perspective {
+  perspective: 1200px;
+}
+.fc-inner {
+  transform-style: preserve-3d;
+  transition: transform .72s cubic-bezier(.4, 0, .2, 1);
+}
+.fc-inner.fc-flipped {
+  transform: rotateY(180deg);
+}
+.fc-face {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.fc-face-back {
+  transform: rotateY(180deg);
+}
+
+/* ── Marquee scroll animation ── */
+@keyframes marquee-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee-scroll 32s linear infinite;
+}
+.animate-marquee-paused {
+  animation-play-state: paused;
+}
+
+/* ── V3 primary button: rose fill + ink offset shadow ── */
+.btn-v3-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #f4b4a8;
+  color: #242424;
+  border: 1px solid #242424;
+  border-radius: 999px;
+  padding: 11px 22px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: 4px 4px 0 #242424;
+  transition: transform .15s ease, box-shadow .15s ease;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.btn-v3-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 4px 6px 0 #242424;
+}
+
+.btn-v3-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #fbfaf8;
+  color: #242424;
+  border: 1px solid #242424;
+  border-radius: 999px;
+  padding: 11px 22px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  transition: transform .15s ease, background .15s ease;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.btn-v3-secondary:hover {
+  transform: translateY(-2px);
+  background: #f6f3f1;
 }

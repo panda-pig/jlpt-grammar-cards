@@ -58,10 +58,15 @@ export default function FavoritesPage() {
             <p>{dict.common.localModeDesc}</p>
           </div>
         )}
-        <div className="flex items-center gap-2 mb-4">
-          <Heart className="h-5 w-5 text-[#c47a6a]" />
-          <h1 className="text-2xl font-bold">{dict.favorites.title}</h1>
-          <Badge variant="secondary" className="rounded-full font-mono text-xs">{favorites.length}</Badge>
+        <div className="mb-5">
+          <div className="mb-2 flex items-center gap-[10px] font-mono text-[12px] uppercase tracking-[.06em] text-[#797776]">
+            <div className="h-px w-8 bg-[#242424]" />
+            Personal Collection
+          </div>
+          <div className="flex items-center gap-3">
+            <h1 className="font-serif text-[clamp(28px,3.6vw,46px)] font-bold leading-[1.08] tracking-[-0.022em] text-black text-balance">{dict.favorites.title}</h1>
+            <Badge variant="secondary" className="rounded-full font-mono text-xs">{favorites.length}</Badge>
+          </div>
         </div>
 
         <div className="flex gap-2 mb-6 overflow-x-auto pb-2">

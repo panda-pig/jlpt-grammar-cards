@@ -4,9 +4,9 @@ const redirects = require("../src/data/grammar-dedupe-redirects.json");
 const levelBands = {
   N5: [100, 160],
   N4: [130, 190],
-  N3: [90, 180],
-  N2: [120, 190],
-  N1: [120, 190],
+  N3: [90, 220],
+  N2: [120, 260],
+  N1: [120, 280],
 };
 
 const placeholderPatterns = [

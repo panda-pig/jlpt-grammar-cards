@@ -278,8 +278,11 @@ export default function MyGrammarPage() {
       <div className="mx-auto max-w-6xl px-4 py-5 sm:px-6 sm:py-7">
         <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p className="font-mono text-xs uppercase text-[#797776]">{dict.common.siteName}</p>
-            <h1 className="font-serif text-3xl text-[#242424]">{t.title}</h1>
+            <div className="mb-2 flex items-center gap-[10px] font-mono text-[12px] uppercase tracking-[.06em] text-[#797776]">
+              <div className="h-px w-8 bg-[#242424]" />
+              {dict.common.siteName}
+            </div>
+            <h1 className="font-serif text-[clamp(28px,3.6vw,46px)] font-bold leading-[1.08] tracking-[-0.022em] text-black text-balance">{t.title}</h1>
             <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[#797776]">{t.subtitle}</p>
           </div>
           <Badge className={`w-fit rounded-full px-3 py-1 font-mono text-xs ${ready ? "bg-[#dcebd8] text-[#315b3b]" : "bg-[#fff6df] text-[#7a5b20]"}`}>

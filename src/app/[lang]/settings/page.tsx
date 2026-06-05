@@ -123,7 +123,13 @@ export default function SettingsPage() {
   return (
     <MainLayout>
       <div className="mx-auto max-w-lg px-4 py-8">
-        <h1 className="font-serif text-2xl md:text-3xl text-[#242424] mb-6">{t.title}</h1>
+        <div className="mb-6">
+          <div className="mb-2 flex items-center gap-[10px] font-mono text-[12px] uppercase tracking-[.06em] text-[#797776]">
+            <div className="h-px w-8 bg-[#242424]" />
+            Account
+          </div>
+          <h1 className="font-serif text-[clamp(28px,3.6vw,46px)] font-bold leading-[1.08] tracking-[-0.022em] text-black text-balance">{t.title}</h1>
+        </div>
 
         <div className="space-y-4">
           <Card className="rounded-[28px] border border-[rgba(36,36,36,0.12)] bg-[#fbfaf8] shadow-none">

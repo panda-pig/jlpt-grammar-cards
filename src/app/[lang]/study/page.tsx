@@ -122,8 +122,11 @@ export default function StudyPage() {
 
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
           <div>
-            <p className="font-mono text-xs uppercase text-[#797776]">{dict.study.learningMode}</p>
-            <h1 className="font-serif text-2xl tracking-[-0.02em] text-[#000000]">{dict.study.startTitle}</h1>
+            <div className="mb-2 flex items-center gap-[10px] font-mono text-[12px] uppercase tracking-[.06em] text-[#797776]">
+              <div className="h-px w-8 bg-[#242424]" />
+              {dict.study.learningMode}
+            </div>
+            <h1 className="font-serif text-[clamp(28px,3.6vw,46px)] font-bold leading-[1.08] tracking-[-0.022em] text-black text-balance">{dict.study.startTitle}</h1>
             <p className="mt-1 max-w-xl text-sm leading-relaxed text-[#797776]">{dict.study.startDesc}</p>
           </div>
           <div className="flex items-center gap-2">
