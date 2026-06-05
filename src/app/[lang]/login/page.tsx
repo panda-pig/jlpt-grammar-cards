@@ -73,11 +73,22 @@ export default function LoginPage() {
   return (
     <MainLayout hideNotification>
       <div className="flex items-center justify-center py-12 sm:py-20 px-4">
-        <Card className="w-full max-w-sm bg-[#f6f3f1] border border-[rgba(36,36,36,0.16)] rounded-[40px] ring-0 shadow-none">
-          <CardContent className="p-6 space-y-4">
-            <h1 className="text-xl font-bold">
-              {mode === "login" ? dict.login.loginBtn : dict.login.registerBtn}
-            </h1>
+        <Card className="card-soft w-full max-w-sm bg-[#fbfaf8] border border-[#ded8d0] rounded-[20px] ring-0 shadow-none">
+          <CardContent className="p-7 space-y-5">
+            <div className="flex flex-col items-center text-center gap-3">
+              <div
+                className="flex h-12 w-12 items-center justify-center rounded-full border border-[#242424]"
+                style={{ background: "#fff6df", boxShadow: "3px 3px 0 #cfdaf5", fontFamily: "var(--font-serif)", fontSize: "22px", fontWeight: 700 }}
+              >
+                文
+              </div>
+              <div>
+                <h1 className="font-serif text-2xl font-bold tracking-[-0.02em] text-[#242424]">
+                  {mode === "login" ? dict.login.loginBtn : dict.login.registerBtn}
+                </h1>
+                <p className="mt-1 font-mono text-[11px] text-[#797776]">{dict.common.siteName}</p>
+              </div>
+            </div>
 
             {error && (
               <div className="flex items-center gap-2 text-sm text-[#c47a6a]">
@@ -131,9 +142,9 @@ export default function LoginPage() {
             </form>
 
             <div className="relative">
-              <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-[rgba(36,36,36,0.16)]" /></div>
+              <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-[#ded8d0]" /></div>
               <div className="relative flex justify-center font-mono text-xs uppercase">
-                <span className="bg-[#f6f3f1] px-2 text-[#797776]">{dict.login.or}</span>
+                <span className="bg-[#fbfaf8] px-2 text-[#797776]">{dict.login.or}</span>
               </div>
             </div>
 

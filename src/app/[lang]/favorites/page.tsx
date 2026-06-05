@@ -53,7 +53,7 @@ export default function FavoritesPage() {
     <MainLayout>
       <div className="mx-auto max-w-6xl py-4 sm:py-6">
         {!user && (
-          <div className="mb-4 flex items-start gap-3 rounded-[28px] border border-[rgba(36,36,36,0.16)] bg-[#fff6df] px-4 py-3 text-sm text-[#4e4d4d]">
+          <div className="mb-4 flex items-start gap-3 rounded-[14px] border border-[#e8c178]/50 bg-[#fff6df] px-4 py-3 text-sm text-[#4e4d4d]">
             <WifiOff className="mt-0.5 h-4 w-4 shrink-0 text-[#a08040]" />
             <p>{dict.common.localModeDesc}</p>
           </div>
@@ -71,7 +71,7 @@ export default function FavoritesPage() {
 
         <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
           {favoriteCollections.map((c) => (
-            <Badge key={c.id} variant="outline" className="shrink-0 cursor-pointer rounded-full font-mono text-xs">
+            <Badge key={c.id} variant="outline" className="shrink-0 cursor-pointer rounded-full border-[#ded8d0] bg-[#fbfaf8] px-3 py-1 font-mono text-xs text-[#4e4d4d] transition-colors hover:border-[#242424] hover:bg-[#cfdaf5]">
               {c.name}
             </Badge>
           ))}

@@ -85,7 +85,7 @@ export default function SupportPage() {
               <Heart className="h-3.5 w-3.5" />
               <span className="font-mono text-[11px]">{t.supportAnonymous}</span>
             </div>
-            <h1 className="mt-4 font-serif text-[clamp(34px,6vw,64px)] leading-[1.05] tracking-[-0.02em] text-[#000000]">
+            <h1 className="mt-4 font-serif text-[clamp(34px,6vw,64px)] font-bold leading-[1.05] tracking-[-0.022em] text-[#000000] text-balance">
               {t.supportTitle}
             </h1>
             <p className="mt-4 max-w-xl text-sm leading-relaxed text-[#797776] md:text-base">
@@ -93,12 +93,12 @@ export default function SupportPage() {
             </p>
 
             <div className="mt-8 grid gap-3 sm:grid-cols-2">
-              <div className="rounded-[22px] border border-[rgba(36,36,36,0.12)] bg-[#fbfaf8] p-5">
+              <div className="lift rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] p-5">
                 <Sparkles className="mb-4 h-5 w-5 text-[#8a6a20]" />
                 <p className="font-mono text-sm font-medium text-[#242424]">{dict.settings.supportAuthor}</p>
                 <p className="mt-2 text-xs leading-relaxed text-[#797776]">{t.paymentUnavailableDesc}</p>
               </div>
-              <div className="rounded-[22px] border border-[rgba(36,36,36,0.12)] bg-[#fbfaf8] p-5">
+              <div className="lift rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] p-5">
                 <MessageCircle className="mb-4 h-5 w-5 text-[#315b3b]" />
                 <p className="font-mono text-sm font-medium text-[#242424]">{dict.nav.pro}</p>
                 <p className="mt-2 text-xs leading-relaxed text-[#797776]">{t.proSubtitle}</p>
@@ -109,7 +109,7 @@ export default function SupportPage() {
             </div>
           </div>
 
-          <div className="rounded-[28px] border border-[rgba(36,36,36,0.14)] bg-[#fbfaf8] p-5 shadow-[0_16px_40px_rgba(36,36,36,0.05)]">
+          <div className="card-soft rounded-[20px] border border-[#ded8d0] bg-[#fbfaf8] p-5">
             <div className="flex items-center justify-between gap-4">
               <div>
                 <p className="font-mono text-xs text-[#797776]">{t.amount}</p>
@@ -133,7 +133,7 @@ export default function SupportPage() {
                     "rounded-full border px-4 py-2.5 font-mono text-sm transition-colors",
                     !customYuan && amountCents === amount
                       ? "border-[#242424] bg-[#242424] text-[#f6f3f1]"
-                      : "border-[rgba(36,36,36,0.16)] text-[#242424] hover:bg-[rgba(36,36,36,0.04)]"
+                      : "border-[#ded8d0] text-[#242424] hover:border-[#242424] hover:bg-[#cfdaf5]/40"
                   )}
                 >
                   ¥{(amount / 100).toFixed(amount % 100 === 0 ? 0 : 2)}

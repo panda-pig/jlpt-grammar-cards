@@ -257,7 +257,7 @@ export default function MyGrammarPage() {
     return (
       <MainLayout>
         <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
-          <Card className="rounded-[36px] border border-[rgba(36,36,36,0.16)] bg-[#f6f3f1] shadow-none">
+          <Card className="rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] shadow-none">
             <CardContent className="p-6 sm:p-8">
               <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-[#242424] text-[#f6f3f1]"><Lock className="h-5 w-5" /></div>
               <h1 className="font-serif text-3xl text-[#242424]">{t.loginTitle}</h1>
@@ -291,7 +291,7 @@ export default function MyGrammarPage() {
         </div>
 
         {/* db status */}
-        <div className="mb-5 rounded-[28px] border border-[rgba(36,36,36,0.16)] bg-[#fff6df] px-4 py-3 text-sm leading-relaxed text-[#4e4d4d]">
+        <div className="mb-5 rounded-[14px] border border-[#e8c178]/50 bg-[#fff6df] px-4 py-3 text-sm leading-relaxed text-[#4e4d4d]">
           <div className="flex items-start gap-3">
             <Database className="mt-0.5 h-4 w-4 shrink-0 text-[#a08040]" />
             <div>
@@ -304,7 +304,7 @@ export default function MyGrammarPage() {
         {/* stats */}
         <div className="mb-6 grid gap-3 sm:grid-cols-4">
           {/* Private items card — shows Pro/Free limit badge */}
-          <Card className={`rounded-[30px] border shadow-none ${atFreeLimit ? "border-[#d8b15a]/50 bg-[#fff6df]" : "border-[rgba(36,36,36,0.16)] bg-[#f6f3f1]"}`}>
+          <Card className={`rounded-[18px] border shadow-none ${atFreeLimit ? "border-[#d8b15a]/50 bg-[#fff6df]" : "border-[#ded8d0] bg-[#fbfaf8]"}`}>
             <CardContent className="p-4">
               <div className="mb-2 flex items-center justify-between">
                 <Plus className="h-4 w-4 text-[#797776]" />
@@ -328,7 +328,7 @@ export default function MyGrammarPage() {
             { label: t.hiddenItems, value: libraryMeta.hiddenCount, icon: EyeOff },
             { label: t.overrides, value: libraryMeta.overrideCount, icon: PencilLine },
           ].map((item) => (
-            <Card key={item.label} className="rounded-[30px] border border-[rgba(36,36,36,0.16)] bg-[#f6f3f1] shadow-none">
+            <Card key={item.label} className="rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] shadow-none">
               <CardContent className="p-4">
                 <item.icon className="mb-2 h-4 w-4 text-[#797776]" />
                 <p className="font-mono text-2xl text-[#242424]">{item.value}</p>
@@ -350,7 +350,7 @@ export default function MyGrammarPage() {
           {/* left: add + private list */}
           <div className="space-y-5">
             {/* add form */}
-            <Card className="rounded-[36px] border border-[rgba(36,36,36,0.16)] bg-[#f6f3f1] shadow-none">
+            <Card className="rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] shadow-none">
               <CardContent className="p-5 sm:p-6">
                 <h2 className="font-serif text-2xl text-[#242424]">{t.addPrivate}</h2>
                 <p className="mt-1 text-sm leading-relaxed text-[#797776]">{t.addPrivateDesc}</p>
@@ -397,7 +397,7 @@ export default function MyGrammarPage() {
 
             {/* hidden items — restore */}
             {libraryMeta.hiddenCount > 0 && (
-              <Card className="rounded-[36px] border border-[rgba(36,36,36,0.16)] bg-[#fff6df] shadow-none">
+              <Card className="rounded-[18px] border border-[#e8c178]/50 bg-[#fff6df] shadow-none">
                 <CardContent className="p-5">
                   <div className="mb-3 flex items-center justify-between gap-2">
                     <div className="flex items-center gap-2">
@@ -420,7 +420,7 @@ export default function MyGrammarPage() {
                   <p className="mb-4 text-sm text-[#797776]">{t.restoreHint}</p>
                   <div className="space-y-2">
                     {hiddenEntries.map((entry) => (
-                      <div key={entry.id} className="rounded-[24px] border border-[rgba(36,36,36,0.12)] bg-white/60 p-3">
+                      <div key={entry.id} className="rounded-[12px] border border-[#ded8d0] bg-[#fbfaf8] p-3">
                         <div className="flex items-start gap-2">
                           <div className="flex-1 min-w-0">
                             <div className="mb-1 flex flex-wrap items-center gap-1.5">
@@ -451,13 +451,13 @@ export default function MyGrammarPage() {
 
             {/* private items list */}
             {privateEntries.length > 0 && (
-              <Card className="rounded-[36px] border border-[rgba(36,36,36,0.16)] bg-[#f6f3f1] shadow-none">
+              <Card className="rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] shadow-none">
                 <CardContent className="p-5">
                   <h2 className="font-serif text-xl text-[#242424]">{t.managePrivate}</h2>
                   <p className="mt-1 text-sm text-[#797776]">{t.managePrivateDesc}</p>
                   <div className="mt-4 space-y-2">
                     {privateEntries.map((entry) => (
-                      <div key={entry.id} className="rounded-[24px] border border-[rgba(36,36,36,0.12)] bg-[#fbfaf8] p-3">
+                      <div key={entry.id} className="rounded-[12px] border border-[#ded8d0] bg-[#fbfaf8] p-3">
                         <div className="mb-1 flex flex-wrap items-center gap-1.5">
                           <span className="font-semibold text-[#242424]">{entry.title}</span>
                           <LevelBadge level={entry.jlptLevel} />
@@ -485,7 +485,7 @@ export default function MyGrammarPage() {
           {/* right: default + hidden */}
           <div className="space-y-5">
             {/* default deck management */}
-            <Card className="rounded-[36px] border border-[rgba(36,36,36,0.16)] bg-[#f6f3f1] shadow-none">
+            <Card className="rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] shadow-none">
               <CardContent className="p-5">
                 <div className="mb-4 flex items-start gap-3">
                   <Layers3 className="mt-1 h-5 w-5 text-[#797776]" />
@@ -497,7 +497,7 @@ export default function MyGrammarPage() {
 
                 {/* search + batch toggle */}
                 <div className="mb-3 flex items-center gap-2">
-                  <div className="flex flex-1 items-center gap-2 rounded-full border border-[rgba(36,36,36,0.16)] px-3">
+                  <div className="flex flex-1 items-center gap-2 rounded-full border border-[#ded8d0] px-3">
                     <Search className="h-4 w-4 text-[#797776]" />
                     <Input className="border-0 px-0 shadow-none focus-visible:ring-0" value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t.searchPlaceholder} />
                   </div>
@@ -519,7 +519,7 @@ export default function MyGrammarPage() {
 
                 <div className="space-y-2">
                   {filteredDefaults.map((entry) => (
-                    <div key={entry.id} className="rounded-[24px] border border-[rgba(36,36,36,0.12)] bg-[#fbfaf8] p-3">
+                    <div key={entry.id} className="rounded-[12px] border border-[#ded8d0] bg-[#fbfaf8] p-3">
                       <div className="flex items-start gap-2">
                         {batchMode && (
                           <button onClick={() => toggleSelect(entry.id)} className="mt-1 shrink-0">
@@ -551,12 +551,12 @@ export default function MyGrammarPage() {
             </Card>
 
             {/* schema check */}
-            <Card className="rounded-[36px] border border-[rgba(36,36,36,0.16)] bg-[#f6f3f1] shadow-none">
+            <Card className="rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] shadow-none">
               <CardContent className="p-5">
                 <h2 className="mb-3 font-serif text-xl text-[#242424]">{t.schemaCheck}</h2>
                 <div className="space-y-2 text-xs">
                   {status && Object.entries(status.checks).map(([key, value]) => (
-                    <div key={key} className="flex items-center justify-between gap-3 rounded-full border border-[rgba(36,36,36,0.12)] px-3 py-2">
+                    <div key={key} className="flex items-center justify-between gap-3 rounded-full border border-[#ded8d0] px-3 py-2">
                       <span className="font-mono text-[#797776]">{key}</span>
                       <Badge className={`rounded-full font-mono text-[10px] ${value ? "bg-[#dcebd8] text-[#315b3b]" : "bg-[#f4b4a8]/35 text-[#7a3a30]"}`}>
                         {value ? "OK" : "TODO"}
@@ -572,7 +572,7 @@ export default function MyGrammarPage() {
 
       {/* edit dialog */}
       <Dialog open={!!editingId} onOpenChange={(open) => { if (!open) setEditingId(null); }}>
-        <DialogContent className="max-h-[85vh] max-w-lg overflow-y-auto rounded-[36px] border border-[rgba(36,36,36,0.16)] bg-[#f6f3f1] shadow-none">
+        <DialogContent className="max-h-[85vh] max-w-lg overflow-y-auto rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] shadow-none">
           <DialogTitle className="font-serif text-xl">{t.editTitle}</DialogTitle>
           <div className="mt-4 grid gap-3 sm:grid-cols-2">
             <Field label={t.form.title}><Input value={editForm.title || ""} onChange={(e) => setEditForm((f) => ({ ...f, title: e.target.value }))} /></Field>

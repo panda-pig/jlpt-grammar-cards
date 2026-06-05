@@ -51,7 +51,7 @@ export default function SettingsPage() {
     return (
       <MainLayout>
         <div className="mx-auto max-w-lg py-12 px-4 text-center">
-          <Card className="rounded-[40px] border border-[rgba(36,36,36,0.16)] bg-[#f6f3f1] shadow-none">
+          <Card className="card-soft rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] shadow-none">
             <CardContent className="p-8 space-y-4">
               <p className="text-sm text-[#797776]">{t.loginRequired}</p>
               <Button className="rounded-full font-mono" onClick={() => router.push(`/${locale}/login`)}>
@@ -132,7 +132,7 @@ export default function SettingsPage() {
         </div>
 
         <div className="space-y-4">
-          <Card className="rounded-[28px] border border-[rgba(36,36,36,0.12)] bg-[#fbfaf8] shadow-none">
+          <Card className="card-soft rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] shadow-none">
             <CardContent className="p-5">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 rounded-full bg-[#242424] text-[#f6f3f1] flex items-center justify-center">
@@ -162,7 +162,7 @@ export default function SettingsPage() {
             </CardContent>
           </Card>
 
-          <Card className="rounded-[28px] border border-[rgba(36,36,36,0.12)] bg-[#fbfaf8] shadow-none">
+          <Card className="card-soft rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] shadow-none">
             <CardContent className="p-5">
               <div className="flex items-center gap-2 mb-3">
                 <RotateCcw className="h-4 w-4 text-[#797776]" />
@@ -172,7 +172,7 @@ export default function SettingsPage() {
             </CardContent>
           </Card>
 
-          <Card className={`rounded-[28px] border shadow-none ${isPro ? "border-[#6a8a5a]/30 bg-[#f2f8f0]" : "border-[rgba(36,36,36,0.12)] bg-[#fbfaf8]"}`}>
+          <Card className={`card-soft rounded-[18px] border shadow-none ${isPro ? "border-[#6a8a5a]/40 bg-[#f2f8f0]" : "border-[#ded8d0] bg-[#fbfaf8]"}`}>
             <CardContent className="p-5">
               <div className="flex items-start justify-between gap-4">
                 <div className="min-w-0">
@@ -225,7 +225,7 @@ export default function SettingsPage() {
             </CardContent>
           </Card>
 
-          <Card className="rounded-[28px] border border-[rgba(36,36,36,0.12)] bg-[#fbfaf8] shadow-none">
+          <Card className="card-soft rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] shadow-none">
             <CardContent className="p-5">
               <div className="flex items-center gap-2 mb-4">
                 <Lock className="h-4 w-4 text-[#797776]" />
