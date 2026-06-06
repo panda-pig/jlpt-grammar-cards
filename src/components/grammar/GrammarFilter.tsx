@@ -49,7 +49,7 @@ export function GrammarFilterContent({
           value={filters.level}
           onValueChange={(v) => onChange({ ...filters, level: v as JLPTLevel | "all" })}
         >
-          <SelectTrigger className="w-full border-[rgba(36,36,36,0.16)] bg-transparent data-placeholder:text-[#797776]">
+          <SelectTrigger className="w-full border-[#ded8d0] bg-transparent data-placeholder:text-[#797776]">
             <SelectValue>{levelLabels[filters.level] || dict.filter.allLevels}</SelectValue>
           </SelectTrigger>
           <SelectContent className="max-h-60">
@@ -66,7 +66,7 @@ export function GrammarFilterContent({
           value={filters.category}
           onValueChange={(v) => onChange({ ...filters, category: v as GrammarCategory | "all" })}
         >
-          <SelectTrigger className="w-full border-[rgba(36,36,36,0.16)] bg-transparent data-placeholder:text-[#797776]">
+          <SelectTrigger className="w-full border-[#ded8d0] bg-transparent data-placeholder:text-[#797776]">
             <SelectValue>{filters.category === "all" ? dict.filter.allTypes : grammarCategoryLabel(filters.category, locale)}</SelectValue>
           </SelectTrigger>
           <SelectContent className="max-h-60">
@@ -83,7 +83,7 @@ export function GrammarFilterContent({
           value={filters.status}
           onValueChange={(v) => onChange({ ...filters, status: v as StudyStatus | "all" })}
         >
-          <SelectTrigger className="w-full border-[rgba(36,36,36,0.16)] bg-transparent data-placeholder:text-[#797776]">
+          <SelectTrigger className="w-full border-[#ded8d0] bg-transparent data-placeholder:text-[#797776]">
             <SelectValue>{statusLabels[filters.status] || dict.filter.allStatuses}</SelectValue>
           </SelectTrigger>
           <SelectContent className="max-h-60">

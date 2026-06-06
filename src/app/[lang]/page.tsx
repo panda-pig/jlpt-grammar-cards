@@ -44,11 +44,11 @@ const FLOW_COLORS = [
   "bg-[#f4b4a8]/40",
   "bg-[#dcebd8]",
 ];
-const FLOW_CHIPS = ["N2 · 条件表达", "〜に限らず", "Good → +3天", "Due 18 今日", "Pinned N1 敬語"];
 
 // ── Component ──────────────────────────────────────────────────────
 export default function HomePage() {
   const dict = useDictionary();
+  const v = dict.home.v3;
   const locale = useLocale();
   const { user } = useAuth();
 
@@ -132,10 +132,12 @@ export default function HomePage() {
                 N1–N5 Grammar Cards · SM-2 Review
               </div>
               <h1 className="mb-4 font-serif text-[clamp(42px,5.6vw,70px)] font-bold leading-[1.02] tracking-[-0.025em] text-black">
-                把日语语法<br />变成每天<br />能复习的词卡。
+                {v.heroTitle.map((line, i) => (
+                  <span key={i}>{line}{i < v.heroTitle.length - 1 && <br />}</span>
+                ))}
               </h1>
               <p className="mb-7 mx-auto max-w-[480px] text-[17px] leading-[1.75] text-[#4c4947] lg:mx-0">
-                面向中文学习者的 JLPT 语法牌组：例句、接续、易混点与间隔复习，放在同一个桌面里。先用访客模式开始，之后再同步到账号。
+                {v.heroSubtitle}
               </p>
               <div className="mb-6 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
                 <Link href={`/${locale}/study`} className="btn-v3-primary">
@@ -154,7 +156,7 @@ export default function HomePage() {
               </div>
               <div className="flex items-center justify-center gap-[10px] text-[14px] text-[#797776] lg:justify-start">
                 <div className="h-[8px] w-[8px] shrink-0 rounded-full bg-[#315b3b] shadow-[0_0_0_5px_rgba(220,235,216,.9)]" />
-                本地访客进度可用，登录后同步到账号与复习队列。
+                {v.localHint}
               </div>
             </div>
 
@@ -176,17 +178,17 @@ export default function HomePage() {
                         boxShadow: "0 28px 64px rgba(100,140,220,.22), 0 4px 16px rgba(36,36,36,.06)" }}>
                       <div className="mb-2 flex items-center gap-[7px] font-mono text-[11px] text-[rgba(36,36,36,.5)]">
                         <span className="rounded-full bg-[rgba(36,36,36,.08)] px-[9px] py-[3px] font-bold">N3</span>
-                        <span>条件・逆接</span>
+                        <span>{v.cardCategory}</span>
                       </div>
                       <div className="font-serif text-[44px] leading-[1.08] text-black flex-1 flex items-center">
                         ～わけでは<br />ない
                       </div>
                       <div className="rounded-[11px] bg-[rgba(255,255,255,.52)] p-[11px]">
-                        <div className="font-mono text-[10px] text-[rgba(36,36,36,.42)] mb-[3px]">接続形式</div>
-                        <div className="font-mono text-[12px] text-[rgba(36,36,36,.7)]">普通形 + わけではない</div>
+                        <div className="font-mono text-[10px] text-[rgba(36,36,36,.42)] mb-[3px]">{v.cardConjLabel}</div>
+                        <div className="font-mono text-[12px] text-[rgba(36,36,36,.7)]">{v.cardConjValue}</div>
                       </div>
                       <div className="mt-[10px] text-center font-mono text-[10px] text-[rgba(36,36,36,.38)]">
-                        点击查看详解 →
+                        {v.cardFlipHint}
                       </div>
                     </div>
                     {/* Back */}
@@ -195,19 +197,19 @@ export default function HomePage() {
                         boxShadow: "0 24px 56px rgba(36,36,36,.1), 0 4px 14px rgba(36,36,36,.05)" }}>
                       <div className="mb-3 flex items-center justify-between">
                         <span className="font-mono text-[11px] font-bold rounded-full bg-[#cfdaf5] text-[#2a3a5a] px-[11px] py-[4px]">N3</span>
-                        <span className="font-mono text-[10px] text-[#797776]">点击翻回</span>
+                        <span className="font-mono text-[10px] text-[#797776]">{v.cardFlipBack}</span>
                       </div>
-                      <div className="text-[19px] font-semibold text-[#242424] mb-3 leading-[1.4]">
-                        并不是……；<br />并非真的……
+                      <div className="text-[19px] font-semibold text-[#242424] mb-3 leading-[1.4] whitespace-pre-line">
+                        {v.cardMeaning}
                       </div>
                       <div className="mb-2">
-                        <div className="font-mono text-[10px] uppercase tracking-[.06em] text-[#797776] mb-1">例句</div>
-                        <div className="text-[14px] font-medium leading-[1.5]">嫌いなわけではないが、好きでもない。</div>
-                        <div className="text-[12px] text-[#797776] mt-[2px]">并不是讨厌，只是也不喜欢。</div>
+                        <div className="font-mono text-[10px] uppercase tracking-[.06em] text-[#797776] mb-1">{v.exampleLabel}</div>
+                        <div className="text-[14px] font-medium leading-[1.5]">{v.cardExampleJp}</div>
+                        <div className="text-[12px] text-[#797776] mt-[2px]">{v.cardExampleCn}</div>
                       </div>
                       <div className="rounded-[10px] bg-[#fff6df] p-[10px] text-[12px] text-[#8a6a20] leading-[1.5]">
-                        <div className="font-mono text-[10px] mb-[3px]">⚠ 易错点</div>
-                        与「わけがない」区分：后者强调客观上"不可能"，语气更强。
+                        <div className="font-mono text-[10px] mb-[3px]">⚠ {v.mistakeLabel}</div>
+                        {v.cardMistake}
                       </div>
                       <div className="mt-auto grid grid-cols-4 gap-[5px] pt-3">
                         {[
@@ -257,7 +259,7 @@ export default function HomePage() {
                 Study Surface
               </div>
               <h2 className="font-serif text-[clamp(28px,3.8vw,46px)] font-bold leading-[1.1] tracking-[-0.02em] text-balance">
-                不是资料堆，而是可复习的语法系统。
+                {v.featuresHeading}
               </h2>
             </div>
             <Link href={`/${locale}/grammar`} className="btn-v3-secondary shrink-0 self-start sm:self-end">
@@ -269,8 +271,8 @@ export default function HomePage() {
             {/* Grammar library */}
             <div className="lg:col-span-7 rounded-[18px] border border-[rgba(100,140,220,.16)] bg-[#cfdaf5]/40 p-6">
               <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-[rgba(36,36,36,.08)] text-xl">📚</div>
-              <div className="font-mono text-[15px] font-bold mb-2">JLPT N1～N5 语法库</div>
-              <div className="text-[13px] text-[#797776] leading-[1.65]">{stats.totalGrammar}+ 条按等级、语法场景、来源系统整理，支持关键词搜索、多维度筛选。</div>
+              <div className="font-mono text-[15px] font-bold mb-2">{v.featLibTitle}</div>
+              <div className="text-[13px] text-[#797776] leading-[1.65]">{v.featLibDesc.replace("{count}", String(stats.totalGrammar))}</div>
               <div className="mt-5 flex flex-wrap gap-[6px]">
                 {[
                   { text: "から〜にかけて", lv: "N2", c: "#5a3a8a" },
@@ -291,42 +293,45 @@ export default function HomePage() {
             {/* SM-2 */}
             <div className="lg:col-span-5 rounded-[18px] border border-[rgba(49,91,59,.12)] bg-[#dcebd8]/50 p-6">
               <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-[rgba(36,36,36,.08)] text-xl">🔄</div>
-              <div className="font-mono text-[15px] font-bold mb-2">SM-2 间隔复习</div>
-              <div className="text-[13px] text-[#797776] leading-[1.65]">根据掌握度动态调整间隔，在遗忘曲线最佳时机自动提醒复习。</div>
+              <div className="font-mono text-[15px] font-bold mb-2">{v.featSmTitle}</div>
+              <div className="text-[13px] text-[#797776] leading-[1.65]">{v.featSmDesc}</div>
               <div className="mt-5 flex h-[58px] items-end gap-[5px]">
                 {[18, 34, 50, 64, 78, 92, 100].map((h, i) => (
                   <div key={i} className="flex-1 rounded-t-[4px] bg-[#315b3b]" style={{ height: `${h}%`, opacity: 0.3 + i * 0.1 }} />
                 ))}
               </div>
-              <div className="mt-[5px] font-mono text-[10px] text-[#315b3b] opacity-75">掌握度越高，间隔递增 →</div>
+              <div className="mt-[5px] font-mono text-[10px] text-[#315b3b] opacity-75">{v.featSmChart}</div>
             </div>
 
             {/* 3 narrow cards */}
-            {[
-              { title: "相近语法对比", desc: "「のに」vs「のだから」，每条标注常见混淆项与核心区别。", icon: "🔍", bg: "bg-[#e8e0f5]/30" },
-              { title: "学习进度追踪", desc: "Dashboard 实时展示已学/掌握数量、连续天数和评分分布。", icon: "📊", bg: "bg-[#fff6df]/50" },
-              { title: "Guest 模式",   desc: "无需注册即可学习，登录后一键同步本地进度到账号。",     icon: "☁️", bg: "bg-[#d8e8f0]/40" },
-            ].map((f) => (
-              <div key={f.title} className={`lg:col-span-4 rounded-[18px] border border-[#ded8d0] ${f.bg} p-6`}>
-                <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-[rgba(36,36,36,.07)] text-xl">{f.icon}</div>
-                <div className="font-mono text-[15px] font-bold mb-2">{f.title}</div>
-                <div className="text-[13px] text-[#797776] leading-[1.65]">{f.desc}</div>
-              </div>
-            ))}
+            {v.featCards.map((f, i) => {
+              const meta = [
+                { icon: "🔍", bg: "bg-[#e8e0f5]/30" },
+                { icon: "📊", bg: "bg-[#fff6df]/50" },
+                { icon: "☁️", bg: "bg-[#d8e8f0]/40" },
+              ][i];
+              return (
+                <div key={f.title} className={`lg:col-span-4 rounded-[18px] border border-[#ded8d0] ${meta.bg} p-6`}>
+                  <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-[rgba(36,36,36,.07)] text-xl">{meta.icon}</div>
+                  <div className="font-mono text-[15px] font-bold mb-2">{f.title}</div>
+                  <div className="text-[13px] text-[#797776] leading-[1.65]">{f.desc}</div>
+                </div>
+              );
+            })}
 
             {/* Personal library */}
             <div className="sm:col-span-2 lg:col-span-12 rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] p-6 flex flex-col sm:flex-row items-start sm:items-center gap-6">
               <div className="flex-1 min-w-0">
                 <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-[#f4b4a8]/40 text-xl">✏️</div>
-                <div className="font-mono text-[15px] font-bold mb-2">个人语法库</div>
-                <div className="text-[13px] text-[#797776] leading-[1.65]">新增私有条目，隐藏不需要的语法，备注个人理解。Pro 用户无限制。</div>
+                <div className="font-mono text-[15px] font-bold mb-2">{v.featPersonalTitle}</div>
+                <div className="text-[13px] text-[#797776] leading-[1.65]">{v.featPersonalDesc}</div>
               </div>
               <div className="flex flex-wrap gap-[7px] shrink-0">
-                <div className="rounded-[10px] bg-[#f4b4a8] px-[13px] py-[7px] font-mono text-[11px] font-bold text-[#7a3a30]">+ 新增私有语法</div>
+                <div className="rounded-[10px] bg-[#f4b4a8] px-[13px] py-[7px] font-mono text-[11px] font-bold text-[#7a3a30]">{v.featPersonalAdd}</div>
                 {["眼から鱗 · 私人", "お世話になります"].map((t) => (
                   <div key={t} className="rounded-[10px] border border-[#ded8d0] bg-[#f6f3f1] px-[13px] py-[7px] font-mono text-[11px] text-[#797776]">{t}</div>
                 ))}
-                <div className="rounded-[10px] border border-[#ded8d0] bg-[#f6f3f1] px-[13px] py-[7px] font-mono text-[11px] text-[#797776] opacity-40 line-through">N3 已隐藏</div>
+                <div className="rounded-[10px] border border-[#ded8d0] bg-[#f6f3f1] px-[13px] py-[7px] font-mono text-[11px] text-[#797776] opacity-40 line-through">{v.featPersonalHidden}</div>
               </div>
             </div>
           </div>
@@ -342,10 +347,10 @@ export default function HomePage() {
                   Five-step learning loop
                 </div>
                 <h2 className="font-serif text-[clamp(26px,3.4vw,40px)] font-bold leading-[1.1] tracking-[-0.02em] mt-2 text-balance">
-                  从查语法到复习，一条完整轨道。
+                  {v.flowHeading}
                 </h2>
                 <p className="mt-3 text-[15px] text-[#797776] leading-[1.7]">
-                  选等级、读卡、打分、进队列、沉淀到收藏库——5 步形成闭环。
+                  {v.flowIntro}
                 </p>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-5 border border-[#c9c1b8] rounded-[18px] overflow-hidden bg-[#c9c1b8] gap-px">
@@ -360,7 +365,7 @@ export default function HomePage() {
                     <div className="font-serif text-[15px] font-bold mb-[6px] leading-[1.2]">{step.step}</div>
                     <div className="text-[12px] text-[#66615d] leading-[1.6] flex-1">{step.desc}</div>
                     <div className="mt-3 self-start rounded-full border border-[#ded8d0] bg-[#f6f3f1] px-[10px] py-[4px] font-mono text-[10px] font-bold text-[#797776]">
-                      {FLOW_CHIPS[i]}
+                      {v.flowChips[i]}
                     </div>
                   </div>
                 ))}
@@ -377,33 +382,33 @@ export default function HomePage() {
               Product Preview
             </div>
             <h2 className="font-serif text-[clamp(28px,3.8vw,46px)] font-bold leading-[1.1] tracking-[-0.02em] text-balance">
-              首页也能看到学习状态，而不是只看口号。
+              {v.previewHeading}
             </h2>
           </div>
           <div className="grid gap-4 md:grid-cols-2">
             {/* Card spread */}
             <div>
-              <div className="mb-3 font-mono text-[11px] uppercase tracking-[.07em] text-[#797776]">语法卡 · 正面 / 背面</div>
+              <div className="mb-3 font-mono text-[11px] uppercase tracking-[.07em] text-[#797776]">{v.previewCardLabel}</div>
               <div className="grid grid-cols-2 gap-[10px]">
                 <div className="rounded-[20px] border border-[rgba(100,140,220,.15)] bg-[#cfdaf5] p-5">
-                  <div className="mb-3 font-mono text-[10px] uppercase tracking-[.07em] text-[#797776]">正面</div>
+                  <div className="mb-3 font-mono text-[10px] uppercase tracking-[.07em] text-[#797776]">{v.previewFront}</div>
                   <div className="font-serif text-[32px] leading-[1.1] text-black mb-3">～わけでは<br />ない</div>
                   <div className="rounded-[9px] bg-[rgba(255,255,255,.55)] p-[9px]">
-                    <div className="font-mono text-[10px] text-[rgba(36,36,36,.4)] mb-[3px]">接続形式</div>
-                    <div className="font-mono text-[11px] text-[rgba(36,36,36,.6)]">普通形 + わけではない</div>
+                    <div className="font-mono text-[10px] text-[rgba(36,36,36,.4)] mb-[3px]">{v.cardConjLabel}</div>
+                    <div className="font-mono text-[11px] text-[rgba(36,36,36,.6)]">{v.cardConjValue}</div>
                   </div>
                   <div className="mt-3 flex gap-[6px]">
                     <span className="font-mono text-[11px] font-bold bg-[#cfdaf5] text-[#2a3a5a] border border-[rgba(36,36,36,.1)] rounded-full px-[10px] py-[3px]">N3</span>
                   </div>
                 </div>
                 <div className="rounded-[20px] border border-[#ded8d0] bg-[#fbfaf8] p-5">
-                  <div className="mb-3 font-mono text-[10px] uppercase tracking-[.07em] text-[#797776]">背面</div>
-                  <div className="text-[16px] font-semibold mb-3 leading-[1.4]">并不是……；<br />并非真的……</div>
+                  <div className="mb-3 font-mono text-[10px] uppercase tracking-[.07em] text-[#797776]">{v.previewBack}</div>
+                  <div className="text-[16px] font-semibold mb-3 leading-[1.4] whitespace-pre-line">{v.cardMeaning}</div>
                   <div className="text-[12px] font-medium leading-[1.5]">嫌いなわけではないが…</div>
-                  <div className="text-[11px] text-[#797776] mt-[2px]">并不是讨厌，只是也不喜欢。</div>
+                  <div className="text-[11px] text-[#797776] mt-[2px]">{v.cardExampleCn}</div>
                   <div className="mt-3 rounded-[9px] bg-[#fff6df] p-[9px] text-[11px] text-[#8a6a20] leading-[1.5]">
-                    <div className="font-mono text-[10px] mb-[2px]">⚠ 易错点</div>
-                    「わけがない」强调"不可能"，本式强调主观否定。
+                    <div className="font-mono text-[10px] mb-[2px]">⚠ {v.mistakeLabel}</div>
+                    {v.cardMistake}
                   </div>
                   <div className="mt-3 grid grid-cols-4 gap-[4px]">
                     {[
@@ -421,21 +426,21 @@ export default function HomePage() {
 
             {/* Dashboard */}
             <div>
-              <div className="mb-3 font-mono text-[11px] uppercase tracking-[.07em] text-[#797776]">学习仪表盘</div>
+              <div className="mb-3 font-mono text-[11px] uppercase tracking-[.07em] text-[#797776]">{v.previewDashLabel}</div>
               <div className="rounded-[18px] border border-[#242424] overflow-hidden bg-[#fffefa]"
                 style={{ boxShadow: "0 10px 30px rgba(36,36,36,.08)" }}>
                 <div className="px-5 pt-5 pb-0 flex items-center justify-between gap-3 mb-4">
-                  <h3 className="font-serif text-[22px] font-bold">N1–N5 掌握率</h3>
+                  <h3 className="font-serif text-[22px] font-bold">{v.previewMasteryTitle}</h3>
                   <span className="rounded-full border border-[#ded8d0] bg-[#dcebd8] px-[10px] py-[6px] font-mono text-[11px] font-bold text-[#315b3b] whitespace-nowrap">
                     SM-2 synced
                   </span>
                 </div>
                 <div className="grid grid-cols-2 gap-px bg-[#ded8d0] border-t border-b border-[#ded8d0]">
                   {[
-                    { val: stats.totalGrammar, lbl: "语法总数" },
-                    { val: stats.learned, lbl: "已学习" },
-                    { val: stats.due, lbl: "今日到期" },
-                    { val: stats.mastered, lbl: "稳定掌握" },
+                    { val: stats.totalGrammar, lbl: v.statTotal },
+                    { val: stats.learned, lbl: v.statLearned },
+                    { val: stats.due, lbl: v.statDue },
+                    { val: stats.mastered, lbl: v.statMastered },
                   ].map((m) => (
                     <div key={m.lbl} className="bg-[#fffefa] px-5 py-4">
                       <div className="font-serif text-[32px] leading-[1]">{m.val}</div>
@@ -465,10 +470,10 @@ export default function HomePage() {
           <div className="mx-auto max-w-[1160px] px-6 py-14">
             <div className="grid grid-cols-2 sm:grid-cols-4 border border-[#242424] bg-[#242424] gap-px">
               {[
-                { val: `${stats.totalGrammar}+`, lbl: "语法条目" },
-                { val: "5",     lbl: "JLPT 等级" },
-                { val: "SM·2", lbl: "复习算法" },
-                { val: "中/EN", lbl: "双语界面" },
+                { val: `${stats.totalGrammar}+`, lbl: v.statsRow[0] },
+                { val: "5",     lbl: v.statsRow[1] },
+                { val: "SM·2", lbl: v.statsRow[2] },
+                { val: "中/EN", lbl: v.statsRow[3] },
               ].map((s) => (
                 <div key={s.lbl} className="bg-[#fffefa] py-[28px] px-6 text-center">
                   <div className="font-serif text-[36px] leading-[1] mb-[6px]">{s.val}</div>
@@ -484,12 +489,12 @@ export default function HomePage() {
           <div className="border-t-2 border-b-2 border-[#242424] py-10">
             <div className="grid gap-8 md:grid-cols-[1fr_auto] items-center">
               <div>
-                <div className="mb-[6px] font-mono text-[12px] uppercase tracking-[.06em] text-[#797776]">Start with local mode</div>
+                <div className="mb-[6px] font-mono text-[12px] uppercase tracking-[.06em] text-[#797776]">{v.ctaEyebrow}</div>
                 <h2 className="font-serif text-[clamp(32px,4.8vw,58px)] font-bold leading-[1.02] tracking-[-0.02em] text-balance">
-                  今天先完成 {stats.due || 18} 张，到期队列会等你回来。
+                  {v.ctaHeading.replace("{due}", String(stats.due || 18))}
                 </h2>
                 <p className="mt-3 max-w-[600px] text-[17px] text-[#797776] leading-[1.7]">
-                  免费开始学习 N5–N1 语法卡。Pro 永久版用于支持项目、解锁更多同步与高级复习能力。
+                  {v.ctaSubtitle}
                 </p>
               </div>
               <div className="flex flex-wrap gap-3">
