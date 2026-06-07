@@ -10,7 +10,7 @@ import { learningService, type ProgressWithGrammar } from "@/services/learningSe
 import { useAuth } from "@/hooks/useAuth";
 import { useDictionary, useLocale } from "@/components/layout/LocaleProvider";
 import type { StudyStatus } from "@/lib/types";
-import { Heart, WifiOff } from "lucide-react";
+import { WifiOff } from "lucide-react";
 
 export default function FavoritesPage() {
   const dict = useDictionary();
