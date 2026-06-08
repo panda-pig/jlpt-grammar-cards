@@ -82,10 +82,11 @@
   --sidebar-accent-foreground: #242424;
   --sidebar-border: #ded8d0;
   --sidebar-ring: #242424;
-  /* Serif: Chinese-first for JLPT content */
+  /* Fonts: loaded Latin faces first, CJK system serif/sans as fallback so
+     Chinese glyphs render natively while Latin gets real character. */
   --font-sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", Roboto, sans-serif;
-  --font-serif: "Songti SC", "Noto Serif CJK SC", "Iowan Old Style", Georgia, "Noto Serif", "Times New Roman", serif;
-  --font-mono: "SFMono-Regular", "SF Mono", "Cascadia Mono", "IBM Plex Mono", Menlo, Consolas, monospace;
+  --font-serif: var(--font-fraunces), "Songti SC", "Noto Serif CJK SC", "Iowan Old Style", Georgia, "Noto Serif", serif;
+  --font-mono: var(--font-plex-mono), "SFMono-Regular", "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
 }
 
 /* ── V3 Background: ruled lines + warm radial glow on html ──
@@ -96,6 +97,7 @@ html {
     radial-gradient(ellipse at 20% 8%, rgba(255, 246, 223, .72), transparent 38%),
     #f6f3f1;
   background-attachment: local;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -104,6 +106,33 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Tabular figures everywhere mono/serif is used — aligns counts, percentages,
+   prices and the big numeric displays into clean columns. */
+.font-mono,
+.font-serif {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Visible keyboard focus — ink ring, matches the paper aesthetic. */
+:focus-visible {
+  outline: 2px solid #242424;
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+/* Respect reduced-motion: stop the looping hero animations and shorten
+   transitions for users who opt out. (The auto-flip timer is also gated in JS.) */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .animate-marquee,
+  .fc-inner { animation: none !important; transition: none !important; }
 }
 
 /* Dot-grain overlay — added as a fixed div in MainLayout */

@@ -99,8 +99,11 @@ export default function HomePage() {
     })();
   }, [user]);
 
-  // Auto-flip flashcard
+  // Auto-flip flashcard — skipped when the user prefers reduced motion.
   useEffect(() => {
+    if (typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
     const start = setTimeout(() => {
       flipTimer.current = setInterval(() => {
         if (!userFlipped.current) setCardFlipped(f => !f);
