@@ -11,6 +11,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   PaymentForbiddenError,
+  PaymentIntegrityError,
   PaymentUnauthorizedError,
   PaymentValidationError,
   paymentService,
@@ -377,6 +378,58 @@ describe("markPaymentPaid — idempotency", () => {
     expect(view.status).toBe("paid");
     expect(view.paymentId).toBe(paidPayment.id);
     expect(view.type).toBe("pro_lifetime");
+  });
+
+  it("throws PaymentIntegrityError when callback amount does not match the order", async () => {
+    const paymentsChain = makeChain({ data: pendingPayment });
+    const eventsChain = makeChain({ data: {} });
+    mockEntitlementService.grantLifetimePro.mockClear();
+
+    mockCreateClient.mockReturnValue({
+      from: vi.fn().mockImplementation((table: string) => {
+        if (table === "payments") return paymentsChain;
+        if (table === "payment_events") return eventsChain;
+        return makeChain({ data: null });
+      }),
+    } as unknown as ReturnType<typeof createServiceRoleClient>);
+
+    await expect(
+      paymentService.markPaymentPaid({
+        outTradeNo: pendingPayment.out_trade_no,
+        provider: "wechat",
+        amountCents: 1,
+      }),
+    ).rejects.toThrow(PaymentIntegrityError);
+
+    expect(eventsChain.insert).not.toHaveBeenCalled();
+    expect(paymentsChain.update).not.toHaveBeenCalled();
+    expect(mockEntitlementService.grantLifetimePro).not.toHaveBeenCalled();
+  });
+
+  it("throws PaymentIntegrityError when callback provider does not match the order", async () => {
+    const paymentsChain = makeChain({ data: pendingPayment });
+    const eventsChain = makeChain({ data: {} });
+    mockEntitlementService.grantLifetimePro.mockClear();
+
+    mockCreateClient.mockReturnValue({
+      from: vi.fn().mockImplementation((table: string) => {
+        if (table === "payments") return paymentsChain;
+        if (table === "payment_events") return eventsChain;
+        return makeChain({ data: null });
+      }),
+    } as unknown as ReturnType<typeof createServiceRoleClient>);
+
+    await expect(
+      paymentService.markPaymentPaid({
+        outTradeNo: pendingPayment.out_trade_no,
+        provider: "alipay",
+        amountCents: pendingPayment.amount_cents,
+      }),
+    ).rejects.toThrow(PaymentIntegrityError);
+
+    expect(eventsChain.insert).not.toHaveBeenCalled();
+    expect(paymentsChain.update).not.toHaveBeenCalled();
+    expect(mockEntitlementService.grantLifetimePro).not.toHaveBeenCalled();
   });
 });
 

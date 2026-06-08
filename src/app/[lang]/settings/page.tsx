@@ -12,6 +12,17 @@ import { supabaseBrowser } from "@/lib/supabase-browser";
 import { AlertCircle, CheckCircle, Crown, Heart, User, Lock, RotateCcw, LogOut } from "lucide-react";
 import { formatDate } from "@/lib/date";
 
+type AccountPayment = {
+  paymentId: string;
+  type: "tip" | "pro_lifetime";
+  provider: string;
+  amountCents: number;
+  currency: string;
+  status: "pending" | "paid" | "failed" | "closed" | "refunded";
+  createdAt: string | null;
+  paidAt: string | null;
+};
+
 export default function SettingsPage() {
   const router = useRouter();
   const dict = useDictionary();
@@ -27,6 +38,7 @@ export default function SettingsPage() {
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
   const [entitlement, setEntitlement] = useState<{ isPro: boolean; startsAt: string | null }>({ isPro: false, startsAt: null });
+  const [payments, setPayments] = useState<AccountPayment[]>([]);
 
   useEffect(() => {
     if (!user?.id) return;
@@ -43,6 +55,14 @@ export default function SettingsPage() {
       .then((r) => r.json())
       .then((d) => setEntitlement({ isPro: Boolean(d?.isPro), startsAt: d?.startsAt ?? null }))
       .catch(() => setEntitlement({ isPro: false, startsAt: null }));
+  }, [user?.id]);
+
+  useEffect(() => {
+    if (!user?.id) return;
+    fetch("/api/payments/orders", { cache: "no-store" })
+      .then((r) => r.ok ? r.json() : { payments: [] })
+      .then((d) => setPayments(Array.isArray(d?.payments) ? d.payments : []))
+      .catch(() => setPayments([]));
   }, [user?.id]);
 
   const isPro = entitlement.isPro;
@@ -119,6 +139,21 @@ export default function SettingsPage() {
         : syncStatus.status === "failed"
           ? t.syncFailed
           : t.noSync;
+
+  const paymentStatusLabel = (status: AccountPayment["status"]) => {
+    const labels = t.paymentStatus as Record<AccountPayment["status"], string>;
+    return labels[status] ?? status;
+  };
+
+  const paymentStatusClass = (status: AccountPayment["status"]) => {
+    if (status === "paid") return "bg-[#dcebd8] text-[#315b3b]";
+    if (status === "pending") return "bg-[#fff6df] text-[#8a6a20]";
+    return "bg-[#f4b4a8]/25 text-[#7a3a30]";
+  };
+
+  const paymentTypeLabel = (type: AccountPayment["type"]) => {
+    return type === "pro_lifetime" ? t.paymentPro : t.paymentTip;
+  };
 
   return (
     <MainLayout>
@@ -222,6 +257,45 @@ export default function SettingsPage() {
                   {t.supportAuthor}
                 </Button>
               </div>
+            </CardContent>
+          </Card>
+
+          <Card className="card-soft rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] shadow-none">
+            <CardContent className="p-5">
+              <div className="mb-4 flex items-center justify-between gap-3">
+                <div>
+                  <p className="font-mono text-sm font-medium text-[#242424]">{t.paymentHistory}</p>
+                  <p className="mt-1 text-xs leading-relaxed text-[#797776]">{t.paymentHistoryDesc}</p>
+                </div>
+              </div>
+              {payments.length === 0 ? (
+                <p className="rounded-[14px] border border-[#ded8d0] bg-[#f6f3f1] px-4 py-3 text-sm text-[#797776]">
+                  {t.noPayments}
+                </p>
+              ) : (
+                <div className="space-y-2">
+                  {payments.map((payment) => (
+                    <div key={payment.paymentId} className="rounded-[14px] border border-[#ded8d0] bg-[#f6f3f1] px-4 py-3">
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0">
+                          <p className="font-mono text-sm font-medium text-[#242424]">{paymentTypeLabel(payment.type)}</p>
+                          <p className="mt-1 font-mono text-xs text-[#797776]">
+                            {payment.createdAt ? formatDate(payment.createdAt, locale) : "-"} · {payment.provider}
+                          </p>
+                        </div>
+                        <div className="text-right">
+                          <p className="font-mono text-sm text-[#242424]">
+                            ¥{(payment.amountCents / 100).toFixed(payment.amountCents % 100 === 0 ? 0 : 2)}
+                          </p>
+                          <span className={`mt-1 inline-flex rounded-full px-2 py-0.5 font-mono text-[10px] ${paymentStatusClass(payment.status)}`}>
+                            {paymentStatusLabel(payment.status)}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </CardContent>
           </Card>
 

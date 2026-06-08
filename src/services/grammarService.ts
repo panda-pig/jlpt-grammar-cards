@@ -182,6 +182,16 @@ function clearGrammarCache() {
   cachedRemoteDeckByUser.clear();
 }
 
+function isFreePrivateLimitError(error: unknown) {
+  if (!error || typeof error !== "object") return false;
+  const candidate = error as { message?: string; details?: string; code?: string };
+  return (
+    candidate.message?.includes("free_private_grammar_limit_reached") ||
+    candidate.details?.includes("Free users can create up to 10 private grammar items.") ||
+    (candidate.code === "P0001" && candidate.message?.includes("free_private_grammar_limit_reached"))
+  );
+}
+
 export const grammarService = {
   _clearCache: clearGrammarCache,
 
@@ -335,7 +345,8 @@ export const grammarService = {
       if (error) throw error;
       clearGrammarCache();
       return normalizeUserItem(data as UserGrammarItem);
-    } catch {
+    } catch (error) {
+      if (isFreePrivateLimitError(error)) throw error;
       return localGrammarLibraryService.createItem(userId, entry) as unknown as GrammarDeckRow;
     }
   },

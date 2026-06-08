@@ -192,7 +192,13 @@ export default function SupportPage() {
               </div>
             )}
 
-            <PaymentQrPanel order={order} text={{ ...t, orderPaid: t.orderPaidTip }} className="mt-4" />
+            <PaymentQrPanel
+              order={order}
+              text={{ ...t, orderPaid: t.orderPaidTip }}
+              className="mt-4"
+              statusHref={order ? `/${locale}/payments/${order.paymentId}` : undefined}
+              onRetry={handleCreateTip}
+            />
           </div>
         </section>
       </div>

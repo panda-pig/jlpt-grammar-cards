@@ -155,6 +155,13 @@ export default function MyGrammarPage() {
       await refreshMeta();
       setForm(emptyForm);
       setMessage(t.saved);
+    } catch (error) {
+      const text = error instanceof Error ? error.message : "";
+      setMessage(
+        text.includes("free_private_grammar_limit_reached")
+          ? t.freeLimitReached.replace("{limit}", String(FREE_PRIVATE_LIMIT))
+          : t.saveFailed
+      );
     } finally { setSaving(false); }
   };
 

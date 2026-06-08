@@ -12,6 +12,7 @@ function useAdminLinks() {
     { href: `/${locale}/admin`, label: dict.admin.title },
     { href: `/${locale}/admin/grammar`, label: dict.admin.grammarList },
     { href: `/${locale}/admin/grammar/new`, label: dict.admin.addGrammar },
+    { href: `/${locale}/admin/payments`, label: dict.admin.payments },
   ];
 }
 

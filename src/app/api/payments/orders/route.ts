@@ -83,3 +83,20 @@ export async function POST(request: Request) {
     return errorResponse("payment_order_create_failed", message, 500);
   }
 }
+
+export async function GET() {
+  try {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+      return errorResponse("payment_login_required", "Log in to view payment history.", 401);
+    }
+
+    const payments = await paymentService.listUserPayments(user.id);
+    return NextResponse.json({ payments });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Unexpected payment list error.";
+    return errorResponse("payment_order_list_failed", message, 500);
+  }
+}

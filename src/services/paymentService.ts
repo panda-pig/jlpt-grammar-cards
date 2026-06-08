@@ -22,6 +22,7 @@ export interface CreatePaymentOrderInput {
 
 export interface PaymentOrderView {
   paymentId: string;
+  userId?: string | null;
   type: PaymentType;
   provider: PaymentProvider;
   channel: PaymentChannel;
@@ -32,6 +33,9 @@ export interface PaymentOrderView {
   qrCodeUrl: string | null;
   paidAt: string | null;
   expiresAt: string | null;
+  createdAt: string | null;
+  nickname?: string | null;
+  message?: string | null;
   entitlement?: EntitlementState;
 }
 
@@ -45,6 +49,10 @@ export class PaymentUnauthorizedError extends Error {
 
 export class PaymentForbiddenError extends Error {
   code = "payment_forbidden" as const;
+}
+
+export class PaymentIntegrityError extends Error {
+  code = "payment_integrity_error" as const;
 }
 
 const TIP_MIN_AMOUNT_CENTS = 100;
@@ -126,6 +134,7 @@ function descriptionFor(type: PaymentType) {
 function toPaymentOrderView(row: any, entitlement?: EntitlementState): PaymentOrderView {
   return {
     paymentId: row.id,
+    userId: row.user_id ?? null,
     type: row.type,
     provider: row.provider,
     channel: row.channel,
@@ -136,8 +145,15 @@ function toPaymentOrderView(row: any, entitlement?: EntitlementState): PaymentOr
     qrCodeUrl: row.qr_code_url ?? null,
     paidAt: row.paid_at ?? null,
     expiresAt: row.expires_at ?? null,
+    createdAt: row.created_at ?? null,
+    nickname: row.nickname ?? null,
+    message: row.message ?? null,
     entitlement,
   };
+}
+
+function isExpiredPending(row: any) {
+  return row?.status === "pending" && row.expires_at && new Date(row.expires_at).getTime() < Date.now();
 }
 
 export const paymentService = {
@@ -196,14 +212,67 @@ export const paymentService = {
       throw new PaymentForbiddenError("This payment belongs to another user.");
     }
 
-    const entitlement = data.user_id ? await entitlementService.getCurrentPlan(data.user_id) : undefined;
-    return toPaymentOrderView(data, entitlement);
+    let row = data;
+    if (isExpiredPending(data)) {
+      const { data: closed, error: closeError } = await (supabase.from("payments") as any)
+        .update({ status: "closed" })
+        .eq("id", data.id)
+        .eq("status", "pending")
+        .select("*")
+        .single();
+      if (closeError) throw closeError;
+      row = closed;
+    }
+
+    const entitlement = row.user_id ? await entitlementService.getCurrentPlan(row.user_id) : undefined;
+    return toPaymentOrderView(row, entitlement);
+  },
+
+  async listUserPayments(userId: string, limit = 20): Promise<PaymentOrderView[]> {
+    const supabase = createServiceRoleClient();
+    const { data, error } = await (supabase.from("payments") as any)
+      .select("*")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false })
+      .limit(limit);
+
+    if (error) throw error;
+
+    const rows = [];
+    for (const row of data ?? []) {
+      if (!isExpiredPending(row)) {
+        rows.push(row);
+        continue;
+      }
+      const { data: closed, error: closeError } = await (supabase.from("payments") as any)
+        .update({ status: "closed" })
+        .eq("id", row.id)
+        .eq("status", "pending")
+        .select("*")
+        .single();
+      if (closeError) throw closeError;
+      rows.push(closed);
+    }
+
+    return rows.map((row) => toPaymentOrderView(row));
+  },
+
+  async listAdminPayments(limit = 100): Promise<PaymentOrderView[]> {
+    const supabase = createServiceRoleClient();
+    const { data, error } = await (supabase.from("payments") as any)
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(limit);
+
+    if (error) throw error;
+    return (data ?? []).map((row: any) => toPaymentOrderView(row));
   },
 
   async markPaymentPaid(input: {
     outTradeNo: string;
     provider: PaymentProvider;
     providerTransactionId?: string | null;
+    amountCents?: number | null;
     payerOpenid?: string | null;
     eventId?: string | null;
     rawPayload?: Record<string, Json | undefined>;
@@ -215,6 +284,12 @@ export const paymentService = {
       .single();
 
     if (findError) throw findError;
+    if (payment.provider !== input.provider) {
+      throw new PaymentIntegrityError("Payment provider does not match the original order.");
+    }
+    if (typeof input.amountCents === "number" && payment.amount_cents !== input.amountCents) {
+      throw new PaymentIntegrityError("Paid amount does not match the original order.");
+    }
 
     await (supabase.from("payment_events") as any).insert({
       payment_id: payment.id,

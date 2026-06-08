@@ -27,6 +27,8 @@ export interface WeChatNotifyResult {
   notificationId: string | null;
   outTradeNo: string;
   transactionId: string;
+  tradeState: string | null;
+  amountCents: number | null;
   openid: string | null;
   raw: Record<string, unknown>;
 }
@@ -285,6 +287,8 @@ export const wechatPayClient = {
     const transaction = JSON.parse(decryptedJson) as {
       out_trade_no: string;
       transaction_id: string;
+      trade_state?: string;
+      amount?: { total?: number };
       payer?: { openid?: string };
     };
 
@@ -293,6 +297,8 @@ export const wechatPayClient = {
       notificationId: payload.id ?? null,
       outTradeNo: transaction.out_trade_no,
       transactionId: transaction.transaction_id,
+      tradeState: transaction.trade_state ?? null,
+      amountCents: typeof transaction.amount?.total === "number" ? transaction.amount.total : null,
       openid: transaction.payer?.openid ?? null,
       raw: payload,
     };

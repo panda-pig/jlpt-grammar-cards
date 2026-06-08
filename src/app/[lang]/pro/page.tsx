@@ -186,7 +186,13 @@ export default function ProPage() {
               </div>
             )}
 
-            <PaymentQrPanel order={order} text={t} className="mt-4" />
+            <PaymentQrPanel
+              order={order}
+              text={t}
+              className="mt-4"
+              statusHref={order ? `/${locale}/payments/${order.paymentId}` : undefined}
+              onRetry={handleBuyPro}
+            />
 
             <Link
               href={`/${locale}/support`}

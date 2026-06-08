@@ -11,11 +11,12 @@ export async function POST(request: Request) {
   try {
     const result = await wechatPayClient.verifyNotify(request);
 
-    if (result.eventType === "TRANSACTION.SUCCESS") {
+    if (result.eventType === "TRANSACTION.SUCCESS" && result.tradeState === "SUCCESS") {
       await paymentService.markPaymentPaid({
         outTradeNo: result.outTradeNo,
         provider: "wechat",
         providerTransactionId: result.transactionId,
+        amountCents: result.amountCents,
         payerOpenid: result.openid,
         eventId: result.notificationId,
         rawPayload: result.raw as Record<string, Json | undefined>,
