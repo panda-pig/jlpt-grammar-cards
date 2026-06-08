@@ -39,6 +39,20 @@ export interface PaymentOrderView {
   entitlement?: EntitlementState;
 }
 
+export interface PaymentEventView {
+  id: string;
+  provider: string;
+  eventType: string;
+  eventId: string | null;
+  payload: Record<string, unknown>;
+  createdAt: string | null;
+}
+
+export interface AdminPaymentDetail {
+  order: PaymentOrderView;
+  events: PaymentEventView[];
+}
+
 export class PaymentValidationError extends Error {
   code = "payment_validation_error" as const;
 }
@@ -53,6 +67,14 @@ export class PaymentForbiddenError extends Error {
 
 export class PaymentIntegrityError extends Error {
   code = "payment_integrity_error" as const;
+}
+
+export class PaymentNotFoundError extends Error {
+  code = "payment_not_found" as const;
+}
+
+export class PaymentStateError extends Error {
+  code = "payment_state_error" as const;
 }
 
 const TIP_MIN_AMOUNT_CENTS = 100;
@@ -149,6 +171,17 @@ function toPaymentOrderView(row: any, entitlement?: EntitlementState): PaymentOr
     nickname: row.nickname ?? null,
     message: row.message ?? null,
     entitlement,
+  };
+}
+
+function toPaymentEventView(row: any): PaymentEventView {
+  return {
+    id: row.id,
+    provider: row.provider,
+    eventType: row.event_type,
+    eventId: row.event_id ?? null,
+    payload: (row.payload ?? {}) as Record<string, unknown>,
+    createdAt: row.created_at ?? null,
   };
 }
 
@@ -266,6 +299,116 @@ export const paymentService = {
 
     if (error) throw error;
     return (data ?? []).map((row: any) => toPaymentOrderView(row));
+  },
+
+  /** Full order plus its provider/manual event timeline, for admin troubleshooting. */
+  async getAdminPaymentDetail(paymentId: string): Promise<AdminPaymentDetail> {
+    const supabase = createServiceRoleClient();
+    const { data: order, error } = await (supabase.from("payments") as any)
+      .select("*")
+      .eq("id", paymentId)
+      .maybeSingle();
+
+    if (error) throw error;
+    if (!order) throw new PaymentNotFoundError("Payment order was not found.");
+
+    const { data: events, error: eventsError } = await (supabase.from("payment_events") as any)
+      .select("*")
+      .eq("payment_id", paymentId)
+      .order("created_at", { ascending: false });
+
+    if (eventsError) throw eventsError;
+
+    const entitlement = order.user_id
+      ? await entitlementService.getCurrentPlan(order.user_id)
+      : undefined;
+
+    return {
+      order: toPaymentOrderView(order, entitlement),
+      events: (events ?? []).map(toPaymentEventView),
+    };
+  },
+
+  /**
+   * Manual settlement: mark a non-paid order as paid when the WeChat callback
+   * never arrived but payment is confirmed out of band. Idempotent, records a
+   * `payment.manual_paid` event with the operator, and grants Pro entitlement.
+   */
+  async adminMarkPaid(input: { paymentId: string; operatorId: string }): Promise<AdminPaymentDetail> {
+    const supabase = createServiceRoleClient();
+    const { data: payment, error } = await (supabase.from("payments") as any)
+      .select("*")
+      .eq("id", input.paymentId)
+      .maybeSingle();
+
+    if (error) throw error;
+    if (!payment) throw new PaymentNotFoundError("Payment order was not found.");
+    if (payment.status === "refunded") {
+      throw new PaymentStateError("A refunded order cannot be marked as paid.");
+    }
+
+    await (supabase.from("payment_events") as any).insert({
+      payment_id: payment.id,
+      provider: payment.provider,
+      event_type: "payment.manual_paid",
+      event_id: null,
+      payload: { source: "admin_manual", operator: input.operatorId, previousStatus: payment.status },
+    });
+
+    let updated = payment;
+    if (payment.status !== "paid") {
+      const { data, error: updateError } = await (supabase.from("payments") as any)
+        .update({ status: "paid", paid_at: payment.paid_at ?? new Date().toISOString() })
+        .eq("id", payment.id)
+        .select("*")
+        .single();
+      if (updateError) throw updateError;
+      updated = data;
+    }
+
+    if (updated.type === "pro_lifetime" && updated.user_id) {
+      await entitlementService.grantLifetimePro(updated.user_id, updated.id);
+    }
+
+    return this.getAdminPaymentDetail(updated.id);
+  },
+
+  /**
+   * Close an abnormal order. Only a still-`pending` order can be closed; paid
+   * orders must go through a refund flow instead. Records a `payment.manual_closed`
+   * event with the operator.
+   */
+  async adminCloseOrder(input: { paymentId: string; operatorId: string }): Promise<AdminPaymentDetail> {
+    const supabase = createServiceRoleClient();
+    const { data: payment, error } = await (supabase.from("payments") as any)
+      .select("*")
+      .eq("id", input.paymentId)
+      .maybeSingle();
+
+    if (error) throw error;
+    if (!payment) throw new PaymentNotFoundError("Payment order was not found.");
+    if (payment.status === "paid") {
+      throw new PaymentStateError("A paid order cannot be closed; use a refund instead.");
+    }
+    if (payment.status === "closed") {
+      return this.getAdminPaymentDetail(payment.id);
+    }
+
+    await (supabase.from("payment_events") as any).insert({
+      payment_id: payment.id,
+      provider: payment.provider,
+      event_type: "payment.manual_closed",
+      event_id: null,
+      payload: { source: "admin_manual", operator: input.operatorId, previousStatus: payment.status },
+    });
+
+    const { error: updateError } = await (supabase.from("payments") as any)
+      .update({ status: "closed" })
+      .eq("id", payment.id)
+      .neq("status", "paid");
+    if (updateError) throw updateError;
+
+    return this.getAdminPaymentDetail(payment.id);
   },
 
   async markPaymentPaid(input: {

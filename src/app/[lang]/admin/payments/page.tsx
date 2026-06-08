@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -147,7 +148,7 @@ export default function AdminPaymentsPage() {
             <span>{t.paymentCreatedAt}</span>
           </div>
           {payments.map((payment) => (
-            <div key={payment.paymentId} className="grid gap-2 border-b border-[#ded8d0] px-4 py-3 text-sm last:border-b-0 md:grid-cols-[1.2fr_1fr_1fr_1fr_1.4fr] md:items-center md:gap-3">
+            <Link key={payment.paymentId} href={`/${locale}/admin/payments/${payment.paymentId}`} className="grid gap-2 border-b border-[#ded8d0] px-4 py-3 text-sm last:border-b-0 transition-colors hover:bg-[#cfdaf5]/30 md:grid-cols-[1.2fr_1fr_1fr_1fr_1.4fr] md:items-center md:gap-3">
               <div className="min-w-0">
                 <p className="font-mono text-xs font-medium text-[#242424]">{typeLabel(payment.type)}</p>
                 <p className="mt-1 truncate font-mono text-[11px] text-[#797776]" title={payment.outTradeNo}>
@@ -179,7 +180,7 @@ export default function AdminPaymentsPage() {
                   </p>
                 )}
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       )}

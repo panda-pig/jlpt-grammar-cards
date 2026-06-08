@@ -1,31 +1,14 @@
 import { NextResponse } from "next/server";
-import { createServiceRoleClient } from "@/lib/supabase-admin";
-import { createClient } from "@/lib/supabase-server";
+import { getAdminUser } from "@/lib/admin-auth";
 import { paymentService } from "@/services/paymentService";
 
 function errorResponse(code: string, message: string, status: number) {
   return NextResponse.json({ error: { code, message } }, { status });
 }
 
-async function requireAdmin() {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return false;
-
-  const admin = createServiceRoleClient();
-  const { data, error } = await (admin.from("user_roles") as any)
-    .select("role")
-    .eq("user_id", user.id)
-    .eq("role", "admin")
-    .maybeSingle();
-
-  if (error) return false;
-  return data?.role === "admin";
-}
-
 export async function GET(request: Request) {
   try {
-    if (!(await requireAdmin())) {
+    if (!(await getAdminUser())) {
       return errorResponse("admin_required", "Admin permission is required.", 403);
     }
 
