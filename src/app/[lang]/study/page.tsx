@@ -145,6 +145,9 @@ export default function StudyPage() {
             <Button variant="outline" className="rounded-full font-mono" onClick={loadCards}>
               {dict.study.restart}
             </Button>
+            <Link href={`/${locale}/practice`} className={buttonVariants({ variant: "outline", className: "rounded-full font-mono" })}>
+              {dict.nav.practice}
+            </Link>
           </div>
         </div>
 
