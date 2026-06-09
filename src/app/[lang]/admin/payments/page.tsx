@@ -102,7 +102,7 @@ export default function AdminPaymentsPage() {
         </Button>
       </div>
 
-      <div className="mb-6 grid gap-3 sm:grid-cols-3">
+      <div className="mb-6 grid grid-cols-3 gap-2 sm:gap-3">
         <Card className="rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] shadow-none">
           <CardContent className="p-5">
             <CreditCard className="mb-2 h-4 w-4 text-[#797776]" />

@@ -163,25 +163,25 @@ export default function StudyPage() {
           </div>
         </div>
 
-        <div className="mb-4 grid gap-3 sm:grid-cols-3">
+        <div className="mb-4 grid grid-cols-3 gap-2 sm:gap-3">
           <Card className="rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] shadow-none">
-            <CardContent className="p-4">
+            <CardContent className="p-3 sm:p-4">
               <p className="font-mono text-xs text-[#797776]">{dict.study.queueCount}</p>
-              <p className="mt-1 font-mono text-2xl font-medium text-[#242424]">{cards.length}</p>
+              <p className="mt-1 font-mono text-lg sm:text-2xl font-medium text-[#242424]">{cards.length}</p>
             </CardContent>
           </Card>
           <Card className="rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] shadow-none">
-            <CardContent className="p-4">
+            <CardContent className="p-3 sm:p-4">
               <p className="font-mono text-xs text-[#797776]">{dict.study.currentCard}</p>
-              <p className="mt-1 font-mono text-2xl font-medium text-[#242424]">
+              <p className="mt-1 font-mono text-lg sm:text-2xl font-medium text-[#242424]">
                 {cards.length === 0 ? "0 / 0" : `${Math.min(currentIndex + 1, cards.length)} / ${cards.length}`}
               </p>
             </CardContent>
           </Card>
           <Card className="rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] shadow-none">
-            <CardContent className="p-4">
+            <CardContent className="p-3 sm:p-4">
               <p className="font-mono text-xs text-[#797776]">{dict.study.remaining}</p>
-              <p className="mt-1 font-mono text-2xl font-medium text-[#242424]">{finished ? 0 : remaining}</p>
+              <p className="mt-1 font-mono text-lg sm:text-2xl font-medium text-[#242424]">{finished ? 0 : remaining}</p>
             </CardContent>
           </Card>
         </div>
@@ -227,7 +227,7 @@ export default function StudyPage() {
             </Card>
           </div>
         ) : (
-          <div className="flex flex-1 flex-col justify-center gap-5 py-5 pb-24 md:pb-8">
+          <div className="flex flex-1 flex-col justify-start md:justify-center gap-5 py-5 pb-24 md:pb-8">
             {currentCard && (
               <StudyFlashcard grammar={currentCard} flipped={flipped} onFlip={() => setFlipped((value) => !value)} isFavorite={currentCardFavorite} onToggleFavorite={handleToggleFavorite} />
             )}

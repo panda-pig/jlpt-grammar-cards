@@ -309,7 +309,7 @@ export default function MyGrammarPage() {
         </div>
 
         {/* stats */}
-        <div className="mb-6 grid gap-3 sm:grid-cols-4">
+        <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
           {/* Private items card — shows Pro/Free limit badge */}
           <Card className={`rounded-[18px] border shadow-none ${atFreeLimit ? "border-[#d8b15a]/50 bg-[#fff6df]" : "border-[#ded8d0] bg-[#fbfaf8]"}`}>
             <CardContent className="p-4">

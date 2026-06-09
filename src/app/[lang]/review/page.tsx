@@ -163,7 +163,7 @@ export default function ReviewPage() {
           </div>
           <p className="mb-4 text-sm text-[#797776]">{dict.review.oldReviewOnly}</p>
 
-          <div className="grid gap-3 sm:grid-cols-4 mb-8">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 mb-8">
             <Card className="bg-[#fbfaf8] border border-[#ded8d0] rounded-[18px] shadow-none"><CardContent className="p-4 text-center">
               <p className="text-2xl font-bold font-mono text-[#242424]">{total}</p>
               <p className="font-mono text-xs text-[#797776]">{dict.review.dueCards}</p>
