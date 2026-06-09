@@ -216,6 +216,7 @@
     "emptyTitle": "No new cards here",
     "emptyDesc": "You have already started every card in this filter. Head to today's review for due cards.",
     "reviewNow": "Review Due Cards",
+    "previous": "Previous",
     "queueCount": "New cards available",
     "currentCard": "Current Card",
     "scheduleHint": "After rating, the next due date, interval, and mastery level are updated automatically."

@@ -13,7 +13,7 @@ import { learningService, type UnifiedProgressRow } from "@/services/learningSer
 import { useAuth } from "@/hooks/useAuth";
 import { useDictionary, useLocale } from "@/components/layout/LocaleProvider";
 import type { GrammarEntry, JLPTLevel, ReviewRating } from "@/lib/types";
-import { BookOpen, Sparkles, WifiOff } from "lucide-react";
+import { BookOpen, ChevronLeft, Sparkles, WifiOff } from "lucide-react";
 
 type StudyLevel = JLPTLevel | "all";
 
@@ -61,18 +61,30 @@ export default function StudyPage() {
     if (levelParam && levelOptions.includes(levelParam)) setLevel(levelParam);
   }, [levelOptions]);
 
-  const handleRate = useCallback(async (rating: ReviewRating) => {
+  const handleRate = useCallback((rating: ReviewRating) => {
     if (!currentCard) return;
-    await learningService.startLearning(currentCard.id, user?.id);
-    await learningService.recordReview(currentCard.id, rating, user?.id);
+    const cardId = currentCard.id;
+    const uid = user?.id;
+    // Advance the UI immediately; persist in the background so the next card
+    // appears instantly instead of waiting on two Supabase round-trips.
     setFlipped(false);
     setCompletedCount((count) => count + 1);
-    if (currentIndex + 1 >= cards.length) {
-      setCurrentIndex(cards.length);
-    } else {
-      setCurrentIndex((index) => index + 1);
-    }
-  }, [cards.length, currentCard, currentIndex, user?.id]);
+    setCurrentIndex((index) => (index + 1 >= cards.length ? cards.length : index + 1));
+    void (async () => {
+      try {
+        await learningService.startLearning(cardId, uid);
+        await learningService.recordReview(cardId, rating, uid);
+      } catch {
+        // learningService already falls back to local storage on failure.
+      }
+    })();
+  }, [cards.length, currentCard, user?.id]);
+
+  const goToPrevious = () => {
+    setFlipped(false);
+    setCurrentIndex((index) => Math.max(0, index - 1));
+    setCompletedCount((count) => Math.max(0, count - 1));
+  };
 
   const handleToggleFavorite = async () => {
     if (!currentCard) return;
@@ -219,13 +231,23 @@ export default function StudyPage() {
             {currentCard && (
               <StudyFlashcard grammar={currentCard} flipped={flipped} onFlip={() => setFlipped((value) => !value)} isFavorite={currentCardFavorite} onToggleFavorite={handleToggleFavorite} />
             )}
-            <div className="mx-auto w-full max-w-lg">
+            <div className="mx-auto w-full max-w-lg space-y-2.5">
               {flipped ? (
                 <ReviewButtons onRate={handleRate} />
               ) : (
                 <Button className="w-full rounded-full font-mono" onClick={() => setFlipped(true)}>
                   {dict.study.showAnswer}
                 </Button>
+              )}
+              {currentIndex > 0 && (
+                <button
+                  type="button"
+                  onClick={goToPrevious}
+                  className="mx-auto flex items-center gap-1 font-mono text-xs text-[#797776] transition-colors hover:text-[#242424]"
+                >
+                  <ChevronLeft className="h-3.5 w-3.5" />
+                  {dict.study.previous}
+                </button>
               )}
             </div>
           </div>

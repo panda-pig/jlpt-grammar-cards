@@ -216,6 +216,7 @@
     "emptyTitle": "这个等级暂无新卡",
     "emptyDesc": "你已经学习过当前筛选范围内的语法，可以去今日复习查看到期卡片。",
     "reviewNow": "去今日复习",
+    "previous": "上一张",
     "queueCount": "可学习新卡",
     "currentCard": "当前卡片",
     "scheduleHint": "评分后将自动更新下次复习时间、间隔和掌握度。"

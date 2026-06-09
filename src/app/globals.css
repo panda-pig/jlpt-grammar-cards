@@ -135,19 +135,20 @@ body {
   .fc-inner { animation: none !important; transition: none !important; }
 }
 
-/* Dot-grain overlay — added as a fixed div in MainLayout */
+/* Dot-grain overlay — added as a fixed div in MainLayout.
+   Plain low-opacity dots (no mix-blend-mode) so the fixed full-viewport
+   layer doesn't force an expensive per-frame recomposite on scroll. */
 .page-grain {
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 9000;
-  opacity: .20;
+  opacity: .5;
   background-image: repeating-radial-gradient(
     circle at 0 0,
-    rgba(36, 36, 36, .18) 0 1px,
+    rgba(36, 36, 36, .05) 0 1px,
     transparent 1px 6px
   );
-  mix-blend-mode: multiply;
 }
 
 /* ── Flashcard 3D flip ── */
@@ -156,7 +157,7 @@ body {
 }
 .fc-inner {
   transform-style: preserve-3d;
-  transition: transform .72s cubic-bezier(.4, 0, .2, 1);
+  transition: transform .5s cubic-bezier(.4, 0, .2, 1);
 }
 .fc-inner.fc-flipped {
   transform: rotateY(180deg);

@@ -58,13 +58,10 @@ export default function ReviewPage() {
   };
 
   const handleRate = useCallback(
-    async (rating: ReviewRating) => {
+    (rating: ReviewRating) => {
       const card = dueCards[currentIndex];
-      try {
-        await learningService.recordReview(card.grammar_id, rating, userId);
-      } catch {
-        // silently fail, still advance
-      }
+      if (!card) return;
+      // Advance immediately; persist in the background so the next card is instant.
       setFlipped(false);
       setCompletedCount((c) => c + 1);
       if (currentIndex + 1 >= dueCards.length) {
@@ -72,6 +69,9 @@ export default function ReviewPage() {
       } else {
         setCurrentIndex((i) => i + 1);
       }
+      void learningService.recordReview(card.grammar_id, rating, userId).catch(() => {
+        // learningService already falls back to local storage on failure.
+      });
     },
     [currentIndex, dueCards, userId]
   );
