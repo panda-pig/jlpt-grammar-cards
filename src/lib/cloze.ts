@@ -106,6 +106,30 @@ export function buildClozeQuestion(
 }
 
 /**
+ * Build a deck of up to `count` cloze questions from an explicit candidate set,
+ * drawing distractors from a separate `pool`. This lets "studied" / "today"
+ * practice modes quiz a small user-scoped candidate set while still sampling
+ * plausible distractors from the full grammar pool.
+ */
+export function buildClozeDeckFrom(
+  candidates: GrammarEntry[],
+  pool: GrammarEntry[],
+  count = 20,
+  rand: () => number = Math.random
+): ClozeQuestion[] {
+  const distractorPool = pool.filter((e) => e.title && e.title.trim());
+  const eligible = shuffle(candidates.filter(isClozeEligible), rand);
+
+  const deck: ClozeQuestion[] = [];
+  for (const entry of eligible) {
+    const q = buildClozeQuestion(entry, distractorPool, rand);
+    if (q) deck.push(q);
+    if (deck.length === count) break;
+  }
+  return deck;
+}
+
+/**
  * Build a deck of up to `count` cloze questions for the given level ("all" for
  * every level). Distractors are drawn from the full entry set.
  */
@@ -115,17 +139,6 @@ export function buildClozeDeck(
   count = 10,
   rand: () => number = Math.random
 ): ClozeQuestion[] {
-  const pool = entries.filter((e) => e.title && e.title.trim());
-  const candidates = shuffle(
-    entries.filter((e) => isClozeEligible(e) && (level === "all" || e.jlptLevel === level)),
-    rand
-  );
-
-  const deck: ClozeQuestion[] = [];
-  for (const entry of candidates) {
-    const q = buildClozeQuestion(entry, pool, rand);
-    if (q) deck.push(q);
-    if (deck.length === count) break;
-  }
-  return deck;
+  const candidates = level === "all" ? entries : entries.filter((e) => e.jlptLevel === level);
+  return buildClozeDeckFrom(candidates, entries, count, rand);
 }

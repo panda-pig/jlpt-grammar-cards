@@ -9,8 +9,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ProgressBar } from "@/components/study/ProgressBar";
 import { LevelBadge } from "@/components/grammar/LevelBadge";
 import { grammarService } from "@/services/grammarService";
+import { learningService, type UnifiedProgressRow } from "@/services/learningService";
 import { toGrammarEntry } from "@/lib/mappers";
-import { buildClozeDeck, BLANK_MARKER, type ClozeQuestion } from "@/lib/cloze";
+import { buildClozeDeck, buildClozeDeckFrom, isClozeEligible, BLANK_MARKER, type ClozeQuestion } from "@/lib/cloze";
+import { canonicalGrammarId } from "@/lib/grammar-dedupe";
 import { localizedGrammar } from "@/lib/grammar-content";
 import { useAuth } from "@/hooks/useAuth";
 import { useDictionary, useLocale } from "@/components/layout/LocaleProvider";
@@ -19,9 +21,19 @@ import type { GrammarEntry, JLPTLevel } from "@/lib/types";
 import { Check, Sparkles, Target, X } from "lucide-react";
 
 type Level = JLPTLevel | "all";
+type Source = "today" | "studied" | "all";
 type Phase = "setup" | "loading" | "playing" | "empty" | "finished";
 
-const DECK_SIZE = 10;
+const ALL_DECK_SIZE = 10;   // random sample for the full-grammar mode
+const SCOPED_DECK_SIZE = 20; // cover the (small) studied/today set
+
+function isToday(iso: string | null | undefined): boolean {
+  if (!iso) return false;
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return false;
+  const now = new Date();
+  return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth() && d.getDate() === now.getDate();
+}
 
 export default function PracticePage() {
   const { user } = useAuth();
@@ -30,7 +42,10 @@ export default function PracticePage() {
   const t = dict.practice;
 
   const [entries, setEntries] = useState<GrammarEntry[]>([]);
-  const [level, setLevel] = useState<Level>("N3");
+  const [progressMap, setProgressMap] = useState<Map<string, UnifiedProgressRow>>(new Map());
+  const [loaded, setLoaded] = useState(false);
+  const [source, setSource] = useState<Source>("studied");
+  const [level, setLevel] = useState<Level>("all");
   const [phase, setPhase] = useState<Phase>("setup");
   const [deck, setDeck] = useState<ClozeQuestion[]>([]);
   const [index, setIndex] = useState(0);
@@ -38,10 +53,14 @@ export default function PracticePage() {
   const [score, setScore] = useState(0);
 
   useEffect(() => {
-    grammarService
-      .getAll(user?.id)
-      .then((rows) => setEntries(rows.map(toGrammarEntry)))
-      .catch(() => setEntries([]));
+    Promise.all([
+      grammarService.getAll(user?.id).catch(() => [] as unknown[]),
+      learningService.getProgressMap(user?.id).catch(() => new Map<string, UnifiedProgressRow>()),
+    ]).then(([rows, map]) => {
+      setEntries((rows as Parameters<typeof toGrammarEntry>[0][]).map(toGrammarEntry));
+      setProgressMap(map);
+      setLoaded(true);
+    });
   }, [user?.id]);
 
   const entryMap = useMemo(() => {
@@ -52,11 +71,45 @@ export default function PracticePage() {
 
   const levelOptions = useMemo(() => ["all", "N5", "N4", "N3", "N2", "N1"] as Level[], []);
 
+  // Candidate sets per source. Distractors always come from the full pool.
+  const studiedEntries = useMemo(
+    () =>
+      entries.filter((e) => {
+        const p = progressMap.get(canonicalGrammarId(e.id));
+        return p?.study_status === "学习中" || p?.study_status === "已掌握";
+      }),
+    [entries, progressMap]
+  );
+  const todayEntries = useMemo(
+    () => studiedEntries.filter((e) => isToday(progressMap.get(canonicalGrammarId(e.id))?.last_reviewed_at)),
+    [studiedEntries, progressMap]
+  );
+
+  // Eligible (has example sentence) counts shown on each mode chip.
+  const counts = useMemo(
+    () => ({
+      today: todayEntries.filter(isClozeEligible).length,
+      studied: studiedEntries.filter(isClozeEligible).length,
+      all: entries.filter(isClozeEligible).length,
+    }),
+    [todayEntries, studiedEntries, entries]
+  );
+
+  // Default to the most relevant non-empty scope once data is loaded.
+  useEffect(() => {
+    if (!loaded) return;
+    if (counts.today > 0) setSource("today");
+    else if (counts.studied > 0) setSource("studied");
+    else setSource("all");
+  }, [loaded, counts.today, counts.studied]);
+
   const start = useCallback(() => {
     setPhase("loading");
-    // Generate on next tick so the loading state can paint.
     setTimeout(() => {
-      const generated = buildClozeDeck(entries, level, DECK_SIZE);
+      const generated =
+        source === "all"
+          ? buildClozeDeck(entries, level, ALL_DECK_SIZE)
+          : buildClozeDeckFrom(source === "today" ? todayEntries : studiedEntries, entries, SCOPED_DECK_SIZE);
       if (generated.length === 0) {
         setPhase("empty");
         return;
@@ -67,7 +120,7 @@ export default function PracticePage() {
       setScore(0);
       setPhase("playing");
     }, 0);
-  }, [entries, level]);
+  }, [source, level, entries, todayEntries, studiedEntries]);
 
   const current = deck[index] ?? null;
   const answered = picked !== null;
@@ -112,24 +165,58 @@ export default function PracticePage() {
           <Card className="card-soft rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] shadow-none">
             <CardContent className="space-y-5 p-6">
               <p className="text-sm leading-relaxed text-[#797776]">{t.startDesc}</p>
-              <div className="flex flex-wrap items-center gap-3">
-                <span className="font-mono text-xs text-[#797776]">{t.selectLevel}</span>
-                <Select value={level} onValueChange={(val) => setLevel(val as Level)}>
-                  <SelectTrigger className="w-32 rounded-full border-[#ded8d0] bg-transparent">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {levelOptions.map((item) => (
-                      <SelectItem key={item} value={item}>
-                        {item === "all" ? t.allLevels : item}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <Button className="btn-v3-primary" onClick={start} disabled={entries.length === 0}>
-                  <Target className="h-4 w-4" /> {t.startButton}
-                </Button>
+
+              {/* Source scope: today ⊆ studied ⊆ all */}
+              <div className="space-y-2">
+                <span className="font-mono text-xs text-[#797776]">{t.sourceLabel}</span>
+                <div className="grid grid-cols-3 gap-2">
+                  {([
+                    { key: "today", label: t.sourceToday, count: counts.today },
+                    { key: "studied", label: t.sourceStudied, count: counts.studied },
+                    { key: "all", label: t.sourceAll, count: counts.all },
+                  ] as const).map((opt) => (
+                    <button
+                      key={opt.key}
+                      type="button"
+                      onClick={() => setSource(opt.key)}
+                      className={cn(
+                        "rounded-[12px] border px-3 py-2.5 text-left transition-all",
+                        source === opt.key
+                          ? "border-[#242424] bg-[#cfdaf5]"
+                          : "border-[#ded8d0] bg-[#fbfaf8] hover:border-[#242424]"
+                      )}
+                    >
+                      <div className="font-mono text-[13px] font-bold text-[#242424]">{opt.label}</div>
+                      <div className="mt-0.5 font-mono text-[11px] text-[#797776]">
+                        {t.questionsAvailable.replace("{n}", String(opt.count))}
+                      </div>
+                    </button>
+                  ))}
+                </div>
               </div>
+
+              {/* Level only narrows the full-grammar pool. */}
+              {source === "all" && (
+                <div className="flex flex-wrap items-center gap-3">
+                  <span className="font-mono text-xs text-[#797776]">{t.selectLevel}</span>
+                  <Select value={level} onValueChange={(val) => setLevel(val as Level)}>
+                    <SelectTrigger className="w-32 rounded-full border-[#ded8d0] bg-transparent">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {levelOptions.map((item) => (
+                        <SelectItem key={item} value={item}>
+                          {item === "all" ? t.allLevels : item}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
+
+              <Button className="btn-v3-primary" onClick={start} disabled={!loaded || counts[source] === 0}>
+                <Target className="h-4 w-4" /> {t.startButton}
+              </Button>
             </CardContent>
           </Card>
         )}
@@ -142,10 +229,19 @@ export default function PracticePage() {
           <Card className="rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] shadow-none">
             <CardContent className="space-y-4 p-8 text-center">
               <h2 className="font-serif text-xl font-bold">{t.emptyTitle}</h2>
-              <p className="text-sm text-[#797776]">{t.emptyDesc}</p>
-              <Button variant="outline" className="rounded-full font-mono" onClick={() => setPhase("setup")}>
-                {t.selectLevel}
-              </Button>
+              <p className="text-sm text-[#797776]">
+                {source === "today" ? t.emptyToday : source === "studied" ? t.emptyStudied : t.emptyDesc}
+              </p>
+              <div className="flex justify-center gap-2">
+                {source !== "all" && (
+                  <Link href={`/${locale}/study`} className={buttonVariants({ className: "rounded-full font-mono" })}>
+                    {t.backToStudy}
+                  </Link>
+                )}
+                <Button variant="outline" className="rounded-full font-mono" onClick={() => setPhase("setup")}>
+                  {t.sourceLabel}
+                </Button>
+              </div>
             </CardContent>
           </Card>
         )}

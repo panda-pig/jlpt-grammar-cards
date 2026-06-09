@@ -4,6 +4,7 @@ import {
   isClozeEligible,
   buildClozeQuestion,
   buildClozeDeck,
+  buildClozeDeckFrom,
   BLANK_MARKER,
 } from "@/lib/cloze";
 import type { GrammarEntry, JLPTLevel } from "@/lib/types";
@@ -88,5 +89,33 @@ describe("buildClozeDeck", () => {
   it("filters by level", () => {
     const deck = buildClozeDeck(pool, "N3", 10);
     expect(deck.every((q) => q.level === "N3")).toBe(true);
+  });
+});
+
+describe("buildClozeDeckFrom — scoped candidates, full distractor pool", () => {
+  it("only quizzes the candidate set, not the whole pool", () => {
+    const candidates = [pool[0]]; // わけではない
+    const deck = buildClozeDeckFrom(candidates, pool, 20);
+    expect(deck).toHaveLength(1);
+    expect(deck[0].correctTitle).toBe("わけではない");
+  });
+
+  it("draws distractors from the pool even when the candidate set is tiny", () => {
+    const candidates = [pool[0]];
+    const q = buildClozeDeckFrom(candidates, pool, 20)[0];
+    // 4 options total, all distinct, sourced from the wider pool
+    expect(q.options).toHaveLength(4);
+    expect(new Set(q.options).size).toBe(4);
+  });
+
+  it("skips candidates without an example sentence", () => {
+    const noExample = entry({ id: "ne", title: "そびれる", jlptLevel: "N1" });
+    const deck = buildClozeDeckFrom([noExample], pool, 20);
+    expect(deck).toHaveLength(0);
+  });
+
+  it("caps the deck at the requested count", () => {
+    const deck = buildClozeDeckFrom(pool, pool, 2);
+    expect(deck.length).toBe(2);
   });
 });
