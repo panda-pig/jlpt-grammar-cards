@@ -163,7 +163,9 @@ export function grammarCategoryLabel(category: GrammarCategory, locale: AppLocal
     "規則": "Rule",
     "その他": "Other",
   };
-  return labels[category];
+  // Category is effectively free-text in the data (many nuance values beyond the
+  // typed union). Fall back to the raw value so English UI never shows undefined.
+  return labels[category] ?? category;
 }
 
 export function studyStatusLabel(status: StudyStatus, locale: AppLocale): string {

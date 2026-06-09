@@ -12,6 +12,8 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   PaymentForbiddenError,
   PaymentIntegrityError,
+  PaymentNotFoundError,
+  PaymentStateError,
   PaymentUnauthorizedError,
   PaymentValidationError,
   paymentService,
@@ -92,6 +94,8 @@ function makeChain(result: { data: unknown; error?: unknown }) {
 
   chain.select      = vi.fn(() => chain);
   chain.eq          = vi.fn(() => chain);
+  chain.neq         = vi.fn(() => chain);
+  chain.order       = vi.fn(() => chain);
   chain.update      = vi.fn(() => chain);
   chain.upsert      = vi.fn(() => chain);
   chain.insert      = vi.fn(() => chain);   // chainable — see thenable below
@@ -481,5 +485,131 @@ describe("getPaymentStatus — access control", () => {
 
     expect(result).not.toBeNull();
     expect(result!.type).toBe("tip");
+  });
+});
+
+// ── Admin manual settlement / close ────────────────────────────────────────────
+
+/**
+ * Wire persistent payments + payment_events chains so a single test can assert
+ * on insert/update across the multiple `from(table)` calls an admin method makes
+ * (fetch → event insert → status update → getAdminPaymentDetail).
+ */
+function buildAdminClient(paymentData: unknown) {
+  const paymentsChain = makeChain({ data: paymentData });
+  const eventsChain = makeChain({ data: [] });
+  mockCreateClient.mockReturnValue({
+    from: vi.fn().mockImplementation((table: string) => {
+      if (table === "payments") return paymentsChain;
+      if (table === "payment_events") return eventsChain;
+      return makeChain({ data: null });
+    }),
+  } as unknown as ReturnType<typeof createServiceRoleClient>);
+  return { paymentsChain, eventsChain };
+}
+
+describe("adminMarkPaid — manual settlement", () => {
+  beforeEach(() => {
+    mockEntitlementService.grantLifetimePro.mockClear();
+  });
+
+  it("settles a pending Pro order: records a manual_paid event, updates status, grants Pro", async () => {
+    const { paymentsChain, eventsChain } = buildAdminClient(pendingPayment);
+
+    await paymentService.adminMarkPaid({ paymentId: pendingPayment.id, operatorId: "admin-1" });
+
+    // event records the operator and the source
+    expect(eventsChain.insert).toHaveBeenCalledWith(
+      expect.objectContaining({
+        event_type: "payment.manual_paid",
+        payload: expect.objectContaining({ source: "admin_manual", operator: "admin-1" }),
+      }),
+    );
+    // pending → paid update happened
+    expect(paymentsChain.update).toHaveBeenCalled();
+    // Pro granted for the order's user
+    expect(mockEntitlementService.grantLifetimePro).toHaveBeenCalledWith(
+      pendingPayment.user_id,
+      pendingPayment.id,
+    );
+  });
+
+  it("is idempotent for an already-paid order: skips the status UPDATE", async () => {
+    const { paymentsChain } = buildAdminClient(paidPayment);
+
+    await paymentService.adminMarkPaid({ paymentId: paidPayment.id, operatorId: "admin-1" });
+
+    expect(paymentsChain.update).not.toHaveBeenCalled();
+  });
+
+  it("does not grant Pro for an anonymous tip", async () => {
+    const paidTip = { ...anonTipPayment, status: "pending" };
+    buildAdminClient(paidTip);
+
+    await paymentService.adminMarkPaid({ paymentId: paidTip.id, operatorId: "admin-1" });
+
+    expect(mockEntitlementService.grantLifetimePro).not.toHaveBeenCalled();
+  });
+
+  it("refuses to settle a refunded order", async () => {
+    const { eventsChain } = buildAdminClient({ ...pendingPayment, status: "refunded" });
+
+    await expect(
+      paymentService.adminMarkPaid({ paymentId: pendingPayment.id, operatorId: "admin-1" }),
+    ).rejects.toThrow(PaymentStateError);
+
+    expect(eventsChain.insert).not.toHaveBeenCalled();
+  });
+
+  it("throws PaymentNotFoundError when the order does not exist", async () => {
+    buildAdminClient(null);
+
+    await expect(
+      paymentService.adminMarkPaid({ paymentId: "missing", operatorId: "admin-1" }),
+    ).rejects.toThrow(PaymentNotFoundError);
+  });
+});
+
+describe("adminCloseOrder — close abnormal order", () => {
+  it("closes a pending order: records a manual_closed event and updates status", async () => {
+    const { paymentsChain, eventsChain } = buildAdminClient(pendingPayment);
+
+    await paymentService.adminCloseOrder({ paymentId: pendingPayment.id, operatorId: "admin-1" });
+
+    expect(eventsChain.insert).toHaveBeenCalledWith(
+      expect.objectContaining({
+        event_type: "payment.manual_closed",
+        payload: expect.objectContaining({ source: "admin_manual", operator: "admin-1" }),
+      }),
+    );
+    expect(paymentsChain.update).toHaveBeenCalled();
+  });
+
+  it("refuses to close a paid order (refund flow required)", async () => {
+    const { eventsChain, paymentsChain } = buildAdminClient(paidPayment);
+
+    await expect(
+      paymentService.adminCloseOrder({ paymentId: paidPayment.id, operatorId: "admin-1" }),
+    ).rejects.toThrow(PaymentStateError);
+
+    expect(eventsChain.insert).not.toHaveBeenCalled();
+    expect(paymentsChain.update).not.toHaveBeenCalled();
+  });
+
+  it("is a no-op for an already-closed order: records no new event", async () => {
+    const { eventsChain, paymentsChain } = buildAdminClient({ ...pendingPayment, status: "closed" });
+
+    await paymentService.adminCloseOrder({ paymentId: pendingPayment.id, operatorId: "admin-1" });
+
+    expect(eventsChain.insert).not.toHaveBeenCalled();
+    expect(paymentsChain.update).not.toHaveBeenCalled();
+  });
+
+  it("throws PaymentNotFoundError when the order does not exist", async () => {
+    buildAdminClient(null);
+
+    await expect(
+      paymentService.adminCloseOrder({ paymentId: "missing", operatorId: "admin-1" }),
+    ).rejects.toThrow(PaymentNotFoundError);
   });
 });
