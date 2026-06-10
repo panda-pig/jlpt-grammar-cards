@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { StudyFlashcard } from "@/components/study/StudyFlashcard";
@@ -50,7 +50,15 @@ export default function ReviewPage() {
     loadDueCards();
   }, [loadDueCards]);
 
+  // Blocks duplicate writes from a double-click / held rating key in the gap
+  // before React re-renders after the optimistic advance.
+  const ratingLock = useRef(false);
+  useEffect(() => {
+    ratingLock.current = false;
+  }, [currentIndex]);
+
   const startReview = () => {
+    ratingLock.current = false; // index may stay 0 (single-card deck), so reset explicitly
     setCurrentIndex(0);
     setFlipped(false);
     setCompletedCount(0);
@@ -60,7 +68,8 @@ export default function ReviewPage() {
   const handleRate = useCallback(
     (rating: ReviewRating) => {
       const card = dueCards[currentIndex];
-      if (!card) return;
+      if (!card || ratingLock.current) return;
+      ratingLock.current = true;
       // Advance immediately; persist in the background so the next card is instant.
       setFlipped(false);
       setCompletedCount((c) => c + 1);

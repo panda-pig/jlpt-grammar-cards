@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { StudyFlashcard } from "@/components/study/StudyFlashcard";
@@ -61,8 +61,17 @@ export default function StudyPage() {
     if (levelParam && levelOptions.includes(levelParam)) setLevel(levelParam);
   }, [levelOptions]);
 
+  // Guards the gap between an optimistic advance and React's re-render: a
+  // double-click / held rating key would otherwise call recordReview twice
+  // for the same card (duplicating review_count, SM-2 and daily stats).
+  const ratingLock = useRef(false);
+  useEffect(() => {
+    ratingLock.current = false;
+  }, [currentIndex]);
+
   const handleRate = useCallback((rating: ReviewRating) => {
-    if (!currentCard) return;
+    if (!currentCard || ratingLock.current) return;
+    ratingLock.current = true;
     const cardId = currentCard.id;
     const uid = user?.id;
     // Advance the UI immediately; persist in the background so the next card
@@ -80,10 +89,16 @@ export default function StudyPage() {
     })();
   }, [cards.length, currentCard, user?.id]);
 
+  // Step back is read-only review: the earlier rating is already persisted,
+  // so revisited cards must not be ratable again (no undo in learningService).
   const goToPrevious = () => {
     setFlipped(false);
     setCurrentIndex((index) => Math.max(0, index - 1));
-    setCompletedCount((count) => Math.max(0, count - 1));
+  };
+
+  const resumeFromRevisit = () => {
+    setFlipped(false);
+    setCurrentIndex((index) => Math.min(index + 1, cards.length));
   };
 
   const handleToggleFavorite = async () => {
@@ -99,6 +114,8 @@ export default function StudyPage() {
   const currentCardFavorite = currentCard ? !!progressMap.get(currentCard.id)?.is_favorite : false;
 
   const finished = cards.length > 0 && currentIndex >= cards.length;
+  // Cards before completedCount were already rated this session — revisits are view-only.
+  const isRevisit = currentIndex < completedCount;
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -108,7 +125,7 @@ export default function StudyPage() {
         e.preventDefault();
         setFlipped((v) => !v);
       }
-      if (!flipped) return;
+      if (!flipped || isRevisit) return;
       const ratingMap: Record<string, ReviewRating> = { "1": 1, "2": 2, "3": 3, "4": 4 };
       if (ratingMap[e.key]) {
         e.preventDefault();
@@ -117,7 +134,7 @@ export default function StudyPage() {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [currentCard, flipped, finished, handleRate]);
+  }, [currentCard, flipped, finished, isRevisit, handleRate]);
 
   return (
     <MainLayout>
@@ -232,7 +249,14 @@ export default function StudyPage() {
               <StudyFlashcard grammar={currentCard} flipped={flipped} onFlip={() => setFlipped((value) => !value)} isFavorite={currentCardFavorite} onToggleFavorite={handleToggleFavorite} />
             )}
             <div className="mx-auto w-full max-w-lg space-y-2.5">
-              {flipped ? (
+              {isRevisit ? (
+                <div className="space-y-2.5">
+                  <p className="text-center font-mono text-xs text-[#797776]">{dict.study.alreadyRated}</p>
+                  <Button className="w-full rounded-full font-mono" onClick={resumeFromRevisit}>
+                    {dict.study.resume}
+                  </Button>
+                </div>
+              ) : flipped ? (
                 <ReviewButtons onRate={handleRate} />
               ) : (
                 <Button className="w-full rounded-full font-mono" onClick={() => setFlipped(true)}>

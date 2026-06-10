@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -103,6 +103,10 @@ export default function PracticePage() {
     else setSource("all");
   }, [loaded, counts.today, counts.studied]);
 
+  // Same-frame double-click guard: `answered` comes from the render closure,
+  // so two rapid clicks could both pass it and double-count the score.
+  const answerLock = useRef(false);
+
   const start = useCallback(() => {
     setPhase("loading");
     setTimeout(() => {
@@ -118,6 +122,7 @@ export default function PracticePage() {
       setIndex(0);
       setPicked(null);
       setScore(0);
+      answerLock.current = false;
       setPhase("playing");
     }, 0);
   }, [source, level, entries, todayEntries, studiedEntries]);
@@ -127,12 +132,14 @@ export default function PracticePage() {
   const isLast = index >= deck.length - 1;
 
   const choose = (option: string) => {
-    if (answered || !current) return;
+    if (answered || answerLock.current || !current) return;
+    answerLock.current = true;
     setPicked(option);
     if (option === current.correctTitle) setScore((s) => s + 1);
   };
 
   const next = () => {
+    answerLock.current = false;
     if (isLast) {
       setPhase("finished");
       return;
