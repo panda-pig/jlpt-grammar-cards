@@ -470,6 +470,17 @@ export const progressService = {
     return (data ?? []).map(normalizeHistoryRow);
   },
 
+  /** Larger slice of the review log for Pro analytics (retention / weak items). */
+  async getReviewHistoryRows(userId: string, limit = 1000) {
+    const { data, error } = await (supabase.from("review_history") as any)
+      .select("grammar_id, grammar_key, rating, interval, reviewed_at")
+      .eq("user_id", userId)
+      .order("reviewed_at", { ascending: false })
+      .limit(limit);
+    if (error) return [];
+    return (data ?? []).map(normalizeHistoryRow);
+  },
+
   async importLocalProgress(userId: string, rows: ImportLocalProgressRow[]) {
     if (rows.length === 0) return { importedRows: 0, importedHistory: 0 };
 

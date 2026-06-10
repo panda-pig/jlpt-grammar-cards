@@ -288,6 +288,34 @@ export const learningService = {
     return getLocalRecentReviews(limit);
   },
 
+  /** Normalized review log rows for Pro analytics (remote table or local history). */
+  async getReviewAnalyticsRows(userId?: string | null, limit = 1000) {
+    if (userId && !remoteProgressUnavailable) {
+      try {
+        const rows = await progressService.getReviewHistoryRows(userId, limit);
+        return (rows as RemoteReviewHistoryRow[]).map((row) => ({
+          grammarId: rowGrammarKey(row),
+          rating: String(row.rating ?? ""),
+          interval: Number(row.interval ?? 0),
+          reviewedAt: String(row.reviewed_at ?? ""),
+        }));
+      } catch {
+        fallbackToLocalProgress();
+      }
+    }
+    return localProgressService
+      .getAll()
+      .flatMap((row) =>
+        (row.review_history ?? []).map((history) => ({
+          grammarId: row.grammar_id,
+          rating: String(history.rating ?? ""),
+          interval: Number(history.interval ?? 0),
+          reviewedAt: String(history.reviewedAt ?? ""),
+        }))
+      )
+      .slice(0, limit);
+  },
+
   async syncLocalProgressToRemote(userId: string): Promise<LocalProgressSyncResult> {
     const localRows = localProgressService.getAll();
     const fingerprint = localProgressService.getSyncFingerprint();
