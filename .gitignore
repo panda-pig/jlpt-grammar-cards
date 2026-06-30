@@ -57,3 +57,6 @@ next-env.d.ts
 
 # Local changelog (do not commit)
 /CHANGELOG.md
+
+# Local agent guide (do not commit)
+/AGENT.md
