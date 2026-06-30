@@ -11,7 +11,7 @@ import { useDictionary, useLocale } from "@/components/layout/LocaleProvider";
 import { usePaymentOrderPolling } from "@/hooks/usePaymentOrderPolling";
 import { cn } from "@/lib/utils";
 
-const presetAmounts = [300, 590, 1200, 3000];
+const presetAmounts = [500, 1000, 2000, 5000];
 
 export default function SupportPage() {
   const dict = useDictionary();
@@ -27,7 +27,7 @@ export default function SupportPage() {
   const [errorMessage, setErrorMessage] = useState("");
 
   const selectedAmount = customYuan
-    ? Math.max(100, Math.round(Number(customYuan) * 100))
+    ? Math.max(500, Math.round(Number(customYuan) * 100))
     : amountCents;
 
   usePaymentOrderPolling({ order, setOrder });
@@ -144,7 +144,7 @@ export default function SupportPage() {
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <Input
                 type="number"
-                min="1"
+                min="5"
                 step="0.01"
                 placeholder={t.customAmount}
                 value={customYuan}

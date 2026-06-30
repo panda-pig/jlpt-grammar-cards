@@ -42,6 +42,17 @@ vi.mock("@/services/wechatPayClient", async (importOriginal) => {
   };
 });
 
+vi.mock("@/services/stripeClient", () => ({
+  stripeClient: {
+    isConfigured: vi.fn().mockReturnValue(true),
+    createCheckoutSession: vi.fn().mockResolvedValue({
+      sessionId: "cs_test_123",
+      checkoutUrl: "https://checkout.stripe.com/c/pay/cs_test_123",
+    }),
+    constructWebhookEvent: vi.fn(),
+  },
+}));
+
 vi.mock("@/services/entitlementService", () => ({
   entitlementService: {
     grantLifetimePro: vi.fn().mockResolvedValue({
@@ -75,9 +86,11 @@ vi.mock("@/services/entitlementService", () => ({
 
 import { createServiceRoleClient } from "@/lib/supabase-admin";
 import { entitlementService } from "@/services/entitlementService";
+import { stripeClient } from "@/services/stripeClient";
 
 const mockCreateClient = vi.mocked(createServiceRoleClient);
 const mockEntitlementService = vi.mocked(entitlementService);
+const mockStripeClient = vi.mocked(stripeClient);
 
 /**
  * Build a chainable Supabase query mock.
@@ -284,6 +297,72 @@ describe("createPaymentOrder — auth gating", () => {
 
     expect(result.type).toBe("tip");
     expect(result.qrCodeUrl).toBe(anonTipPayment.qr_code_url);
+  });
+});
+
+describe("createPaymentOrder — Stripe Checkout", () => {
+  beforeEach(() => {
+    mockStripeClient.createCheckoutSession.mockClear();
+  });
+
+  const stripeRow = {
+    ...pendingPayment,
+    id: "pay-stripe-1",
+    provider: "stripe",
+    channel: "checkout",
+    qr_code_url: null,
+    checkout_url: "https://checkout.stripe.com/c/pay/cs_test_123",
+    provider_prepay_id: "cs_test_123",
+  };
+
+  it("creates a Stripe order: hosted Checkout session, persisted checkout URL", async () => {
+    const { client } = buildClient({ payments: { data: stripeRow } });
+    mockCreateClient.mockReturnValue(client);
+
+    const result = await paymentService.createPaymentOrder({
+      type: "pro_lifetime",
+      provider: "stripe",
+      channel: "checkout",
+      userId: "user-abc",
+    });
+
+    expect(mockStripeClient.createCheckoutSession).toHaveBeenCalledOnce();
+    expect(result.provider).toBe("stripe");
+    expect(result.checkoutUrl).toBe(stripeRow.checkout_url);
+    expect(result.qrCodeUrl).toBeNull();
+  });
+
+  it("rejects Stripe with a non-checkout channel", async () => {
+    await expect(
+      paymentService.createPaymentOrder({
+        type: "tip",
+        provider: "stripe",
+        channel: "native" as never,
+        amountCents: 1000,
+      }),
+    ).rejects.toThrow(PaymentValidationError);
+  });
+
+  it("rejects WeChat with the checkout channel", async () => {
+    await expect(
+      paymentService.createPaymentOrder({
+        type: "tip",
+        provider: "wechat",
+        channel: "checkout" as never,
+        amountCents: 1000,
+      }),
+    ).rejects.toThrow(PaymentValidationError);
+  });
+
+  it("enforces the ¥5 tip floor (Stripe minimum)", async () => {
+    await expect(
+      paymentService.createPaymentOrder({
+        type: "tip",
+        provider: "stripe",
+        channel: "checkout",
+        amountCents: 300,
+      }),
+    ).rejects.toThrow(PaymentValidationError);
   });
 });
 

@@ -2,11 +2,12 @@ import { randomBytes } from "node:crypto";
 import { createServiceRoleClient } from "@/lib/supabase-admin";
 import { entitlementService, type EntitlementState } from "@/services/entitlementService";
 import { wechatPayClient } from "@/services/wechatPayClient";
+import { stripeClient } from "@/services/stripeClient";
 import type { Json } from "@/lib/database.types";
 
 export type PaymentType = "tip" | "pro_lifetime";
-export type PaymentProvider = "wechat" | "alipay";
-export type PaymentChannel = "native" | "h5" | "jsapi" | "mini_program";
+export type PaymentProvider = "wechat" | "alipay" | "stripe";
+export type PaymentChannel = "native" | "h5" | "jsapi" | "mini_program" | "checkout";
 export type PaymentStatus = "pending" | "paid" | "failed" | "closed" | "refunded";
 
 export interface CreatePaymentOrderInput {
@@ -31,6 +32,8 @@ export interface PaymentOrderView {
   status: PaymentStatus;
   outTradeNo: string;
   qrCodeUrl: string | null;
+  /** Hosted redirect URL for redirect-based providers (e.g. Stripe Checkout). */
+  checkoutUrl: string | null;
   paidAt: string | null;
   expiresAt: string | null;
   createdAt: string | null;
@@ -77,7 +80,8 @@ export class PaymentStateError extends Error {
   code = "payment_state_error" as const;
 }
 
-const TIP_MIN_AMOUNT_CENTS = 100;
+// Stripe's minimum charge is ~¥3.6; keep a ¥5 floor so every provider accepts it.
+const TIP_MIN_AMOUNT_CENTS = 500;
 const TIP_MAX_AMOUNT_CENTS = 500000;
 const DEFAULT_ORDER_EXPIRE_MINUTES = 30;
 
@@ -110,12 +114,19 @@ function normalizeOptionalText(value: unknown, maxLength: number) {
 }
 
 function assertSupportedProvider(provider: PaymentProvider, channel: PaymentChannel) {
-  if (provider !== "wechat") {
-    throw new PaymentValidationError("Only WeChat Pay is planned for the first payment phase.");
+  if (provider === "wechat") {
+    if (channel !== "native") {
+      throw new PaymentValidationError("WeChat Pay only supports the Native scan channel here.");
+    }
+    return;
   }
-  if (channel !== "native") {
-    throw new PaymentValidationError("Only WeChat Native scan payment is planned for the first web phase.");
+  if (provider === "stripe") {
+    if (channel !== "checkout") {
+      throw new PaymentValidationError("Stripe only supports the hosted Checkout channel.");
+    }
+    return;
   }
+  throw new PaymentValidationError("Unsupported payment provider.");
 }
 
 function resolveAmount(input: CreatePaymentOrderInput) {
@@ -135,10 +146,10 @@ function assertCreateInput(input: CreatePaymentOrderInput) {
   if (input.type !== "tip" && input.type !== "pro_lifetime") {
     throw new PaymentValidationError("Unsupported payment type.");
   }
-  if (input.provider !== "wechat" && input.provider !== "alipay") {
+  if (!["wechat", "alipay", "stripe"].includes(input.provider)) {
     throw new PaymentValidationError("Unsupported payment provider.");
   }
-  if (!["native", "h5", "jsapi", "mini_program"].includes(input.channel)) {
+  if (!["native", "h5", "jsapi", "mini_program", "checkout"].includes(input.channel)) {
     throw new PaymentValidationError("Unsupported payment channel.");
   }
   if (input.type === "pro_lifetime" && !input.userId) {
@@ -165,6 +176,7 @@ function toPaymentOrderView(row: any, entitlement?: EntitlementState): PaymentOr
     status: row.status,
     outTradeNo: row.out_trade_no,
     qrCodeUrl: row.qr_code_url ?? null,
+    checkoutUrl: row.checkout_url ?? null,
     paidAt: row.paid_at ?? null,
     expiresAt: row.expires_at ?? null,
     createdAt: row.created_at ?? null,
@@ -198,32 +210,61 @@ export const paymentService = {
     const amountCents = resolveAmount(input);
     const outTradeNo = generateOutTradeNo();
     const expires = expiresAt();
-    const notifyUrl = process.env.WECHAT_PAY_NOTIFY_URL ?? "";
+    const supabase = createServiceRoleClient();
 
+    const baseRow = {
+      user_id: input.userId ?? null,
+      type: input.type,
+      provider: input.provider,
+      channel: input.channel,
+      amount_cents: amountCents,
+      currency: "CNY",
+      status: "pending",
+      out_trade_no: outTradeNo,
+      nickname: normalizeOptionalText(input.nickname, 40),
+      message: normalizeOptionalText(input.message, 200),
+      metadata: input.metadata ?? {},
+      expires_at: expires,
+    };
+
+    if (input.provider === "stripe") {
+      // Insert first so the Checkout return URL can point at this order's detail page.
+      const { data: pending, error: insertError } = await (supabase.from("payments") as any)
+        .insert(baseRow)
+        .select("*")
+        .single();
+      if (insertError) throw insertError;
+
+      const session = await stripeClient.createCheckoutSession({
+        outTradeNo,
+        paymentId: pending.id,
+        amountCents,
+        description: descriptionFor(input.type),
+        type: input.type,
+      });
+
+      const { data, error } = await (supabase.from("payments") as any)
+        .update({ provider_prepay_id: session.sessionId, checkout_url: session.checkoutUrl })
+        .eq("id", pending.id)
+        .select("*")
+        .single();
+      if (error) throw error;
+      return toPaymentOrderView(data);
+    }
+
+    // WeChat Native: create the provider order first, then persist the QR.
     const providerOrder = await wechatPayClient.createNativeOrder({
       outTradeNo,
       amountCents,
       description: descriptionFor(input.type),
-      notifyUrl,
+      notifyUrl: process.env.WECHAT_PAY_NOTIFY_URL ?? "",
     });
 
-    const supabase = createServiceRoleClient();
     const { data, error } = await (supabase.from("payments") as any)
       .insert({
-        user_id: input.userId ?? null,
-        type: input.type,
-        provider: input.provider,
-        channel: input.channel,
-        amount_cents: amountCents,
-        currency: "CNY",
-        status: "pending",
-        out_trade_no: outTradeNo,
+        ...baseRow,
         provider_prepay_id: providerOrder.providerPrepayId ?? null,
         qr_code_url: providerOrder.qrCodeUrl,
-        nickname: normalizeOptionalText(input.nickname, 40),
-        message: normalizeOptionalText(input.message, 200),
-        metadata: input.metadata ?? {},
-        expires_at: expires,
       })
       .select("*")
       .single();
