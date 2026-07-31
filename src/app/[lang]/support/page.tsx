@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useDictionary, useLocale } from "@/components/layout/LocaleProvider";
 import { usePaymentOrderPolling } from "@/hooks/usePaymentOrderPolling";
+import { isRedirectCheckout, paymentRequestBase } from "@/lib/payment-config";
 import { cn } from "@/lib/utils";
 
 const presetAmounts = [500, 1000, 2000, 5000];
@@ -49,8 +50,7 @@ export default function SupportPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           type: "tip",
-          provider: "wechat",
-          channel: "native",
+          ...paymentRequestBase(),
           amountCents: selectedAmount,
           nickname,
           message,
@@ -65,6 +65,12 @@ export default function SupportPage() {
         }
         setErrorMessage(data?.error?.message ?? t.paymentFailed);
         setStatus("error");
+        return;
+      }
+
+      // Hosted checkout (Stripe): redirect out; the webhook settles the order.
+      if (isRedirectCheckout && data?.checkoutUrl) {
+        window.location.href = data.checkoutUrl;
         return;
       }
 

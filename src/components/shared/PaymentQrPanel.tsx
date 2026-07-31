@@ -12,6 +12,8 @@ export type ClientPaymentOrder = {
   amountCents: number;
   status: string;
   qrCodeUrl: string | null;
+  /** Hosted checkout redirect URL (Stripe); null for QR-based providers. */
+  checkoutUrl?: string | null;
   expiresAt: string | null;
   createdAt?: string | null;
 };

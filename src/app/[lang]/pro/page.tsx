@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { useDictionary, useLocale } from "@/components/layout/LocaleProvider";
 import { usePaymentOrderPolling } from "@/hooks/usePaymentOrderPolling";
+import { isRedirectCheckout, paymentRequestBase } from "@/lib/payment-config";
 
 type EntitlementResponse = {
   authenticated: boolean;
@@ -61,7 +62,7 @@ export default function ProPage() {
       const res = await fetch("/api/payments/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ type: "pro_lifetime", provider: "wechat", channel: "native" }),
+        body: JSON.stringify({ type: "pro_lifetime", ...paymentRequestBase() }),
       });
       const data = await res.json();
 
@@ -72,6 +73,13 @@ export default function ProPage() {
         }
         setErrorMessage(data?.error?.message ?? t.paymentFailed);
         setStatus("error");
+        return;
+      }
+
+      // Hosted checkout (Stripe): leave the site to pay; the webhook settles
+      // the order and the return URL lands on the order detail page.
+      if (isRedirectCheckout && data?.checkoutUrl) {
+        window.location.href = data.checkoutUrl;
         return;
       }
 
