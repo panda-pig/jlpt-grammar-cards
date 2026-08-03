@@ -18,6 +18,7 @@ import {
   PaymentValidationError,
   paymentService,
 } from "../paymentService";
+import { PaymentProviderUnavailableError } from "@/services/wechatPayClient";
 
 // ── Module mocks ─────────────────────────────────────────────────────────────
 
@@ -352,6 +353,25 @@ describe("createPaymentOrder — Stripe Checkout", () => {
         amountCents: 1000,
       }),
     ).rejects.toThrow(PaymentValidationError);
+  });
+
+  it("fails fast when Stripe is unconfigured — no orphan pending order is inserted", async () => {
+    const { client, chains } = buildClient({ payments: { data: stripeRow } });
+    mockCreateClient.mockReturnValue(client);
+    mockStripeClient.isConfigured.mockReturnValueOnce(false);
+
+    await expect(
+      paymentService.createPaymentOrder({
+        type: "pro_lifetime",
+        provider: "stripe",
+        channel: "checkout",
+        userId: "user-abc",
+      }),
+    ).rejects.toThrow(PaymentProviderUnavailableError);
+
+    // The guard must run before any DB write, so no order is left behind.
+    expect(chains.payments?.insert).toBeUndefined();
+    expect(mockStripeClient.createCheckoutSession).not.toHaveBeenCalled();
   });
 
   it("enforces the ¥5 tip floor (Stripe minimum)", async () => {

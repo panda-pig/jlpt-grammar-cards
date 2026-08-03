@@ -1,7 +1,7 @@
 import { randomBytes } from "node:crypto";
 import { createServiceRoleClient } from "@/lib/supabase-admin";
 import { entitlementService, type EntitlementState } from "@/services/entitlementService";
-import { wechatPayClient } from "@/services/wechatPayClient";
+import { PaymentProviderUnavailableError, wechatPayClient } from "@/services/wechatPayClient";
 import { stripeClient } from "@/services/stripeClient";
 import type { Json } from "@/lib/database.types";
 
@@ -228,6 +228,11 @@ export const paymentService = {
     };
 
     if (input.provider === "stripe") {
+      // Fail fast before the insert: an unconfigured provider would otherwise
+      // leave an unpayable pending order behind (WeChat guards the same way).
+      if (!stripeClient.isConfigured()) {
+        throw new PaymentProviderUnavailableError("Stripe is not configured yet (STRIPE_SECRET_KEY).");
+      }
       // Insert first so the Checkout return URL can point at this order's detail page.
       const { data: pending, error: insertError } = await (supabase.from("payments") as any)
         .insert(baseRow)

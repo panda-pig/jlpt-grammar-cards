@@ -52,6 +52,9 @@ export const stripeClient = {
    * (`checkout.session.async_payment_succeeded`), not synchronously here.
    */
   async createCheckoutSession(input: StripeCheckoutInput): Promise<StripeCheckoutResult> {
+    if (!this.isConfigured()) {
+      throw new PaymentProviderUnavailableError("Stripe is not configured yet (STRIPE_SECRET_KEY).");
+    }
     const base = siteBaseUrl();
     const session = await client().checkout.sessions.create({
       mode: "payment",
