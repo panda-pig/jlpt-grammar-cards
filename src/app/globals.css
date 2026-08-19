@@ -92,12 +92,36 @@
 /* ── V3 Background: ruled lines + warm radial glow on html ──
    Applied to <html> so nothing can cover it with bg-background */
 html {
+  background: #f6f3f1;
+}
+
+/* Smooth scrolling only for in-page anchor jumps. Setting it globally on
+   <html> makes *every* scroll (wheel, trackpad, programmatic scrollTop)
+   animate, which reads as heavy lag on long pages and can leave programmatic
+   scrolls appearing stuck. `:focus-within` keeps anchor links smooth. */
+@media (prefers-reduced-motion: no-preference) {
+  html:focus-within {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Paper texture lives on its own fixed, composited layer.
+   Painting the gradients on <html> made every scroll frame re-rasterise a
+   full-viewport gradient stack (background-attachment: local/fixed are both
+   costly, and `fixed` additionally janks on iOS Safari), which could hang the
+   renderer. As an isolated layer it is painted once and only composited. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
   background:
     linear-gradient(rgba(36, 36, 36, .030) 1px, transparent 1px) 0 0 / 100% 32px,
     radial-gradient(ellipse at 20% 8%, rgba(255, 246, 223, .72), transparent 38%),
     #f6f3f1;
-  background-attachment: local;
-  scroll-behavior: smooth;
+  transform: translateZ(0);
+  contain: strict;
 }
 
 body {
@@ -125,7 +149,6 @@ body {
 /* Respect reduced-motion: stop the looping hero animations and shorten
    transitions for users who opt out. (The auto-flip timer is also gated in JS.) */
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
@@ -149,6 +172,12 @@ body {
     rgba(36, 36, 36, .05) 0 1px,
     transparent 1px 6px
   );
+  /* Promote to its own compositor layer: a fixed full-viewport gradient
+     otherwise forces a full repaint on every scroll frame, which locks up
+     the renderer on long pages. */
+  transform: translateZ(0);
+  will-change: transform;
+  contain: strict;
 }
 
 /* ── Flashcard 3D flip ── */
