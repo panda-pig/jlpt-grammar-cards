@@ -38,8 +38,6 @@
 
 ### 界面预览
 
-> 📷 截图待补充：将图片放入 `public/screenshots/` 后按下方路径引用即可。
-
 | 首页 | 卡片学习 |
 |---|---|
 | ![首页](./public/screenshots/home.png) | ![学习](./public/screenshots/study.png) |
@@ -106,8 +104,6 @@ A Japanese grammar learning tool covering all JLPT levels (N5–N1) with **955 g
 
 ### Screenshots
 
-> 📷 To be added: drop images into `public/screenshots/` and they will render below.
-
 | Home | Study |
 |---|---|
 | ![Home](./public/screenshots/home.png) | ![Study](./public/screenshots/study.png) |
@@ -173,8 +169,6 @@ JLPT 全レベル（N5〜N1）**955 項目**の文法を収録した日本語学
 | **多言語対応** | 中国語 / 英語の UI 切り替え |
 
 ### スクリーンショット
-
-> 📷 追加予定：`public/screenshots/` に画像を配置すると下記に表示されます。
 
 | ホーム | 学習 |
 |---|---|

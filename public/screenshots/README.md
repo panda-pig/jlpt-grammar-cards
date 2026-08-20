@@ -1,10 +1,14 @@
 # Screenshots
 
-Drop PNG files here with these exact names and the project README will render them:
+Images referenced by the project README. Captured at 1440px wide from the
+production site.
 
-- `home.png` — homepage hero
-- `study.png` — flashcard study view (card flipped to the back works well)
-- `practice.png` — cloze practice question
-- `dashboard.png` — analytics dashboard
+| File | Page |
+|---|---|
+| `home.png` | `/zh` — homepage |
+| `study.png` | `/zh/study` — flashcard flipped to the back |
+| `practice.png` | `/zh/practice` — a generated cloze question |
+| `dashboard.png` | `/zh/dashboard` — analytics |
 
-Suggested capture width: 1440px (or 2x for retina).
+To refresh them, retake the same four views at the same width and overwrite
+these files; the README picks up the new images automatically.
