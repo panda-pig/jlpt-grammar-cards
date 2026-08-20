@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { useAuth } from "@/hooks/useAuth";
 import { useDictionary, useLocale } from "@/components/layout/LocaleProvider";
 import { supabaseBrowser } from "@/lib/supabase-browser";
-import { AlertCircle, CheckCircle, Crown, Heart, User, Lock, RotateCcw, LogOut } from "lucide-react";
+import { AlertCircle, CheckCircle, Heart, User, Lock, RotateCcw, LogOut } from "lucide-react";
 import { formatDate } from "@/lib/date";
 
 type AccountPayment = {
@@ -37,7 +37,6 @@ export default function SettingsPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
-  const [entitlement, setEntitlement] = useState<{ isPro: boolean; startsAt: string | null }>({ isPro: false, startsAt: null });
   const [payments, setPayments] = useState<AccountPayment[]>([]);
 
   useEffect(() => {
@@ -49,13 +48,6 @@ export default function SettingsPage() {
     });
   }, [user?.id]);
 
-  useEffect(() => {
-    if (!user?.id) return;
-    fetch("/api/me/entitlements", { cache: "no-store" })
-      .then((r) => r.json())
-      .then((d) => setEntitlement({ isPro: Boolean(d?.isPro), startsAt: d?.startsAt ?? null }))
-      .catch(() => setEntitlement({ isPro: false, startsAt: null }));
-  }, [user?.id]);
 
   useEffect(() => {
     if (!user?.id) return;
@@ -65,7 +57,6 @@ export default function SettingsPage() {
       .catch(() => setPayments([]));
   }, [user?.id]);
 
-  const isPro = entitlement.isPro;
 
   if (!user) {
     return (
@@ -207,50 +198,25 @@ export default function SettingsPage() {
             </CardContent>
           </Card>
 
-          <Card className={`card-soft rounded-[18px] border shadow-none ${isPro ? "border-[#6a8a5a]/40 bg-[#f2f8f0]" : "border-[#ded8d0] bg-[#fbfaf8]"}`}>
+          <Card className="card-soft rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] shadow-none">
             <CardContent className="p-5">
-              <div className="flex items-start justify-between gap-4">
-                <div className="min-w-0">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Crown className={`h-4 w-4 ${isPro ? "text-[#315b3b]" : "text-[#8a6a20]"}`} />
-                    <p className="font-mono text-sm font-medium text-[#242424]">{t.planTitle}</p>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <p className="font-mono text-sm text-[#242424]">{isPro ? t.planPro : t.planFree}</p>
-                    {isPro && (
-                      <span className="flex items-center gap-1 rounded-full bg-[#315b3b]/10 px-2 py-0.5">
-                        <CheckCircle className="h-3 w-3 text-[#315b3b]" />
-                      </span>
-                    )}
-                  </div>
-                  {isPro ? (
-                    <div className="mt-1.5 space-y-0.5">
-                      <p className="text-xs text-[#6a8a5a]">{t.proLifetime}</p>
-                      {entitlement.startsAt && (
-                        <p className="font-mono text-xs text-[#797776]">
-                          {t.proActivatedOn.replace("{date}", formatDate(entitlement.startsAt, locale))}
-                        </p>
-                      )}
-                    </div>
-                  ) : (
-                    <p className="mt-1 text-xs leading-relaxed text-[#797776]">{t.planFreeDesc}</p>
-                  )}
-                </div>
+              <div className="flex items-center gap-2 mb-2">
+                <CheckCircle className="h-4 w-4 text-[#315b3b]" />
+                <p className="font-mono text-sm font-medium text-[#242424]">{t.planTitle}</p>
               </div>
-              <div className={`mt-4 ${isPro ? "" : "grid grid-cols-2 gap-2"}`}>
-                {!isPro && (
-                  <Button
-                    variant="outline"
-                    className="rounded-full font-mono"
-                    onClick={() => router.push(`/${locale}/pro`)}
-                  >
-                    <Crown className="mr-1 h-4 w-4" />
-                    {t.upgradePro}
-                  </Button>
-                )}
+              <p className="font-mono text-sm text-[#242424]">{t.planPro}</p>
+              <p className="mt-1 text-xs leading-relaxed text-[#797776]">{t.planProDesc}</p>
+              <div className="mt-4 grid grid-cols-2 gap-2">
                 <Button
                   variant="outline"
-                  className="w-full rounded-full font-mono"
+                  className="rounded-full font-mono"
+                  onClick={() => router.push(`/${locale}/pro`)}
+                >
+                  {t.upgradePro}
+                </Button>
+                <Button
+                  variant="outline"
+                  className="rounded-full font-mono"
                   onClick={() => router.push(`/${locale}/support`)}
                 >
                   <Heart className="mr-1 h-4 w-4" />

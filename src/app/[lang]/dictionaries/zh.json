@@ -26,7 +26,7 @@
     "review": "今日复习",
     "favorites": "收藏夹",
     "myGrammar": "我的语法库",
-    "pro": "Pro",
+    "pro": "更新计划",
     "dashboard": "学习数据",
     "practice": "练习"
   },
@@ -72,7 +72,11 @@
   },
   "home": {
     "v3": {
-      "heroTitle": ["把日语语法", "变成每天", "能复习的词卡。"],
+      "heroTitle": [
+        "把日语语法",
+        "变成每天",
+        "能复习的词卡。"
+      ],
       "heroSubtitle": "面向中文学习者的 JLPT 语法牌组：例句、接续、易混点与间隔复习，放在同一个桌面里。先用访客模式开始，之后再同步到账号。",
       "localHint": "本地访客进度可用，登录后同步到账号与复习队列。",
       "cardCategory": "条件・逆接",
@@ -93,17 +97,32 @@
       "featSmDesc": "根据掌握度动态调整间隔，在遗忘曲线最佳时机自动提醒复习。",
       "featSmChart": "掌握度越高，间隔递增 →",
       "featCards": [
-        { "title": "相近语法对比", "desc": "「のに」vs「のだから」，每条标注常见混淆项与核心区别。" },
-        { "title": "学习进度追踪", "desc": "Dashboard 实时展示已学/掌握数量、连续天数和评分分布。" },
-        { "title": "Guest 模式", "desc": "无需注册即可学习，登录后一键同步本地进度到账号。" }
+        {
+          "title": "相近语法对比",
+          "desc": "「のに」vs「のだから」，每条标注常见混淆项与核心区别。"
+        },
+        {
+          "title": "学习进度追踪",
+          "desc": "Dashboard 实时展示已学/掌握数量、连续天数和评分分布。"
+        },
+        {
+          "title": "Guest 模式",
+          "desc": "无需注册即可学习，登录后一键同步本地进度到账号。"
+        }
       ],
       "featPersonalTitle": "个人语法库",
-      "featPersonalDesc": "新增私有条目，隐藏不需要的语法，备注个人理解。Pro 用户无限制。",
+      "featPersonalDesc": "新增私有条目，隐藏不需要的语法，备注个人理解。数量不限。",
       "featPersonalAdd": "+ 新增私有语法",
       "featPersonalHidden": "N3 已隐藏",
       "flowHeading": "从查语法到复习，一条完整轨道。",
       "flowIntro": "选等级、读卡、打分、进队列、沉淀到收藏库——5 步形成闭环。",
-      "flowChips": ["N2 · 条件表达", "〜に限らず", "Good → +3天", "Due 18 今日", "Pinned N1 敬語"],
+      "flowChips": [
+        "N2 · 条件表达",
+        "〜に限らず",
+        "Good → +3天",
+        "Due 18 今日",
+        "Pinned N1 敬語"
+      ],
       "previewHeading": "首页也能看到学习状态，而不是只看口号。",
       "previewCardLabel": "语法卡 · 正面 / 背面",
       "previewFront": "正面",
@@ -114,22 +133,44 @@
       "statLearned": "已学习",
       "statDue": "今日到期",
       "statMastered": "稳定掌握",
-      "statsRow": ["语法条目", "JLPT 等级", "复习算法", "双语界面"],
+      "statsRow": [
+        "语法条目",
+        "JLPT 等级",
+        "复习算法",
+        "双语界面"
+      ],
       "ctaEyebrow": "Start with local mode",
       "ctaHeading": "今天先完成 {due} 张，到期队列会等你回来。",
-      "ctaSubtitle": "免费开始学习 N5–N1 语法卡。Pro 永久版用于支持项目、解锁更多同步与高级复习能力。"
+      "ctaSubtitle": "免费开始学习 N5–N1 语法卡。全部功能开放，无需注册即可使用。"
     },
     "heroTitle1": "用卡片方式，",
     "heroTitle2": "真正记住 JLPT 语法",
     "heroSubtitle": "一个为 N1～N5 学习者设计的日语语法记忆工具。通过卡片、收藏、复习计划和相近语法对比，把零散文法整理成可以长期复习的知识系统。",
-    "featuresTitle": "核心功能",
     "features": [
-      { "title": "JLPT N1～N5 文法体系", "desc": "覆盖全部等级语法，按等级和语法场景系统整理" },
-      { "title": "Anki 风格复习", "desc": "卡片正面展示语法，背面展示意思、接续和例句" },
-      { "title": "相近语法对比", "desc": "将容易混淆的语法放在一起对比，避免记忆混淆" },
-      { "title": "易错点提醒", "desc": "标注每个语法的常见错误和使用陷阱" },
-      { "title": "收藏与个人语法库", "desc": "收藏重点语法，建立属于自己的复习清单" },
-      { "title": "学习进度追踪", "desc": "Dashboard 实时展示学习数据和复习计划" }
+      {
+        "title": "JLPT N1～N5 文法体系",
+        "desc": "覆盖全部等级语法，按等级和语法场景系统整理"
+      },
+      {
+        "title": "Anki 风格复习",
+        "desc": "卡片正面展示语法，背面展示意思、接续和例句"
+      },
+      {
+        "title": "相近语法对比",
+        "desc": "将容易混淆的语法放在一起对比，避免记忆混淆"
+      },
+      {
+        "title": "易错点提醒",
+        "desc": "标注每个语法的常见错误和使用陷阱"
+      },
+      {
+        "title": "收藏与个人语法库",
+        "desc": "收藏重点语法，建立属于自己的复习清单"
+      },
+      {
+        "title": "学习进度追踪",
+        "desc": "Dashboard 实时展示学习数据和复习计划"
+      }
     ],
     "flowTitle": "学习流程",
     "featuresSubtitle": "从语法库浏览到智能复习，覆盖完整学习闭环",
@@ -138,11 +179,26 @@
     "viewDetails": "查看详情 →",
     "levelComplete": "{percent}% 完成",
     "flowSteps": [
-      { "step": "选择等级", "desc": "从 N5 到 N1，按自己的水平选择" },
-      { "step": "学习语法", "desc": "浏览语法库，理解意思和接续" },
-      { "step": "卡片复习", "desc": "Anki 风格卡片，正面回忆背面验证" },
-      { "step": "标记掌握度", "desc": "根据记忆程度评分，系统智能调度" },
-      { "step": "自动安排复习", "desc": "根据遗忘曲线，自动提醒下次复习" }
+      {
+        "step": "选择等级",
+        "desc": "从 N5 到 N1，按自己的水平选择"
+      },
+      {
+        "step": "学习语法",
+        "desc": "浏览语法库，理解意思和接续"
+      },
+      {
+        "step": "卡片复习",
+        "desc": "Anki 风格卡片，正面回忆背面验证"
+      },
+      {
+        "step": "标记掌握度",
+        "desc": "根据记忆程度评分，系统智能调度"
+      },
+      {
+        "step": "自动安排复习",
+        "desc": "根据遗忘曲线，自动提醒下次复习"
+      }
     ],
     "statsTitle": "学习数据一览",
     "previewMeaning": "并不是……；并非……",
@@ -156,9 +212,8 @@
     "streakDays": "连续学习天数",
     "totalGrammar": "语法总数",
     "levelProgress": "N1～N5 学习进度",
-    "ctaText": "从今天开始，用卡片方式真正记住日语语法。",
     "ctaButton": "立即开始学习",
-    "ctaPro": "解锁 Pro",
+    "ctaPro": "更新计划",
     "ctaSupport": "打赏作者"
   },
   "grammar": {
@@ -193,7 +248,6 @@
     "masteryLevel": "掌握度",
     "addToStudy": "开始学习",
     "favorite": "收藏",
-    "favorited": "已收藏",
     "unfavorite": "取消收藏",
     "emptyContent": "—",
     "quiz": "小练习",
@@ -315,10 +369,6 @@
     "restoreHint": "以下是你已隐藏的默认语法条目，可以恢复显示",
     "privateBadge": "私人",
     "noMatches": "无匹配结果",
-    "freeLimit": "Free 限 {limit} 条",
-    "proUnlimited": "Pro 无限制",
-    "freeLimitReached": "已达 Free 版上限（{limit} 条）。升级 Pro 可无限新增。",
-    "upgradeForMore": "升级 Pro",
     "form": {
       "title": "语法",
       "slug": "Slug",
@@ -362,9 +412,15 @@
     "advNoData": "复习数据还不够，先去学习或复习几张卡。",
     "advReviews": "{n} 次复习",
     "advFailRate": "失误 {p}%",
-    "advTeaser": "解锁记忆保持率曲线与薄弱语法追踪。",
-    "advUnlock": "解锁 Pro",
-    "advBuckets": { "d0": "当天", "d1": "1天", "d2_3": "2-3天", "d4_7": "4-7天", "d8_14": "8-14天", "d15p": "15天+" },
+    "advTeaser": "查看记忆保持率曲线与薄弱语法追踪。",
+    "advBuckets": {
+      "d0": "当天",
+      "d1": "1天",
+      "d2_3": "2-3天",
+      "d4_7": "4-7天",
+      "d8_14": "8-14天",
+      "d15p": "15天+"
+    },
     "noRatingData": "暂无评分数据",
     "recentReviews": "最近复习记录",
     "noRecentReviews": "还没有复习记录",
@@ -372,12 +428,7 @@
     "continueStudy": "继续学习",
     "todayReviewBtn": "今日复习",
     "viewFavorites": "查看收藏",
-    "viewGrammar": "进入语法库",
-    "proStatusTitle": "Pro 永久版",
-    "proActivatedOn": "激活于 {date}",
-    "proActivatedBadge": "已激活",
-    "upgradeProTitle": "解锁 Pro 永久版",
-    "upgradeProNote": "一次性 ¥5.9，支持更完整的语法库和高级功能"
+    "viewGrammar": "进入语法库"
   },
   "settings": {
     "title": "账户设置",
@@ -402,18 +453,14 @@
     "noSync": "暂无同步记录",
     "loginRequired": "请先登录后查看账户设置",
     "planTitle": "当前方案",
-    "planFree": "Free 本地与云端学习",
-    "planPro": "Pro 永久版",
-    "planFreeDesc": "基础学习、收藏、SM-2 复习和进度同步已可使用。",
-    "planProDesc": "永久解锁后续高级能力，支持项目继续维护。",
-    "upgradePro": "查看 Pro",
+    "planPro": "免费版",
+    "planProDesc": "全部功能已开放，无需付费。",
+    "upgradePro": "更新计划",
     "supportAuthor": "打赏作者",
-    "proActivatedOn": "激活于 {date}",
-    "proLifetime": "永久授权，无需续费",
-    "paymentHistory": "支付记录",
-    "paymentHistoryDesc": "查看与你当前账号绑定的 Pro 购买和打赏订单。",
+    "paymentHistory": "打赏记录",
+    "paymentHistoryDesc": "查看与你当前账号绑定的打赏记录。",
     "noPayments": "暂无支付记录。",
-    "paymentPro": "Pro 永久版",
+    "paymentPro": "支持",
     "paymentTip": "打赏作者",
     "paymentStatus": {
       "pending": "待支付",
@@ -425,19 +472,9 @@
   },
   "commerce": {
     "proTitle": "JLPT Grammar Deck Pro",
-    "proSubtitle": "一次性买断，支持后续更完整的语法库、个人管理和高级复习能力。",
-    "price": "¥5.9",
-    "lifetime": "永久版",
-    "currentPlan": "当前权益",
-    "freePlan": "Free",
-    "proPlan": "Pro",
-    "activePro": "你已拥有 Pro 永久版",
-    "loginRequired": "购买 Pro 需要先登录，用于把权益绑定到你的账号。",
-    "loginToBuy": "登录后购买",
-    "buyPro": "购买 Pro 永久版",
     "creatingOrder": "正在创建订单...",
     "supportTitle": "打赏作者",
-    "supportSubtitle": "如果这个语法卡片系统帮到了你，可以用一杯咖啡的价格支持继续更新。",
+    "supportSubtitle": "所有功能都是免费的。如果这个工具帮到了你的备考，可以请作者喝杯咖啡——完全自愿。",
     "supportAnonymous": "未登录也可以打赏。",
     "amount": "金额",
     "customAmount": "自定义金额",
@@ -448,7 +485,6 @@
     "paymentUnavailableDesc": "支付与权益基础设施已经上线，商户号、证书和回调验签配置完成后即可开放真实付款。",
     "orderCreated": "订单已创建",
     "orderPendingDesc": "请使用微信扫描下方二维码完成支付。支付完成后权益自动更新。",
-    "orderPaid": "支付成功！Pro 永久版已激活。",
     "orderPaidTip": "支付成功，感谢你的支持！",
     "orderExpired": "订单已过期，请重新点击购买。",
     "orderFailed": "订单未完成，请重新下单或稍后再试。",
@@ -471,20 +507,7 @@
     "paymentExpiresAt": "过期时间",
     "paymentBackToPro": "返回 Pro",
     "paymentBackToSupport": "返回打赏",
-    "paymentOpenSettings": "查看账户设置",
-    "featuresTitle": "Pro 将优先解锁",
-    "proFeatures": [
-      { "title": "个人语法库增强", "desc": "更灵活地新增、隐藏、修改和整理自己的语法条目。" },
-      { "title": "高级复习统计", "desc": "查看遗忘曲线、评分分布和薄弱语法追踪。" },
-      { "title": "内容持续扩充", "desc": "优先支持更完整的 N1/N2/N3 内容与中英解释。" },
-      { "title": "批量导入导出", "desc": "后续支持 CSV / JSON 批量导入个人语法，并导出备份自己的学习资料。" }
-    ],
-    "freeFeatures": [
-      "默认 JLPT 语法库",
-      "Anki 风格学习与复习",
-      "收藏与基础统计",
-      "本地体验和登录同步"
-    ]
+    "paymentOpenSettings": "查看账户设置"
   },
   "login": {
     "title": "登录",
@@ -535,12 +558,12 @@
     "users": "用户",
     "usersDesc": "只读用户名册：邮箱、注册时间、方案与 Pro 激活时间，用于排查与了解转化。",
     "userTotal": "用户总数",
-    "userProTotal": "Pro 用户",
+    "userProTotal": "授权用户",
     "userEmail": "邮箱",
     "userName": "昵称",
     "userRegistered": "注册时间",
     "userPlan": "方案",
-    "userProSince": "Pro 激活",
+    "userProSince": "授权时间",
     "userEmpty": "暂无用户。",
     "userSearchPlaceholder": "按邮箱或昵称搜索...",
     "userLoadFailed": "用户列表加载失败。",
@@ -548,7 +571,7 @@
     "refresh": "刷新",
     "paymentTotal": "订单总数",
     "paymentPaidAmount": "已支付金额",
-    "paymentPaidPro": "已支付 Pro",
+    "paymentPaidPro": "已支付订阅",
     "paymentEmpty": "暂无支付订单。",
     "paymentOrder": "订单",
     "paymentUser": "用户",
@@ -557,7 +580,7 @@
     "paymentCreatedAt": "创建时间",
     "paymentPaidAt": "支付",
     "paymentAnonymous": "匿名打赏",
-    "paymentPro": "Pro 永久版",
+    "paymentPro": "历史订阅",
     "paymentTip": "打赏",
     "viewDetail": "查看详情",
     "orderDetail": "订单详情",
@@ -572,7 +595,7 @@
     "orderUserId": "用户 ID",
     "orderExpiresAt": "过期时间",
     "orderEntitlement": "当前权益",
-    "entitlementPro": "Pro 永久版",
+    "entitlementPro": "已授权",
     "entitlementFree": "免费版",
     "orderActions": "人工操作",
     "markPaid": "手动补单（标记已支付）",
@@ -623,7 +646,6 @@
       "exampleCn": "中文翻译",
       "furigana": "注音假名",
       "commonMistake": "易错点",
-      "memoryTip": "记忆提示",
       "quizQuestion": "练习题",
       "quizAnswer": "正确答案",
       "quizExplanation": "答案解析",
@@ -642,5 +664,53 @@
     "unlearned": "未学习",
     "learning": "学习中",
     "mastered": "已掌握"
+  },
+  "roadmap": {
+    "freeBadge": "全部功能免费开放",
+    "title": "功能与更新计划",
+    "subtitle": "这个项目是免费的学习工具，所有功能对所有人开放，没有付费墙、没有使用次数限制。下面是已经上线的功能，以及正在计划中的方向。",
+    "shippedTitle": "已开放",
+    "shipped": [
+      {
+        "title": "完整语法库",
+        "desc": "N5–N1 共 955 条语法，按等级、类型、学习状态筛选，全部可用。"
+      },
+      {
+        "title": "学习数据与复习分析",
+        "desc": "学习进度、等级分布、记忆保持率曲线与薄弱语法追踪。"
+      },
+      {
+        "title": "个人语法库",
+        "desc": "添加任意数量的私有语法条目，隐藏不需要的默认内容，无条数限制。"
+      },
+      {
+        "title": "填空练习",
+        "desc": "从例句自动生成选择题，可按今日练过 / 学过的 / 全部语法出题。"
+      }
+    ],
+    "plannedTitle": "后续计划",
+    "planned": [
+      {
+        "title": "错题本",
+        "desc": "自动收集练习答错的语法，单独成组反复攻克。"
+      },
+      {
+        "title": "批量导入导出",
+        "desc": "支持 CSV / JSON 导入个人语法，并导出备份自己的学习数据。"
+      },
+      {
+        "title": "移动端体验优化",
+        "desc": "更适合手机的学习流程，探索离线可用的可能性。"
+      },
+      {
+        "title": "更多内容打磨",
+        "desc": "持续校对例句与解释，补充易混语法的对比说明。"
+      }
+    ],
+    "plannedNote": "以上为计划方向，尚未确定时间表，敬请期待。",
+    "supportTitle": "支持这个项目",
+    "supportDesc": "功能全部免费。如果它对你的备考有帮助，可以请作者喝杯咖啡——完全自愿，不影响任何功能使用。",
+    "supportCta": "打赏作者",
+    "startCta": "开始学习"
   }
 }

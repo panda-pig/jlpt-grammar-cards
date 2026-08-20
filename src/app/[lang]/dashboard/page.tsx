@@ -19,7 +19,7 @@ import { useDictionary, useLocale } from "@/components/layout/LocaleProvider";
 import type { UnifiedProgressRow } from "@/services/learningService";
 import type { JLPTLevel } from "@/lib/types";
 import {
-  BookOpen, CheckCircle, Crown, Flame, Heart, RotateCcw, TrendingUp, WifiOff,
+  BookOpen, Crown, Flame, Heart, RotateCcw, TrendingUp, WifiOff,
   Target, Zap, Award, Calendar
 } from "lucide-react";
 
@@ -205,19 +205,10 @@ export default function DashboardPage() {
     ratingDistribution, weeklyTrend, masteryRate, loading,
   } = useDashboardData();
 
-  const [entitlement, setEntitlement] = useState<{ isPro: boolean; startsAt: string | null } | null>(null);
-  useEffect(() => {
-    fetch("/api/me/entitlements", { cache: "no-store" })
-      .then((r) => r.json())
-      .then((d) => setEntitlement({ isPro: Boolean(d.isPro), startsAt: d.startsAt ?? null }))
-      .catch(() => setEntitlement({ isPro: false, startsAt: null }));
-  }, []);
 
-  // Pro-only analytics: fetched lazily once entitlement confirms Pro.
   const [proRows, setProRows] = useState<ReviewAnalyticsRow[] | null>(null);
   const [grammarMeta, setGrammarMeta] = useState<Map<string, { title: string; level: JLPTLevel; slug: string }>>(new Map());
   useEffect(() => {
-    if (!entitlement?.isPro) return;
     let cancelled = false;
     Promise.all([
       learningService.getReviewAnalyticsRows(user?.id),
@@ -233,7 +224,7 @@ export default function DashboardPage() {
       setGrammarMeta(meta);
     });
     return () => { cancelled = true; };
-  }, [entitlement?.isPro, user?.id]);
+  }, [user?.id]);
 
   const retention = useMemo(() => (proRows ? computeRetentionByInterval(proRows) : null), [proRows]);
   const weakItems = useMemo(() => (proRows ? computeWeakGrammar(proRows) : null), [proRows]);
@@ -294,48 +285,6 @@ export default function DashboardPage() {
           <KpiCard icon={Heart} value={overall.totalFavorites} label={dict.dashboard.favoritesCount} color="bg-[#f6f3f1] border border-[rgba(36,36,36,0.12)]" />
         </div>
 
-        {/* Pro status banner */}
-        {entitlement !== null && (
-          <div className="mb-6">
-            {entitlement.isPro ? (
-              <div className="flex items-center justify-between gap-4 rounded-[18px] bg-[#dcebd8] px-5 py-3.5">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#315b3b]/10">
-                    <Crown className="h-4 w-4 text-[#315b3b]" />
-                  </div>
-                  <div>
-                    <p className="font-mono text-sm font-medium text-[#315b3b]">{dict.dashboard.proStatusTitle}</p>
-                    {entitlement.startsAt && (
-                      <p className="font-mono text-xs text-[#315b3b]/70">
-                        {dict.dashboard.proActivatedOn.replace("{date}", formatDate(entitlement.startsAt, locale))}
-                      </p>
-                    )}
-                  </div>
-                </div>
-                <div className="flex shrink-0 items-center gap-1.5 rounded-full bg-[#315b3b]/10 px-3 py-1">
-                  <CheckCircle className="h-3.5 w-3.5 text-[#315b3b]" />
-                  <span className="font-mono text-[11px] text-[#315b3b]">{dict.dashboard.proActivatedBadge}</span>
-                </div>
-              </div>
-            ) : (
-              <Link
-                href={`/${locale}/pro`}
-                className="flex items-center justify-between gap-4 rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] px-5 py-3.5 transition-colors hover:border-[#242424]"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[rgba(36,36,36,0.06)]">
-                    <Crown className="h-4 w-4 text-[#242424]" />
-                  </div>
-                  <div>
-                    <p className="font-mono text-sm font-medium text-[#242424]">{dict.dashboard.upgradeProTitle}</p>
-                    <p className="font-mono text-xs text-[#797776]">{dict.dashboard.upgradeProNote}</p>
-                  </div>
-                </div>
-                <span className="shrink-0 font-mono text-sm text-[#797776]">→</span>
-              </Link>
-            )}
-          </div>
-        )}
 
         <div className="grid lg:grid-cols-[1fr_280px] gap-4 mb-6">
           <div className="space-y-4">
@@ -434,100 +383,80 @@ export default function DashboardPage() {
         </div>
 
         {/* Pro: advanced review stats — retention curve + weak grammar (the promise on /pro) */}
-        {entitlement !== null && (
-          <div className="mb-6">
-            {entitlement.isPro ? (
-              <Card className="rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] shadow-none">
-                <CardContent className="p-5">
-                  <div className="mb-5 flex items-center gap-2">
-                    <Crown className="h-4 w-4 text-[#8a6a20]" />
-                    <h2 className="font-mono text-sm font-medium text-[#242424]">{dict.dashboard.advTitle}</h2>
-                    <Badge className="rounded-full bg-[#dcebd8] font-mono text-[10px] text-[#315b3b]">Pro</Badge>
-                  </div>
-                  <div className="grid gap-6 md:grid-cols-2">
-                    {/* Retention by interval */}
-                    <div>
-                      <h3 className="font-mono text-xs font-medium text-[#242424]">{dict.dashboard.advRetention}</h3>
-                      <p className="mt-1 text-xs leading-relaxed text-[#797776]">{dict.dashboard.advRetentionDesc}</p>
-                      {retention === null ? (
-                        <p className="mt-4 font-mono text-xs text-[#797776]">{dict.common.loading}</p>
-                      ) : retention.every((b) => b.total === 0) ? (
-                        <p className="mt-4 text-sm text-[#797776]">{dict.dashboard.advNoData}</p>
-                      ) : (
-                        <div className="mt-4 flex h-[110px] items-end gap-[6px]">
-                          {retention.map((b) => (
-                            <div key={b.key} className="flex flex-1 flex-col items-center gap-1">
-                              <span className="font-mono text-[10px] text-[#315b3b]">
-                                {b.rate === null ? "–" : `${b.rate}%`}
-                              </span>
-                              <div
-                                className="w-full rounded-t-[4px] bg-[#315b3b] transition-all"
-                                style={{ height: `${b.rate === null ? 2 : Math.max(b.rate * 0.7, 3)}px`, opacity: b.rate === null ? 0.15 : 0.85 }}
-                              />
-                              <span className="font-mono text-[9px] text-[#797776]">
-                                {(dict.dashboard.advBuckets as Record<string, string>)[b.key]}
-                              </span>
-                            </div>
-                          ))}
-                        </div>
-                      )}
+        <div className="mb-6">
+  <Card className="rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] shadow-none">
+                  <CardContent className="p-5">
+                    <div className="mb-5 flex items-center gap-2">
+                      <Crown className="h-4 w-4 text-[#8a6a20]" />
+                      <h2 className="font-mono text-sm font-medium text-[#242424]">{dict.dashboard.advTitle}</h2>
+                      <Badge className="rounded-full bg-[#dcebd8] font-mono text-[10px] text-[#315b3b]">Pro</Badge>
                     </div>
-                    {/* Weak grammar */}
-                    <div>
-                      <h3 className="font-mono text-xs font-medium text-[#242424]">{dict.dashboard.advWeak}</h3>
-                      <p className="mt-1 text-xs leading-relaxed text-[#797776]">{dict.dashboard.advWeakDesc}</p>
-                      {weakItems === null ? (
-                        <p className="mt-4 font-mono text-xs text-[#797776]">{dict.common.loading}</p>
-                      ) : weakItems.length === 0 ? (
-                        <p className="mt-4 text-sm text-[#797776]">{dict.dashboard.advNoData}</p>
-                      ) : (
-                        <div className="mt-3 space-y-1.5">
-                          {weakItems.map((w) => {
-                            const meta = grammarMeta.get(w.grammarId);
-                            return (
-                              <Link
-                                key={w.grammarId}
-                                href={meta ? `/${locale}/grammar/${meta.slug}` : `/${locale}/grammar`}
-                                className="flex items-center gap-2 rounded-[10px] border border-[#ded8d0] bg-[#f6f3f1] px-3 py-2 transition-colors hover:border-[#242424]"
-                              >
-                                {meta && <LevelBadge level={meta.level} />}
-                                <span className="min-w-0 flex-1 truncate text-sm font-medium text-[#242424]">
-                                  {meta?.title ?? w.grammarId}
+                    <div className="grid gap-6 md:grid-cols-2">
+                      {/* Retention by interval */}
+                      <div>
+                        <h3 className="font-mono text-xs font-medium text-[#242424]">{dict.dashboard.advRetention}</h3>
+                        <p className="mt-1 text-xs leading-relaxed text-[#797776]">{dict.dashboard.advRetentionDesc}</p>
+                        {retention === null ? (
+                          <p className="mt-4 font-mono text-xs text-[#797776]">{dict.common.loading}</p>
+                        ) : retention.every((b) => b.total === 0) ? (
+                          <p className="mt-4 text-sm text-[#797776]">{dict.dashboard.advNoData}</p>
+                        ) : (
+                          <div className="mt-4 flex h-[110px] items-end gap-[6px]">
+                            {retention.map((b) => (
+                              <div key={b.key} className="flex flex-1 flex-col items-center gap-1">
+                                <span className="font-mono text-[10px] text-[#315b3b]">
+                                  {b.rate === null ? "–" : `${b.rate}%`}
                                 </span>
-                                <span className="shrink-0 rounded-full bg-[#f4b4a8]/30 px-2 py-0.5 font-mono text-[10px] font-bold text-[#7a3a30]">
-                                  {dict.dashboard.advFailRate.replace("{p}", String(w.failRate))}
+                                <div
+                                  className="w-full rounded-t-[4px] bg-[#315b3b] transition-all"
+                                  style={{ height: `${b.rate === null ? 2 : Math.max(b.rate * 0.7, 3)}px`, opacity: b.rate === null ? 0.15 : 0.85 }}
+                                />
+                                <span className="font-mono text-[9px] text-[#797776]">
+                                  {(dict.dashboard.advBuckets as Record<string, string>)[b.key]}
                                 </span>
-                                <span className="shrink-0 font-mono text-[10px] text-[#797776]">
-                                  {dict.dashboard.advReviews.replace("{n}", String(w.total))}
-                                </span>
-                              </Link>
-                            );
-                          })}
-                        </div>
-                      )}
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                      {/* Weak grammar */}
+                      <div>
+                        <h3 className="font-mono text-xs font-medium text-[#242424]">{dict.dashboard.advWeak}</h3>
+                        <p className="mt-1 text-xs leading-relaxed text-[#797776]">{dict.dashboard.advWeakDesc}</p>
+                        {weakItems === null ? (
+                          <p className="mt-4 font-mono text-xs text-[#797776]">{dict.common.loading}</p>
+                        ) : weakItems.length === 0 ? (
+                          <p className="mt-4 text-sm text-[#797776]">{dict.dashboard.advNoData}</p>
+                        ) : (
+                          <div className="mt-3 space-y-1.5">
+                            {weakItems.map((w) => {
+                              const meta = grammarMeta.get(w.grammarId);
+                              return (
+                                <Link
+                                  key={w.grammarId}
+                                  href={meta ? `/${locale}/grammar/${meta.slug}` : `/${locale}/grammar`}
+                                  className="flex items-center gap-2 rounded-[10px] border border-[#ded8d0] bg-[#f6f3f1] px-3 py-2 transition-colors hover:border-[#242424]"
+                                >
+                                  {meta && <LevelBadge level={meta.level} />}
+                                  <span className="min-w-0 flex-1 truncate text-sm font-medium text-[#242424]">
+                                    {meta?.title ?? w.grammarId}
+                                  </span>
+                                  <span className="shrink-0 rounded-full bg-[#f4b4a8]/30 px-2 py-0.5 font-mono text-[10px] font-bold text-[#7a3a30]">
+                                    {dict.dashboard.advFailRate.replace("{p}", String(w.failRate))}
+                                  </span>
+                                  <span className="shrink-0 font-mono text-[10px] text-[#797776]">
+                                    {dict.dashboard.advReviews.replace("{n}", String(w.total))}
+                                  </span>
+                                </Link>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ) : (
-              <Link
-                href={`/${locale}/pro`}
-                className="flex items-center justify-between gap-4 rounded-[18px] border border-dashed border-[#d8b15a]/60 bg-[#fff6df]/60 px-5 py-4 transition-colors hover:border-[#8a6a20]"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#fff6df]">
-                    <Crown className="h-4 w-4 text-[#8a6a20]" />
-                  </div>
-                  <div>
-                    <p className="font-mono text-sm font-medium text-[#242424]">{dict.dashboard.advTitle}</p>
-                    <p className="mt-0.5 text-xs text-[#797776]">{dict.dashboard.advTeaser}</p>
-                  </div>
-                </div>
-                <span className="shrink-0 font-mono text-xs font-bold text-[#8a6a20]">{dict.dashboard.advUnlock} →</span>
-              </Link>
-            )}
-          </div>
-        )}
+                  </CardContent>
+                </Card>
+        </div>
 
         <Card className="rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] shadow-none mb-6">
           <CardContent className="p-5">

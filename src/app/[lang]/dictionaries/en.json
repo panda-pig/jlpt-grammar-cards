@@ -26,7 +26,7 @@
     "review": "Review",
     "favorites": "Favorites",
     "myGrammar": "My Library",
-    "pro": "Pro",
+    "pro": "Roadmap",
     "dashboard": "Analytics",
     "practice": "Practice"
   },
@@ -72,7 +72,11 @@
   },
   "home": {
     "v3": {
-      "heroTitle": ["Turn Japanese grammar", "into cards you", "review every day."],
+      "heroTitle": [
+        "Turn Japanese grammar",
+        "into cards you",
+        "review every day."
+      ],
       "heroSubtitle": "A JLPT grammar deck for serious learners: example sentences, conjugation, easy-to-confuse points and spaced review — all on one desk. Start in guest mode, then sync to your account.",
       "localHint": "Guest progress works locally; sign in to sync it to your account and review queue.",
       "cardCategory": "Conditional · Concession",
@@ -93,17 +97,32 @@
       "featSmDesc": "Intervals adapt to your mastery, reminding you to review at the best point on the forgetting curve.",
       "featSmChart": "Higher mastery, longer intervals →",
       "featCards": [
-        { "title": "Similar-grammar contrast", "desc": "「のに」vs「のだから」 — each entry flags common confusions and the core difference." },
-        { "title": "Progress tracking", "desc": "The dashboard shows learned/mastered counts, streaks and rating distribution in real time." },
-        { "title": "Guest mode", "desc": "Study without signing up; sync local progress to your account in one tap after login." }
+        {
+          "title": "Similar-grammar contrast",
+          "desc": "「のに」vs「のだから」 — each entry flags common confusions and the core difference."
+        },
+        {
+          "title": "Progress tracking",
+          "desc": "The dashboard shows learned/mastered counts, streaks and rating distribution in real time."
+        },
+        {
+          "title": "Guest mode",
+          "desc": "Study without signing up; sync local progress to your account in one tap after login."
+        }
       ],
       "featPersonalTitle": "Personal library",
-      "featPersonalDesc": "Add private entries, hide grammar you don't need, annotate your own understanding. Unlimited for Pro.",
+      "featPersonalDesc": "Add private entries, hide grammar you don't need, annotate your own understanding. No limit.",
       "featPersonalAdd": "+ Add private grammar",
       "featPersonalHidden": "N3 hidden",
       "flowHeading": "From lookup to review, one complete track.",
       "flowIntro": "Pick a level, read cards, rate, enter the queue, settle into your library — a 5-step loop.",
-      "flowChips": ["N2 · Conditionals", "〜に限らず", "Good → +3d", "Due 18 today", "Pinned N1 keigo"],
+      "flowChips": [
+        "N2 · Conditionals",
+        "〜に限らず",
+        "Good → +3d",
+        "Due 18 today",
+        "Pinned N1 keigo"
+      ],
       "previewHeading": "See your learning state on the home page, not just slogans.",
       "previewCardLabel": "Grammar card · front / back",
       "previewFront": "Front",
@@ -114,22 +133,44 @@
       "statLearned": "Learned",
       "statDue": "Due today",
       "statMastered": "Mastered",
-      "statsRow": ["Grammar entries", "JLPT levels", "Review algorithm", "Bilingual UI"],
+      "statsRow": [
+        "Grammar entries",
+        "JLPT levels",
+        "Review algorithm",
+        "Bilingual UI"
+      ],
       "ctaEyebrow": "Start with local mode",
       "ctaHeading": "Finish {due} cards today — the due queue will be waiting for you.",
-      "ctaSubtitle": "Start learning N5–N1 grammar cards for free. Pro Lifetime supports the project and unlocks more sync and advanced review."
+      "ctaSubtitle": "Start learning N5–N1 grammar cards for free. Every feature is open, no sign-up required."
     },
     "heroTitle1": "Master JLPT Grammar",
     "heroTitle2": "With Spaced Repetition",
     "heroSubtitle": "A grammar memory tool designed for N1–N5 learners. Organize scattered grammar points into a long-term review system through flashcards, favorites, review schedules, and side-by-side comparisons.",
-    "featuresTitle": "Core Features",
     "features": [
-      { "title": "JLPT N1–N5 Grammar System", "desc": "All levels covered, organized by JLPT level and grammar category" },
-      { "title": "Anki-Style Review", "desc": "Front shows grammar pattern, back reveals meaning, structure, and examples" },
-      { "title": "Grammar Comparisons", "desc": "Side-by-side comparison of easily confused grammar patterns" },
-      { "title": "Common Mistake Alerts", "desc": "Each grammar point highlights typical errors and pitfalls" },
-      { "title": "Favorites & Personal Library", "desc": "Save key grammar points and build your own review list" },
-      { "title": "Progress Tracking", "desc": "Dashboard with real-time stats and review schedules" }
+      {
+        "title": "JLPT N1–N5 Grammar System",
+        "desc": "All levels covered, organized by JLPT level and grammar category"
+      },
+      {
+        "title": "Anki-Style Review",
+        "desc": "Front shows grammar pattern, back reveals meaning, structure, and examples"
+      },
+      {
+        "title": "Grammar Comparisons",
+        "desc": "Side-by-side comparison of easily confused grammar patterns"
+      },
+      {
+        "title": "Common Mistake Alerts",
+        "desc": "Each grammar point highlights typical errors and pitfalls"
+      },
+      {
+        "title": "Favorites & Personal Library",
+        "desc": "Save key grammar points and build your own review list"
+      },
+      {
+        "title": "Progress Tracking",
+        "desc": "Dashboard with real-time stats and review schedules"
+      }
     ],
     "flowTitle": "Learning Flow",
     "featuresSubtitle": "From library browsing to smart review, covering the full learning loop",
@@ -138,11 +179,26 @@
     "viewDetails": "View details →",
     "levelComplete": "{percent}% complete",
     "flowSteps": [
-      { "step": "Choose Level", "desc": "From N5 to N1, pick your starting point" },
-      { "step": "Study Grammar", "desc": "Browse the library, understand meaning and structure" },
-      { "step": "Card Review", "desc": "Anki-style: recall from the front, verify on the back" },
-      { "step": "Rate Recall", "desc": "Score your memory — the system schedules intelligently" },
-      { "step": "Auto-Schedule", "desc": "Forgetting curve algorithm reminds you when to review" }
+      {
+        "step": "Choose Level",
+        "desc": "From N5 to N1, pick your starting point"
+      },
+      {
+        "step": "Study Grammar",
+        "desc": "Browse the library, understand meaning and structure"
+      },
+      {
+        "step": "Card Review",
+        "desc": "Anki-style: recall from the front, verify on the back"
+      },
+      {
+        "step": "Rate Recall",
+        "desc": "Score your memory — the system schedules intelligently"
+      },
+      {
+        "step": "Auto-Schedule",
+        "desc": "Forgetting curve algorithm reminds you when to review"
+      }
     ],
     "statsTitle": "Your Stats at a Glance",
     "previewMeaning": "It doesn't mean that...; not necessarily...",
@@ -156,9 +212,8 @@
     "streakDays": "Day Streak",
     "totalGrammar": "Total Grammar",
     "levelProgress": "N1–N5 Progress",
-    "ctaText": "Start truly remembering JLPT grammar today.",
     "ctaButton": "Start Learning Now",
-    "ctaPro": "Unlock Pro",
+    "ctaPro": "Roadmap",
     "ctaSupport": "Support the Author"
   },
   "grammar": {
@@ -169,7 +224,7 @@
     "results": "results",
     "learned": "Learned",
     "mastered": "Mastered",
-    "favorited": "Favorited",
+    "favorited": "Saved",
     "noResults": "No grammar found",
     "noResultsHint": "Try changing your search keywords or filters",
     "notFound": "Grammar Not Found",
@@ -193,7 +248,6 @@
     "masteryLevel": "Mastery",
     "addToStudy": "Start Learning",
     "favorite": "Save",
-    "favorited": "Saved",
     "unfavorite": "Remove",
     "emptyContent": "—",
     "quiz": "Mini Quiz",
@@ -315,10 +369,6 @@
     "restoreHint": "Default grammar items you've hidden — click to restore",
     "privateBadge": "Private",
     "noMatches": "No matches",
-    "freeLimit": "Free: max {limit}",
-    "proUnlimited": "Pro: unlimited",
-    "freeLimitReached": "Free plan limit reached ({limit} entries). Upgrade Pro to add more.",
-    "upgradeForMore": "Upgrade Pro",
     "form": {
       "title": "Grammar",
       "slug": "Slug",
@@ -362,9 +412,15 @@
     "advNoData": "Not enough review data yet — study or review a few cards first.",
     "advReviews": "{n} reviews",
     "advFailRate": "{p}% missed",
-    "advTeaser": "Unlock the retention curve and weak-grammar tracking.",
-    "advUnlock": "Unlock Pro",
-    "advBuckets": { "d0": "same day", "d1": "1 day", "d2_3": "2–3 d", "d4_7": "4–7 d", "d8_14": "8–14 d", "d15p": "15+ d" },
+    "advTeaser": "See your retention curve and weak-grammar tracking.",
+    "advBuckets": {
+      "d0": "same day",
+      "d1": "1 day",
+      "d2_3": "2–3 d",
+      "d4_7": "4–7 d",
+      "d8_14": "8–14 d",
+      "d15p": "15+ d"
+    },
     "noRatingData": "No rating data yet",
     "recentReviews": "Recent Reviews",
     "noRecentReviews": "No review records yet",
@@ -372,12 +428,7 @@
     "continueStudy": "Continue",
     "todayReviewBtn": "Review",
     "viewFavorites": "Saved",
-    "viewGrammar": "Library",
-    "proStatusTitle": "Pro Lifetime",
-    "proActivatedOn": "Activated {date}",
-    "proActivatedBadge": "Active",
-    "upgradeProTitle": "Unlock Pro Lifetime",
-    "upgradeProNote": "One-time ¥5.9 — supports a richer grammar library and advanced features"
+    "viewGrammar": "Library"
   },
   "settings": {
     "title": "Account Settings",
@@ -402,18 +453,14 @@
     "noSync": "No sync record yet",
     "loginRequired": "Please log in to view account settings",
     "planTitle": "Current Plan",
-    "planFree": "Free local and cloud study",
-    "planPro": "Pro Lifetime",
-    "planFreeDesc": "Core study, favorites, SM-2 review, and progress sync are available.",
-    "planProDesc": "Lifetime unlock for upcoming advanced features while supporting the project.",
-    "upgradePro": "View Pro",
+    "planPro": "Free",
+    "planProDesc": "All features are open — nothing to pay for.",
+    "upgradePro": "Roadmap",
     "supportAuthor": "Support Author",
-    "proActivatedOn": "Activated {date}",
-    "proLifetime": "Lifetime license — no renewal needed",
-    "paymentHistory": "Payment History",
-    "paymentHistoryDesc": "View Pro purchases and tips attached to your current account.",
+    "paymentHistory": "Support history",
+    "paymentHistoryDesc": "Tips linked to your account.",
     "noPayments": "No payment records yet.",
-    "paymentPro": "Pro Lifetime",
+    "paymentPro": "Support",
     "paymentTip": "Author Tip",
     "paymentStatus": {
       "pending": "Pending",
@@ -425,19 +472,9 @@
   },
   "commerce": {
     "proTitle": "JLPT Grammar Deck Pro",
-    "proSubtitle": "A one-time purchase that supports a more complete grammar library, personal library management, and advanced review features.",
-    "price": "¥5.9",
-    "lifetime": "Lifetime",
-    "currentPlan": "Current Plan",
-    "freePlan": "Free",
-    "proPlan": "Pro",
-    "activePro": "You already have Pro Lifetime",
-    "loginRequired": "Log in before purchasing Pro so the entitlement can be attached to your account.",
-    "loginToBuy": "Log in to Buy",
-    "buyPro": "Buy Pro Lifetime",
     "creatingOrder": "Creating order...",
     "supportTitle": "Support the Author",
-    "supportSubtitle": "If this grammar flashcard system helps you, you can support future updates with a small tip.",
+    "supportSubtitle": "Everything here is free. If this tool helps your JLPT prep, you can buy the author a coffee — entirely optional.",
     "supportAnonymous": "Tips are available without logging in.",
     "amount": "Amount",
     "customAmount": "Custom amount",
@@ -448,7 +485,6 @@
     "paymentUnavailableDesc": "The payment and entitlement foundation is live. Real checkout will open after merchant credentials, certificates, and webhook verification are configured.",
     "orderCreated": "Order Created",
     "orderPendingDesc": "Scan the QR code below with WeChat to complete payment. Your entitlement will update automatically.",
-    "orderPaid": "Payment confirmed! Pro Lifetime is now active.",
     "orderPaidTip": "Payment confirmed. Thank you for your support!",
     "orderExpired": "Order has expired. Please click buy again.",
     "orderFailed": "Order was not completed. Please create a new order or try again later.",
@@ -471,20 +507,7 @@
     "paymentExpiresAt": "Expires",
     "paymentBackToPro": "Back to Pro",
     "paymentBackToSupport": "Back to Support",
-    "paymentOpenSettings": "Open account settings",
-    "featuresTitle": "Pro will unlock first",
-    "proFeatures": [
-      { "title": "Enhanced Personal Library", "desc": "More flexible tools to add, hide, edit, and organize your own grammar items." },
-      { "title": "Advanced Review Analytics", "desc": "Track forgetting curves, rating distributions, and weak grammar points." },
-      { "title": "Continuous Content Expansion", "desc": "Priority support for richer N1/N2/N3 entries with Chinese and English explanations." },
-      { "title": "Bulk Import and Export", "desc": "Upcoming CSV / JSON import for personal grammar items, plus exports for backing up your study materials." }
-    ],
-    "freeFeatures": [
-      "Default JLPT grammar library",
-      "Anki-style study and review",
-      "Favorites and basic analytics",
-      "Local trial and login sync"
-    ]
+    "paymentOpenSettings": "Open account settings"
   },
   "login": {
     "title": "Login",
@@ -535,12 +558,12 @@
     "users": "Users",
     "usersDesc": "Read-only roster: email, sign-up date, plan and Pro activation time — for support and conversion insight.",
     "userTotal": "Total users",
-    "userProTotal": "Pro users",
+    "userProTotal": "Granted users",
     "userEmail": "Email",
     "userName": "Name",
     "userRegistered": "Registered",
     "userPlan": "Plan",
-    "userProSince": "Pro since",
+    "userProSince": "Granted at",
     "userEmpty": "No users yet.",
     "userSearchPlaceholder": "Search by email or name...",
     "userLoadFailed": "Failed to load users.",
@@ -548,7 +571,7 @@
     "refresh": "Refresh",
     "paymentTotal": "Total Orders",
     "paymentPaidAmount": "Paid Amount",
-    "paymentPaidPro": "Paid Pro",
+    "paymentPaidPro": "Paid plans",
     "paymentEmpty": "No payment orders yet.",
     "paymentOrder": "Order",
     "paymentUser": "User",
@@ -557,7 +580,7 @@
     "paymentCreatedAt": "Created",
     "paymentPaidAt": "Paid",
     "paymentAnonymous": "Anonymous tip",
-    "paymentPro": "Pro Lifetime",
+    "paymentPro": "Legacy plan",
     "paymentTip": "Tip",
     "viewDetail": "View detail",
     "orderDetail": "Order detail",
@@ -572,7 +595,7 @@
     "orderUserId": "User ID",
     "orderExpiresAt": "Expires at",
     "orderEntitlement": "Current entitlement",
-    "entitlementPro": "Pro Lifetime",
+    "entitlementPro": "Granted",
     "entitlementFree": "Free",
     "orderActions": "Manual actions",
     "markPaid": "Mark as paid (manual settle)",
@@ -623,7 +646,6 @@
       "exampleCn": "Chinese Translation",
       "furigana": "Furigana",
       "commonMistake": "Common Mistake",
-      "memoryTip": "Memory Tip",
       "quizQuestion": "Quiz Question",
       "quizAnswer": "Correct Answer",
       "quizExplanation": "Answer Explanation",
@@ -642,5 +664,53 @@
     "unlearned": "Unlearned",
     "learning": "Learning",
     "mastered": "Mastered"
+  },
+  "roadmap": {
+    "freeBadge": "Everything is free",
+    "title": "Features & roadmap",
+    "subtitle": "This is a free study tool. Every feature is open to everyone — no paywall, no usage caps. Here is what already works, and what is being considered next.",
+    "shippedTitle": "Available now",
+    "shipped": [
+      {
+        "title": "Full grammar library",
+        "desc": "All 955 grammar points from N5 to N1, filterable by level, type and study status."
+      },
+      {
+        "title": "Analytics & review insight",
+        "desc": "Study progress, level breakdown, retention curve and weak-grammar tracking."
+      },
+      {
+        "title": "Personal library",
+        "desc": "Add as many private grammar entries as you like and hide defaults you don't need — no limit."
+      },
+      {
+        "title": "Cloze practice",
+        "desc": "Questions generated from example sentences, scoped to today's, studied, or all grammar."
+      }
+    ],
+    "plannedTitle": "Planned",
+    "planned": [
+      {
+        "title": "Mistake notebook",
+        "desc": "Collect the grammar you miss in practice so you can drill it on its own."
+      },
+      {
+        "title": "Import & export",
+        "desc": "Bring in personal grammar via CSV / JSON and export your study data as a backup."
+      },
+      {
+        "title": "Better mobile flow",
+        "desc": "A study flow tuned for phones, and exploring offline support."
+      },
+      {
+        "title": "Continued content work",
+        "desc": "Ongoing proofreading of examples and more contrast notes for confusable grammar."
+      }
+    ],
+    "plannedNote": "These are directions, not commitments — no fixed timeline yet.",
+    "supportTitle": "Support the project",
+    "supportDesc": "All features are free. If it helps your JLPT prep, you can buy the author a coffee — entirely optional, and it unlocks nothing.",
+    "supportCta": "Buy a coffee",
+    "startCta": "Start studying"
   }
 }

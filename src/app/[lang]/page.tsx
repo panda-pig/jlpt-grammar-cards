@@ -7,7 +7,7 @@ import { useDictionary, useLocale } from "@/components/layout/LocaleProvider";
 import { useAuth } from "@/hooks/useAuth";
 import { grammarService } from "@/services/grammarService";
 import { learningService } from "@/services/learningService";
-import { Crown, Heart, Play } from "lucide-react";
+import { Heart, Play, Sparkles } from "lucide-react";
 
 const MARQUEE_ITEMS = [
   { text: "わけではない", level: "N3" },
@@ -509,7 +509,7 @@ export default function HomePage() {
           </div>
           <div className="mt-5 flex flex-wrap gap-5 text-[14px] text-[#797776]">
             <Link href={`/${locale}/pro`} className="underline underline-offset-4 hover:text-[#242424] transition-colors flex items-center gap-1">
-              <Crown className="h-3.5 w-3.5" /> {dict.home.ctaPro}
+              <Sparkles className="h-3.5 w-3.5" /> {dict.home.ctaPro}
             </Link>
             <Link href={`/${locale}/support`} className="underline underline-offset-4 hover:text-[#242424] transition-colors flex items-center gap-1">
               <Heart className="h-3.5 w-3.5" /> {dict.home.ctaSupport}

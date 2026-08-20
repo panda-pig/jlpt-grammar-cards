@@ -19,7 +19,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useDictionary, useLocale } from "@/components/layout/LocaleProvider";
 import type { GrammarCategory, GrammarEntry, JLPTLevel } from "@/lib/types";
 import {
-  BookOpen, Crown, Database, EyeOff, Layers3, Lock, PencilLine, Plus, Search,
+  BookOpen, Database, EyeOff, Layers3, Lock, PencilLine, Plus, Search,
   Trash2, Undo2, CheckSquare, Square, X,
 } from "lucide-react";
 
@@ -65,15 +65,7 @@ export default function MyGrammarPage() {
   const [editForm, setEditForm] = useState<Record<string, string>>({});
   const [batchMode, setBatchMode] = useState(false);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
-  const [isPro, setIsPro] = useState<boolean | null>(null);
 
-  useEffect(() => {
-    if (!user?.id) { setIsPro(false); return; }
-    fetch("/api/me/entitlements", { cache: "no-store" })
-      .then((r) => r.json())
-      .then((d) => setIsPro(Boolean(d?.isPro)))
-      .catch(() => setIsPro(false));
-  }, [user?.id]);
 
   const refreshMeta = async () => {
     if (!user?.id) return;
@@ -114,7 +106,6 @@ export default function MyGrammarPage() {
     return () => { alive = false; };
   }, [user?.id]);
 
-  const FREE_PRIVATE_LIMIT = 10;
 
   const ready = !!status?.ready;
   const canEdit = !!user;
@@ -123,9 +114,6 @@ export default function MyGrammarPage() {
   const privateCount = privateEntries.length;
   const defaultCount = defaultEntries.length;
   const currentPrivateCount = Math.max(privateCount, libraryMeta.privateCount);
-  // Soft gate: Free users can read/edit existing entries but cannot add new ones past limit.
-  // isPro===null means still loading — allow optimistically to avoid flicker.
-  const atFreeLimit = isPro === false && currentPrivateCount >= FREE_PRIVATE_LIMIT;
 
   const filteredDefaults = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -155,13 +143,8 @@ export default function MyGrammarPage() {
       await refreshMeta();
       setForm(emptyForm);
       setMessage(t.saved);
-    } catch (error) {
-      const text = error instanceof Error ? error.message : "";
-      setMessage(
-        text.includes("free_private_grammar_limit_reached")
-          ? t.freeLimitReached.replace("{limit}", String(FREE_PRIVATE_LIMIT))
-          : t.saveFailed
-      );
+    } catch {
+      setMessage(t.saveFailed);
     } finally { setSaving(false); }
   };
 
@@ -309,23 +292,10 @@ export default function MyGrammarPage() {
 
         {/* stats */}
         <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
-          {/* Private items card — shows Pro/Free limit badge */}
-          <Card className={`rounded-[18px] border shadow-none ${atFreeLimit ? "border-[#d8b15a]/50 bg-[#fff6df]" : "border-[#ded8d0] bg-[#fbfaf8]"}`}>
+          <Card className="rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] shadow-none">
             <CardContent className="p-4">
-              <div className="mb-2 flex items-center justify-between">
-                <Plus className="h-4 w-4 text-[#797776]" />
-                {isPro ? (
-                  <span className="flex items-center gap-1 rounded-full bg-[#315b3b]/10 px-2 py-0.5">
-                    <Crown className="h-3 w-3 text-[#315b3b]" />
-                    <span className="font-mono text-[10px] text-[#315b3b]">{t.proUnlimited}</span>
-                  </span>
-                ) : isPro === false ? (
-                  <span className={`rounded-full px-2 py-0.5 font-mono text-[10px] ${atFreeLimit ? "bg-[#d8b15a]/20 text-[#8a6a20]" : "bg-[rgba(36,36,36,0.06)] text-[#797776]"}`}>
-                    {t.freeLimit.replace("{limit}", String(FREE_PRIVATE_LIMIT))}
-                  </span>
-                ) : null}
-              </div>
-              <p className={`font-mono text-2xl ${atFreeLimit ? "text-[#8a6a20]" : "text-[#242424]"}`}>{currentPrivateCount}</p>
+              <Plus className="mb-2 h-4 w-4 text-[#797776]" />
+              <p className="font-mono text-2xl text-[#242424]">{currentPrivateCount}</p>
               <p className="font-mono text-xs text-[#797776]">{t.privateItems}</p>
             </CardContent>
           </Card>
@@ -381,23 +351,9 @@ export default function MyGrammarPage() {
                   <div className="sm:col-span-2"><Field label={t.form.explanationZh}><Textarea value={form.explanationZh} onChange={(e) => setForm((f) => ({ ...f, explanationZh: e.target.value }))} disabled={!canEdit} /></Field></div>
                   <div className="sm:col-span-2"><Field label={t.form.explanationEn}><Textarea value={form.explanationEn} onChange={(e) => setForm((f) => ({ ...f, explanationEn: e.target.value }))} disabled={!canEdit} /></Field></div>
                 </div>
-                {atFreeLimit ? (
-                  <div className="mt-5 space-y-2">
-                    <p className="text-xs leading-relaxed text-[#8a6a20]">
-                      {t.freeLimitReached.replace("{limit}", String(FREE_PRIVATE_LIMIT))}
-                    </p>
-                    <Link
-                      href={`/${locale}/pro`}
-                      className={buttonVariants({ className: "rounded-full font-mono w-full" })}
-                    >
-                      <Crown className="mr-1 h-4 w-4" />{t.upgradeForMore}
-                    </Link>
-                  </div>
-                ) : (
-                  <Button className="mt-5 rounded-full font-mono" onClick={handleCreate} disabled={!canEdit || saving || !form.title.trim()}>
-                    <Plus className="mr-1 h-4 w-4" />{saving ? t.saving : t.save}
-                  </Button>
-                )}
+                <Button className="mt-5 rounded-full font-mono" onClick={handleCreate} disabled={!canEdit || saving || !form.title.trim()}>
+                  <Plus className="mr-1 h-4 w-4" />{saving ? t.saving : t.save}
+                </Button>
               </CardContent>
             </Card>
 

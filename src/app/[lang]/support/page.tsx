@@ -19,7 +19,7 @@ export default function SupportPage() {
   const locale = useLocale();
   const t = dict.commerce;
 
-  const [amountCents, setAmountCents] = useState(590);
+  const [amountCents, setAmountCents] = useState(1000);
   const [customYuan, setCustomYuan] = useState("");
   const [nickname, setNickname] = useState("");
   const [message, setMessage] = useState("");
@@ -37,7 +37,7 @@ export default function SupportPage() {
     setOrder(null);
     setErrorMessage("");
 
-    if (!Number.isFinite(selectedAmount) || selectedAmount < 100) {
+    if (!Number.isFinite(selectedAmount) || selectedAmount < 500) {
       setErrorMessage(t.paymentFailed);
       setStatus("error");
       return;
@@ -102,14 +102,14 @@ export default function SupportPage() {
               <div className="lift rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] p-5">
                 <Sparkles className="mb-4 h-5 w-5 text-[#8a6a20]" />
                 <p className="font-mono text-sm font-medium text-[#242424]">{dict.settings.supportAuthor}</p>
-                <p className="mt-2 text-xs leading-relaxed text-[#797776]">{t.paymentUnavailableDesc}</p>
+                <p className="mt-2 text-xs leading-relaxed text-[#797776]">{dict.roadmap.supportDesc}</p>
               </div>
               <div className="lift rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] p-5">
                 <MessageCircle className="mb-4 h-5 w-5 text-[#315b3b]" />
                 <p className="font-mono text-sm font-medium text-[#242424]">{dict.nav.pro}</p>
-                <p className="mt-2 text-xs leading-relaxed text-[#797776]">{t.proSubtitle}</p>
+                <p className="mt-2 text-xs leading-relaxed text-[#797776]">{dict.roadmap.subtitle}</p>
                 <Link href={`/${locale}/pro`} className="mt-4 inline-flex font-mono text-xs text-[#242424] underline underline-offset-4">
-                  {dict.settings.upgradePro}
+                  {dict.roadmap.plannedTitle}
                 </Link>
               </div>
             </div>

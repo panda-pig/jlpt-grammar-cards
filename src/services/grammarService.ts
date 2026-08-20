@@ -1,6 +1,5 @@
 import { supabaseBrowser as supabase } from "@/lib/supabase-browser";
 import type { Database } from "@/lib/database.types";
-import grammarData from "@/data/grammar.json";
 import { canonicalGrammarId, grammarIdFromSlug } from "@/lib/grammar-dedupe";
 import { localGrammarLibraryService } from "./localGrammarLibraryService";
 
@@ -17,9 +16,27 @@ type GrammarDeckRow = GrammarRow & {
   base_grammar_key?: string | null;
 };
 
-const localGrammarData = grammarData as unknown as GrammarRow[];
-const localGrammarById = new Map(localGrammarData.map((item: any) => [String(item.id), item]));
-const localOrderById = new Map(localGrammarData.map((item: any, index) => [String(item.id), index]));
+// The bundled deck is ~1.8MB. Importing it statically shipped that payload in
+// every page's JS bundle, so it is fetched on demand instead and cached here.
+let localGrammarData: GrammarRow[] = [];
+let localGrammarById = new Map<string, GrammarRow>();
+let localOrderById = new Map<string, number>();
+let localDeckPromise: Promise<void> | null = null;
+
+async function ensureLocalDeck(): Promise<void> {
+  if (localGrammarData.length > 0) return;
+  if (!localDeckPromise) {
+    localDeckPromise = fetch("/grammar.json")
+      .then((res) => res.json())
+      .then((rows: GrammarRow[]) => {
+        localGrammarData = rows;
+        localGrammarById = new Map(rows.map((item: any) => [String(item.id), item]));
+        localOrderById = new Map(rows.map((item: any, index: number) => [String(item.id), index]));
+      })
+      .catch(() => { localDeckPromise = null; });
+  }
+  return localDeckPromise;
+}
 
 const cachedRemoteDeckByUser = new Map<string, { deck: GrammarDeckRow[]; cachedAt: number }>();
 const CACHE_TTL_MS = 5 * 60 * 1000;
@@ -125,6 +142,8 @@ function sortDeckRows(rows: GrammarDeckRow[]) {
 }
 
 async function getRemoteDeck(userId: string): Promise<GrammarDeckRow[]> {
+  // sortDeckRows orders by the bundled deck's index, so it must be loaded first.
+  await ensureLocalDeck();
   const now = Date.now();
   const cache = cachedRemoteDeckByUser.get(userId);
   if (cache && now - cache.cachedAt < CACHE_TTL_MS) {
@@ -230,10 +249,14 @@ export const grammarService = {
   },
 
   async getAll(userId?: string | null) {
-    if (!userId) return fallbackLocalDeck();
+    if (!userId) {
+      await ensureLocalDeck();
+      return fallbackLocalDeck();
+    }
     try {
       return await getRemoteDeck(userId);
     } catch {
+      await ensureLocalDeck();
       return fallbackLocalDeck(userId);
     }
   },
@@ -247,6 +270,7 @@ export const grammarService = {
       if (found) return found as GrammarDeckRow;
     }
 
+    await ensureLocalDeck();
     const localFound = findLocalBySlug(normalized);
     if (localFound) return localFound as GrammarRow;
 
