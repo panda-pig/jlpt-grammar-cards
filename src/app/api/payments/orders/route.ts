@@ -14,12 +14,10 @@ function errorResponse(code: string, message: string, status: number) {
   return NextResponse.json({ error: { code, message } }, { status });
 }
 
-// ---------------------------------------------------------------------------
 // In-memory IP rate limiter — 5 orders per 10 minutes per IP.
 // Works across concurrent requests within the same Fluid Compute container.
 // A distributed store (e.g. Redis) would be needed for multi-instance coverage,
 // but this provides meaningful protection for the single-tenant use case.
-// ---------------------------------------------------------------------------
 const orderRateLimiter = new Map<string, number[]>();
 const RATE_LIMIT_MAX = 5;
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;

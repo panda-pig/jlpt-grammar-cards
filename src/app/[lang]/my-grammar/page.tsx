@@ -254,8 +254,7 @@ export default function MyGrammarPage() {
     setMessage(t.batchHidden.replace("{count}", String(selectedIds.size)));
   };
 
-  // ---- render ----
-
+  
   if (loading) {
     return <MainLayout><div className="mx-auto flex min-h-[320px] max-w-5xl items-center justify-center py-6"><p className="font-mono text-sm text-[#797776]">{dict.common.loading}</p></div></MainLayout>;
   }

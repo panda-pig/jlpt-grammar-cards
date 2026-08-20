@@ -9,7 +9,6 @@ import { grammarService } from "@/services/grammarService";
 import { learningService } from "@/services/learningService";
 import { Crown, Heart, Play } from "lucide-react";
 
-// ── Marquee grammar items ──────────────────────────────────────────
 const MARQUEE_ITEMS = [
   { text: "わけではない", level: "N3" },
   { text: "にもかかわらず", level: "N2" },
@@ -45,7 +44,6 @@ const FLOW_COLORS = [
   "bg-[#dcebd8]",
 ];
 
-// ── Component ──────────────────────────────────────────────────────
 export default function HomePage() {
   const dict = useDictionary();
   const v = dict.home.v3;
@@ -59,7 +57,6 @@ export default function HomePage() {
   const flipTimer = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
   const userFlipped = useRef(false);
 
-  // Load stats
   useEffect(() => {
     (async () => {
       try {
