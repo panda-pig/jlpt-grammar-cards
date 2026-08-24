@@ -270,6 +270,8 @@
     "level": "Level",
     "remaining": "Remaining",
     "frontPrompt": "Recall: meaning / structure / example / common mistake",
+    "shortcutFlip": "flip",
+    "shortcutRate": "rate",
     "showAnswer": "Show Answer",
     "newCards": "New Cards",
     "newCard": "New Card",

@@ -36,7 +36,9 @@ export function StudyFlashcard({
         style={{ minHeight: "440px" }}
       >
         {/* Front — wash card */}
-        <div className="fc-face absolute inset-0 flex flex-col items-center justify-center rounded-[20px] border border-[rgba(100,140,220,.18)] bg-[#cfdaf5] p-10">
+        {/* backface-visibility only hides a face visually: without inert the hidden
+            face keeps its tab stops and screen readers read the answer early. */}
+        <div inert={flipped} className="fc-face absolute inset-0 flex flex-col items-center justify-center rounded-[20px] border border-[rgba(100,140,220,.18)] bg-[#cfdaf5] p-10">
           <div className="flex flex-col items-center gap-5 text-center">
             <LevelBadge level={grammar.jlptLevel} />
             <h2 className="font-serif text-[clamp(36px,6vw,60px)] font-bold leading-[1.1] tracking-[-0.02em] text-black">
@@ -60,7 +62,7 @@ export function StudyFlashcard({
         </div>
 
         {/* Back — cream card */}
-        <div className="fc-face fc-face-back absolute inset-0 overflow-auto rounded-[20px] border border-[#ded8d0] bg-[#fbfaf8] p-7 md:p-8">
+        <div inert={!flipped} className="fc-face fc-face-back absolute inset-0 overflow-auto rounded-[20px] border border-[#ded8d0] bg-[#fbfaf8] p-7 md:p-8">
           <div className="flex flex-col gap-4">
             <div className="flex items-center justify-between gap-2">
               <div className="flex items-center gap-2">

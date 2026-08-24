@@ -263,6 +263,15 @@ export default function StudyPage() {
                   {dict.study.showAnswer}
                 </Button>
               )}
+              <p className="pt-1 text-center font-mono text-[11px] text-[#a5a2a0]">
+                <kbd className="rounded border border-[#ded8d0] bg-[#fbfaf8] px-1.5 py-0.5">Space</kbd> {dict.study.shortcutFlip}
+                {flipped && !isRevisit && (
+                  <>
+                    {" · "}
+                    <kbd className="rounded border border-[#ded8d0] bg-[#fbfaf8] px-1.5 py-0.5">1–4</kbd> {dict.study.shortcutRate}
+                  </>
+                )}
+              </p>
               {currentIndex > 0 && (
                 <button
                   type="button"

@@ -173,7 +173,7 @@ export default function HomePage() {
                     onClick={handleCardClick}
                   >
                     {/* Front */}
-                    <div className="fc-face absolute inset-0 rounded-[22px] p-7 flex flex-col"
+                    <div inert={cardFlipped} className="fc-face absolute inset-0 rounded-[22px] p-7 flex flex-col"
                       style={{ background: "#cfdaf5", border: "1px solid rgba(100,140,220,.18)",
                         boxShadow: "0 28px 64px rgba(100,140,220,.22), 0 4px 16px rgba(36,36,36,.06)" }}>
                       <div className="mb-2 flex items-center gap-[7px] font-mono text-[11px] text-[rgba(36,36,36,.5)]">
@@ -192,7 +192,7 @@ export default function HomePage() {
                       </div>
                     </div>
                     {/* Back */}
-                    <div className="fc-face fc-face-back absolute inset-0 rounded-[22px] p-7 flex flex-col"
+                    <div inert={!cardFlipped} className="fc-face fc-face-back absolute inset-0 rounded-[22px] p-7 flex flex-col"
                       style={{ background: "#fbfaf8", border: "1px solid #ded8d0",
                         boxShadow: "0 24px 56px rgba(36,36,36,.1), 0 4px 14px rgba(36,36,36,.05)" }}>
                       <div className="mb-3 flex items-center justify-between">

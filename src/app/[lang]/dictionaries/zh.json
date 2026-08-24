@@ -270,6 +270,8 @@
     "level": "等级",
     "remaining": "剩余",
     "frontPrompt": "请回忆：意思 / 接续 / 例句 / 易错点",
+    "shortcutFlip": "翻卡",
+    "shortcutRate": "评分",
     "showAnswer": "显示答案",
     "newCards": "新卡",
     "newCard": "新卡",
