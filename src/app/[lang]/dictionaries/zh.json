@@ -471,7 +471,6 @@
     }
   },
   "commerce": {
-    "proTitle": "JLPT Grammar Deck Pro",
     "creatingOrder": "正在创建订单...",
     "supportTitle": "打赏作者",
     "supportSubtitle": "所有功能都是免费的。如果这个工具帮到了你的备考，可以请作者喝杯咖啡——完全自愿。",
@@ -486,7 +485,7 @@
     "orderCreated": "订单已创建",
     "orderPendingDesc": "请使用微信扫描下方二维码完成支付。支付完成后权益自动更新。",
     "orderPaidTip": "支付成功，感谢你的支持！",
-    "orderExpired": "订单已过期，请重新点击购买。",
+    "orderExpired": "订单已过期，请重新发起打赏。",
     "orderFailed": "订单未完成，请重新下单或稍后再试。",
     "orderPolling": "等待支付确认中...",
     "scanWithWechat": "微信扫一扫",
@@ -497,7 +496,7 @@
     "retryPayment": "重新下单",
     "paymentFailed": "订单创建失败，请稍后重试。",
     "paymentDetailTitle": "订单状态",
-    "paymentDetailDesc": "这里会自动刷新微信支付结果。支付成功后，Pro 权益或打赏记录会同步更新。",
+    "paymentDetailDesc": "这里会自动刷新支付结果。支付成功后，打赏记录会同步更新。",
     "paymentNotFound": "订单不存在或你无权查看。",
     "paymentOrderNo": "商户订单号",
     "paymentCurrentStatus": "当前状态",
@@ -505,9 +504,7 @@
     "paymentCreatedAt": "创建时间",
     "paymentPaidAt": "支付时间",
     "paymentExpiresAt": "过期时间",
-    "paymentBackToPro": "返回 Pro",
-    "paymentBackToSupport": "返回打赏",
-    "paymentOpenSettings": "查看账户设置"
+    "paymentBackToSupport": "返回打赏"
   },
   "login": {
     "title": "登录",
@@ -554,9 +551,9 @@
     "editGrammar": "编辑语法",
     "deleteGrammar": "删除语法",
     "payments": "支付订单",
-    "paymentsDesc": "查看 Pro 购买、打赏订单、金额、状态和支付时间，用于上线后排查支付问题。",
+    "paymentsDesc": "查看打赏订单的金额、状态和支付时间，用于排查支付问题（含历史 Pro 订单）。",
     "users": "用户",
-    "usersDesc": "只读用户名册：邮箱、注册时间、方案与 Pro 激活时间，用于排查与了解转化。",
+    "usersDesc": "只读用户名册：邮箱、注册时间与方案，用于排查问题。",
     "userTotal": "用户总数",
     "userProTotal": "授权用户",
     "userEmail": "邮箱",
@@ -600,7 +597,7 @@
     "orderActions": "人工操作",
     "markPaid": "手动补单（标记已支付）",
     "closeOrder": "关闭订单",
-    "markPaidConfirm": "确认手动补单？将把订单标记为已支付，Pro 订单会立即发放权益。",
+    "markPaidConfirm": "确认手动补单？将把订单标记为已支付。",
     "closeConfirm": "确认关闭该订单？关闭后用户需重新下单。",
     "actionDone": "操作成功。",
     "actionFailed": "操作失败。",

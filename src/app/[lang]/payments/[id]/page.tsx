@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { CheckCircle, Clock, ExternalLink, Loader2, RotateCcw, XCircle } from "lucide-react";
+import { CheckCircle, Clock, Loader2, RotateCcw, XCircle } from "lucide-react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { useDictionary, useLocale } from "@/components/layout/LocaleProvider";
 import { Badge } from "@/components/ui/badge";
@@ -84,8 +84,8 @@ export default function PaymentDetailPage() {
       ? Clock
       : XCircle;
 
-  const retryHref = payment?.type === "pro_lifetime" ? `/${locale}/pro` : `/${locale}/support`;
-  const retryLabel = payment?.type === "pro_lifetime" ? t.paymentBackToPro : t.paymentBackToSupport;
+  const retryHref = `/${locale}/support`;
+  const retryLabel = t.paymentBackToSupport;
 
   return (
     <MainLayout>
@@ -114,15 +114,15 @@ export default function PaymentDetailPage() {
                   <XCircle className="h-4 w-4" />
                   {error || t.paymentNotFound}
                 </div>
-                <Link href={`/${locale}/pro`} className={buttonVariants({ className: "rounded-full font-mono" })}>
-                  {t.paymentBackToPro}
+                <Link href={`/${locale}/support`} className={buttonVariants({ className: "rounded-full font-mono" })}>
+                  {t.paymentBackToSupport}
                 </Link>
               </div>
             ) : (
               <div className="space-y-5">
                 <div className="flex items-start justify-between gap-4">
                   <div>
-                    <p className="font-mono text-xs text-[#797776]">{payment.type === "pro_lifetime" ? t.proTitle : t.supportTitle}</p>
+                    <p className="font-mono text-xs text-[#797776]">{t.supportTitle}</p>
                     <p className="mt-1 font-serif text-4xl text-[#242424]">{amountText(payment.amountCents)}</p>
                   </div>
                   <Badge className={`rounded-full px-3 py-1 font-mono text-xs ${statusStyle}`}>
@@ -168,12 +168,6 @@ export default function PaymentDetailPage() {
                   {(payment.status === "closed" || payment.status === "failed") && (
                     <Link href={retryHref} className={buttonVariants({ className: "rounded-full font-mono" })}>
                       {t.retryPayment}
-                    </Link>
-                  )}
-                  {payment.type === "pro_lifetime" && payment.status === "paid" && (
-                    <Link href={`/${locale}/settings`} className={buttonVariants({ className: "rounded-full font-mono" })}>
-                      <ExternalLink className="mr-1 h-4 w-4" />
-                      {t.paymentOpenSettings}
                     </Link>
                   )}
                   <Link href={retryHref} className={buttonVariants({ variant: "outline", className: "rounded-full font-mono" })}>

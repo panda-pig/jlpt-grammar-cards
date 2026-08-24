@@ -19,7 +19,7 @@ import { useDictionary, useLocale } from "@/components/layout/LocaleProvider";
 import type { UnifiedProgressRow } from "@/services/learningService";
 import type { JLPTLevel } from "@/lib/types";
 import {
-  BookOpen, Crown, Flame, Heart, RotateCcw, TrendingUp, WifiOff,
+  BookOpen, Flame, Heart, LineChart, RotateCcw, TrendingUp, WifiOff,
   Target, Zap, Award, Calendar
 } from "lucide-react";
 
@@ -382,14 +382,12 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Pro: advanced review stats — retention curve + weak grammar (the promise on /pro) */}
         <div className="mb-6">
-  <Card className="rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] shadow-none">
+          <Card className="rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] shadow-none">
                   <CardContent className="p-5">
                     <div className="mb-5 flex items-center gap-2">
-                      <Crown className="h-4 w-4 text-[#8a6a20]" />
+                      <LineChart className="h-4 w-4 text-[#315b3b]" />
                       <h2 className="font-mono text-sm font-medium text-[#242424]">{dict.dashboard.advTitle}</h2>
-                      <Badge className="rounded-full bg-[#dcebd8] font-mono text-[10px] text-[#315b3b]">Pro</Badge>
                     </div>
                     <div className="grid gap-6 md:grid-cols-2">
                       {/* Retention by interval */}

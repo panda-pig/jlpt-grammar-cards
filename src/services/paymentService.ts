@@ -85,11 +85,6 @@ const TIP_MIN_AMOUNT_CENTS = 500;
 const TIP_MAX_AMOUNT_CENTS = 500000;
 const DEFAULT_ORDER_EXPIRE_MINUTES = 30;
 
-function proLifetimePriceCents() {
-  const value = Number(process.env.PRO_LIFETIME_PRICE_CENTS ?? 590);
-  return Number.isFinite(value) && value > 0 ? Math.round(value) : 590;
-}
-
 function orderExpireMinutes() {
   const value = Number(process.env.PAYMENT_ORDER_EXPIRE_MINUTES ?? DEFAULT_ORDER_EXPIRE_MINUTES);
   return Number.isFinite(value) && value > 0 ? Math.round(value) : DEFAULT_ORDER_EXPIRE_MINUTES;
@@ -130,8 +125,6 @@ function assertSupportedProvider(provider: PaymentProvider, channel: PaymentChan
 }
 
 function resolveAmount(input: CreatePaymentOrderInput) {
-  if (input.type === "pro_lifetime") return proLifetimePriceCents();
-
   const amount = Math.round(Number(input.amountCents));
   if (!Number.isFinite(amount)) {
     throw new PaymentValidationError("Tip amount is required.");
@@ -143,7 +136,9 @@ function resolveAmount(input: CreatePaymentOrderInput) {
 }
 
 function assertCreateInput(input: CreatePaymentOrderInput) {
-  if (input.type !== "tip" && input.type !== "pro_lifetime") {
+  // Every feature is free, so tipping is the only order that can still be
+  // created. `pro_lifetime` stays in the type union for historical records.
+  if (input.type !== "tip") {
     throw new PaymentValidationError("Unsupported payment type.");
   }
   if (!["wechat", "alipay", "stripe"].includes(input.provider)) {
@@ -152,17 +147,11 @@ function assertCreateInput(input: CreatePaymentOrderInput) {
   if (!["native", "h5", "jsapi", "mini_program", "checkout"].includes(input.channel)) {
     throw new PaymentValidationError("Unsupported payment channel.");
   }
-  if (input.type === "pro_lifetime" && !input.userId) {
-    throw new PaymentUnauthorizedError("Log in before purchasing Pro.");
-  }
   assertSupportedProvider(input.provider, input.channel);
 }
 
-function descriptionFor(type: PaymentType) {
-  return type === "pro_lifetime"
-    ? "JLPT Grammar Deck Pro 永久版"
-    : "支持 JLPT Grammar Deck 作者";
-}
+/** Tipping is the only order type, so every order carries the same description. */
+const ORDER_DESCRIPTION = "支持 JLPT Grammar Deck 作者";
 
 function toPaymentOrderView(row: any, entitlement?: EntitlementState): PaymentOrderView {
   return {
@@ -202,7 +191,6 @@ function isExpiredPending(row: any) {
 }
 
 export const paymentService = {
-  getProLifetimePriceCents: proLifetimePriceCents,
 
   async createPaymentOrder(input: CreatePaymentOrderInput): Promise<PaymentOrderView> {
     assertCreateInput(input);
@@ -244,7 +232,7 @@ export const paymentService = {
         outTradeNo,
         paymentId: pending.id,
         amountCents,
-        description: descriptionFor(input.type),
+        description: ORDER_DESCRIPTION,
         type: input.type,
       });
 
@@ -261,7 +249,7 @@ export const paymentService = {
     const providerOrder = await wechatPayClient.createNativeOrder({
       outTradeNo,
       amountCents,
-      description: descriptionFor(input.type),
+      description: ORDER_DESCRIPTION,
       notifyUrl: process.env.WECHAT_PAY_NOTIFY_URL ?? "",
     });
 

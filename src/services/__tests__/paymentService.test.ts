@@ -3,7 +3,7 @@
  *
  * Coverage:
  *  1. createPaymentOrder — input validation (amount range, type, Pro requires login)
- *  2. createPaymentOrder — anonymous tips allowed, pro_lifetime requires userId
+ *  2. createPaymentOrder — anonymous tips allowed, pro_lifetime rejected
  *  3. markPaymentPaid    — idempotency (already-paid orders skip UPDATE)
  *  4. getPaymentStatus   — access control (owner OK, other user → 403, anon tip → OK)
  */
@@ -14,7 +14,6 @@ import {
   PaymentIntegrityError,
   PaymentNotFoundError,
   PaymentStateError,
-  PaymentUnauthorizedError,
   PaymentValidationError,
   paymentService,
 } from "../paymentService";
@@ -252,34 +251,19 @@ describe("createPaymentOrder — input validation", () => {
   });
 });
 
-describe("createPaymentOrder — auth gating", () => {
-  it("throws PaymentUnauthorizedError for pro_lifetime without userId", async () => {
+describe("createPaymentOrder — type gating", () => {
+  it("rejects pro_lifetime — every feature is free, so tipping is the only order", async () => {
+    const { client } = buildClient({});
+    mockCreateClient.mockReturnValue(client);
+
     await expect(
       paymentService.createPaymentOrder({
         type: "pro_lifetime",
         provider: "wechat",
         channel: "native",
-        userId: null,
+        userId: "user-abc",
       }),
-    ).rejects.toThrow(PaymentUnauthorizedError);
-  });
-
-  it("allows pro_lifetime when userId is provided", async () => {
-    const { client } = buildClient({
-      payments: { data: { ...pendingPayment, status: "pending" } },
-    });
-    mockCreateClient.mockReturnValue(client);
-
-    const result = await paymentService.createPaymentOrder({
-      type: "pro_lifetime",
-      provider: "wechat",
-      channel: "native",
-      userId: "user-abc",
-    });
-
-    // qrCodeUrl is persisted in DB then read back — matches the fixture value
-    expect(result.qrCodeUrl).toBe(pendingPayment.qr_code_url);
-    expect(result.type).toBe("pro_lifetime");
+    ).rejects.toThrow(PaymentValidationError);
   });
 
   it("allows anonymous tip (userId null)", async () => {
@@ -321,10 +305,11 @@ describe("createPaymentOrder — Stripe Checkout", () => {
     mockCreateClient.mockReturnValue(client);
 
     const result = await paymentService.createPaymentOrder({
-      type: "pro_lifetime",
+      type: "tip",
       provider: "stripe",
       channel: "checkout",
       userId: "user-abc",
+      amountCents: 590,
     });
 
     expect(mockStripeClient.createCheckoutSession).toHaveBeenCalledOnce();
@@ -362,10 +347,11 @@ describe("createPaymentOrder — Stripe Checkout", () => {
 
     await expect(
       paymentService.createPaymentOrder({
-        type: "pro_lifetime",
+        type: "tip",
         provider: "stripe",
         channel: "checkout",
         userId: "user-abc",
+        amountCents: 590,
       }),
     ).rejects.toThrow(PaymentProviderUnavailableError);
 
