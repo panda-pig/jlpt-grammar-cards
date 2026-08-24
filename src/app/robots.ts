@@ -6,7 +6,6 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      // Account-scoped and operational routes hold nothing worth indexing.
       disallow: ["/api/", "/auth/", "/zh/admin/", "/en/admin/", "/zh/settings", "/en/settings", "/zh/payments/", "/en/payments/"],
     },
     sitemap: `${SITE_URL}/sitemap.xml`,

@@ -57,7 +57,6 @@ export function GrammarDetailClient({
 }: {
   rawSlug: string;
   slug: string;
-  /** Server-rendered seed from the bundled deck, so crawlers and first paint get real content. */
   initialGrammar: GrammarEntry | null;
   initialSameTitle: GrammarEntry[];
 }) {

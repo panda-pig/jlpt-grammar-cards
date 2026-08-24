@@ -150,7 +150,6 @@ function assertCreateInput(input: CreatePaymentOrderInput) {
   assertSupportedProvider(input.provider, input.channel);
 }
 
-/** Tipping is the only order type, so every order carries the same description. */
 const ORDER_DESCRIPTION = "支持 JLPT Grammar Deck 作者";
 
 function toPaymentOrderView(row: any, entitlement?: EntitlementState): PaymentOrderView {

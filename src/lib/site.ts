@@ -5,7 +5,6 @@ export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://jlpt-gramm
 
 export const LOCALES: Locale[] = ["zh", "en"];
 
-/** hreflang codes for the two shipped locales. */
 export const HREFLANG: Record<Locale, string> = { zh: "zh-CN", en: "en" };
 
 export interface DeckRow {
@@ -38,7 +37,6 @@ export function findDeckEntry(slug: string): DeckRow | null {
   return bySlug.get(slug) ?? null;
 }
 
-/** The meaning line, falling back across the locale columns the deck actually has. */
 export function deckMeaning(row: DeckRow, locale: Locale): string {
   const localized = locale === "en" ? row.meaningEn : row.meaningZh ?? row.meaningCn;
   return (localized ?? row.meaningEn ?? row.meaningZh ?? row.meaningCn ?? "").trim();

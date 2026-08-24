@@ -6,10 +6,8 @@ import { getSameTitleEntries } from "@/lib/grammar-relations";
 import { HREFLANG, LOCALES, SITE_URL, deckExplanation, deckMeaning, findDeckEntry, getDeck } from "@/lib/site";
 import type { GrammarEntry } from "@/lib/types";
 
-// Detail pages are read-mostly, so they are cached and refreshed daily rather
-// than rendered per request. An empty generateStaticParams is what opts the
-// route into revalidating on-demand paths instead of rendering every request;
-// prerendering all 1910 of them at build time is not worth the build cost.
+// Cached and refreshed daily. The empty generateStaticParams is required:
+// without it `revalidate` is ignored and every request re-renders.
 export const revalidate = 86400;
 
 export function generateStaticParams() {

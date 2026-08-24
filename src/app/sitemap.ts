@@ -2,7 +2,6 @@ import type { MetadataRoute } from "next";
 import { HREFLANG, LOCALES, SITE_URL, getDeck } from "@/lib/site";
 import type { Locale } from "@/app/[lang]/dictionaries";
 
-// Pages a signed-out visitor can actually read; account-only routes are omitted.
 const PUBLIC_PATHS = ["", "/grammar", "/study", "/practice", "/review", "/pro", "/support"];
 
 function entry(path: string, priority: number, changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"]) {
