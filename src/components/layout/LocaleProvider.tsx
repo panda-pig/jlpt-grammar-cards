@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, type ReactNode } from "react";
+import { createContext, useContext, useEffect, type ReactNode } from "react";
 import type { Dictionary, Locale } from "@/app/[lang]/dictionaries";
 
 interface LocaleContextValue {
@@ -19,6 +19,12 @@ export function LocaleProvider({
   locale: Locale;
   dict: Dictionary;
 }) {
+  // <html> is rendered by the root layout, which sits above the [lang] segment
+  // and so cannot know the locale; keep its lang attribute in step from here.
+  useEffect(() => {
+    document.documentElement.lang = locale === "en" ? "en" : "zh-CN";
+  }, [locale]);
+
   return (
     <LocaleContext.Provider value={{ locale, dict }}>
       {children}
