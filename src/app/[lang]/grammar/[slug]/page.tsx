@@ -7,8 +7,14 @@ import { HREFLANG, LOCALES, SITE_URL, deckExplanation, deckMeaning, findDeckEntr
 import type { GrammarEntry } from "@/lib/types";
 
 // Detail pages are read-mostly, so they are cached and refreshed daily rather
-// than rendered per request.
+// than rendered per request. An empty generateStaticParams is what opts the
+// route into revalidating on-demand paths instead of rendering every request;
+// prerendering all 1910 of them at build time is not worth the build cost.
 export const revalidate = 86400;
+
+export function generateStaticParams() {
+  return [];
+}
 
 type Params = Promise<{ lang: string; slug: string }>;
 
