@@ -24,6 +24,9 @@ import {
 } from "lucide-react";
 
 type LibraryStatus = Awaited<ReturnType<typeof grammarService.getUserLibraryStatus>>;
+type ConfirmAction =
+  | { kind: "delete-private"; entry: GrammarEntry }
+  | { kind: "batch-hide"; ids: string[] };
 
 const LEVELS: JLPTLevel[] = ["N5", "N4", "N3", "N2", "N1"];
 const CATEGORIES = Object.keys(CATEGORY_LABELS) as GrammarCategory[];
@@ -65,6 +68,8 @@ export default function MyGrammarPage() {
   const [editForm, setEditForm] = useState<Record<string, string>>({});
   const [batchMode, setBatchMode] = useState(false);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [confirmAction, setConfirmAction] = useState<ConfirmAction | null>(null);
+  const [confirmBusy, setConfirmBusy] = useState(false);
 
 
   const refreshMeta = async () => {
@@ -156,12 +161,9 @@ export default function MyGrammarPage() {
     setMessage(t.hidden);
   };
 
-  const handleDeletePrivate = async (entry: GrammarEntry) => {
-    if (!user || !confirm(t.deleteConfirm)) return;
-    await grammarService.deleteUserItem(user.id, entry.baseGrammarKey || entry.id);
-    setEntries((c) => c.filter((e) => e.id !== entry.id));
-    await refreshMeta();
-    setMessage(t.deleted);
+  const handleDeletePrivate = (entry: GrammarEntry) => {
+    if (!user) return;
+    setConfirmAction({ kind: "delete-private", entry });
   };
 
   const handleStartEdit = (entry: GrammarEntry) => {
@@ -221,23 +223,40 @@ export default function MyGrammarPage() {
     setBatchMode(false);
   };
 
-  const batchHide = async () => {
+  const batchHide = () => {
     if (!user || selectedIds.size === 0) return;
-    if (!confirm(t.batchHideConfirm.replace("{count}", String(selectedIds.size)))) return;
-    for (const id of selectedIds) {
-      const entry = entries.find((e) => e.id === id);
-      if (entry && !entry.isUserCreated) {
-        await grammarService.hideForUser(user.id, entry.baseGrammarKey || id);
-      }
-    }
-    const rows = await grammarService.getAll(user.id);
-    setEntries(rows.map(toGrammarEntry));
-    await refreshMeta();
-    clearSelection();
-    setMessage(t.batchHidden.replace("{count}", String(selectedIds.size)));
+    setConfirmAction({ kind: "batch-hide", ids: Array.from(selectedIds) });
   };
 
-  
+  const runConfirmedAction = async () => {
+    if (!user || !confirmAction) return;
+    setConfirmBusy(true);
+    try {
+      if (confirmAction.kind === "delete-private") {
+        const { entry } = confirmAction;
+        await grammarService.deleteUserItem(user.id, entry.baseGrammarKey || entry.id);
+        setEntries((c) => c.filter((e) => e.id !== entry.id));
+        await refreshMeta();
+        setMessage(t.deleted);
+      } else {
+        for (const id of confirmAction.ids) {
+          const entry = entries.find((e) => e.id === id);
+          if (entry && !entry.isUserCreated) {
+            await grammarService.hideForUser(user.id, entry.baseGrammarKey || id);
+          }
+        }
+        const rows = await grammarService.getAll(user.id);
+        setEntries(rows.map(toGrammarEntry));
+        await refreshMeta();
+        clearSelection();
+        setMessage(t.batchHidden.replace("{count}", String(confirmAction.ids.length)));
+      }
+      setConfirmAction(null);
+    } finally {
+      setConfirmBusy(false);
+    }
+  };
+
   if (loading) {
     return <MainLayout><div className="mx-auto flex min-h-[320px] max-w-5xl items-center justify-center py-6"><p className="font-mono text-sm text-[#797776]">{dict.common.loading}</p></div></MainLayout>;
   }
@@ -560,6 +579,36 @@ export default function MyGrammarPage() {
           <div className="mt-5 flex gap-3">
             <Button className="rounded-full font-mono" onClick={handleSaveEdit}>{t.save}</Button>
             <Button variant="outline" className="rounded-full font-mono" onClick={() => setEditingId(null)}>{t.cancel}</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={!!confirmAction} onOpenChange={(open) => { if (!open && !confirmBusy) setConfirmAction(null); }}>
+        <DialogContent className="max-w-sm rounded-[18px] border border-[#ded8d0] bg-[#fbfaf8] shadow-none">
+          <DialogTitle className="font-serif text-xl">
+            {confirmAction?.kind === "batch-hide" ? t.batchHide : t.delete}
+          </DialogTitle>
+          <p className="text-sm leading-relaxed text-[#797776]">
+            {confirmAction?.kind === "batch-hide"
+              ? t.batchHideConfirm.replace("{count}", String(confirmAction.ids.length))
+              : t.deleteConfirm}
+          </p>
+          <div className="mt-2 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+            <Button
+              variant="outline"
+              className="rounded-full font-mono"
+              disabled={confirmBusy}
+              onClick={() => setConfirmAction(null)}
+            >
+              {t.cancel}
+            </Button>
+            <Button
+              className="rounded-full bg-[#f4b4a8] font-mono text-[#7a3a30] hover:bg-[#f0a098]"
+              disabled={confirmBusy}
+              onClick={runConfirmedAction}
+            >
+              {confirmBusy ? t.saving : confirmAction?.kind === "batch-hide" ? t.batchHide : t.delete}
+            </Button>
           </div>
         </DialogContent>
       </Dialog>

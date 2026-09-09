@@ -28,7 +28,10 @@ export async function GET(
       return errorResponse(error.code, error.message, 403);
     }
 
-    const message = error instanceof Error ? error.message : "Unexpected payment lookup error.";
-    return errorResponse("payment_order_lookup_failed", message, 500);
+    return errorResponse(
+      "payment_order_lookup_failed",
+      "Payment order could not be loaded. Please try again later.",
+      500
+    );
   }
 }

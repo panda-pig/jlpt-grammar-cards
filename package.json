@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build --webpack",
     "start": "next start",
     "grammar:audit": "node scripts/audit-grammar-data.js",
     "grammar:audit:strict": "node scripts/audit-grammar-strict.js",

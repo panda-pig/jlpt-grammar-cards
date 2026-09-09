@@ -77,8 +77,11 @@ export async function POST(request: Request) {
       return errorResponse(error.code, error.message, 503);
     }
 
-    const message = error instanceof Error ? error.message : "Unexpected payment error.";
-    return errorResponse("payment_order_create_failed", message, 500);
+    return errorResponse(
+      "payment_order_create_failed",
+      "Payment order could not be created. Please try again later.",
+      500
+    );
   }
 }
 
@@ -93,8 +96,11 @@ export async function GET() {
 
     const payments = await paymentService.listUserPayments(user.id);
     return NextResponse.json({ payments });
-  } catch (error) {
-    const message = error instanceof Error ? error.message : "Unexpected payment list error.";
-    return errorResponse("payment_order_list_failed", message, 500);
+  } catch {
+    return errorResponse(
+      "payment_order_list_failed",
+      "Payment history could not be loaded. Please try again later.",
+      500
+    );
   }
 }

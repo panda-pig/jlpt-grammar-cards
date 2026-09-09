@@ -82,11 +82,11 @@
   --sidebar-accent-foreground: #242424;
   --sidebar-border: #ded8d0;
   --sidebar-ring: #242424;
-  /* Fonts: loaded Latin faces first, CJK system serif/sans as fallback so
-     Chinese glyphs render natively while Latin gets real character. */
+  /* Fonts stay local/system-only so production builds do not depend on
+     build-time access to external font providers. */
   --font-sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", Roboto, sans-serif;
-  --font-serif: var(--font-fraunces), "Songti SC", "Noto Serif CJK SC", "Iowan Old Style", Georgia, "Noto Serif", serif;
-  --font-mono: var(--font-plex-mono), "SFMono-Regular", "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+  --font-serif: "Songti SC", "Noto Serif CJK SC", "Iowan Old Style", Georgia, "Noto Serif", serif;
+  --font-mono: "SFMono-Regular", "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
 }
 
 /* ── V3 Background: ruled lines + warm radial glow on html ──
