@@ -6,7 +6,7 @@ CREATE OR REPLACE FUNCTION public.is_active_pro(target_user_id UUID)
 RETURNS BOOLEAN
 LANGUAGE sql
 SECURITY DEFINER
-SET search_path = public
+SET search_path = public, pg_temp
 AS $$
   SELECT EXISTS (
     SELECT 1
@@ -24,7 +24,7 @@ CREATE OR REPLACE FUNCTION public.enforce_user_grammar_item_limit()
 RETURNS TRIGGER
 LANGUAGE plpgsql
 SECURITY DEFINER
-SET search_path = public
+SET search_path = public, pg_temp
 AS $$
 DECLARE
   active_count INTEGER;
