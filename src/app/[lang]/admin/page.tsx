@@ -32,38 +32,59 @@ export default function AdminHomePage() {
 
   useEffect(() => {
     if (!isRoleAdmin) return;
-    (supabase.from("user_roles") as any).select("user_id").eq("role", "admin").then(({ data }: any) => {
-      if (!data?.length) return;
-      setAdminUsers(data.map((r: any) => ({ user_id: r.user_id, email: r.user_id })));
-    }).catch(() => {});
+    fetch("/api/admin/users/role", { cache: "no-store" })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((body) => {
+        if (!body?.admins) return;
+        setAdminUsers(
+          body.admins.map((a: { userId: string; email: string | null }) => ({
+            user_id: a.userId,
+            email: a.email ?? a.userId,
+          }))
+        );
+      })
+      .catch(() => {});
   }, [isRoleAdmin]);
 
-  const handleGrantSelfAdmin = async () => {
-    if (!user) return;
-    const { error } = await (supabase.from("user_roles") as any).upsert({ user_id: user.id, role: "admin" });
-    if (error) { setRoleMsg("授予失败: " + error.message); return; }
-    setIsRoleAdmin(true);
-    setRoleMsg("已在数据库中授予管理员角色。");
-  };
-
   const handleRevokeAdmin = async (userId: string) => {
-    await (supabase.from("user_roles") as any).delete().eq("user_id", userId);
+    const res = await fetch(`/api/admin/users/role?userId=${encodeURIComponent(userId)}`, {
+      method: "DELETE",
+    });
+    if (!res.ok) {
+      const body = await res.json().catch(() => null);
+      setRoleMsg("撤销失败: " + (body?.error?.message ?? res.statusText));
+      return;
+    }
     setAdminUsers((prev) => prev.filter((u) => u.user_id !== userId));
     setRoleMsg("已撤销管理员权限。");
   };
 
   const handleAddAdmin = async () => {
-    if (!newAdminEmail.trim()) return;
     const trimmed = newAdminEmail.trim().toLowerCase();
-    const { data: userData, error: userError } = await (supabase.from("profiles") as any).select("id").eq("email", trimmed).single();
-    if (userError || !userData) {
-      setRoleMsg("未找到该邮箱对应的用户（请确保对方已登录过至少一次）");
+    if (!trimmed) return;
+
+    const res = await fetch("/api/admin/users/role", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: trimmed }),
+    });
+    const body = await res.json().catch(() => null);
+    if (!res.ok) {
+      setRoleMsg(
+        body?.error?.code === "user_not_found"
+          ? "未找到该邮箱对应的用户（请确保对方已登录过至少一次）"
+          : "添加失败: " + (body?.error?.message ?? res.statusText)
+      );
       return;
     }
-    const { error } = await (supabase.from("user_roles") as any).upsert({ user_id: userData.id, role: "admin" });
-    if (error) { setRoleMsg("添加失败: " + error.message); return; }
+
+    const added = body.admin as { userId: string; email: string | null };
     setNewAdminEmail("");
-    setAdminUsers((prev) => [...prev, { user_id: userData.id, email: trimmed }]);
+    setAdminUsers((prev) =>
+      prev.some((u) => u.user_id === added.userId)
+        ? prev
+        : [...prev, { user_id: added.userId, email: added.email ?? trimmed }]
+    );
     setRoleMsg(`已添加 ${trimmed} 为管理员。`);
   };
 
@@ -124,12 +145,13 @@ export default function AdminHomePage() {
             <Badge className={`rounded-full font-mono text-xs ${isRoleAdmin ? "bg-[#dcebd8] text-[#315b3b]" : "bg-[#fff6df] text-[#7a5b20]"}`}>
               {isRoleAdmin ? "管理员 (admin)" : "无管理员角色"}
             </Badge>
-            {!isRoleAdmin && (
-              <Button size="sm" className="ml-auto rounded-full font-mono" onClick={handleGrantSelfAdmin}>
-                <UserPlus className="mr-1 h-3.5 w-3.5" />授予管理员
-              </Button>
-            )}
           </div>
+
+          {!isRoleAdmin && (
+            <p className="mb-4 text-sm text-[#4e4d4d]">
+              第一个管理员需在 Supabase SQL Editor 中创建，之后可由已有管理员按邮箱添加。
+            </p>
+          )}
 
           {isRoleAdmin && (
             <>
@@ -169,7 +191,7 @@ export default function AdminHomePage() {
 
           <div className="mt-4 p-3 rounded-[12px] bg-[#fff6df] border border-[#e8c178]/50">
             <p className="text-sm text-[#4e4d4d]">
-              管理员角色通过 <code className="bg-[rgba(36,36,36,0.06)] px-1 rounded font-mono text-xs">user_roles</code> 表和 RLS 策略控制。仅管理员可以新增/编辑/删除默认语法库。将此角色授予当前用户后，语法库的写入操作才能成功。
+              管理员角色通过 <code className="bg-[rgba(36,36,36,0.06)] px-1 rounded font-mono text-xs">user_roles</code> 表和 RLS 策略控制。仅管理员可以新增/编辑/删除默认语法库。
             </p>
           </div>
         </CardContent>

@@ -14,6 +14,11 @@ export interface AdminUsersResult {
   summary: { total: number; pro: number };
 }
 
+export interface AdminRoleRow {
+  userId: string;
+  email: string | null;
+}
+
 export const userAdminService = {
   /**
    * Read-only roster for the owner: profiles joined with their Pro entitlement.
@@ -56,5 +61,50 @@ export const userAdminService = {
       users,
       summary: { total: users.length, pro: users.filter((u) => u.isPro).length },
     };
+  },
+
+  async listAdmins(): Promise<AdminRoleRow[]> {
+    const supabase = createServiceRoleClient();
+
+    const { data: roles, error } = await (supabase.from("user_roles") as any)
+      .select("user_id")
+      .eq("role", "admin");
+    if (error) throw error;
+
+    const ids: string[] = (roles ?? []).map((r: any) => r.user_id);
+    if (!ids.length) return [];
+
+    const { data: profiles, error: profileError } = await (supabase.from("profiles") as any)
+      .select("id, email")
+      .in("id", ids);
+    if (profileError) throw profileError;
+
+    const emailById = new Map<string, string | null>(
+      (profiles ?? []).map((p: any) => [p.id, p.email ?? null])
+    );
+    return ids.map((id) => ({ userId: id, email: emailById.get(id) ?? null }));
+  },
+
+  async grantAdminByEmail(email: string): Promise<AdminRoleRow | null> {
+    const supabase = createServiceRoleClient();
+
+    const { data: profile, error } = await (supabase.from("profiles") as any)
+      .select("id, email")
+      .eq("email", email)
+      .maybeSingle();
+    if (error) throw error;
+    if (!profile) return null;
+
+    const { error: upsertError } = await (supabase.from("user_roles") as any)
+      .upsert({ user_id: profile.id, role: "admin" }, { onConflict: "user_id" });
+    if (upsertError) throw upsertError;
+
+    return { userId: profile.id, email: profile.email ?? email };
+  },
+
+  async revokeAdmin(userId: string): Promise<void> {
+    const supabase = createServiceRoleClient();
+    const { error } = await (supabase.from("user_roles") as any).delete().eq("user_id", userId);
+    if (error) throw error;
   },
 };
